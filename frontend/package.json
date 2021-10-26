@@ -1,0 +1,46 @@
+{
+  "name": "lyadmin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "ali-oss": "^6.12.0",
+    "axios": "^0.19.2",
+    "babel-polyfill": "^6.26.0",
+    "core-js": "^3.6.4",
+    "element-ui": "^2.13.2",
+    "jr-qrcode": "^1.1.4",
+    "js-md5": "^0.7.3",
+    "less-loader": "^6.1.0",
+    "lodash": "^4.17.21",
+    "quill": "^1.3.7",
+    "quill-image-drop-module": "^1.0.3",
+    "vue": "^2.6.11",
+    "vue-clipboard2": "^0.3.1",
+    "vue-quill-editor": "^3.0.6",
+    "vue-router": "^3.3.2",
+    "vuex": "^3.1.3",
+    "xe-utils": "^3.3.1",
+    "xss": "^1.0.9"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-plugin-router": "~4.3.0",
+    "@vue/cli-plugin-vuex": "~4.3.0",
+    "@vue/cli-service": "~4.3.0",
+    "compression-webpack-plugin": "^3.1.0",
+    "quill-image-resize-module": "^3.0.0",
+    "sass": "^1.26.3",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
