@@ -8,7 +8,7 @@
             :close-on-click-modal="false"
             :before-close="handleClose">
         <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
-            <el-form-item :label="(formData.type==1) ? '图片(343*141)：' :'图片(343*100)：'" prop="image">
+            <el-form-item :label="(formData.type==1) ? '图片：' :'图片：'" prop="image">
                 <el-upload
                         class="avatar-uploader"
                         action=""
@@ -45,7 +45,8 @@
 </template>
 
 <script>
-    import {retrieveLunboimgAdd,retrieveLunboimgEdit,retrieveUploadPlatformImg} from "@/api/api";
+    import {platformsettingsLunboimgAdd,platformsettingsLunboimgEdit,platformsettingsUploadPlatformImg} from "@/api/api";
+    import {url} from '@/api/url'
     export default {
         name: "addModule",
         data() {
@@ -82,7 +83,6 @@
                 this.$emit('refreshData')
             },
             addModuleFn(item,flag,activeName) {
-                console.log(activeName,'activeName---')
                 this.loadingTitle=flag
                 this.dialogVisible=true
 
@@ -99,11 +99,18 @@
                 this.$refs['rulesForm'].validate(obj=>{
                     if(obj) {
                         this.loadingSave=true
+                        // let newimage = ""
+                        // if (this.formData.image.indexOf("://")>=0){
+                        //     newimage = this.formData.image.substring(this.formData.image.indexOf("/",8))
+                        // }else{
+                        //     newimage = this.formData.image
+                        // }
+                        // this.formData.image = newimage
                         let param = {
                             ...this.formData
                         }
                         if(this.formData.id){
-                            retrieveLunboimgEdit(param).then(res=>{
+                            platformsettingsLunboimgEdit(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)
@@ -114,7 +121,7 @@
                                 }
                             })
                         }else{
-                            retrieveLunboimgAdd(param).then(res=>{
+                            platformsettingsLunboimgAdd(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)
@@ -139,18 +146,24 @@
             },
             async imgUploadRequest(param) {
                 var vm = this
-                let res= await retrieveUploadPlatformImg(param)
-                console.log(res)
-                if(res.code == 2000) {
-                    vm.formData.image = res.data.data[0]
+                let obj= await platformsettingsUploadPlatformImg(param)
+                if(obj.code == 2000) {
+                    let res=''
+                    if (obj.data.data[0].indexOf("://")>=0){
+                        res = obj.data.data[0]
+
+                    }else{
+                        res = url.split('/api')[0]+obj.data.data[0]
+                    }
+                    vm.formData.image = res
                 } else {
                     vm.$message.warning(res.msg)
                 }
             },
             imgUploadSuccess(res) {
-                if (res) {
-                    this.formData.image = res.url
-                }
+                // if (res) {
+                //     this.formData.image = res.url
+                // }
             }
         }
     }

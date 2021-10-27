@@ -6,7 +6,7 @@
 import os
 import datetime
 from django.conf import settings
-from utils.common import renameuploadimg
+from utils.common import renameuploadimg,getfulldomian
 
 def ImageUpload(request,dirs):
     """
@@ -50,7 +50,8 @@ def ImageUpload(request,dirs):
                 if not os.path.exists(sub_path):
                     os.makedirs(sub_path)
                 image_path = os.path.join(sub_path, image_name)
-                web_img_url = settings.MEDIA_URL + img_task_dir + "/" + time_path + "/" + image_name#相对路径/media/xxx/xxxx/xxx.png
+                # web_img_url = settings.MEDIA_URL + img_task_dir + "/" + time_path + "/" + image_name#相对路径/media/xxx/xxxx/xxx.png
+                web_img_url =  getfulldomian(request)+settings.MEDIA_URL + img_task_dir + "/" + time_path + "/" + image_name  # 绝对路径http://xxx.xxx.com/media/xxx/xxxx/xxx.png
                 f = open(image_path, 'wb')
                 for i in img.chunks():
                     f.write(i)

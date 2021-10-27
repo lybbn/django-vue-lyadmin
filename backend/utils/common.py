@@ -85,6 +85,21 @@ def rewrite_image_url(request,url):
     else:
         return url
 
+def get_full_image_url(request,url):
+    """
+    :param request: 用户请求request
+    :param url: 图片url原路径
+    :return: 图片url新路径
+    """
+    if not url:
+        return url
+    elif  'http://' not in url and 'https://' not in url:
+
+        fulldomain = getfulldomian(request)
+        return fulldomain+url
+    else:
+        return url
+
 #验证是否为有效手机号
 def checkphonenum(phonenum):
     mobile_pat = re.compile('^1([38]\d|5[0-35-9]|7[3678])\d{8}$')

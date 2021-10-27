@@ -11,7 +11,7 @@ let token = sessionStorage.getItem('logintoken')
 
 /*富文本编辑图片上传配置*/
 const uploadConfig = {
-  action:  url+'retrieve/uploadplatformimg/',  // 必填参数 图片上传地址
+  action:  url+'platformsettings/uploadplatformimg/',  // 必填参数 图片上传地址
   methods: 'POST',  // 必填参数 图片上传方式
   token: 'JWT '+token,  // 可选参数 如果需要token验证，假设你的token有存放在sessionStorage
   name: 'file',  // 必填参数 文件的参数名
@@ -111,8 +111,14 @@ const handlers = {
               let length = self.quill.getSelection(true).index;
 
               //这里很重要，你图片上传成功后，img的src需要在这里添加，res.path就是你服务器返回的图片链接。
+              let imgpath=''
+              if (res.data.data[0].indexOf("://")>=0){
+                  imgpath = res.data.data[0]
 
-              self.quill.insertEmbed(length, 'image', res.data.data[0]);
+              }else{
+                  imgpath = url.split('/api')[0]+res.data.data[0]
+              }
+              self.quill.insertEmbed(length, 'image', imgpath);
 
               self.quill.setSelection(length +1)
             }

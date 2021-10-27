@@ -47,7 +47,7 @@
     import addModule from "./components/addModuleOther";
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
-    import {retrieveOther,retrieveOtherDelete} from '@/api/api'
+    import {platformsettingsOther,platformsettingsOtherDelete} from '@/api/api'
     export default {
         components:{
             Pagination,
@@ -98,7 +98,7 @@
                     cancelButtonText: "取消",
                     type: "warning"
                 }).then(function() {
-                    return retrieveRetrievecategory1Delete({id:ids}).then(res=>{
+                    return platformsettingsOtherDelete({id:ids}).then(res=>{
                         if(res.code == 2000) {
                             vm.$message.success(res.msg)
                             vm.search()
@@ -123,7 +123,7 @@
                     vm.$confirm('确定删除该数据吗？',{
                         closeOnClickModal:false
                     }).then(res=>{
-                        retrieveOtherDelete({id:row.id}).then(res=>{
+                        platformsettingsOtherDelete({id:row.id}).then(res=>{
                             if(res.code == 2000) {
                                 vm.$message.success(res.msg)
                                 vm.search()
@@ -150,7 +150,7 @@
             //获取列表
             async getData(){
                 this.loadingPage = true
-                retrieveOther(this.formInline).then(res => {
+                platformsettingsOther(this.formInline).then(res => {
                      this.loadingPage = false
                      if(res.code ==2000) {
                          this.tableData = res.data.data

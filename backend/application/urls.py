@@ -34,12 +34,13 @@ from apps.address.views import ProvinceAreasView,SubAreasView,GetAddressAccuracy
 from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobileSMSLoginView,ForgetPasswdResetView
 from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView
 from apps.lymessages.views import UserMessagesView
+from apps.platformsettings.views import GetOtherManageDetailView,GetLunboManageListView
 #部署vue
 from django.views.generic import TemplateView
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="HuiShou API",
+        title="django-vue-lyadmin API",
         default_version='v1',
         # description="Test description",
         # terms_of_service="https://www.google.com/policies/terms/",
@@ -70,6 +71,7 @@ urlpatterns = [
     #管理后台其他自定义接口
     path('api/platformsettings/', include('apps.platformsettings.urls')),
     path('api/messages/', include('apps.lymessages.urls')),
+    path('api/users/', include('apps.lyusers.urls')),
 
     #前端用户接口
     path('api/app/login/', APPMobilePasswordLoginView.as_view(), name='app端手机号密码登录认证'),
@@ -87,6 +89,8 @@ urlpatterns = [
     path('api/xcx/getshareqrcode/', GetXCXShareQrcodeView.as_view(), name='微信小程序用户获取推广小程序二维码'),
     path('api/xcx/usermessages/', UserMessagesView.as_view(), name='微信小程序获取系统通知信息/修改为已读'),
 
+    path('api/getothersettings/', GetOtherManageDetailView.as_view(), name='前端用户获取平台其他设置'),
+    path('api/getrotationimgs/', GetLunboManageListView.as_view(), name='前端用户获取平台轮播图设置'),
 
     re_path(r'^api/areas/$', ProvinceAreasView.as_view(),name='省市区三级联动获取省'),
     re_path(r'^api/areas/(?P<pk>[1-9]\d*)/$', SubAreasView.as_view(),name='省市区三级联动获取市/区'),

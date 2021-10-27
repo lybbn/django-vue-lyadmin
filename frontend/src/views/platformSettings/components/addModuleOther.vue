@@ -68,7 +68,7 @@
 </template>
 
 <script>
-    import {retrieveOtherAdd,retrieveOtherEdit,retrieveUploadretrievecategoryimg} from "@/api/api";
+    import {platformsettingsOtherAdd,platformsettingsOtherEdit} from "@/api/api";
     import axios from 'axios'
     import 'quill/dist/quill.core.css'
     import 'quill/dist/quill.snow.css'
@@ -129,7 +129,7 @@
                             ...this.formData
                         }
                         if(this.formData.id){
-                            retrieveOtherEdit(param).then(res=>{
+                            platformsettingsOtherEdit(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)
@@ -140,7 +140,7 @@
                                 }
                             })
                         }else{
-                            retrieveOtherAdd(param).then(res=>{
+                            platformsettingsOtherAdd(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)
@@ -154,26 +154,6 @@
 
                     }
                 })
-            },
-            imgBeforeUpload(file) {
-                const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-                if (!isJPG) {
-                    this.$message.error('图片只能是 JPG/PNG 格式!');
-                    return false
-                }
-                return isJPG;
-            },
-            async imgUploadRequest(param) {
-                // var vm = this
-                // let res= await retrieveUploadretrievecategoryimg(param)
-                // if(res.code == 2000) {
-                //     vm.formData.image = res.data.data.img
-                // } else {
-                //     vm.$message.warning(res.msg)
-                // }
-            },
-            imgUploadSuccess(res) {
-                console.log(res,'res-----')
             },
         }
     }

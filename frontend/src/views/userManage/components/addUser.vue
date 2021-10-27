@@ -9,7 +9,7 @@
             :before-close="handleClose">
         <el-form :inline="false" :model="formData" ref="rulesForm" label-position="right" label-width="130px">
             <el-form-item label="用户头像：">
-                <img :src="formData.avatar" style="width: 60px;height:60px">
+                <img :src="formData.avatar" style="width: 60px;height:60px" :onerror="defaultImg">
 
 <!--                <el-upload-->
 <!--                        class="avatar-uploader"-->
@@ -22,22 +22,20 @@
 <!--                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
 <!--                </el-upload>-->
             </el-form-item>
+            <el-form-item label="用户名：" prop="username">
+                {{formData.username}}
+            </el-form-item>
             <el-form-item label="用户昵称：" prop="nickname">
                 {{formData.nickname}}
             </el-form-item>
             <el-form-item label="手机号：" prop="mobile">
                 {{formData.mobile}}
             </el-form-item>
-            <el-form-item label="积分：" prop="integral">
-                {{formData.integral}}
+            <el-form-item label="创建时间：" prop="mobile">
+                {{formData.create_datetime}}
             </el-form-item>
-            <el-form-item label="身份：" prop="identity">
-                        <span  v-for='(item,index) in formData.identity' :key="index">
-                            <label v-if="item==0">{{(index>0 && index < formData.identity.length?'、':'') +"普通用户"}}</label>
-                            <label v-if="item==1">{{(index>0 && index < formData.identity.length?'、':'') +"回收员"}}</label>
-                            <label v-if="item==2">{{(index>0 && index < formData.identity.length?'、':'') +"回收站点"}}</label>
-                            <label v-if="item==3">{{(index>0 && index < formData.identity.length?'、':'') +"代理商"}}</label>
-                        </span>
+            <el-form-item label="更新时间：" prop="mobile">
+                {{formData.update_datetime}}
             </el-form-item>
             <el-form-item label="状态：" prop="is_active">
                 <el-switch
@@ -63,12 +61,14 @@
                 dialogVisible:false,
                 loadingSave:false,
                 loadingTitle:'',
+                defaultImg:'this.src="'+require('../../../assets/img/avatar.jpg')+'"',
                 formData:{
                     name:'',
                     nickname:'',
-                    integral:'',
+                    username:'',
                     mobile:'',
-                    identity:'',
+                    create_datetime:'',
+                    update_datetime:'',
                     is_active:true,
                     avatar:''
                 },
@@ -89,9 +89,10 @@
                 this.formData=item ? item : {
                     name:'',
                     nickname:'',
-                    integral:'',
+                    username:'',
                     mobile:'',
-                    identity:'',
+                    create_datetime:'',
+                    update_datetime:'',
                     is_active:true,
                     avatar:''
                 }

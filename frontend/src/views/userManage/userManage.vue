@@ -2,21 +2,11 @@
     <div>
         <div class="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
-                <el-form-item label="用户昵称：">
-                    <el-input size="small" v-model.trim="formInline.nickname" maxlength="60"  clearable placeholder="用户昵称" @change="search" style="width:200px"></el-input>
+                <el-form-item label="用户名称：">
+                    <el-input size="small" v-model.trim="formInline.username" maxlength="60"  clearable placeholder="用户名称" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号：">
                     <el-input size="small" v-model.trim="formInline.mobile" maxlength="60"  clearable placeholder="手机号" @change="search" style="width:200px"></el-input>
-                </el-form-item>
-                <el-form-item label="身份：">
-                    <el-select size="small" v-model="formInline.identity" placeholder="请选择" clearable style="width: 120px" @change="search">
-                        <el-option
-                                v-for="item in identityList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
-                        </el-option>
-                    </el-select>
                 </el-form-item>
                 <el-form-item label="创建时间：">
                     <el-date-picker
@@ -42,19 +32,9 @@
                         <img  :src="scope.row.avatar" style="width: 30px;height: 30px" :onerror="defaultImg">
                     </template>
                 </el-table-column>
+                <el-table-column min-width="110" prop="username" label="用户名"></el-table-column>
                 <el-table-column min-width="110" prop="nickname" label="用户昵称"></el-table-column>
                 <el-table-column min-width="100" prop="mobile" label="手机号"></el-table-column>
-                <el-table-column min-width="80" prop="integral" label="积分"></el-table-column>
-                <el-table-column min-width="150" prop="identity" label="身份">
-                    <template slot-scope="scope">
-                        <span v-for='(item,index) in scope.row.identity' :key="index">
-                            <label v-if="item==0">{{(index>0 && index < scope.row.identity.length?'、':'') +"普通用户"}}</label>
-                            <label v-if="item==1">{{(index>0 && index < scope.row.identity.length?'、':'') +"回收员"}}</label>
-                            <label v-if="item==2">{{(index>0 && index < scope.row.identity.length?'、':'') +"回收站点"}}</label>
-                            <label v-if="item==3">{{(index>0 && index < scope.row.identity.length?'、':'') +"代理商"}}</label>
-                        </span>
-                    </template>
-                </el-table-column>
                 <el-table-column min-width="100" label="状态">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.is_active">正常</el-tag>
@@ -89,7 +69,7 @@
     import addUser from "./components/addUser";
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
-    import {retrieveUsers,retrieveUsersDelete,retrieveUsersdisableEdit} from '@/api/api'
+    import {UsersUsers,UsersUsersDelete,UsersUsersdisableEdit} from '@/api/api'
     export default {
         components:{
             Pagination,
@@ -136,7 +116,7 @@
                 }
                 if(flag=='disable'){
                     let vm = this
-                    retrieveUsersdisableEdit({id:row.id}).then(res=>{
+                    UsersUsersdisableEdit({id:row.id}).then(res=>{
                             if(res.code == 2000) {
                                 vm.$message.success(res.msg)
                                 vm.search()
@@ -150,7 +130,7 @@
                     vm.$confirm('您确定要删除选中的数据吗？',{
                         closeOnClickModal:false
                     }).then(res=>{
-                        retrieveUsersDelete({id:row.id}).then(res=>{
+                        UsersUsersDelete({id:row.id}).then(res=>{
                             if(res.code == 2000) {
                                 vm.$message.success(res.msg)
                                 vm.search()
@@ -177,7 +157,7 @@
             //获取列表
             async getData() {
                 this.loadingPage = true
-                retrieveUsers(this.formInline).then(res => {
+                UsersUsers(this.formInline).then(res => {
                      this.loadingPage = false
                      if(res.code ==2000) {
                          this.tableData = res.data.data

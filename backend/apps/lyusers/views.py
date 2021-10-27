@@ -1,33 +1,60 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from mysystem.models import Users,Role,Dept
-from apps.oauth.models import OAuthWXUser
 from utils.jsonResponse import SuccessResponse,ErrorResponse
-from rest_framework import serializers
-from utils.common import REGEX_MOBILE,get_parameter_dic,renameuploadimg,getfulldomian,geturlpath,ismoney,ast_convert,rewrite_image_url
+from utils.common import get_parameter_dic
 import re
 from django.db.models import Q,F,Sum
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from utils.serializers import CustomModelSerializer
 from utils.viewset import CustomModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from django.db import transaction
-import datetime
-import os
-from django.conf import settings
-import ast
-from django.contrib.auth.hashers import make_password
-from decimal import Decimal
-from utils.locationanalysis import distance_haversine,get_locations_nearby_queryset
-from utils.export_excel import export_excel
-from utils.pagination import CustomPagination
-from utils.wexinpay_cashout import Pay,get_client_ip,random_str
-import config
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from utils.imageupload import ImageUpload
+from mysystem.models import Users
+from utils.filters import UsersManageTimeFilter
 # Create your views here.
+
+# ================================================= #
+# ************** 后端用户管理 view  ************** #
+# ================================================= #
+
+class UserManageSerializer(CustomModelSerializer):
+    """
+    用户管理-序列化器
+    """
+
+    class Meta:
+        model = Users
+        read_only_fields = ["id"]
+        exclude = ['password']
+        extra_kwargs = {
+            'post': {'required': False},
+        }
+
+class UserManageViewSet(CustomModelViewSet):
+    """
+    后台用户管理 接口:
+    """
+    queryset = Users.objects.exclude(is_superuser=True).exclude(role__admin=True).all().order_by("-create_datetime")#排除管理员
+    serializer_class = UserManageSerializer
+    filter_class = UsersManageTimeFilter
+
+    def disableuser(self,request,*args, **kwargs):
+        """禁用用户"""
+        instance = Users.objects.filter(id=kwargs.get('pk')).first()
+        if instance:
+            if instance.is_active:
+                instance.is_active = False
+            else:
+                instance.is_active = True
+            instance.save()
+            return SuccessResponse(data=None, msg="修改成功")
+        else:
+            return ErrorResponse(msg="未获取到用户")
+
 
 # ================================================= #
 # ************** 前端用户中心 view  ************** #

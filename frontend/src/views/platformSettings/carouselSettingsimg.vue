@@ -1,12 +1,12 @@
 <template>
     <div>
         <el-tabs v-model="formInline.type" @tab-click="getData">
-            <el-tab-pane label="轮播图管理" name="1"></el-tab-pane>
+            <el-tab-pane label="首页轮播图管理" name="1"></el-tab-pane>
             <el-tab-pane label="分类页轮播图管理" name="2"></el-tab-pane>
         </el-tabs>
-        <el-table size="small" height="calc(100vh - 160px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
+        <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
             <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
-            <el-table-column min-width="120" prop="image" :label="(formInline.type==1) ? '图片(343*141)：' :'图片(343*100)：'">
+            <el-table-column min-width="120" prop="image" :label="(formInline.type==1) ? '图片' :'图片'">
                 <template slot-scope="scope">
                     <el-image  :src="scope.row.image" style="width: 60px;height: 60px" :preview-src-list="[scope.row.image]"></el-image>
                 </template>
@@ -40,7 +40,7 @@
     import addModule from "./components/addCarouselModule";
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
-    import {retrieveLunboimg,retrieveLunboimgDelete,retrievePlatformimg,retrievePlatformimgDelete} from '@/api/api'
+    import {platformsettingsLunboimg,platformsettingsLunboimgDelete} from '@/api/api'
     export default {
         components:{
             Pagination,
@@ -85,7 +85,7 @@
                         closeOnClickModal:false
                     }).then(res=>{
                         if(this.formInline.type==1 || this.formInline.type==2) {
-                            retrieveLunboimgDelete({id:row.id}).then(res=>{
+                            platformsettingsLunboimgDelete({id:row.id}).then(res=>{
                                 if(res.code == 2000) {
                                     vm.$message.success(res.msg)
                                     vm.search()
@@ -114,7 +114,7 @@
             async getData(){
                 this.loadingPage = true
                 if(this.formInline.type==1 || this.formInline.type==2) {
-                    retrieveLunboimg(this.formInline).then(res => {
+                    platformsettingsLunboimg(this.formInline).then(res => {
                         this.loadingPage = false
                         if(res.code ==2000) {
                             this.tableData = res.data.data
