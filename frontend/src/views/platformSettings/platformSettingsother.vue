@@ -20,7 +20,7 @@
                     <!--</template>-->
                 <!--</el-table-column>-->
                 <el-table-column min-width="120" prop="name" label="名称"></el-table-column>
-                <el-table-column min-width="120" prop="key" label="键名"></el-table-column>
+                <el-table-column min-width="140" prop="key" label="键名"></el-table-column>
                 <el-table-column min-width="180" prop="value" label="键值" show-overflow-tooltip></el-table-column>
                 <el-table-column min-width="60" prop="sort" label="排序"></el-table-column>
                 <el-table-column min-width="80" label="状态">

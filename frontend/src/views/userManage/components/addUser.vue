@@ -9,7 +9,7 @@
             :before-close="handleClose">
         <el-form :inline="false" :model="formData" ref="rulesForm" label-position="right" label-width="130px">
             <el-form-item label="用户头像：">
-                <img :src="formData.avatar" style="width: 60px;height:60px" :onerror="defaultImg">
+                <img :src="formData.avatar ? formData.avatar : defaultImg" style="width: 60px;height:60px" :onerror="defaultImg">
 
 <!--                <el-upload-->
 <!--                        class="avatar-uploader"-->

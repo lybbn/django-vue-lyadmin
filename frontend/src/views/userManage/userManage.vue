@@ -29,7 +29,7 @@
                 <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
                 <el-table-column min-width="70" prop="avatar" label="用户头像">
                     <template slot-scope="scope">
-                        <img  :src="scope.row.avatar" style="width: 30px;height: 30px" :onerror="defaultImg">
+                        <img  :src="scope.row.avatar ? scope.row.avatar : defaultImg" style="width: 30px;height: 30px" :onerror="defaultImg">
                     </template>
                 </el-table-column>
                 <el-table-column min-width="110" prop="username" label="用户名"></el-table-column>
@@ -83,7 +83,7 @@
                     page: 1,
                     limit: 10,
                 },
-                defaultImg:'this.src="'+require('../../assets/img/avatar.jpg')+'"',
+                defaultImg:"this.src='"+require('../../assets/img/avatar.jpg')+"'",
                 pageparm: {
                     page: 1,
                     limit: 10,
@@ -181,6 +181,8 @@
         },
         created() {
             this.getData()
+        },
+        mounted() {
         },
         timers(val){
             if (val) {
