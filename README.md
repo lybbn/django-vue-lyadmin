@@ -1,3 +1,39 @@
+# Django-Vue-Lyadmin
+
+[![img](https://img.shields.io/badge/python-%3E=3.6.x-green.svg)](https://python.org/)  [![PyPI - Django Version badge](https://img.shields.io/badge/django%20versions-3.2-blue)](https://docs.djangoproject.com/zh-hans/3.2/) [![img](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![img](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin)
+
+[群聊](https://jq.qq.com/?_wv=1027&k=StAkGqk5) 
+
+## 平台简介
+
+django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台，去繁从简、还你一个干净的后台管理系统
+
+* 前端采用Vue
+* 后端采用Python语言Django框架
+* 权限认证使用JWT，支持多终端认证系统
+* 支持加载动态权限菜单，内置常用模块，多方式轻松权限控制
+* 适合刚入门或苦于寻找django web快速开发框架的小伙伴们
+
+特别鸣谢：本平台后端部分参考[django-vue-admin-pro](https://gitee.com/dvadmin/django-vue-admin-pro)
+
+## 交流
+
+- QQ群号：755277564 <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=oPz6bqmL"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="django-vue-lyadmin交流01群" title="django-vue-lyadmin交流01群"></a>
+- 二维码：
+
+<img src='https://gitee.com/lybbn/django-vue-lyadmin/frontend/src/assets/img/qq.jpg' width='200'>
+
+## 内置功能
+
+## 内置功能
+
+1.  部门管理：配置系统组织机构（公司、部门、角色），树结构展现支持数据权限。
+2.  菜单管理：配置系统菜单，操作权限，按钮权限标识、后端接口权限等。
+3.  角色管理：角色菜单权限分配、数据权限分配、设置角色按部门进行数据范围权限划分。
+4.  权限管理：授权角色的权限范围。
+5.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
+6.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
+7.  平台设置：系统设置如字典参数、轮播图
 
 ## lyadmin后端
 
@@ -80,3 +116,11 @@ npm run build
 
 
 打包后静态文件在 dist 目录中
+
+## 演示图
+
+![image-01](https://gitee.com/lybbn/django-vue-lyadmin/frontend/src/assets/img/01.png)
+
+![image-02](https://gitee.com/lybbn/django-vue-lyadmin/frontend/src/assets/img/02.png)
+
+![image-03](https://gitee.com/lybbn/django-vue-lyadmin/frontend/src/assets/img/03.png)
