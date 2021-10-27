@@ -14,14 +14,14 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 * 支持加载动态权限菜单，内置常用模块，多方式轻松权限控制
 * 适合刚入门或苦于寻找django web快速开发框架的小伙伴们
 
-特别鸣谢：本平台后端部分参考[django-vue-admin-pro](https://gitee.com/dvadmin/django-vue-admin-pro)
+特别鸣谢：本平台后端设计模式，其部分参考[django-vue-admin-pro](https://gitee.com/dvadmin/django-vue-admin-pro)
 
 ## 交流
 
 - QQ群号：755277564 <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=oPz6bqmL"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="django-vue-lyadmin交流01群" title="django-vue-lyadmin交流01群"></a>
 - 二维码：
 
-<img src='https://gitee.com/lybbn/django-vue-lyadmin/frontend/src/assets/img/qq.jpg' width='200'>
+<img src='https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/qq.jpg' width='200'>
 
 ## 内置功能
 
@@ -119,8 +119,8 @@ npm run build
 
 ## 演示图
 
-![image-01](https://gitee.com/lybbn/django-vue-lyadmin/blob/master/frontend/src/assets/img/01.png)
+![image-01](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/01.png)
 
-![image-02](https://gitee.com/lybbn/django-vue-lyadmin/blob/master/frontend/src/assets/img/02.png)
+![image-02](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/02.png)
 
-![image-03](https://gitee.com/lybbn/django-vue-lyadmin/blob/master/frontend/src/assets/img/03.png)
+![image-03](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/03.png)
