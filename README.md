@@ -34,6 +34,7 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 7.  个人中心：主要设置登录系统的个人昵称、密码等账号信息。
 7.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
 8.  平台设置：系统设置如字典参数、轮播图
+9.  其他功能：内置微信登录、小程序登录、短信登录、密码登录、微信企业到零钱等API
 
 ## lyadmin后端
 
@@ -121,6 +122,10 @@ npm run build
 
 ![image-01](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/01.png)
 
+![image-04](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/04.png)
+
 ![image-02](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/02.png)
 
 ![image-03](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/03.png)
+
+![image-05](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/05.png)
