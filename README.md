@@ -8,9 +8,10 @@
 
 django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台，去繁从简、还你一个干净的后台管理系统
 
-* 前端采用Vue
+* 前端采用Vue（element-ui）
 * 后端采用Python语言Django框架
-* 权限认证使用JWT，支持多终端认证系统
+* 权限认证使用JWT（djangorestframework-simplejwt），支持多终端认证系统
+* 接口采用（drf）djangorestframework
 * 支持加载动态权限菜单，内置常用模块，多方式轻松权限控制
 * 适合刚入门或苦于寻找django web快速开发框架的小伙伴们
 
