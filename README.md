@@ -23,6 +23,10 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 
 <img src='https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/qq.jpg' width='200'>
 
+## 源码地址
+
+gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
+
 ## 内置功能
 
 1.  部门管理：配置系统组织机构（公司、部门、角色），树结构展现支持数据权限。
