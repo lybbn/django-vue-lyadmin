@@ -108,7 +108,8 @@
                     status:'',
                     cache:'',
                     visible:'',
-                    limit:999
+                    page:1,
+                    limit:9999
                 },
                 timers:[],
                 tableData:[],

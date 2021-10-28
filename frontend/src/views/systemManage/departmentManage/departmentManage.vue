@@ -75,7 +75,9 @@
                 formInline:{
                     search:'',
                     name:'',
-                    status:''
+                    status:'',
+                    page:1,
+                    limit:9999
                 },
                 tableData:[],
                 statusList:[
