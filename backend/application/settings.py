@@ -369,6 +369,10 @@ REST_FRAMEWORK = {
     #     'user': '60/minute'                    #已登录用户每分钟可以请求60次
     # },
     'EXCEPTION_HANDLER': 'utils.exception.CustomExceptionHandler',  # 自定义的异常处理
+    # #线上部署正式环境，关闭web接口测试页面
+            # 'DEFAULT_RENDERER_CLASSES':(
+            #     'rest_framework.renderers.JSONRenderer',
+            # ),
 }
 # ================================================= #
 # ****************** simplejwt配置 ***************** #
