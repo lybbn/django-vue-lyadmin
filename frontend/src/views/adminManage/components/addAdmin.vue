@@ -153,7 +153,7 @@
                 })
             },
             getapiSystemRole(){
-                apiSystemRole().then(res=>{
+                apiSystemRole({page:1,limit:999}).then(res=>{
                     if(res.code ==2000) {
                         this.rolelist = res.data.data
                     } else {
@@ -162,7 +162,7 @@
                 })
             },
             getapiSystemDept(){
-                apiSystemDept().then(res=>{
+                apiSystemDept({page:1,limit:999}).then(res=>{
                     if(res.code ==2000) {
                         let childrenList = res.data.data.filter(item=> item.parent)
                         let parentList = res.data.data.filter(item=> !item.parent)

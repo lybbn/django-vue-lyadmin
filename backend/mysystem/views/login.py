@@ -85,6 +85,14 @@ class LoginSerializer(TokenObtainPairSerializer):
             }
 
             return result
+        
+        if not user.is_active:
+            result = {
+                "code": 4000,
+                "msg": "该账号已被禁用,请联系管理员",
+                "data": None
+            }
+            return result
 
         if user and user.check_password(password):  # check_password() 对明文进行加密,并验证
             data = super().validate(attrs)
