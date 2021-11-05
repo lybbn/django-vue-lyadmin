@@ -5,7 +5,7 @@ from utils.jsonResponse import SuccessResponse,ErrorResponse
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from utils.common import get_parameter_dic,REGEX_MOBILE
-from config import WX_XCX_APPID,WX_XCX_APPSECRET,WX_GZH_APPID,WX_GZH_APPSECRET
+from config import WX_XCX_APPID,WX_XCX_APPSECRET,WX_GZH_APPID,WX_GZH_APPSECRET,WX_GZPT_APPSECRET,WX_GZPT_APPID
 import requests
 import base64
 import json
@@ -428,7 +428,7 @@ def send_wx_xcx_message_cache(openid,template_id,form_id,push_data):
 """
 def get_wechat_access_token_url(code):
     api_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code"
-    get_url = api_url.format(WX_GZH_APPID,WX_GZH_APPSECRET,code)
+    get_url = api_url.format(WX_GZPT_APPID,WX_GZPT_APPSECRET,code)
     r = requests.get(get_url)
     return r
 
@@ -489,7 +489,7 @@ def is_access_token_valid(access_token, openid):
 """
 def refresh_access_token(refresh_token):
     api_url = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={0}&grant_type=refresh_token&refresh_token={1}"
-    get_url = api_url.format(WX_GZH_APPID,refresh_token)
+    get_url = api_url.format(WX_GZPT_APPID,refresh_token)
     r = requests.get(get_url)
     return r
 
@@ -517,6 +517,7 @@ class WeChatGZHLoginAPIView(APIView):
             return ErrorResponse(msg="服务器到微信网络连接失败，请重试")
         json_data =json.loads(resp.content)
         if 'errcode' in json_data and json_data['errcode'] !=0:#如果获取失败返回失败信息
+            logger.error("微信app登录服务错误，用户提交code:%s，微信返回错误信息：%s" % (jscode, json_data))
             return ErrorResponse(msg=json_data['errmsg'])
 
         openid = json_data['openid']
