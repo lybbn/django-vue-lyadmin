@@ -86,7 +86,7 @@ class DataLevelPermissionsFilter(BaseFilterBackend):
             dataScope_list = list(set(dataScope_list))
 
             # 4. 只为仅本人数据权限时只返回过滤本人数据，并且部门为自己本部门(考虑到用户会变部门，只能看当前用户所在的部门数据)
-            if dataScope_list == 0:
+            if 0 in dataScope_list:
                 return queryset.filter(creator=request.user, dept_belong_id=user_dept_id)
 
             # 5. 自定数据权限 获取部门，根据部门过滤

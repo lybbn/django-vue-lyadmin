@@ -20,7 +20,7 @@ class Users(AbstractUser, CoreModel):
     gender = models.IntegerField(choices=GENDER_CHOICES, verbose_name="性别", null=True, blank=True, help_text="性别")
     post = models.ManyToManyField(to='Post', verbose_name='关联岗位', db_constraint=False, help_text="关联岗位")
     role = models.ManyToManyField(to='Role', verbose_name='关联角色', db_constraint=False, help_text="关联角色")#这个就是保留跨表查询的便利(双下划线跨表查询```),但是不用约束字段了,一般公司都用false,这样就省的报错,因为没有了约束(Field字段对象,既约束,又建立表与表之间的关系
-    dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.CASCADE, db_constraint=False, null=True,
+    dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True,
                              blank=True, help_text="关联部门")
 
     # 自定义
@@ -29,7 +29,7 @@ class Users(AbstractUser, CoreModel):
         db_table = table_prefix + "users"
         verbose_name = '用户表'
         verbose_name_plural = verbose_name
-        ordering = ('create_datetime',)
+        ordering = ('-create_datetime',)
 
 
 class Post(CoreModel):
