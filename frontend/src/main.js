@@ -29,6 +29,9 @@ import ImageResize from 'quill-image-resize-module'
 Quill.register('modules/imageDrop', ImageDrop)
 Quill.register('modules/imageResize', ImageResize)
 
+//引入font-awesome字体图标
+import 'font-awesome/scss/font-awesome.scss'
+
 // 引入状态管理
 import store from './vuex/store';
 import {isShowBtn} from './utils/util'
