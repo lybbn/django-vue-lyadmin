@@ -20,7 +20,7 @@
       <el-submenu v-if="menu.hasChildren" :index="menu.text" :key="menu.id">
         <template slot="title" >
           <i class="iconfont" :class="menu.attributes.icon"></i>
-          <span>{{menu.text}}</span>
+          <span slot="title">{{menu.text}}</span>
         </template>
         <el-menu-item-group  v-if="menu.hasChildren">
           <el-menu-item
@@ -29,13 +29,13 @@
             :key="chmenu.id"
           >
             <i class="iconfont" :class="chmenu.attributes.icon"></i>
-            <span>{{chmenu.text}}</span>
+            <span slot="title">{{chmenu.text}}</span>
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item  v-else :index="'/'+menu.attributes.url" :key="menu.id">
         <i class="iconfont" :class="menu.attributes.icon"></i>
-        <span>{{menu.text}}</span>
+        <span slot="title">{{menu.text}}</span>
       </el-menu-item>
     </div>
   </el-menu>
