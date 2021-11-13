@@ -4,6 +4,8 @@ import {url} from './url';
 
 // 获取登录页的信息
 export const login = params => ajaxPost({url: `token/`,params})
+// 获取验证码
+export const getCaptcha = params => ajaxGet({url: `captcha/`,params})
 // 获取菜单
 export const apiSystemWebRouter = params => ajaxGet({url: `system/web_router/`,params})
 

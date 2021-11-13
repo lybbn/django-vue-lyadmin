@@ -46,31 +46,30 @@ class LoginSerializer(TokenObtainPairSerializer):
     登录的序列化器:
     重写djangorestframework-simplejwt的序列化器
     """
-    # captcha = serializers.CharField(max_length=6)
-    #
-    # class Meta:
-    #     model = Users
-    #     fields = "__all__"
-    #     read_only_fields = ["id"]
+    captcha = serializers.CharField(max_length=6)
+
+    class Meta:
+        model = Users
+        fields = "__all__"
+        read_only_fields = ["id"]
 
     default_error_messages = {
         'no_active_account': _('该账号已被禁用,请联系管理员')
     }
 
-    ##开启验证码验证
-    # def validate_captcha(self, captcha):
-    #     self.image_code = CaptchaStore.objects.filter(
-    #         id=self.initial_data['captchaKey']).first()
-    #     five_minute_ago = datetime.now() - timedelta(hours=0, minutes=5, seconds=0)
-    #     if self.image_code and five_minute_ago > self.image_code.expiration:
-    #         self.image_code and self.image_code.delete()
-    #         raise CustomValidationError('验证码过期')
-    #     else:
-    #         if self.image_code and (self.image_code.response == captcha or self.image_code.challenge == captcha):
-    #             self.image_code and self.image_code.delete()
-    #         else:
-    #             self.image_code and self.image_code.delete()
-    #             raise CustomValidationError("图片验证码错误")
+    #开启验证码验证
+    def validate_captcha(self, captcha):
+        self.image_code = CaptchaStore.objects.filter(id=self.initial_data['captchaKey']).first()
+        five_minute_ago = datetime.now() - timedelta(hours=0, minutes=5, seconds=0)
+        if self.image_code and five_minute_ago > self.image_code.expiration:
+            self.image_code and self.image_code.delete()
+            raise CustomValidationError('验证码过期')
+        else:
+            if self.image_code and (self.image_code.response == captcha or self.image_code.challenge == captcha):
+                self.image_code and self.image_code.delete()
+            else:
+                self.image_code and self.image_code.delete()
+                raise CustomValidationError("图片验证码错误")
 
     def validate(self, attrs):
         username = attrs['username']
