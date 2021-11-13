@@ -76,6 +76,14 @@ class LoginSerializer(TokenObtainPairSerializer):
         password = attrs['password']
         user = Users.objects.filter(username=username).first()
 
+        if not user:
+            result = {
+                "code": 4000,
+                "msg": "账号/密码不正确",
+                "data": None
+            }
+            return  result
+
         if user and not user.is_staff:#判断是否允许登录后台
             result = {
                 "code": 4000,
@@ -85,7 +93,7 @@ class LoginSerializer(TokenObtainPairSerializer):
 
             return result
         
-        if not user.is_active:
+        if user and not user.is_active:
             result = {
                 "code": 4000,
                 "msg": "该账号已被禁用,请联系管理员",
