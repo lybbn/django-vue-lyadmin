@@ -42,7 +42,7 @@
                 <el-table-column min-width="90"  label="状态">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.status==1" type="primary">启用</el-tag>
-                        <el-tag v-else>禁用</el-tag>
+                        <el-tag v-else type="danger">禁用</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column min-width="80" prop="sort" label="排序"></el-table-column>
