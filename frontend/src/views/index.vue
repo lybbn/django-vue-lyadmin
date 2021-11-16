@@ -11,10 +11,6 @@
         <div class="container-outer 100vh">
           <el-main class="index-main" v-if="isMultiTabs">
             <mutitabs></mutitabs>
-<!--            <keep-alive>-->
-<!--              <router-view v-if="$route.meta.isActive"></router-view>-->
-<!--            </keep-alive>-->
-<!--            <router-view v-if="!$route.meta.isActive"></router-view>-->
           </el-main>
           <el-main class="index-main" v-else>
             <keep-alive>

@@ -35,7 +35,7 @@ export default {
       var TabsValue = sessionStorage.getItem("TabsValue");
       this.$store.state.TabsValue = TabsValue;
       if (sessionStorage.getItem("tabsPage") === "[]") {
-        this.$router.push({ name: "adminManage" });//默认首页
+        this.$router.push({ name: "adminManage"});//默认首页
       } else {
         this.$router.push({ name: TabsValue });
       }
@@ -83,7 +83,7 @@ export default {
       window.sessionStorage.setItem("TabsValue", activeName);
       // 删除时跳转不在停留被删除页
       if (sessionStorage.getItem("tabsPage") === "[]") {
-        this.$router.push({ name: "adminManage" });
+        this.$router.push({ name: "adminManage"});
       } else {
         this.$router.push({ name: activeName });
       }
@@ -102,5 +102,15 @@ export default {
     border-bottom-color: #fff;
     box-shadow: 0 0 10px #cccccc;
   }
+  /*去除顶部线*/
+  .myeltas2 .el-tabs__header {
+    border: none;
+    margin: 0 0 5px;
+  }
+  .myeltas2 .el-tabs__nav{
+    /*background-color: lightgrey;*/
+    background-color: white;
+  }
+
 
 </style>

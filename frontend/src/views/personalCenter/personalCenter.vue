@@ -1,6 +1,6 @@
 <template>
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="用户设置" name="userInfo">
+      <el-tab-pane label="用户设置" name="userInfo" >
           <el-form ref="userInfoForm" :model="userInfo" :disabled="!isShowBtn('personalCenter','个人中心','Update')"  required-asterisk :rules="userInforules" :label-position="position" center label-width="120px" style="margin: 50px auto">
             <el-form-item prop="name" required label="昵称:">
               <el-input v-model="userInfo.name" clearable style="width: 360px" ></el-input>
@@ -207,6 +207,8 @@
     }
 </script>
 
-<style scoped>
-
+<style>
+  .el-tabs__content{
+    background-color: white;
+  }
 </style>
