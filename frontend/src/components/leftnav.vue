@@ -27,13 +27,14 @@
             v-for="chmenu in menu.children"
             :index="'/'+chmenu.attributes.url"
             :key="chmenu.id"
+            @click="handleOpen2(chmenu)"
           >
             <i class="iconfont" :class="chmenu.attributes.icon"></i>
             <span slot="title">{{chmenu.text}}</span>
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item  v-else :index="'/'+menu.attributes.url" :key="menu.id">
+      <el-menu-item  v-else :index="'/'+menu.attributes.url" :key="menu.id" @click="handleOpen2(menu)">
         <i class="iconfont" :class="menu.attributes.icon"></i>
         <span slot="title">{{menu.text}}</span>
       </el-menu-item>
@@ -46,6 +47,7 @@ import {routerTree} from "@/router/index.js"
 import { uniqueId } from 'lodash'
 import {apiSystemWebRouter} from '@/api/api'
 import XEUtils from 'xe-utils'
+import { mapActions } from "vuex";
 export default {
   name: "leftnav",
   data() {
@@ -139,7 +141,11 @@ export default {
           children: this.supplementPath(e.children)
         } : {}
       }))
-    }
+    },
+    // 调用 注册vuex内注册的editableTabs方法
+    ...mapActions({
+      handleOpen2: "editableTabs",
+    }),
   }
 };
 </script>

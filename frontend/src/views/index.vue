@@ -9,7 +9,14 @@
           <leftnav ></leftnav>
         </el-aside>
         <div class="container-outer 100vh">
-          <el-main class="index-main">
+          <el-main class="index-main" v-if="isMultiTabs">
+            <mutitabs></mutitabs>
+<!--            <keep-alive>-->
+<!--              <router-view v-if="$route.meta.isActive"></router-view>-->
+<!--            </keep-alive>-->
+<!--            <router-view v-if="!$route.meta.isActive"></router-view>-->
+          </el-main>
+          <el-main class="index-main" v-else>
             <keep-alive>
               <router-view v-if="$route.meta.isActive"></router-view>
             </keep-alive>
@@ -21,24 +28,26 @@
   </el-container>
 </template>
 <script>
-  // import {systemVersionNewest,tmallShopGetProductList} from '@/api/api'
   import navcon from '../components/navcon.vue'
   import leftnav from '../components/leftnav.vue'
   import router from "../router";
+  import Mutitabs from "../components/mutitabs";
+
   export default {
     name: 'index',
     data() {
       return {
         showclass: 'asideshow',
         showtype: false,
+        isMultiTabs:this.$store.state.isMultiTabs
       }
     },
     components: {
+      Mutitabs,
       navcon,
       leftnav
     },
     methods:{
-
     },
     created() {
       this.$root.Bus.$on('toggle', value => {

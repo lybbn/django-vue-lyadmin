@@ -10,10 +10,12 @@
     <el-button class="buttonimg">
       <img class="showimg" :src="collapsed?imgsq:imgshow" @click="toggle(collapsed)">
     </el-button>
-    <el-submenu index="2" class="submenu" style="width:auto">
+
+    <el-submenu index="2" class="submenu" style="width:auto;">
       <template slot="title">你好,{{userName}}</template>
       <el-menu-item @click="exit()">退出</el-menu-item>
     </el-submenu>
+
   </el-menu>
 </template>
 <script>
