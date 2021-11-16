@@ -25,7 +25,7 @@
         </div>
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 300px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
+            <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
                 <el-table-column width="80" type="index" align="center" label="序号"></el-table-column>
                 <el-table-column min-width="120" prop="name" label="角色名称"></el-table-column>
                 <el-table-column min-width="120" prop="key" label="权限字符"></el-table-column>
