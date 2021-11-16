@@ -38,3 +38,4 @@ from django.core.management import utils
 utils.get_random_secret_key()
 获取生成的新SECRET_KEY替换原来的老KEY
 ~~~
+2、本项目可使用最新的python版本开发、注意最新django版本安全问题，请及时更新安全稳定版本
