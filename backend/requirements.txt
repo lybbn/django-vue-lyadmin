@@ -58,3 +58,4 @@ user-agents
 xlrd
 xlwt
 zope.interface
+hiredis
