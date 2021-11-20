@@ -57,8 +57,13 @@ class AppMoliePasswordLoginSerializer(TokenObtainPairSerializer):
             data['access'] = str(refresh.access_token)
             result = {
                 "code": 2000,
-                "msg": "请求成功",
-                "data": data
+                "msg": "登录成功",
+                "data": {
+                    "page": 1,
+                    "limit": 1,
+                    "total": 1,
+                    "data": data
+                },
             }
         else:
             result = {
@@ -283,7 +288,7 @@ class APPMobileSMSLoginView(APIView):
                 return ErrorResponse(msg="用户不存在")
 
             resdata = APPMobileSMSLoginSerializer.get_token(user)
-            return SuccessResponse(data=resdata, msg="success")
+            return SuccessResponse(data=resdata, msg="登录成功")
 
 
 #用户忘记密码重置密码
@@ -321,5 +326,6 @@ class ForgetPasswdResetView(APIView):
             if not user:
                 return ErrorResponse(msg="用户不存在")
             # 重置密码
-            user.update(password=make_password(password))
+            user.password = make_password(password)
+            user.save()
             return SuccessResponse(msg="success")

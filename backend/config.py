@@ -90,3 +90,33 @@ WXPAY_APIKEY = '商户平台设置的密钥KEY'
 # 服务器存放证书路径（微信支付签发的）
 WXPAY_CLIENT_CERT_PATH = os.path.join(BASE_DIR, 'key', 'apiclient_cert.pem')
 WXPAY_CLIENT_KEY_PATH = os.path.join(BASE_DIR, 'key', 'apiclient_key.pem')
+
+
+# ================================================= #
+# ************** 支付宝支付APP 配置  ************** #
+# ================================================= #
+"""
+使用OpenSSL生成证书
+1. 生成私钥
+genrsa -out app_private_key.pem 2048
+2. 生成公钥
+rsa -in app_private_key.pem -pubout -out app_public_key.pem
+
+注意 1和2步骤也可以使用支付宝自己得签名工具（支付宝开放平台开发助手）生成签名来完成
+
+3.cat app_public_key.pem 查看公钥的内容
+
+将-----BEGIN PUBLIC KEY-----和-----END PUBLIC KEY-----中间的内容保存在支付宝的用户配置中（沙箱或者正式）
+
+https://openhome.alipay.com/platform/appDaily.htm?tab=info
+
+4.配置好公钥后，支付宝会生成公钥，将公钥的内容复制保存到一个文本文件中(alipay_public_key.pem)，注意需要在文本的首尾添加标记位(-----BEGIN PUBLIC KEY-----和-----END PUBLIC KEY-----) 
+
+5.将刚刚生成的私钥app_private_key.pem和支付宝公钥alipay_public_key.pem放到我们的项目目录中
+"""
+
+ALIPAY_APPID = 'xxxxxxxxxxxxxxxxxx'
+
+# 服务器存放证书路径（支付宝支付签发的）
+ALIPAY_PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'key', 'app_private_key.pem')
+ALIPAY_PUBLIC_KEY_PATH = os.path.join(BASE_DIR, 'key', 'alipay_public_key.pem')
