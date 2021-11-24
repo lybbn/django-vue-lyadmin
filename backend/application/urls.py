@@ -35,6 +35,8 @@ from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobi
 from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView
 from apps.lymessages.views import UserMessagesView
 from apps.platformsettings.views import GetOtherManageDetailView,GetLunboManageListView
+#媒体文件流式响应
+from utils.streamingmedia_response import streamingmedia_serve
 #部署vue
 from django.views.generic import TemplateView
 
@@ -55,7 +57,8 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('static/<path:path>', serve, {'document_root': settings.STATIC_ROOT},),  # 处理静态文件
-    path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT},),  # 处理媒体文件
+    # path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT},),  # 处理媒体文件
+    path('media/<path:path>', streamingmedia_serve, {'document_root': settings.MEDIA_ROOT}, ),  # 处理媒体文件
     # path('admin/', admin.site.urls),
     #api文档地址(正式上线需要注释掉)
     re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),

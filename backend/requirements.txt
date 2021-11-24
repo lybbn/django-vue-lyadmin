@@ -60,3 +60,4 @@ xlwt
 zope.interface
 hiredis
 python-alipay-sdk
+pycryptodomex
