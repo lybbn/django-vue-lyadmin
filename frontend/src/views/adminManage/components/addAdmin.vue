@@ -125,6 +125,9 @@
                         if(typeof  param.dept == 'object') {
                             param.dept=param.dept[param.dept.length-1]
                         }
+                        if(this.formData.nickname=="" || this.formData.nickname== undefined || this.formData.nickname.length<=0 || this.formData.nickname=='""'){
+                            param.nickname = this.formData.name
+                        }
                         if(this.formData.id){
                             apiSystemUserEdit(param).then(res=>{
                                 this.loadingSave=false

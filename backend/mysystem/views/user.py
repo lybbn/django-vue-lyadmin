@@ -95,7 +95,7 @@ class UserViewSet(CustomModelViewSet):
     """
     后台管理员用户接口:
     """
-    queryset = Users.objects.exclude(is_superuser=1).filter(role__admin=1)#排除超级管理员和普通用户
+    queryset = Users.objects.exclude(is_superuser=1).filter(role__isnull=False).filter(is_staff=True)#排除超级管理员和前端用户
     serializer_class = UserSerializer
     create_serializer_class = UserCreateSerializer
     update_serializer_class = UserUpdateSerializer
