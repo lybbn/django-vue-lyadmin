@@ -42,6 +42,51 @@ def alipay_trade_app(out_trade_no,total_amount,notify_url):
     pay_url = order_string
     return pay_url
 
+
+#支付宝回调实例
+
+# class alipay_notify(APIView):
+#     """
+#     支付成功后，支付宝服务器异步通知回调（用于修改订单状态）
+#     返回fail之后，支付宝会再回调一次，也就是失败的回调一共回调2次
+#     """
+#     def post(self,request):
+#         # 1. 先将sign剔除掉
+#         processed_dict = {}
+#         for key, value in request.POST.items():
+#             processed_dict[key] = value
+#         # 异步通知data参数转换字典后示例如下：
+#         """
+#         {'gmt_create': '2021-11-22 08:53:05', 'charset': 'utf-8', 'seller_email': 'xxx@126.com', 'subject': '20211122085257269506402001', 'sign': 'dAUOnG1u8/Fap+aDCSa+P2AXFv4vqr3BK4vKTxevai4F3sdN4X6an8GulmKjk3cx1Z9OMp05JAcBCPi+1CXJoy6opybYqr+M/uDUiAYH+MA4ilazSskS/WC22iZhS4oAVjwouGp+Wbu6pmNMM/gFNCxnlf3K+bCa/gzDDPTCTEoZT3IoeQdZ4ERmuNi7WdCCIm8jNaS8nRXS8bEkk7r7PvYs1kO3H9uZhViSKmlx+Qfklm+mRa1xheNd2UJ1pYcVGK4snlUJL4tKO/VEzPb2trFxYfI3y4q2EPBPCHcI24L1IZeZXrugx6mFJm02SntCrTA+/ysb7e59zoNrBmu+gQ==', 'buyer_id': '2088312606228550', 'invoice_amount': '0.01', 'notify_id': '2021112200222085305028551438751992', 'fund_bill_list': '[{"amount":"0.01","fundChannel":"PCREDIT"}]', 'notify_type': 'trade_status_sync', 'trade_status': 'TRADE_SUCCESS', 'receipt_amount': '0.01', 'app_id': '2021002194665673', 'buyer_pay_amount': '0.01', 'sign_type': 'RSA2', 'seller_id': '2088341077382474', 'gmt_payment': '2021-11-22 08:53:05', 'notify_time': '2021-11-22 08:56:13', 'version': '1.0', 'out_trade_no': '20211122085257269506402001', 'total_amount': '0.01', 'trade_no': '2021112222001428551424684280', 'auth_app_id': '2021002194665673', 'buyer_logon_id': '159****7057', 'point_amount': '0.00'}
+#         """
+#         logger.error("收到支付宝回调通知:%s" % (processed_dict))
+#         sign = processed_dict.pop("sign", None)
+#         # 2. 生成一个Alipay对象
+#         alipay = initalipay()
+#         # 3. 进行验签，确保这是支付宝给我们的
+#         verify_re = alipay.verify(processed_dict, sign)
+#         # 如果验签成功
+#         if verify_re is True:
+#             order_sn = processed_dict.get('out_trade_no', None)#自己平台的订单号
+#             trade_no = processed_dict.get('trade_no', None)#支付宝的订单号
+#             trade_status = processed_dict.get('trade_status', None)
+#             if trade_status == "TRADE_SUCCESS":#支付成功
+#                 # 查询数据库中存在的订单
+#                 order = BuyVipRecord.objects.filter(orderno=order_sn,status=False).first()
+#                 if not order:
+#                     return HttpResponse('fail')
+#                 order.tradeno = trade_no
+#                 order.status = True
+#                 order.save()
+#                 #其他逻辑处理
+#                 orderpaysuccess(order.id)
+#                 return HttpResponse('success')
+#             else:
+#                 return HttpResponse('fail')
+#         else:
+#             return HttpResponse('fail')
+
+
 ## 测试代码
 # if __name__ == '__main__':
 #     alipay_trade_app('123123',50,None)

@@ -85,12 +85,16 @@ python无法使用双向证书，使用openssl导出：(从微信下载的证书
 # 微信支付相关
 WXPAY_APPID = 'xxxxxxxxxxxxxxxx'#'微信分配的公众账号ID'\申请商户号的appid或商户号绑定的appid
 WXPAY_MCHID = 'xxxxxxxxxxxx'#'商户号'
-WXPAY_APIKEY = '商户平台设置的密钥KEY'
+WXPAY_APIKEY_V1 = '商户平台设置的密钥KEY'#v1
+WXPAY_APIKEY = 'C1098Dxxxxxxxxx0978A8F4B291C1'#v3
+WXPAY_SERIAL_NO = "7367035E134xxxxxxxxxFED20C5071E83341"#商户号证书序列号，登录商户平台【API安全】->【API证书】->【查看证书】，可查看商户API证书序列号
 
 # 服务器存放证书路径（微信支付签发的）
 WXPAY_CLIENT_CERT_PATH = os.path.join(BASE_DIR, 'key', 'apiclient_cert.pem')
 WXPAY_CLIENT_KEY_PATH = os.path.join(BASE_DIR, 'key', 'apiclient_key.pem')
 
+WXPAY_CERT_DIR = os.path.join(BASE_DIR, 'key')#微信支付证书缓存路径
+WXPAY_CERT_DIR_RESPONSE = os.path.join(WXPAY_CERT_DIR, 'wechatpay_response_key')#微信支付证书缓存路径
 
 # ================================================= #
 # ************** 支付宝支付APP 配置  ************** #
