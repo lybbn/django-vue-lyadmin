@@ -9,7 +9,7 @@ import traceback
 from django.db.models import ProtectedError
 from django.db.utils import DatabaseError
 from rest_framework import exceptions
-from rest_framework.exceptions import APIException as DRFAPIException, AuthenticationFailed,NotAuthenticated
+from rest_framework.exceptions import APIException as DRFAPIException, AuthenticationFailed,NotAuthenticated,ValidationError
 from rest_framework.views import set_rollback
 
 from utils.jsonResponse import ErrorResponse
@@ -35,6 +35,11 @@ def CustomExceptionHandler(ex, context):
     elif isinstance(ex, NotAuthenticated):
         code = 4001
         msg = ex.detail
+    elif isinstance(ex, exceptions.ValidationError):
+        msg = ex.detail
+        errorMsg = msg
+        for key in errorMsg:
+            msg = errorMsg[key][0]
     elif isinstance(ex, DRFAPIException):
         set_rollback()
         msg = str(ex.detail)
@@ -54,6 +59,7 @@ def CustomExceptionHandler(ex, context):
     # errorMsg = msg
     # for key in errorMsg:
     #     msg = errorMsg[key][0]
+    # print(traceback.format_exc())
     return ErrorResponse(msg=msg, code=code)
 
 
