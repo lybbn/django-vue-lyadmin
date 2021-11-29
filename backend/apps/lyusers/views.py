@@ -117,3 +117,7 @@ class ChangeAvatarView(APIView):
             return SuccessResponse(data=result['img'],msg=result['msg'])
         else:
             return ErrorResponse(msg=result['msg'])
+
+#前端APP下载页面
+def downloadapp(request):
+    return render(request,"download-app/index.html")

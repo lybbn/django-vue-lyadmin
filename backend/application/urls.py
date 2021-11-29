@@ -35,6 +35,9 @@ from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobi
 from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView
 from apps.lymessages.views import UserMessagesView
 from apps.platformsettings.views import GetOtherManageDetailView,GetLunboManageListView
+
+#app下载页
+from apps.lyusers.views import downloadapp
 #媒体文件流式响应
 from utils.streamingmedia_response import streamingmedia_serve
 #部署vue
@@ -100,6 +103,7 @@ urlpatterns = [
     path('api/getaddressaccuracy/', GetAddressAccuracyView.as_view(), name='后台根据详细地址获取经纬度'),
 
     #集成部署后端管理页面
+    path('downloadapp/',downloadapp ,name='前端APP下载页'),
     path('favicon.ico',RedirectView.as_view(url=r'static/favicon.ico')),
     path('', TemplateView.as_view(template_name="index.html"),name='后台管理默认页面'),
 ]
