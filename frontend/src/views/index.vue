@@ -73,7 +73,7 @@
 
   .aside {
     width: 64px !important;
-    background-color: #304156;
+    background-color: #3C444D;
     margin: 0px;
     border-right: 1px solid #eeeeee;
     height: calc(100vh - 60px);
@@ -82,7 +82,7 @@
   .asideshow {
     width: 185px !important;
     height: calc(100vh - 60px);
-    background-color: #304156;
+    background-color: #3C444D;
     margin: 0px;
     border-right: 1px solid #eeeeee;
   }

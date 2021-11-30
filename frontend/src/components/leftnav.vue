@@ -2,6 +2,8 @@
 * 左边菜单
 */
 <template>
+<!--  background-color="#304156"-->
+<!--    active-background-color="#304156"-->
   <el-menu
     :default-active="$route.meta.index"
     :collapse="collapsed"
@@ -9,8 +11,8 @@
     router
     unique-opened
     class="el-menu-vertical-demo"
-    background-color="#304156"
-    active-background-color="#304156"
+    background-color="#3C444D"
+    active-background-color="#3C444D"
     text-color="#ffffff"
     active-text-color="#247af3">
     <div v-if="menuTitle" class="menu-nav-title">
@@ -183,7 +185,7 @@ export default {
   padding: 0px;
 }
 .el-menu-item.is-active {
-  background: #304156 !important;
+  background: #3C444D !important;
   position: relative;
   &:before{
     width: 2px;

@@ -2,7 +2,7 @@
 * 头部菜单
 */
 <template>
-  <el-menu class="el-menu-demo" mode="horizontal" background-color="#304156" text-color="#ffffff" active-text-color="#334157">
+  <el-menu class="el-menu-demo" mode="horizontal" background-color="#3C444D" text-color="#ffffff" active-text-color="#334157">
 
     <div class="logobox" :style="collapsed ? 'width:160px' : 'width:64px;margin-left:0'">
       <img class="logoimg" src="../assets/img/logo.png" alt="">
