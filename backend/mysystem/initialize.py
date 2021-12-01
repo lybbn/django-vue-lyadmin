@@ -306,7 +306,6 @@ if object.{key}:
             {"id": "7210a59d19fe406bbd237510344334bf",
              "msg_chanel": 2,
              "public": 1,
-             "sort": 1,
              "msg_title":"测试消息",
              "msg_content": "<p>消息内容实体部分</p>",
              "to_path": "/index/path",
