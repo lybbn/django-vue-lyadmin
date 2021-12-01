@@ -38,7 +38,7 @@
         </div>
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
+            <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
                 <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
                 <!--<el-table-column min-width="150" prop="id" label="管理员编号" show-overflow-tooltip></el-table-column>-->
                 <el-table-column min-width="120" prop="name" label="管理员名称"></el-table-column>
@@ -168,6 +168,20 @@
         },
         created() {
             this.getData()
+        },
+        //解决table 表格缩放错位问题
+        handleResize() {
+            this.$nextTick(()=> {
+                this.$refs.tableref.doLayout();
+            });
+        },
+        mounted() {
+            //解决table 表格缩放错位问题
+            window.addEventListener('resize', this.handleResize);
+        },
+        destroyed() {
+            //解决table 表格缩放错位问题
+             window.removeEventListener("resize", this.handleResize);
         },
         timers(val){
             if (val) {

@@ -11,6 +11,7 @@
             border
             row-key="id"
             :data="tableData"
+            ref="tableref"
             v-loading="loadingPage"
             style="width: 100%">
             <el-table-column type="index" width="55" align="center" label="序号"></el-table-column>
@@ -53,6 +54,20 @@
         },
         created() {
             this.getData()
+        },
+        //解决table 表格缩放错位问题
+        handleResize() {
+            this.$nextTick(()=> {
+                this.$refs.tableref.doLayout();
+            });
+        },
+        mounted() {
+            //解决table 表格缩放错位问题
+            window.addEventListener('resize', this.handleResize);
+        },
+        destroyed() {
+            //解决table 表格缩放错位问题
+             window.removeEventListener("resize", this.handleResize);
         },
         methods: {
             handleEdit(row, flag, menu) {

@@ -23,7 +23,7 @@
 <!--        </div>-->
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
+            <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
                 <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
 <!--                <el-table-column type="selection" width="55" align="center"></el-table-column>-->
                 <el-table-column min-width="100" prop="user" label="用户"></el-table-column>
@@ -178,6 +178,20 @@
                 this.formInline.endAt = ''
             }
             this.getData()
+        },
+        //解决table 表格缩放错位问题
+        handleResize() {
+            this.$nextTick(()=> {
+                this.$refs.tableref.doLayout();
+            });
+        },
+        mounted() {
+            //解决table 表格缩放错位问题
+            window.addEventListener('resize', this.handleResize);
+        },
+        destroyed() {
+            //解决table 表格缩放错位问题
+             window.removeEventListener("resize", this.handleResize);
         },
     }
 </script>

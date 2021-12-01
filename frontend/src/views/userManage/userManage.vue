@@ -25,7 +25,7 @@
         </div>
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
+            <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
                 <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
                 <el-table-column min-width="70" prop="avatar" label="用户头像">
                     <template slot-scope="scope">
@@ -182,7 +182,19 @@
         created() {
             this.getData()
         },
+        //解决table 表格缩放错位问题
+        handleResize() {
+            this.$nextTick(()=> {
+                this.$refs.tableref.doLayout();
+            });
+        },
         mounted() {
+            //解决table 表格缩放错位问题
+            window.addEventListener('resize', this.handleResize);
+        },
+        destroyed() {
+            //解决table 表格缩放错位问题
+             window.removeEventListener("resize", this.handleResize);
         },
         timers(val){
             if (val) {

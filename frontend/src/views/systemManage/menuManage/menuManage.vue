@@ -50,6 +50,7 @@
                 border
                 row-key="id"
                 :data="tableData"
+                ref="tableref"
                 v-loading="loadingPage"
                 style="width: 100%"
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
@@ -182,6 +183,20 @@
         },
         created() {
             this.getData()
+        },
+        //解决table 表格缩放错位问题
+        handleResize() {
+            this.$nextTick(()=> {
+                this.$refs.tableref.doLayout();
+            });
+        },
+        mounted() {
+            //解决table 表格缩放错位问题
+            window.addEventListener('resize', this.handleResize);
+        },
+        destroyed() {
+            //解决table 表格缩放错位问题
+             window.removeEventListener("resize", this.handleResize);
         },
     }
 </script>
