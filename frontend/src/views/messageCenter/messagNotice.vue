@@ -21,7 +21,7 @@
                 <el-form-item label=""><el-button size="small" @click="addModule" type="primary" v-show="isShowBtn('messagNotice','平台公告','Create')">新增</el-button></el-form-item>
             </el-form>
         </div>
-        <el-table size="small" height="calc(100vh - 160px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
+        <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
             <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
             <el-table-column min-width="90" prop="msg_title" label="公告标题"></el-table-column>
             <el-table-column min-width="120" prop="to_path" label="跳转路径"></el-table-column>
