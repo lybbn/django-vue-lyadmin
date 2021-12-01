@@ -6,10 +6,10 @@
         <el-input type="text" prefix-icon="el-icon-user" v-model.trim="ruleForm.username" auto-complete="off" placeholder="账号" maxlength="60"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input type="password" prefix-icon="el-icon-lock" v-model.trim="ruleForm.password" auto-complete="off" placeholder="密码" @keydown.native.enter="submitForm('ruleForm')" maxlength="60"></el-input>
+        <el-input type="password" prefix-icon="el-icon-lock" v-model.trim="ruleForm.password" auto-complete="off" placeholder="密码" maxlength="60"></el-input>
       </el-form-item>
       <el-form-item prop="captcha">
-        <el-input type="text" prefix-icon="el-icon-paperclip"  v-model.trim="ruleForm.captcha" auto-complete="off" placeholder="验证码">
+        <el-input type="text" prefix-icon="el-icon-paperclip"  v-model.trim="ruleForm.captcha" auto-complete="off" @keydown.native.enter="submitForm('ruleForm')"  placeholder="验证码">
                     <template slot="append">
                       <img class="login-code" :src="image_base" @click="getCaptcha"/>
                     </template>
@@ -187,7 +187,7 @@
               }
             })
           } else {
-            this.$message.error('请输入用户名密码！')
+            this.$message.error('请输入用户名密码/验证码！')
             return false
           }
         })
