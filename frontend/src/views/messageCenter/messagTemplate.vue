@@ -55,7 +55,7 @@
     import addModule from "./components/addModuleTemplate";
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
-    import {RetrieveMessagetemplate,RetrieveMessagetemplateDelete} from '@/api/api'
+    import {messagesMessagetemplate,messagesMessagetemplateDelete} from '@/api/api'
     export default {
         components:{
             Pagination,
@@ -97,7 +97,7 @@
                     vm.$confirm('您确定要删除选中的内容？',{
                         closeOnClickModal:false
                     }).then(res=>{
-                        RetrieveMessagetemplateDelete({id:row.id}).then(res=>{
+                        messagesMessagetemplateDelete({id:row.id}).then(res=>{
                             if(res.code == 2000) {
                                 vm.$message.success(res.msg)
                                 vm.search()
@@ -124,7 +124,7 @@
             //获取列表
             async getData(){
                 this.loadingPage = true
-                 RetrieveMessagetemplate(this.formInline).then(res => {
+                 messagesMessagetemplate(this.formInline).then(res => {
                      this.loadingPage = false
                      if(res.code ==2000) {
                          this.tableData = res.data.data

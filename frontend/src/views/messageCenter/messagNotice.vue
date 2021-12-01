@@ -18,7 +18,7 @@
                 <!--                    </el-date-picker>-->
                 <!--                </el-form-item>-->
                 <!--                v-show="isShowBtn('withdrawalStatisticsUser','分销设置','Create')"-->
-                <el-form-item label=""><el-button size="small" @click="addModule" type="primary">新增</el-button></el-form-item>
+                <el-form-item label=""><el-button size="small" @click="addModule" type="primary" v-show="isShowBtn('messagNotice','平台公告','Create')">新增</el-button></el-form-item>
             </el-form>
         </div>
         <el-table size="small" height="calc(100vh - 160px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
@@ -42,8 +42,8 @@
             <el-table-column label="操作" fixed="right" width="180">
                 <template slot-scope="scope">
                     <!--                        v-show="isShowBtn('dynamicsInfo','资讯动态','Update')"-->
-                    <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('messagNotice','消息公告','Update')">编辑</span>
-                    <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('messagNotice','消息公告','Delete')">删除</span>
+                    <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('messagNotice','平台公告','Update')">编辑</span>
+                    <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('messagNotice','平台公告','Delete')">删除</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -55,7 +55,7 @@
     import addModule from "./components/addModuleNotice";
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
-    import {RetrieveMessagenotice,RetrieveMessagenoticeDelete} from '@/api/api'
+    import {messagesMessagenotice,messagesMessagenoticeDelete} from '@/api/api'
     export default {
         components:{
             Pagination,
@@ -97,7 +97,7 @@
                     vm.$confirm('您确定要删除选中的内容？',{
                         closeOnClickModal:false
                     }).then(res=>{
-                        RetrieveMessagenoticeDelete({id:row.id}).then(res=>{
+                        messagesMessagenoticeDelete({id:row.id}).then(res=>{
                             if(res.code == 2000) {
                                 vm.$message.success(res.msg)
                                 vm.search()
@@ -124,7 +124,7 @@
             //获取列表
             async getData(){
                 this.loadingPage = true
-                 RetrieveMessagenotice(this.formInline).then(res => {
+                 messagesMessagenotice(this.formInline).then(res => {
                      this.loadingPage = false
                      if(res.code ==2000) {
                          this.tableData = res.data.data

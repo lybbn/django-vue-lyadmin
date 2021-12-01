@@ -9,6 +9,7 @@ django.setup()
 
 from mysystem.models import Dept, Button, Menu, MenuButton, Role, Users
 from apps.platformsettings.models import LunbotuManage,OtherManage
+from apps.lymessages.models import MyMessage
 
 
 class Initialize:
@@ -87,7 +88,8 @@ if object.{key}:
             {'id': '244b28685cd14a39a383189981510d4a', 'name': '用户管理', 'sort': 5, 'web_path': 'userManage','icon': 'el-icon-user', 'parent_id': None, 'component': None, 'component_name': None, 'visible': 1,'isautopm': 0},
             {'id': 'd4e2fe169a8b40f3846421ac04e4fccb', 'name': '平台设置', 'sort': 9, 'web_path': '','icon': 'el-icon-s-platform', 'parent_id': None, 'component': None, 'component_name': None, 'visible': 1,'isautopm': 0},
             {'id': 'ae5629946df4497cbec10419e8375dd9', 'name': '轮播图设置', 'sort': 1, 'web_path': 'carouselSettingsimg','icon': '', 'parent_id': 'd4e2fe169a8b40f3846421ac04e4fccb', 'component': None,'component_name': None, 'visible': 1, 'isautopm': 0},
-            {'id': '80a340eae92b430abe17635468c2df1d', 'name': '其他设置', 'sort': 2, 'web_path': 'platformSettingsother','icon': '', 'parent_id': 'd4e2fe169a8b40f3846421ac04e4fccb', 'component': None, 'component_name': None,'visible': 1, 'isautopm': 0},
+            {'id': '3171db16eda048ae92b16536fc1241b6', 'name': '平台公告', 'sort': 5, 'web_path': 'messagNotice','icon': '', 'parent_id': 'd4e2fe169a8b40f3846421ac04e4fccb', 'component': None, 'component_name': None,'visible': 1, 'isautopm': 0},
+            {'id': '80a340eae92b430abe17635468c2df1d', 'name': '其他设置', 'sort': 12, 'web_path': 'platformSettingsother','icon': '', 'parent_id': 'd4e2fe169a8b40f3846421ac04e4fccb', 'component': None, 'component_name': None,'visible': 1, 'isautopm': 0},
             {'id': '4236eb70-1558-43a0-9cf2-037230c547f9', 'name': '部门管理', 'sort': 1, 'web_path': 'departmentManage','icon': 'university', 'parent_id': '54f769b0-3dff-416c-8102-e55ec44827cc', 'component': 'system/dept', 'component_name': 'dept', 'visible': 1,'isautopm':0},
             {'id': '4ba07859-8b73-4524-a1a6-bbff36d98337', 'name': '操作日志', 'sort': 1, 'web_path': 'journalManage','icon': 'gears', 'parent_id': 'c236fb6b-ddaa-4deb-b79b-16e42d9f347f', 'component': 'system/log/operationLog', 'component_name': 'operationLog', 'visible': 1,'isautopm':0},
             {'id': '56c3f341-4f46-4b04-9cfc-c8a14701707e', 'name': '菜单管理', 'sort': 2, 'web_path': 'menuManage','icon': 'reorder', 'parent_id': '54f769b0-3dff-416c-8102-e55ec44827cc', 'component': 'system/menu','component_name': 'menu', 'visible': 1,'isautopm':0},
@@ -130,6 +132,8 @@ if object.{key}:
              'name': '编辑', 'value': 'Update', 'api': '/api/system/user/user_info/', 'method': 2},
             {'id': 'e6b93920-2236-46ec-841b-cff6f63ce788', 'menu_id': '4ba07859-8b73-4524-a1a6-bbff36d98337',
              'name': '编辑', 'value': 'Update', 'api': '/api/system/operation_log/{id}/', 'method': 2},
+            {'id': 'ca69833045ed4cf78c8586f7e55ba6db', 'menu_id': '3171db16eda048ae92b16536fc1241b6',
+             'name': '编辑', 'value': 'Update', 'api': '/api/messages/messagenotice/{id}/', 'method': 2},
             {'id': '59db5099a03f44c8adb883faa340c15a', 'menu_id': 'ae5629946df4497cbec10419e8375dd9',
              'name': '查询', 'value': 'Search', 'api': '/api/platformsettings/lunboimg/', 'method': 0},
             {'id': '80efc041695a42e4a9a04c010c6c7004', 'menu_id': '80a340eae92b430abe17635468c2df1d',
@@ -152,6 +156,8 @@ if object.{key}:
              'name': '查询', 'value': 'Search', 'api': '/api/system/dept/', 'method': 0},
             {'id': 'af60d628-73b1-4c5d-b34e-7c70ab9bd87e', 'menu_id': '151035da-77a3-4a62-b474-fce6824571fb',
              'name': '查询', 'value': 'Search', 'api': '/api/system/button/', 'method': 0},
+            {'id': 'd1b3c15f0c664857aeca1d9065d9c499', 'menu_id': '3171db16eda048ae92b16536fc1241b6',
+             'name': '查询', 'value': 'Search', 'api': '/api/messages/messagenotice/', 'method': 0},
             {'id': '7aef1da4647844e3944a2745cef1bc6d', 'menu_id': 'ae5629946df4497cbec10419e8375dd9',
              'name': '新增', 'value': 'Create', 'api': '/api/platformsettings/lunboimg/', 'method': 1},
             {'id': '77096cd56a6441699345e6e4f22d0ec3', 'menu_id': '80a340eae92b430abe17635468c2df1d',
@@ -172,6 +178,8 @@ if object.{key}:
              'name': '新增', 'value': 'Create', 'api': '/api/system/menu/', 'method': 1},
             {'id': 'fc71b446-fde1-439f-ab41-c38f30230caa', 'menu_id': 'e0f53902-e901-490c-83f3-331e60b97fcf',
              'name': '新增', 'value': 'Create', 'api': '/api/system/menu_button/', 'method': 1},
+            {'id': 'd2e0608b5b4941ef8c3ff834977caeef', 'menu_id': '3171db16eda048ae92b16536fc1241b6',
+             'name': '新增', 'value': 'Create', 'api': '/api/messages/messagenotice/', 'method': 1},
             {'id': 'a3088120763d49ad93498eb515c7c244', 'menu_id': 'ae5629946df4497cbec10419e8375dd9',
              'name': '单例', 'value': 'Retrieve', 'api': '/api/platformsettings/lunboimg/{id}/', 'method': 0},
             {'id': '1d4441fdc418499f856c23aa4e1be2c0', 'menu_id': '80a340eae92b430abe17635468c2df1d',
@@ -192,6 +200,8 @@ if object.{key}:
              'name': '单例', 'value': 'Retrieve', 'api': '/api/system/menu/{id}/', 'method': 0},
             {'id': 'fe96f32c-6124-4b24-b809-4964186f5163', 'menu_id': 'e0f53902-e901-490c-83f3-331e60b97fcf',
              'name': '单例', 'value': 'Retrieve', 'api': '/api/system/menu_button/{id}/', 'method': 0},
+            {'id': '6b88361b326a4e55a8a5135c08ba66f1', 'menu_id': '3171db16eda048ae92b16536fc1241b6',
+             'name': '单例', 'value': 'Retrieve', 'api': '/api/messages/messagenotice/{id}/', 'method': 0},
             {'id': '0088e172566f4ee388092ec2be3584ee', 'menu_id': 'ae5629946df4497cbec10419e8375dd9',
              'name': '删除', 'value': 'Delete', 'api': '/api/platformsettings/lunboimg/{id}/', 'method': 3},
             {'id': '264cc3d69f7a46d5a117997e9c78506c', 'menu_id': '80a340eae92b430abe17635468c2df1d',
@@ -212,6 +222,8 @@ if object.{key}:
              'name': '删除', 'value': 'Delete', 'api': '/api/system/dept/{id}/', 'method': 3},
             {'id': 'bb7de9ee-5fd1-46f5-9849-088c522f49c7', 'menu_id': '244b28685cd14a39a383189981510d4a',
              'name': '删除', 'value': 'Delete', 'api': '/api/users/users/{id}/', 'method': 3},
+            {'id': 'c8eee7f68c1845169b8d2af946502077', 'menu_id': '3171db16eda048ae92b16536fc1241b6',
+             'name': '删除', 'value': 'Delete', 'api': '/api/messages/messagenotice/{id}/', 'method': 3},
             {'id': '1a0c96cf-09a6-43b4-b08a-0c5b6e2f7bb8', 'menu_id': 'a607e820-36e5-45c0-aabf-85a8e4e2c7ac',
              'name': '保存', 'value': 'Retrieve', 'api': '/api/system/role/{id}/', 'method': 2},
             {'id': '353595a28cb1463b830cfbf79fea60b5', 'menu_id': '244b28685cd14a39a383189981510d4a',
@@ -286,6 +298,23 @@ if object.{key}:
         ]
         self.save(LunbotuManage, data, "轮播图设置")
 
+    def init_platformsettings_message(self):
+        """
+        初始化平台公告
+        """
+        data = [
+            {"id": "7210a59d19fe406bbd237510344334bf",
+             "msg_chanel": 2,
+             "public": 1,
+             "sort": 1,
+             "msg_title":"测试消息",
+             "msg_content": "<p>消息内容实体部分</p>",
+             "to_path": "/index/path",
+             "status": 1,
+             },
+        ]
+        self.save(MyMessage, data, "平台公告")
+
     def init_platformsettings_other(self):
         """
         初始化其他设置
@@ -316,6 +345,7 @@ if object.{key}:
         self.init_role()
         self.init_users()
         self.init_platformsettings_lunbo()
+        self.init_platformsettings_message()
         self.init_platformsettings_other()
 
 

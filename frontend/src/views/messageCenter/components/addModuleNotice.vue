@@ -41,7 +41,7 @@
     import 'quill/dist/quill.snow.css'
     import 'quill/dist/quill.bubble.css'
     import quillConfig from '@/utils/quill-config.js'
-    import {RetrieveMessagenoticeAdd,RetrieveMessagenoticeEdit} from "@/api/api";
+    import {messagesMessagenoticeAdd,messagesMessagenoticeEdit} from "@/api/api";
     export default {
         name: "addModuleNotice",
         data() {
@@ -90,7 +90,7 @@
                             ...this.formData
                         }
                         if(this.formData.id){
-                            RetrieveMessagenoticeEdit(param).then(res=>{
+                            messagesMessagenoticeEdit(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)
@@ -101,7 +101,7 @@
                                 }
                             })
                         }else{
-                            RetrieveMessagenoticeAdd(param).then(res=>{
+                            messagesMessagenoticeAdd(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)

@@ -42,7 +42,7 @@
     import 'quill/dist/quill.snow.css'
     import 'quill/dist/quill.bubble.css'
     import quillConfig from '@/utils/quill-config.js'
-    import {RetrieveMessagetemplateAdd,RetrieveMessagetemplateEdit} from "@/api/api";
+    import {messagesMessagetemplateAdd,messagesMessagetemplateEdit} from "@/api/api";
     export default {
         name: "addModuleTemplate",
         data() {
@@ -92,7 +92,7 @@
                             ...this.formData
                         }
                         if(this.formData.id){
-                            RetrieveMessagetemplateEdit(param).then(res=>{
+                            messagesMessagetemplateEdit(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)
@@ -103,7 +103,7 @@
                                 }
                             })
                         }else{
-                            RetrieveMessagetemplateAdd(param).then(res=>{
+                            messagesMessagetemplateAdd(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)

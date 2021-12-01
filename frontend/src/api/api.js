@@ -99,22 +99,22 @@ export const systemUserChangePassword= params => ajaxPut({url: `system/user/chan
  *消息中心
  * */
 //消息模板
-export const RetrieveMessagetemplate = params => ajaxGet({url: `retrieve/messagetemplate/`,params})
+export const messagesMessagetemplate = params => ajaxGet({url: `messages/messagetemplate/`,params})
 //消息模板-新增
-export const RetrieveMessagetemplateAdd = params => ajaxPost({url: `retrieve/messagetemplate/`,params})
+export const messagesMessagetemplateAdd = params => ajaxPost({url: `messages/messagetemplate/`,params})
 //消息模板-修改
-export const RetrieveMessagetemplateEdit = params => ajaxPut({url: `retrieve/messagetemplate/`,params})
+export const messagesMessagetemplateEdit = params => ajaxPut({url: `messages/messagetemplate/`,params})
 //消息模板-删除
-export const RetrieveMessagetemplateDelete = params => ajaxDelete({url: `retrieve/messagetemplate/`,params})
+export const messagesMessagetemplateDelete = params => ajaxDelete({url: `messages/messagetemplate/`,params})
 
-//消息模板
-export const RetrieveMessagenotice = params => ajaxGet({url: `retrieve/messagenotice/`,params})
-//消息模板-新增
-export const RetrieveMessagenoticeAdd = params => ajaxPost({url: `retrieve/messagenotice/`,params})
-//消息模板-修改
-export const RetrieveMessagenoticeEdit = params => ajaxPut({url: `retrieve/messagenotice/`,params})
-//消息模板-删除
-export const RetrieveMessagenoticeDelete = params => ajaxDelete({url: `retrieve/messagenotice/`,params})
+//消息公告
+export const messagesMessagenotice = params => ajaxGet({url: `messages/messagenotice/`,params})
+//消息公告-新增
+export const messagesMessagenoticeAdd = params => ajaxPost({url: `messages/messagenotice/`,params})
+//消息公告-修改
+export const messagesMessagenoticeEdit = params => ajaxPut({url: `messages/messagenotice/`,params})
+//消息公告-删除
+export const messagesMessagenoticeDelete = params => ajaxDelete({url: `messages/messagenotice/`,params})
 
 
 
