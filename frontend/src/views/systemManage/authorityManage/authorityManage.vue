@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <div class="auth-outer">
-            <div class="auth-item">
+    <div class="auth-outer">
+        <div>
+            <div class="auth-item" style="min-width: 300px;height: 300px">
                 <div class="auth-item-header">
                     <el-tag style="font-size: 13px">当前选择:{{ roleObj.name ? roleObj.name : "无" }}</el-tag>
                     <el-button type="primary"  @click="submitPermisson" size="small">保存</el-button>
@@ -19,7 +19,7 @@
                 >
                 </el-tree>
             </div>
-            <div class="auth-item">
+            <div class="auth-item" style="height: calc(100vh - 400px);">
                 <div class="auth-title">
                     数据授权：
                     <el-tooltip
@@ -55,19 +55,19 @@
                 ></el-tree>
 
             </div>
-
-            <div class="auth-item" >
-                <div class="auth-title">
-                    菜单授权：
-                    <el-tooltip
-                        class="item"
-                        effect="dark"
-                        content="授权用户在菜单中可操作的范围"
-                        placement="right">
-                        <el-icon class="el-icon-question"></el-icon>
-                    </el-tooltip>
-                </div>
-
+        </div>
+        <div class="auth-item" style="height: calc(100vh - 100px);">
+            <div class="auth-title">
+                菜单授权：
+                <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="授权用户在菜单中可操作的范围"
+                    placement="right">
+                    <el-icon class="el-icon-question"></el-icon>
+                </el-tooltip>
+            </div>
+            <div style="margin: 20px">
                 <el-tree
                     ref="menuTree"
                     :data="menuOptions"
@@ -312,14 +312,13 @@
     }
     .auth-outer{
         display: flex;
-        column-gap: 20px;
+        column-gap: 10px;
         .auth-item{
             flex: 1;
-            height: calc(100vh - 100px);
             background: #ffffff;
-            &:last-child{
-                flex: 2;
-            }
+            /*&:last-child{*/
+            /*    flex: 2;*/
+            /*}*/
             .auth-item-header{
                 background: #f1f1f1;
                 padding: 6.5px 15px;
