@@ -31,7 +31,7 @@ from utils.swagger import CustomOpenAPISchemaGenerator
 #前端接口view
 from apps.oauth.views import WeChatXCXLoginAPIView,XCXWeChatUserInfoUpdateAPIView,WeChatXCXMobileLoginAPIView,WeChatGZHLoginAPIView,WeChatGZHBindAPIView,GetXCXShareQrcodeView
 from apps.address.views import ProvinceAreasView,SubAreasView,GetAddressAccuracyView
-from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobileSMSLoginView,ForgetPasswdResetView
+from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobileSMSLoginView,ForgetPasswdResetView,RegisterView
 from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView
 from apps.lymessages.views import UserMessagesView
 from apps.platformsettings.views import GetOtherManageDetailView,GetLunboManageListView
@@ -80,6 +80,7 @@ urlpatterns = [
     path('api/users/', include('apps.lyusers.urls')),
 
     #前端用户接口
+    path('api/app/register/', RegisterView.as_view(), name='app端手机号注册'),
     path('api/app/login/', APPMobilePasswordLoginView.as_view(), name='app端手机号密码登录认证'),
     path('api/app/wxlogin/', WeChatGZHLoginAPIView.as_view(), name='app端手机号微信登录认证'),
     path('api/app/wxbindlogin/', WeChatGZHBindAPIView.as_view(), name='app端手机号微信登录认证绑定微信'),

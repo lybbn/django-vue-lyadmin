@@ -46,7 +46,14 @@ class AppMoliePasswordLoginSerializer(TokenObtainPairSerializer):
             }
             return result
         password = attrs['password']
-        user = Users.objects.filter(username=mobile+"app",mobile=mobile,identity__contains="1",is_active=True).first()
+        user = Users.objects.filter(username=mobile + "app", mobile=mobile, identity__contains="1").first()
+        if not user.is_active:
+            result = {
+                "code": 4000,
+                "msg": "该账号已被禁用,请联系管理员",
+                "data": None
+            }
+            return result
         if user and user.check_password(password):  # check_password() 对明文进行加密,并验证
             # data = super().validate(attrs)
             data={}
@@ -329,3 +336,52 @@ class ForgetPasswdResetView(APIView):
             user.password = make_password(password)
             user.save()
             return SuccessResponse(msg="success")
+
+class RegisterView(APIView):
+    '''
+    前端用户注册
+    post:
+    【功能描述】前端用户注册</br>
+    【参数说明】mobile为手机号</br>
+    【参数说明】code短信验证码</br>
+    【参数说明】password为密码</br>
+    【参数说明】password2为确认输入的密码</br>
+    '''
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+        mobile = get_parameter_dic(request)['mobile']
+        code = get_parameter_dic(request)['code']
+        password = get_parameter_dic(request)['password']
+        password2 = get_parameter_dic(request)['password2']
+        if mobile is None or code is None or password is None or password2 is None:
+            return ErrorResponse(msg="提交的参数不能为空")
+
+        # 判断密码是否合法
+        if len(password) < 6:
+            return ErrorResponse(msg="密码长度至少6位")
+
+        if not re.match(r'^[a-zA_Z0-9]{6,20}$', password):
+            return ErrorResponse(msg="密码格式不正确(大小写字母、数字组合)")
+
+        if password != password2:
+            return ErrorResponse(msg="两次密码输入不一致")
+
+        # 验证手机号是否合法
+        if not re.match(REGEX_MOBILE, mobile):
+            return ErrorResponse(msg="请输入正确手机号")
+
+        # 判断短信验证码是否正确
+        if not re.match(r'^\d{6}$', code):
+            return ErrorResponse(msg="验证码格式错误")
+        redis_conn = get_redis_connection('verify_codes')
+        send_flag = redis_conn.get('sms_%s' % mobile)  # send_flag的值为bytes，需要转换成str ,,send_flag.decode()
+        if not send_flag:  # 如果取不到标记，则说明验证码过期
+            return ErrorResponse(msg="短信验证码已过期")
+        else:
+            if str(send_flag.decode()) != str(code):
+                return ErrorResponse(msg="验证码错误")
+            # 开始注册
+            Users.objects.create(username=mobile,password=make_password(password),mobile=mobile,is_staff=False,viptype=1)
+            return SuccessResponse(msg="注册成功")
