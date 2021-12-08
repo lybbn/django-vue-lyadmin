@@ -4,7 +4,7 @@
             <el-tab-pane label="首页轮播图管理" name="1"></el-tab-pane>
             <el-tab-pane label="分类页轮播图管理" name="2"></el-tab-pane>
         </el-tabs>
-        <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
+        <el-table size="small" height="calc(100vh - 214px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
             <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
             <el-table-column min-width="120" prop="image" :label="(formInline.type==1) ? '图片' :'图片'">
                 <template slot-scope="scope">
