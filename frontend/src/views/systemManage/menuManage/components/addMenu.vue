@@ -14,6 +14,7 @@
             <el-form-item label="父级菜单：" prop="parent">
                 <el-cascader
                         style="width: 300px"
+                        :key="isResourceShow"
                         :show-all-levels="false"
                         :options="options"
                         v-model="formData.parent"
@@ -93,6 +94,7 @@
                 dialogVisible:false,
                 loadingSave:false,
                 dialogTitle:'',
+                isResourceShow:0,
                 formData:{
                     parent:'',
                     name:'',
@@ -169,6 +171,11 @@
                 this.getsystemMenuTree()
                 this.dialogVisible=true
                 this.dialogTitle=flag
+
+                //解决Cannot read property ‘level‘ of null问题
+                this.options=[]
+                this.isResourceShow=0
+
                 this.formData=item?item:{
                     parent:'',
                     name:'',
@@ -223,7 +230,12 @@
                 })
             },
             getsystemMenuTree() {
-                systemMenuTree().then(res=>{
+                var params = {
+                    page:1,
+                    limit:9999
+                }
+                systemMenuTree(params).then(res=>{
+                    ++this.isResourceShow
                     if(res.code == 2000) {
                         let menu = [{
                             label:'-1',

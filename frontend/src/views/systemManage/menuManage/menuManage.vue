@@ -46,7 +46,7 @@
 
         <el-table
                 size="small"
-                height="calc(100vh - 260px)"
+                height="calc(100vh - 190px)"
                 border
                 row-key="id"
                 :data="tableData"

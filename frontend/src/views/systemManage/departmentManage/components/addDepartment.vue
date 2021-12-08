@@ -14,6 +14,7 @@
             <el-form-item label="父级部门：" prop="parent">
                 <el-cascader
                         style="width: 300px"
+                        :key="isResourceShow"
                         :show-all-levels="false"
                         :options="options"
                         ref="myCascader"
@@ -62,6 +63,7 @@
                 dialogVisible:false,
                 loadingSave:false,
                 dialogTitle:'',
+                isResourceShow:0,
                 formData:{
                     id:null,
                     parent:'',
@@ -100,10 +102,10 @@
                  //console.log(this.$refs.myCascader.getCheckedNodes()[0].pathLabels )
                  //console.log(this.$refs.myCascader.getCheckedNodes()[0].value )
                   // var label = this.$refs.myCascader.getCheckedNodes()[0].label
-                 this.formData.parent = this.$refs.myCascader.getCheckedNodes()[0].value
-                 if (this.formData.parent == "undefined"){
-                     this.formData.parent =""
-                 }
+                 // this.formData.parent = this.$refs.myCascader.getCheckedNodes()[0].value
+                 // if (this.formData.parent == "undefined"){
+                 //     this.formData.parent =""
+                 // }
             },
             handleClose() {
                 this.dialogVisible=false
@@ -112,6 +114,11 @@
             addDepartmentFn(item,flag) {
                 this.dialogVisible=true
                 this.dialogTitle=flag
+
+                //解决Cannot read property ‘level‘ of null问题
+                this.options=[]
+                this.isResourceShow=0
+
                 this.formData=item ? item : {
                     id:null,
                     parent:'',
@@ -135,6 +142,12 @@
                     if(obj) {
                         this.loadingSave=true
                         //console.log(this.formData,'this.formData----')
+                        let param = {
+                            ...this.formData
+                        }
+                        if( typeof this.formData.parent== 'object') {
+                            param.parent = this.formData.parent ?  this.formData.parent[this.formData.parent.length-1] : ''
+                        }
                         if(this.dialogTitle=="新增"){
                             apiSystemDeptAdd(param).then(res=>{
                                 this.loadingSave=false
@@ -163,7 +176,12 @@
                 })
             },
             getapiSystemDept() {
-                apiSystemDept().then(res=>{
+                var params = {
+                    page:1,
+                    limit:9999
+                }
+                apiSystemDept(params).then(res=>{
+                    ++this.isResourceShow
                     if(res.code == 2000) {
                         let childrenList = res.data.data.filter(item=> item.parent)
                         let parentList = res.data.data.filter(item=> !item.parent)
