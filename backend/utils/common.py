@@ -14,6 +14,12 @@ import hashlib
 REGEX_MOBILE = "^1[356789]\d{9}$|^147\d{8}$|^176\d{8}$"
 
 
+def float2dot(str):
+    """
+    把数字或字符串10.00 转换成保留后两位（字符串）输出
+    """
+    return '%.2f' % round(float(str),2)
+
 """
 格式化日期时间为指定格式
 """
