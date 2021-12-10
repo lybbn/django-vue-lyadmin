@@ -41,6 +41,10 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 8.  平台设置：系统设置如字典参数、轮播图
 9.  其他功能：内置微信登录、小程序登录、短信登录、密码登录、微信企业到零钱等API
 
+## django-vue-lyadmin项目启动视频讲解
+
+[![Watch the video](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/01.png)](https://v.kuaishouapp.com/s/VIJPdIx6)
+
 ## lyadmin后端
 
 ~~~bash
