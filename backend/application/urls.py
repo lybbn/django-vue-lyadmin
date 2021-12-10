@@ -32,7 +32,7 @@ from utils.swagger import CustomOpenAPISchemaGenerator
 from apps.oauth.views import WeChatXCXLoginAPIView,XCXWeChatUserInfoUpdateAPIView,WeChatXCXMobileLoginAPIView,WeChatGZHLoginAPIView,WeChatGZHBindAPIView,GetXCXShareQrcodeView
 from apps.address.views import ProvinceAreasView,SubAreasView,GetAddressAccuracyView
 from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobileSMSLoginView,ForgetPasswdResetView,RegisterView
-from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView
+from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView,uploadImagesView
 from apps.lymessages.views import UserMessagesView
 from apps.platformsettings.views import GetOtherManageDetailView,GetLunboManageListView
 
@@ -89,6 +89,7 @@ urlpatterns = [
     path('api/app/restpassword/', ForgetPasswdResetView.as_view(), name='app端手机号重置密码'),
     path('api/app/setnickname/', SetUserNicknameView.as_view(), name='app端修改昵称'),
     path('api/app/changeavatar/', ChangeAvatarView.as_view(), name='app端回收员修改头像'),
+    path('api/app/uploadimage/', uploadImagesView.as_view(), name='app端上传图片'),
 
     path('api/xcx/login/', WeChatXCXLoginAPIView.as_view(), name='微信小程序登录认证'),
     path('api/xcx/mobilelogin/', WeChatXCXMobileLoginAPIView.as_view(), name='微信小程序手机号授权绑定登录认证'),

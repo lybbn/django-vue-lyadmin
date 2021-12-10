@@ -60,6 +60,24 @@ class UserManageViewSet(CustomModelViewSet):
 # ************** 前端用户中心 view  ************** #
 # ================================================= #
 
+#前端图片上传
+class uploadImagesView(APIView):
+    '''
+    前端图片上传
+    post:
+    【功能描述】前端图片上传</br>
+    【参数说明】无，需要登录携带token后才能调用</br>
+    '''
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        result = ImageUpload(request,"frontendimages")
+        if result['code'] == 200 :
+            return SuccessResponse(data=result['img'],msg=result['msg'])
+        else:
+            return ErrorResponse(msg=result['msg'])
+
 class SetUserNicknameView(APIView):
     """
     修改昵称
