@@ -48,6 +48,9 @@ def formatdatetime(datatimes):
 def renameuploadimg(srcimg):
     # 文件扩展名
     ext = os.path.splitext(srcimg)[1]
+    # File names longer than 255 characters can cause problems on older OSes.
+    if len(srcimg) > 255:
+        ext = ext[:255]
     # 定义文件名，年月日时分秒随机数
     fn = time.strftime('%Y%m%d%H%M%S')
     fn = fn + '_%d' % random.randint(100, 999)
