@@ -34,7 +34,8 @@
                 <el-input-number v-model="formData.sort"  :min="1" :max="9999"></el-input-number>
             </el-form-item>
             <el-form-item label="键名：" prop="key">
-                <el-input v-model.trim="formData.key" style="width: 300px"></el-input>
+                <el-input v-model.trim="formData.key" style="width: 300px" :disabled="loadingTitle=='编辑'"></el-input>
+                <span style="color: red;font-size: 10px;margin-left: 8px">提示：该项添加后不能修改</span>
             </el-form-item>
             <el-form-item label="类型：">
                 <el-radio-group v-model="type">
