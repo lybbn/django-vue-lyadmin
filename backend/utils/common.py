@@ -41,6 +41,23 @@ def formatdatetime(datatimes):
             return datatimes
     return datatimes
 
+def formatdatetime_convert(datatimes):
+    """
+    格式化字符串日期时间为 python的日期时间
+    :param datatimes: 字符串形式(2021-09-23 11:22:03 或 2021-09-23)
+    :return: 反格式化后的日期时间如：datetime.datetime(2021, 9, 23, 11, 22, 3)
+    """
+    if datatimes:
+        try:
+            if isinstance(datatimes, str):
+                if ':' in datatimes:
+                    return datetime.datetime.strptime('datatimes', '%Y-%m-%d %H:%M:%S')
+                else:
+                    return datetime.datetime.strptime('datatimes', '%Y-%m-%d')
+        except Exception as e:
+            return datatimes
+    return datatimes
+
 #上传图片名自定义
 """
 参数为图片文件名
