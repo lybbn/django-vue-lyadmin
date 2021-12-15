@@ -39,7 +39,10 @@ def CustomExceptionHandler(ex, context):
         msg = ex.detail
         errorMsg = msg
         for key in errorMsg:
-            msg = errorMsg[key][0]
+            if key:
+                msg = '%s:%s' % (key, errorMsg[key][0])
+            else:
+                msg = errorMsg[key][0]
     elif isinstance(ex, DRFAPIException):
         set_rollback()
         msg = str(ex.detail)
