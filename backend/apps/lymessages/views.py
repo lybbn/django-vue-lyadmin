@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from apps.lymessages.models import MyMessageTemplate,MyMessage,MyMessageUser
 from utils.jsonResponse import SuccessResponse,ErrorResponse
-from utils.common import get_parameter_dic
+from utils.common import get_parameter_dic,formatdatetime
 from django.db.models import Q,F
 from rest_framework import serializers
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -115,31 +115,49 @@ class UserMessagesView(APIView):
     serializer_class = MyMessageSerializer
     pagination_class = CustomPagination  # 自定义分页会覆盖settings全局配置的
 
-    def get(self, request,*args, **kwargs):#分页必须为get请求
+    def get(self, request, *args, **kwargs):  # 分页必须为get请求
         """
         获取用户自己消息列表
         """
 
         user = request.user
-        #检查消息表是否有更新（主要是公告信息），有的话则插入到用户消息中间表中
-        notices = MyMessage.objects.filter(msg_chanel=2,status=True)
-        if notices:#存在公告
-            for notice in notices:#检查该用户消息中间表是否存在该消息id
-                MyMessageUser.objects.get_or_create(messageid_id=notice.id,revuserid=user)
+        # 检查消息表是否有更新（主要是系统通知），有的话则插入到用户消息中间表中
+        notices = MyMessage.objects.filter(msg_chanel=1, status=True)
+        if notices:  # 存在系统通知
+            for notice in notices:  # 检查该用户消息中间表是否存在该消息id
+                MyMessageUser.objects.get_or_create(messageid_id=notice.id, revuserid=user)
 
-        queryset = MyMessage.objects.filter(status=True,mymessageuser__revuserid=user)
-        is_read = get_parameter_dic(request)['is_read']
+        queryset = MyMessage.objects.filter(status=True, mymessageuser__revuserid=user).order_by("-update_datetime")
+        is_read = get_parameter_dic(request).get('is_read')
         if is_read:
-            if is_read == 'False':
-                queryset = queryset.exclude(Q(mymessageuser__is_read=True),Q(mymessageuser__revuserid=user))
-            elif is_read == 'True':
-                queryset = queryset.filter(mymessageuser__is_read=True,mymessageuser__revuserid=user)
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True, request=request)
-            return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(queryset, many=True, request=request)
-        return SuccessResponse(data=serializer.data, msg="获取成功")
+            if int(is_read) == 1:
+                queryset = queryset.exclude(Q(mymessageuser__is_read=True), Q(mymessageuser__revuserid=user)).order_by(
+                    "-update_datetime")
+            elif int(is_read) == 0:
+                queryset = queryset.filter(mymessageuser__is_read=True, mymessageuser__revuserid=user).order_by(
+                    "-update_datetime")
+            else:
+                return ErrorResponse(msg="is_read类型错误")
+        # # 1. 实例化分页器对象
+        page_obj = CustomPagination()
+        # # 2. 使用自己配置的分页器调用分页方法进行分页
+        page_data = page_obj.paginate_queryset(queryset, request)
+        data = []
+        if queryset:
+            for q in page_data:
+                data.append({
+                    'id': q.id,
+                    'msg_chanel': q.msg_chanel,
+                    'msg_type': q.msg_type,
+                    'public': q.public,
+                    'msg_title': q.msg_title,
+                    'msg_content': q.msg_content,
+                    'create_datetime': formatdatetime(q.create_datetime),
+                    'update_datetime': formatdatetime(q.update_datetime),
+                })
+        if not is_read and not is_read == 0:
+            MyMessageUser.objects.filter(revuserid=user).update(is_read=True)
+        return page_obj.get_paginated_response(data)
 
     def post(self, request, *args, **kwargs):
         """
