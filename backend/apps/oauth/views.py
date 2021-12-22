@@ -20,6 +20,12 @@ from django.db.models import F
 from django.core.cache import cache
 import logging
 from django_redis import get_redis_connection
+import base64
+import os
+import datetime
+from  django.conf import settings
+from config import DOMAIN_HOST
+from utils.common import renameuploadimg
 
 logger = logging.getLogger(__name__)
 # Create your views here.
@@ -345,7 +351,18 @@ class GetXCXShareQrcodeView(APIView):
         res = get_wechat_qrcode_url(access_token,scene,page)
         if res.status_code != 200:
             return ErrorResponse(msg="服务器到微信网络连接失败，请重试2")
-        json_data2 = json.loads(res.content)
+        curr_time = datetime.datetime.now()
+        time_path = curr_time.strftime("%Y-%m-%d")
+        img_task_dir = "xcxqrcode"
+        image_name = renameuploadimg('_QRcode.png')
+        sub_path = os.path.join(settings.MEDIA_ROOT, img_task_dir, time_path)
+        if not os.path.exists(sub_path):
+            os.makedirs(sub_path)
+        image_path = os.path.join(sub_path, image_name)
+        web_img_url = DOMAIN_HOST + settings.MEDIA_URL + img_task_dir + "/" + time_path + "/" + image_name  # 绝对路径http://xxx.xxx.com/media/xxx/xxxx/xxx.png
+        with open(image_path, 'wb') as f:
+            f.write(res.content)
+        json_data2 = web_img_url
         return SuccessResponse(data=json_data2,msg="success")
 
 
