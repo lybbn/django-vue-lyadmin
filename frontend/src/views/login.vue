@@ -64,8 +64,8 @@
           if(res.code == 2000) {
             let menuTree = []
             if(res.data.data.length > 0) {
-              let childrenList = res.data.data.filter(item=> item.parent)
-              let parentList = res.data.data.filter(item=> !item.parent)
+              let childrenList = res.data.data.filter(item=> item.parent && item.visible == 1)
+              let parentList = res.data.data.filter(item=> !item.parent && item.visible == 1)
               if(parentList.length >0) {
                 parentList.forEach(item=>{
                   let menuTreeChildren=[]
