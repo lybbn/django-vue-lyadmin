@@ -17,6 +17,8 @@ DATABASE_USER = "root"
 DATABASE_PASSWORD = "root"
 # 数据库名
 DATABASE_NAME = "lyadmin_db"
+#数据库编码
+DATABASE_CHARSET = "utf8mb4"
 # 数据库长连接时间（默认为0）即每次请求都重新连接,debug模式下该值应该写为0 ，mysql默认长连接超时时间为8小时
 DATABASE_CONN_MAX_AG = 0 #2小时
 
