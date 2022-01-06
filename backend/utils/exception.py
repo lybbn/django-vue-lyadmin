@@ -38,11 +38,14 @@ def CustomExceptionHandler(ex, context):
     elif isinstance(ex, exceptions.ValidationError):
         msg = ex.detail
         errorMsg = msg
-        for key in errorMsg:
-            if key:
-                msg = '%s:%s' % (key, errorMsg[key][0])
-            else:
-                msg = errorMsg[key][0]
+        try:
+            for key in errorMsg:
+                if key:
+                    msg = '%s:%s' % (key, errorMsg[key][0])
+                else:
+                    msg = errorMsg[key][0]
+        except:
+            msg = errorMsg[0]
     elif isinstance(ex, DRFAPIException):
         set_rollback()
         msg = str(ex.detail)
