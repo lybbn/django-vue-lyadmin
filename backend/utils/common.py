@@ -13,6 +13,16 @@ import hashlib
 #手机号验证正则
 REGEX_MOBILE = "^1[356789]\d{9}$|^147\d{8}$|^176\d{8}$"
 
+def hide4mobile(mobile):
+    """
+    隐藏手机号中间四位
+    """
+    if re.match("^\d{11}$", mobile):
+        list = mobile[3:7]
+        new_phone = mobile.replace(list, '****')
+        return new_phone
+    else:
+        return ""
 
 def float2dot(str):
     """

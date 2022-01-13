@@ -2,7 +2,7 @@
 
 #微信第三方app支付v3(需要APIV3 的apikey)（直连方式-普通商户）
 
-from config import WXPAY_CLIENT_CERT_PATH,WXPAY_CLIENT_KEY_PATH,WXPAY_APPID,WXPAY_MCHID,WXPAY_APIKEY,WXPAY_SERIAL_NO,WXPAY_CERT_DIR,WXPAY_CERT_DIR_RESPONSE
+from config import WXPAY_CLIENT_CERT_PATH,WXPAY_CLIENT_KEY_PATH,WXPAY_APPID,WXPAY_MCHID,WXPAY_APIKEY,WXPAY_SERIAL_NO,WXPAY_CERT_DIR,WXPAY_CERT_DIR_RESPONSE,WXPAY_APIKEY_V1
 import requests
 import json
 import time
@@ -21,6 +21,7 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 from cryptography.exceptions import InvalidSignature, InvalidTag
+import hashlib
 import logging
 logger = logging.getLogger(__name__)
 
@@ -47,6 +48,18 @@ def get_sign(sign_str):
     sign = b64encode(signer.sign(digest)).decode('utf-8')
     return sign
 
+#uniapp调起微信支付只支持MD5加密
+def get_sign_md5(sign_str):
+    # 定义MD5
+    hmd5 = hashlib.md5()
+    # 生成MD5加密字符串
+    hmd5.update(sign_str)
+    # 获取MD5字符串
+    sig = hmd5.hexdigest()
+    # 将小写字母切换成大写
+    return sig.upper()
+
+
 
 class WxAppPay:
     """
@@ -57,7 +70,8 @@ class WxAppPay:
         self.appid = WXPAY_APPID
         self.mchid = WXPAY_MCHID
         self.apikey = WXPAY_APIKEY
-        self.url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/app'
+        self.url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/app'#微信app支付
+        self.url2 = 'https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi'  # 微信小程序支付
         self.gate_way = 'https://api.mch.weixin.qq.com'
         self.notify_url = "https://weixin.qq.com/"#需要回调的默认url，实际上要填写自己的回调地址：要求https，且不能携带参数如：https://www.weixin.qq.com/wxpay/pay.php
         self.serial_no = WXPAY_SERIAL_NO  # 商户号证书序列号
@@ -67,7 +81,7 @@ class WxAppPay:
 
 
 
-    # 统一下单
+    # 统一下单(微信app支付)
     def payorder(self, order_no, total, description,notify_url=None):
         data = {
             "mchid": self.mchid,
@@ -109,10 +123,67 @@ class WxAppPay:
         time_stamps_app = str(int(time.time()))
         sign_str_app = f"{WXPAY_APPID}\n{time_stamps_app}\n{random_str_app}\n{res['prepay_id']}\n"
         sign_str_app_sign = get_sign(sign_str_app)
-        res['sign'] = sign_str_app_sign
+        res['paySign'] = sign_str_app_sign
+        res['signType'] = 'RSA'
         res['nonceStr'] = random_str_app
         res['partnerid'] = WXPAY_MCHID
         res['timestamp'] = time_stamps_app
+        res['oderno'] = order_no
+        return res
+
+    # 统一下单(微信小程序支付（JSAPI）)
+    def payorder_jsapi(self, order_no, total, description, openid,notify_url=None):
+        data = {
+            "mchid": self.mchid,
+            "out_trade_no": order_no,
+            "appid": self.appid,
+            "description": description,
+            "payer":{
+                "openid":openid
+            },#（支付者openid）用户在直连商户appid下的唯一标识。 下单前需获取到用户的Openid
+            "notify_url": notify_url,  # 必填项
+            "amount": {
+                "total": int(total),  # 订单总金额，单位为分(整数)
+                "currency": "CNY"
+            },
+        }
+        data = json.dumps(data)  # 只能序列化一次
+        # 构造微信支付签名验证
+        random_str = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(32))
+        time_stamps = str(int(time.time()))
+        """
+            HTTP请求方法\n
+            URL\n
+            请求时间戳\n
+            请求随机串\n
+            请求报文主体\n
+        """
+        sign_str = f"POST\n{'/v3/pay/transactions/jsapi'}\n{time_stamps}\n{random_str}\n{data}\n"
+        sign = get_sign(sign_str)
+        authorization = 'WECHATPAY2-SHA256-RSA2048 ' + f'mchid="{self.mchid}",nonce_str="{random_str}",signature="{sign}",timestamp="{time_stamps}",serial_no="{self.serial_no}"'
+        headers = {'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': authorization}
+        response = requests.post(self.url2, data=data, headers=headers)
+        logger.info("微信app支付下单返回消息,订单号：%s,金额：%s,微信返回信息：%s" % (order_no, total / 100, response.text))
+        """
+        正常返回
+        {
+            "prepay_id": "wx261153585405162d4d02642eabe7000000"
+        }
+        预支付交易会话标识。用于后续接口调用中使用，该值有效期为2小时(直接返回给app端，支付时需要)
+        """
+        res = json.loads(response.content)
+        random_str_app = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(32))
+        time_stamps_app = str(int(time.time()))
+        package = "prepay_id="+res['prepay_id']
+        sign_str_app = f"{WXPAY_APPID}\n{time_stamps_app}\n{random_str_app}\n{package}\n"
+        sign_str_app_sign_v3_rsa = get_sign(sign_str_app)
+        res['sign'] = sign_str_app_sign_v3_rsa
+        res['signType'] = 'RSA'
+        res['package'] = package
+        res['nonceStr'] = random_str_app
+        res['partnerid'] = WXPAY_MCHID
+        res['timestamp'] = time_stamps_app
+        res['oderno'] = order_no
         return res
 
     def load_local_certificates(self):
@@ -161,7 +232,7 @@ class WxAppPay:
         if method == RequestType.GET:
             response = requests.get(url=self.gate_way + path, headers=headers)
         else:
-            response = requests.post(url=self.gate_way + path, json=data, headers=headers)
+            response = requests.post(url=self.gate_way + path, json=datas, headers=headers)
         if response.status_code in range(200, 300) and not skip_verify:
             if not self.verify_signature(response.headers, response.text):
                 raise Exception('failed to verify signature')
@@ -297,6 +368,7 @@ class WxAppPay:
         except InvalidSignature:
             return False
         return True
+
 
 #微信支付回调实例
 
