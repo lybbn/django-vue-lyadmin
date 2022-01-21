@@ -227,6 +227,14 @@ export function uploadImg (param) {
                 Authorization: 'JWT ' + token,
         },
         data:formData,
+        onUploadProgress: progressEvent => {
+            // progressEvent.loaded:已上传文件大小
+            // progressEvent.total:被上传文件的总大小
+            let loadProgress = (progressEvent.loaded / progressEvent.total * 100)
+            param.params.onProgress({percent: loadProgress})
+            // console.info(progressEvent.loaded)
+            // console.info(progressEvent.total)
+          }
     }).then(res => res.data);
 };
 
