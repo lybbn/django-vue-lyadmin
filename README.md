@@ -18,6 +18,7 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 特别鸣谢：本平台后端设计模式，其部分参考[django-vue-admin-pro](https://gitee.com/dvadmin/django-vue-admin-pro)
 
 ## 交流
+- 开发者WX号：laoyanyj
 
 - QQ群号：755277564 <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=oPz6bqmL"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="django-vue-lyadmin交流01群" title="django-vue-lyadmin交流01群"></a>
 - 二维码：
