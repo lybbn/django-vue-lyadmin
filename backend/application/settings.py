@@ -241,9 +241,10 @@ STATIC_URL = '/static/'
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, "static"),
 # ]
+FRONTEND_ROOT = os.path.join(BASE_DIR, "frontend")
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend/static"),
-    os.path.join(BASE_DIR, "frontend/download-app/static"),
+    os.path.join(FRONTEND_ROOT,"static"),
+    os.path.join(FRONTEND_ROOT,"download-app","static"),
 ]
 # 收集静态文件，必须将 MEDIA_ROOT,STATICFILES_DIRS先注释
 # python manage.py collectstatic
