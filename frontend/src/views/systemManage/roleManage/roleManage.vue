@@ -9,7 +9,7 @@
                     <el-input size="small" v-model.trim="formInline.name" maxlength="60" placeholder="角色名称" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="状态：">
-                    <el-select v-model="formInline.status" placeholder="请选择">
+                    <el-select v-model="formInline.status" placeholder="请选择" size="small">
                         <el-option
                                 v-for="item in statusList"
                                 :key="item.id"

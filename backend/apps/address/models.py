@@ -11,6 +11,7 @@ class Area(models.Model):
     """省市区"""
     name = models.CharField(max_length=50, verbose_name='名称')
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='subs', null=True, blank=True, verbose_name='上级行政区划')#外键链接自己
+    status = models.BooleanField(default=True,verbose_name="状态")
     #related_name='subs' ，意思为如果想找自己的子级，就可以通过area.subs找到自己下级所有的area区域,我们也可以这样调用获取市: area.area_set.all() ==> area.subs.all()
     #on_delete=models.SET_NULL:  如果省删掉了,省内其他的信息为 NULL
     class Meta:

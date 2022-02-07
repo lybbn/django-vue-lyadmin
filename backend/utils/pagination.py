@@ -10,7 +10,7 @@ from rest_framework.response import Response
 class CustomPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = "limit"
-    max_page_size = 999
+    max_page_size = 9999
     django_paginator_class = DjangoPaginator
 
     def get_paginated_response(self, data):

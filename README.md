@@ -35,12 +35,13 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 2.  菜单管理：配置系统菜单，操作权限，按钮权限标识、后端接口权限等。
 3.  角色管理：角色菜单权限、数据权限、设置角色按部门进行数据范围权限划分。
 4.  权限管理：授权角色的权限范围。
-5.  管理员管理：主要管理系统管理员账号。
-6.  用户管理：主要管理前端用户。
-7.  个人中心：主要设置登录系统的个人昵称、密码等账号信息。
-7.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
-8.  平台设置：系统设置如字典参数、轮播图
-9.  其他功能：内置微信登录、小程序登录、短信登录、密码登录、微信企业到零钱、微信支付、支付宝支付、极光推送等API
+5.  地区管理：国内省市区管理。
+6.  管理员管理：主要管理系统管理员账号。
+7.  用户管理：主要管理前端用户。
+8.  个人中心：主要设置登录系统的个人昵称、密码等账号信息。
+9.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
+10.  平台设置：系统设置如字典参数、轮播图
+11.  其他功能：内置微信登录、小程序登录、短信登录、密码登录、微信企业到零钱、微信支付、支付宝支付、极光推送等API
 
 ## django-vue-lyadmin项目启动视频讲解
 
@@ -135,6 +136,8 @@ npm run build
 ![image-04](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/04.png)
 
 ![image-02](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/02.png)
+
+![image-06](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/06.png)
 
 ![image-03](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/03.png)
 

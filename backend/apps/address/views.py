@@ -11,6 +11,57 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from utils.common import get_parameter_dic
 from django.core.cache import cache
 from utils.locationanalysis import gettecentlnglat
+from utils.serializers import CustomModelSerializer
+from utils.viewset import CustomModelViewSet
+from rest_framework import serializers
+
+# ================================================= #
+# ************** 省市区后台管理 view  ************** #
+# ================================================= #
+class AreaSerializer(CustomModelSerializer):
+    """
+    地区-序列化器
+    """
+    child_count = serializers.SerializerMethodField(read_only=True)
+
+    def get_child_count(self, instance: Area):
+        return Area.objects.filter(parent=instance).count()
+
+    class Meta:
+        model = Area
+        fields = "__all__"
+        read_only_fields = ["id"]
+
+
+class AreaCreateUpdateSerializer(CustomModelSerializer):
+    """
+    地区管理 创建/更新时的列化器
+    """
+
+    class Meta:
+        model = Area
+        fields = '__all__'
+
+
+class AreaViewSet(CustomModelViewSet):
+    """
+    地区管理接口:
+    list:查询
+    create:新增
+    update:修改
+    retrieve:单例
+    destroy:删除
+    """
+    queryset = Area.objects.all().order_by('id')
+    serializer_class = AreaSerializer
+    filter_fields = ['status','id','parent']
+    search_fields = ('name',)
+
+    def area_root(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset = queryset.filter(parent__isnull=True).order_by('id')
+        serializer = AreaSerializer(queryset, many=True)
+        return SuccessResponse(data=serializer.data, msg="获取成功")
 
 # ================================================= #
 # ************** 省市区查询自己接口管理 view  ************** #

@@ -74,6 +74,18 @@ export const apiSystemUserEdit = params => ajaxPut({url: `system/user/`,params})
 //管理员管理-删除
 export const apiSystemUserDelte = params => ajaxDelete({url: `system/user/`,params})
 
+
+// 地区管理列表
+export const addressArea = params => ajaxGet({url: `address/area/`,params})
+// 地区管理列表 获取根地区
+export const addressAreaRoot = params => ajaxGet({url: `address/area/area_root/`,params})
+// 地区管理列表 -- 新增
+export const addressAreaAdd = params => ajaxPost({url: `address/area/`,params})
+// 地区管理列表 -- 编辑
+export const addressAreaEdit = params => ajaxPut({url: `address/area/`,params})
+// 地区管理列表 -- 删除
+export const addressAreaDelete = params => ajaxDelete({url: `address/area/`,params})
+
 /**
  *日志管理
  * */

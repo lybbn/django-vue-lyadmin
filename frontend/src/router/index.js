@@ -97,6 +97,15 @@ export default new VueRouter({
           index: '/departmentManage',
         }
       },
+        {
+        path: '/areaManage',
+        name: 'areaManage',
+        component: resolve => require(['../views/systemManage/areaManage/areaManage.vue'], resolve),
+        meta: {
+          requireAuth: true,
+          index: '/areaManage',
+        }
+      },
       {
         path: '/menuManage',
         name: 'menuManage',
