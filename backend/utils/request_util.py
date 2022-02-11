@@ -136,9 +136,15 @@ def get_browser(request, ):
     :param kwargs:
     :return:
     """
-    ua_string = request.META['HTTP_USER_AGENT']
-    user_agent = parse(ua_string)
-    return user_agent.get_browser()
+    browser=""
+    try:
+        ua_string = request.META['HTTP_USER_AGENT']
+        if ua_string:
+            user_agent = parse(ua_string)
+            browser = user_agent.get_browser()
+    except:
+        pass
+    return browser
 
 
 def get_os(request, ):
@@ -149,9 +155,15 @@ def get_os(request, ):
     :param kwargs:
     :return:
     """
-    ua_string = request.META['HTTP_USER_AGENT']
-    user_agent = parse(ua_string)
-    return user_agent.get_os()
+    theos = ""
+    try:
+        ua_string = request.META['HTTP_USER_AGENT']
+        if ua_string:
+            user_agent = parse(ua_string)
+            theos = user_agent.get_os()
+    except:
+        pass
+    return theos
 
 
 def get_verbose_name(queryset=None, view=None, model=None):
