@@ -12,7 +12,7 @@
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.6.4",
-    "element-ui": "^2.15.7",
+    "element-ui": "^2.13.2",
     "font-awesome": "^4.7.0",
     "jr-qrcode": "^1.1.4",
     "js-md5": "^0.7.3",
