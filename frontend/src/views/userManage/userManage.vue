@@ -143,7 +143,33 @@
                     })
                 }
             },
+            /**
+             * 从URL里下载文件,参数files为el-upload上传的文件file
+            */
+            downloadFile(files) {
+                //url转blob
+                fetch(files.url)
+                .then(response => response.blob())
+                .then(blob => {
+                    // 处理blob
+                    let url = window.URL.createObjectURL(new Blob([blob]))
+                    let link = document.createElement('a')
+                    link.style.display = 'none'
+                    link.href = url
+                    // link.download = url.split('/')[url.split('/').length -1] //  // 下载文件的名字
+                    if(typeof files.name == "undefined"){
+                        link.download = url.split('/')[url.split('/').length -1]
+                    }else{
+                        link.download = files.name
+                    }
+                    document.body.appendChild(link)
+                    link.click()
+                    document.body.removeChild(link) // 下载完成移除元素
+                    window.URL.revokeObjectURL(url) // 释放掉blob对象
 
+                })
+
+            },
             callFather(parm) {
                 this.formInline.page = parm.page
                 this.formInline.limit = parm.limit
