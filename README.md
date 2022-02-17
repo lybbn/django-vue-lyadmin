@@ -154,4 +154,4 @@ npm run build
 
 开源不易，可使用支付宝扫下面二维码以赏金的形式打赏支持。您的支持是我不断创作的动力！！！
 
-![Bounty](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/alired.png)
+![image-alired](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/alired.jpg)
