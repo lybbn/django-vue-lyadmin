@@ -149,3 +149,9 @@ npm run build
 ![image-03](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/03.png)
 
 ![image-05](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/05.png)
+
+## 捐赠该项目
+
+开源不易，可使用支付宝扫下面二维码以赏金的形式打赏支持。您的支持是我不断创作的动力！！！
+
+![Bounty](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/alired.png)
