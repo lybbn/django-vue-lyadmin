@@ -2,7 +2,7 @@
     <el-dialog
             :title="loadingTitle"
             :visible.sync="dialogVisible"
-            width="60%"
+            width="55%"
             center
             top="1%"
             :destroy-on-close="true"
@@ -44,10 +44,13 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="" v-if="type==2">
-                <div class="messageTxt">
-                    <quill-editor ref="myQuillEditor" v-model="formData.value" :options="editorOptions">
-                    </quill-editor>
+                <div >
+                    <TEditor v-model="formData.value"  v-if="dialogVisible"></TEditor>
                 </div>
+<!--                <div class="messageTxt">-->
+<!--                    <quill-editor ref="myQuillEditor" v-model="formData.value" :options="editorOptions">-->
+<!--                    </quill-editor>-->
+<!--                </div>-->
             </el-form-item>
             <el-form-item label="键值：" prop="value" v-if="type==1">
                 <el-input v-model.trim="formData.value" style="width: 300px"></el-input>
@@ -70,13 +73,14 @@
 
 <script>
     import {platformsettingsOtherAdd,platformsettingsOtherEdit} from "@/api/api";
-    import axios from 'axios'
+    import TEditor from '@/components/TEditor'
     import 'quill/dist/quill.core.css'
     import 'quill/dist/quill.snow.css'
     import 'quill/dist/quill.bubble.css'
     import quillConfig from '@/utils/quill-config.js'
     export default {
         name: "addModule",
+        components: { TEditor },
         data() {
             return {
                 editorOptions: quillConfig,

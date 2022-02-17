@@ -102,7 +102,8 @@ django-vue-lyadmin 是一套前后端分离的前端后台管理框架，是适�
 
 ```
 1、VUE
-2、富文本编辑器 vue-quill-editor
+2、elementui
+3、富文本编辑器采用 vue-quill-editor 和 tinymce 两种 可以自行选择
 ```
 
 #### 安装教程
@@ -136,6 +137,8 @@ npm run build
 ## 演示图
 
 ![image-01](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/01.png)
+
+![image-07](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/07.png)
 
 ![image-04](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/04.png)
 
