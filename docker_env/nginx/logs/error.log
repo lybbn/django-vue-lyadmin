@@ -1,5 +1,0 @@
-2022/02/18 18:20:08 [notice] 1#1: using the "epoll" event method
-2022/02/18 18:20:08 [notice] 1#1: nginx/1.21.6
-2022/02/18 18:20:08 [notice] 1#1: built by gcc 10.3.1 20211027 (Alpine 10.3.1_git20211027) 
-2022/02/18 18:20:08 [notice] 1#1: OS: Linux 5.10.16.3-microsoft-standard-WSL2
-2022/02/18 18:20:08 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576

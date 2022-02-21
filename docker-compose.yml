@@ -80,7 +80,7 @@ services:
       TZ: Asia/Shanghai
     volumes:
       - ./backend:/backend
-      - ./logs/log:/var/log
+      - ./docker_env/django/logs:/var/log
     networks:
       network:
         ipv4_address: 10.10.10.11

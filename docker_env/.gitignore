@@ -1,0 +1,6 @@
+.idea
+logs
+/mysql/data
+/mysql/logs
+/nginx/logs
+/django/logs
