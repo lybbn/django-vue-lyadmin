@@ -81,6 +81,30 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 
 ~~~
 
+#### docker-compose 部署
+
+~~~bash
+1、先安装docker环境
+2、pip install docker-compose 安装docker-compose
+3、切换到项目根目录运行 docker-compose build 创建环境
+4、docker-compose up -d 后台的方式启动docker环境
+5、初始化django后端数据（第一次执行即可）
+docker exec -ti django-vue-lyadmin_django bash
+python manage.py makemigrations 
+python manage.py migrate
+python manage.py init
+exit
+6、其他docker-compose命令
+# docker-compose 停止
+docker-compose down
+#  docker-compose 重启
+docker-compose restart
+#  docker-compose 启动时重新进行 build
+docker-compose up -d --build
+7、说明：默认docker端口mysql:3306\redis:6379\前端:8080\后台:8000 
+如果端口冲突会造成启动docker失败情况
+~~~
+
 ## 其他说明
 
 1、使用本项目记得要更改application-->settings-->SECRET_KEY
@@ -133,6 +157,14 @@ npm run build
 
 
 打包后静态文件在 dist 目录中
+
+## 线上部署注意事项
+
+~~~bash
+1、前端打包前修改frontend\src\api\url里面的线上服务器ip或域名
+2、前端打包的dist里面的静态文件放到backend\frontend\目录
+3、运行python manage.py collectstatic收集静态文件到django
+~~~
 
 ## 演示图
 
