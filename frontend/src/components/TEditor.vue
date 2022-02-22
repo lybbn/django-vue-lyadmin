@@ -32,7 +32,6 @@ import 'tinymce/plugins/code' // 编辑源码
 import 'tinymce/plugins/codesample' // 代码示例
 import 'tinymce/plugins/directionality' // 文字方向
 import 'tinymce/plugins/emoticons' // 表情
-
 import 'tinymce/plugins/fullpage' // 文档属性
 import 'tinymce/plugins/fullscreen' // 全屏
 import 'tinymce/plugins/help' // 帮助
@@ -127,11 +126,12 @@ export default {
       init: {
         cleanup: true,
         selector: '#tinymce',
-        language_url: 'tinymce/langs/zh_CN.js', // 汉化路径是自定义的，一般放在public或static里面
+        language_url: 'static/tinymce/langs/zh_CN.js', // 汉化路径是自定义的，一般放在public或static里面
         language: 'zh_CN',
-        emoticons_database_url: 'tinymce/plugins/emoticons/js/emojis.js',
-        skin_url: 'tinymce/skins/ui/oxide', // 皮肤：浅色
+        emoticons_database_url: 'static/tinymce/plugins/emoticons/js/emojis.js',
+        skin_url: 'static/tinymce/skins/ui/oxide', // 皮肤：浅色
         // skin_url: '/tinymce/skins/ui/oxide-dark',//皮肤：暗色
+        content_css: false,//解决/static/js/skins/content/default/content.css 打包后加载bug报错问题
         plugins: this.plugins, // 插件
         toolbar: this.toolbar,// 工具栏
         toolbar_location: '/',

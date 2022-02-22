@@ -7,6 +7,9 @@ import re
 
 from rest_framework.permissions import BasePermission
 
+from config import IS_DEMO
+from rest_framework.serializers import ValidationError
+
 
 def ValidationApi(reqApi, validApi):
     """
@@ -30,6 +33,10 @@ class CustomPermission(BasePermission):
     """自定义权限"""
 
     def has_permission(self, request, view):
+
+        #演示模式判断
+        if IS_DEMO and not request.method in ['GET', 'OPTIONS']:
+            raise ValidationError('演示模式，不允许操作!', 400)
 
         # 对ViewSet下的def方法进行权限判断
         # 当权限为空时,则可以访问

@@ -17,6 +17,10 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 
 特别鸣谢：本平台后端设计模式，其部分参考[django-vue-admin-pro](https://gitee.com/dvadmin/django-vue-admin-pro)
 
+## 在线体验
+
+演示地址：[http://django-vue-lyadmin.lybbn.cn](http://django-vue-lyadmin.lybbn.cn) 账号：admin 密码：123456
+
 ## 文档地址
 
 文档地址：文档在本项目的wiki中会持续更新：[django-vue-lyadmin-wiki](https://gitee.com/lybbn/django-vue-lyadmin/wikis/%E6%96%87%E6%A1%A3/%E8%AF%B4%E6%98%8E)
