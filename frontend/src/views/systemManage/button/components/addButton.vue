@@ -4,7 +4,7 @@
             :visible.sync="dialogVisible"
             width="560px"
             center
-            :destroy-on-close="true"
+            v-dialogDrag
             :close-on-click-modal="false"
             :before-close="handleClose">
         <el-form :inline="true" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">

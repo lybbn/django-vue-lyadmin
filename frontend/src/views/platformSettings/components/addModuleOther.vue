@@ -2,10 +2,10 @@
     <el-dialog
             :title="loadingTitle"
             :visible.sync="dialogVisible"
+            v-dialogDrag
             width="55%"
             center
             top="1%"
-            :destroy-on-close="true"
             :close-on-click-modal="false"
             :before-close="handleClose">
         <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
@@ -109,7 +109,6 @@
             }
         },
         methods:{
-
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
