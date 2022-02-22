@@ -19,9 +19,9 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 
 ## 文档地址
 
-文档地址：文档在本项目的wiki中会持续更新：[django-vue-admin-wiki](https://gitee.com/lybbn/django-vue-lyadmin/wikis/%E6%96%87%E6%A1%A3/%E8%AF%B4%E6%98%8E)
+文档地址：文档在本项目的wiki中会持续更新：[django-vue-lyadmin-wiki](https://gitee.com/lybbn/django-vue-lyadmin/wikis/%E6%96%87%E6%A1%A3/%E8%AF%B4%E6%98%8E)
 
-说明：django-vue-lyadmin 项目已升级vue3 elementplus 组件框架，如果对你有帮助请留下你的star [django-vue3-admin](https://gitee.com/lybbn/django-vue3-lyadmin)
+说明：django-vue-lyadmin 项目已升级vue3 elementplus 组件框架，如果对你有帮助请留下你的star [django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin)
 
 ## 交流
 - 开发者WX号：laoyanyj
