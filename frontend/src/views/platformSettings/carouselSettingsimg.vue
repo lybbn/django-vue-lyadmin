@@ -4,7 +4,7 @@
             <el-tab-pane label="首页轮播图管理" name="1"></el-tab-pane>
             <el-tab-pane label="分类页轮播图管理" name="2"></el-tab-pane>
         </el-tabs>
-        <el-table size="small" height="calc(100vh - 214px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
+        <el-table size="small" height="calc(100vh - 214px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
             <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
             <el-table-column min-width="120" prop="image" :label="(formInline.type==1) ? '图片' :'图片'">
                 <template slot-scope="scope">
@@ -21,7 +21,7 @@
                 </template>
             </el-table-column>
             <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-            <el-table-column label="操作" fixed="right" width="180">
+            <el-table-column label="操作" width="180">
                 <template slot="header">
                     <el-button size="small" @click="addModule" type="primary" v-show="isShowBtn('carouselSettingsimg','轮播图设置','Create')">新增</el-button>
                 </template>
@@ -128,20 +128,6 @@
         },
         created() {
             this.getData()
-        },
-        //解决table 表格缩放错位问题
-        handleResize() {
-            this.$nextTick(()=> {
-                this.$refs.tableref.doLayout();
-            });
-        },
-        mounted() {
-            //解决table 表格缩放错位问题
-            window.addEventListener('resize', this.handleResize);
-        },
-        destroyed() {
-            //解决table 表格缩放错位问题
-             window.removeEventListener("resize", this.handleResize);
         },
     }
 </script>

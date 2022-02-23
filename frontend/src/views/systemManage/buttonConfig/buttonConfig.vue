@@ -11,7 +11,6 @@
             border
             row-key="id"
             :data="tableData"
-            ref="tableref"
             v-loading="loadingPage"
             style="width: 100%">
             <el-table-column type="index" width="55" align="center" label="序号"></el-table-column>
@@ -22,7 +21,7 @@
                 </template>
             </el-table-column>
             <el-table-column min-width="200" prop="api" label="接口地址"></el-table-column>
-            <el-table-column label="操作" fixed="right" width="140">
+            <el-table-column label="操作" width="140">
                 <template slot="header">
                     <el-button type="primary" size="small" @click="handleEdit(null,'新增',$route.params.id)">新增</el-button>
                 </template>
@@ -65,20 +64,6 @@
         created() {
             this.formInline.menu=this.$route.params.id
             this.getData()
-        },
-        //解决table 表格缩放错位问题
-        handleResize() {
-            this.$nextTick(()=> {
-                this.$refs.tableref.doLayout();
-            });
-        },
-        mounted() {
-            //解决table 表格缩放错位问题
-            window.addEventListener('resize', this.handleResize);
-        },
-        destroyed() {
-            //解决table 表格缩放错位问题
-             window.removeEventListener("resize", this.handleResize);
         },
         methods: {
             handleEdit(row, flag, menu) {

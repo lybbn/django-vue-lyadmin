@@ -25,7 +25,7 @@
         </div>
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
+            <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
                 <el-table-column width="80" type="index" align="center" label="序号"></el-table-column>
                 <el-table-column min-width="120" prop="name" label="角色名称"></el-table-column>
                 <el-table-column min-width="120" prop="key" label="权限字符"></el-table-column>
@@ -42,7 +42,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column min-width="120" prop="sort" label="排序"></el-table-column>
-                <el-table-column label="操作" fixed="right" width="280">
+                <el-table-column label="操作" width="280">
                     <template slot-scope="scope">
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('roleManage','角色管理','Update')">编辑</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('roleManage','角色管理','Retrieve')">详情</span>
@@ -149,20 +149,6 @@
         },
         created() {
             this.getData()
-        },
-        //解决table 表格缩放错位问题
-        handleResize() {
-            this.$nextTick(()=> {
-                this.$refs.tableref.doLayout();
-            });
-        },
-        mounted() {
-            //解决table 表格缩放错位问题
-            window.addEventListener('resize', this.handleResize);
-        },
-        destroyed() {
-            //解决table 表格缩放错位问题
-             window.removeEventListener("resize", this.handleResize);
         },
     }
 </script>

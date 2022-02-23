@@ -28,7 +28,6 @@
                 border
                 row-key="id"
                 :data="tableData"
-                ref="tableref"
                 v-loading="loadingPage"
                 style="width: 100%"
                 lazy
@@ -43,12 +42,12 @@
                         <el-tag v-else type="danger">禁用</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作"  width="180">
-<!--                    <template slot-scope="scope">-->
-<!--                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('areaManage','地区管理','Update')">编辑</span>-->
-<!--                        <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('areaManage','地区管理','Delete')">删除</span>-->
-<!--                    </template>-->
-                </el-table-column>
+<!--                <el-table-column label="操作"  width="180">-->
+<!--&lt;!&ndash;                    <template slot-scope="scope">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('areaManage','地区管理','Update')">编辑</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('areaManage','地区管理','Delete')">删除</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </template>&ndash;&gt;-->
+<!--                </el-table-column>-->
             </el-table>
         </div>
 
@@ -185,20 +184,6 @@
         },
         created() {
             this.getRootData()
-        },
-        //解决table 表格缩放错位问题
-        handleResize() {
-            this.$nextTick(()=> {
-                this.$refs.tableref.doLayout();
-            });
-        },
-        mounted() {
-            //解决table 表格缩放错位问题
-            window.addEventListener('resize', this.handleResize);
-        },
-        destroyed() {
-            //解决table 表格缩放错位问题
-             window.removeEventListener("resize", this.handleResize);
         },
     }
 </script>

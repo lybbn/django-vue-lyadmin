@@ -31,7 +31,6 @@
                 border
                 row-key="id"
                 :data="tableData"
-                ref="tableref"
                 v-loading="loadingPage"
                 style="width: 100%"
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
@@ -48,7 +47,7 @@
                 </el-table-column>
                 <el-table-column min-width="80" prop="sort" label="排序"></el-table-column>
                 <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-                <el-table-column label="操作" fixed="right" width="180">
+                <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('departmentManage','部门管理','Update')">编辑</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('departmentManage','部门管理','Retrieve')">详情</span>
@@ -144,20 +143,6 @@
         },
         created() {
             this.getData()
-        },
-        //解决table 表格缩放错位问题
-        handleResize() {
-            this.$nextTick(()=> {
-                this.$refs.tableref.doLayout();
-            });
-        },
-        mounted() {
-            //解决table 表格缩放错位问题
-            window.addEventListener('resize', this.handleResize);
-        },
-        destroyed() {
-            //解决table 表格缩放错位问题
-             window.removeEventListener("resize", this.handleResize);
         },
     }
 </script>

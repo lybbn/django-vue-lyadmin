@@ -11,14 +11,26 @@
       <img class="showimg" :src="collapsed?imgsq:imgshow" @click="toggle(collapsed)">
     </el-button>
 
-    <el-submenu index="2" class="submenu" style="width:auto;">
-      <template slot="title">你好,{{userName}}</template>
-      <el-menu-item @click="exit()">退出</el-menu-item>
-    </el-submenu>
+    <div class="lyheader-right-menu">
+      <!--全屏显示-->
+      <div>
+        <span style="padding: 12px 12px;" @click="fullScreen">
+          <el-tooltip style="margin: 4px;text-align: center;" effect="dark" content="全屏" placement="bottom">
+            <i class="fa fa-arrows-alt" style="font-size: 16px;color: white;"></i>
+          </el-tooltip>
+        </span>
+      </div>
+      <!--下拉-->
+      <el-submenu class="lysubmenu" index="122" style="width:auto;">
+        <template slot="title">你好,{{userName}}</template>
+        <el-menu-item index="122-1" @click="exit()">退出</el-menu-item>
+      </el-submenu>
+    </div>
 
   </el-menu>
 </template>
 <script>
+  import screenfull from 'screenfull'
   export default {
     name: 'navcon',
     data() {
@@ -57,7 +69,18 @@
       toggle(showtype) {
         this.collapsed = !showtype
         this.$root.Bus.$emit('toggle', this.collapsed)
-      }
+      },
+      //全屏显示
+      fullScreen () {
+        if (!screenfull.isEnabled) {
+          this.$message({
+            message: '您的浏览器不支持全屏',
+            type: 'warning'
+          })
+          return false
+        }
+        screenfull.toggle()
+      },
     }
   }
 </script>
@@ -65,13 +88,18 @@
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     border: none;
   }
-  .submenu {
+  .lyheader-right-menu{
     float: right;
-    .el-submenu__title{
-      border-bottom: 0 !important;
-      border-bottom-color: transparent !important;
+    display: flex;
+    align-items: center;
+    -webkit-box-align: center;
+    height: 60px;
+    .lysubmenu >.el-sub-menu__title{
+       border-bottom: 0 !important;
+       border-bottom-color: transparent !important;
     }
   }
+
   .is-console{
     float: right;
     margin: 14px;
@@ -111,4 +139,20 @@
   .logoimg {
     height: 40px;
   }
+</style>
+<style>
+  .lysubmenu .el-submenu__title{
+       border-bottom: 0 !important;
+       border-bottom-color: transparent !important;
+    }
+
+  /*菜单关闭*/
+  .lysubmenu>.el-submenu__title .el-submenu__icon-arrow{
+      position: unset;
+  }
+  /*菜单展开*/
+  .lysubmenu.is-opened>.el-submenu__title .el-submenu__icon-arrow{
+      position: unset;
+  }
+
 </style>

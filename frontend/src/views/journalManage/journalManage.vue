@@ -21,7 +21,7 @@
                 <el-form-item label=""><el-button size="small" @click="deleteAlllogs" type="danger" v-show="isShowBtn('journalManage','操作日志','Delete')">全部清空</el-button></el-form-item>
             </el-form>
         </div>
-        <el-table  size="small" height="calc(100vh - 260px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
+        <el-table  size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
             <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
             <el-table-column min-width="90" prop="request_modular" label="请求模块" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="120" prop="request_path" label="请求地址" show-overflow-tooltip></el-table-column>
@@ -33,7 +33,7 @@
             <el-table-column min-width="200" prop="json_result" label="返回信息" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="120" prop="creator_name" label="操作人"></el-table-column>
             <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-            <el-table-column label="操作" fixed="right" width="120">
+            <el-table-column label="操作" width="120">
                 <template slot-scope="scope">
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('journalManage','操作日志','Retrieve')">详情</span>
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('journalManage','操作日志','Delete')">删除</span>
@@ -72,20 +72,6 @@
         },
         created() {
             this.getData()
-        },
-        //解决table 表格缩放错位问题
-        handleResize() {
-            this.$nextTick(()=> {
-                this.$refs.tableref.doLayout();
-            });
-        },
-        mounted() {
-            //解决table 表格缩放错位问题
-            window.addEventListener('resize', this.handleResize);
-        },
-        destroyed() {
-            //解决table 表格缩放错位问题
-             window.removeEventListener("resize", this.handleResize);
         },
         methods:{
             deleteAlllogs(){

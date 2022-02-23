@@ -21,7 +21,7 @@
                 <el-form-item label=""><el-button size="small" @click="addModule" type="primary" v-show="isShowBtn('messagNotice','平台公告','Create')">新增</el-button></el-form-item>
             </el-form>
         </div>
-        <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
+        <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
             <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
             <el-table-column min-width="90" prop="msg_title" label="公告标题"></el-table-column>
             <el-table-column min-width="120" prop="to_path" label="跳转路径"></el-table-column>
@@ -39,7 +39,7 @@
                 </template>
             </el-table-column>
             <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-            <el-table-column label="操作" fixed="right" width="180">
+            <el-table-column label="操作"  width="180">
                 <template slot-scope="scope">
                     <!--                        v-show="isShowBtn('dynamicsInfo','资讯动态','Update')"-->
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('messagNotice','平台公告','Update')">编辑</span>
@@ -137,20 +137,6 @@
         },
         created() {
             this.getData()
-        },
-        //解决table 表格缩放错位问题
-        handleResize() {
-            this.$nextTick(()=> {
-                this.$refs.tableref.doLayout();
-            });
-        },
-        mounted() {
-            //解决table 表格缩放错位问题
-            window.addEventListener('resize', this.handleResize);
-        },
-        destroyed() {
-            //解决table 表格缩放错位问题
-             window.removeEventListener("resize", this.handleResize);
         },
     }
 </script>

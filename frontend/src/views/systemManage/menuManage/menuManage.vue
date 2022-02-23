@@ -50,7 +50,6 @@
                 border
                 row-key="id"
                 :data="tableData"
-                ref="tableref"
                 v-loading="loadingPage"
                 style="width: 100%"
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
@@ -78,7 +77,7 @@
                     <el-tag v-else type="danger">禁用</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="200">
+            <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('menuManage','菜单管理','Update')">编辑</span>
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('menuManage','菜单管理','Retrieve')">详情</span>
@@ -183,20 +182,6 @@
         },
         created() {
             this.getData()
-        },
-        //解决table 表格缩放错位问题
-        handleResize() {
-            this.$nextTick(()=> {
-                this.$refs.tableref.doLayout();
-            });
-        },
-        mounted() {
-            //解决table 表格缩放错位问题
-            window.addEventListener('resize', this.handleResize);
-        },
-        destroyed() {
-            //解决table 表格缩放错位问题
-             window.removeEventListener("resize", this.handleResize);
         },
     }
 </script>

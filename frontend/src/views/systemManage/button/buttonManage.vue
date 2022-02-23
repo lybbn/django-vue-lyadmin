@@ -11,7 +11,6 @@
             border
             row-key="id"
             :data="tableData"
-            ref="tableref"
             v-loading="loadingPage"
             style="width: 100%">
             <el-table-column type="index" width="55" align="center" label="序号"></el-table-column>
@@ -19,7 +18,7 @@
             <el-table-column min-width="150" prop="value" label="key值"></el-table-column>
             <el-table-column min-width="150" prop="update_datetime" label="更新时间"></el-table-column>
             <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-            <el-table-column label="操作" fixed="right" width="140">
+            <el-table-column label="操作" width="140">
                 <template slot="header">
                     <el-button type="primary" size="small" @click="handleEdit(null,'新增')" >新增</el-button>
                 </template>
@@ -54,20 +53,6 @@
         },
         created() {
             this.getData()
-        },
-        //解决table 表格缩放错位问题
-        handleResize() {
-            this.$nextTick(()=> {
-                this.$refs.tableref.doLayout();
-            });
-        },
-        mounted() {
-            //解决table 表格缩放错位问题
-            window.addEventListener('resize', this.handleResize);
-        },
-        destroyed() {
-            //解决table 表格缩放错位问题
-             window.removeEventListener("resize", this.handleResize);
         },
         methods: {
             handleEdit(row, flag, menu) {
