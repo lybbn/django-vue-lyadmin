@@ -32,6 +32,10 @@ Quill.register('modules/imageResize', ImageResize)
 //引入font-awesome字体图标
 import 'font-awesome/scss/font-awesome.scss'
 
+//单独页面设置meta标签
+import Meta from 'vue-meta'
+Vue.use(Meta)
+
 // 引入状态管理
 import store from './vuex/store';
 import {isShowBtn} from './utils/util'
