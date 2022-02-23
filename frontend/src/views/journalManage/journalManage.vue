@@ -31,7 +31,7 @@
             <el-table-column min-width="200" prop="request_body" label="请求数据" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="60" prop="response_code" label="响应码" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="200" prop="json_result" label="返回信息" show-overflow-tooltip></el-table-column>
-            <el-table-column min-width="120" prop="modifier_name" label="操作人"></el-table-column>
+            <el-table-column min-width="120" prop="creator_name" label="操作人"></el-table-column>
             <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
             <el-table-column label="操作" fixed="right" width="120">
                 <template slot-scope="scope">

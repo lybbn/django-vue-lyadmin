@@ -17,11 +17,15 @@ def get_request_user(request):
     :param request:
     :return:
     """
-    user: AbstractBaseUser = getattr(request, 'user', None)
+    # user: AbstractBaseUser = getattr(request, 'user', None)
+    try:
+        user = request.user
+    except Exception as e:
+        user = None
     if user and user.is_authenticated:
         return user
     try:
-        user, tokrn = JWTAuthentication().authenticate(request)
+        user, token = JWTAuthentication().authenticate(request)
     except Exception as e:
         pass
     return user or AnonymousUser()

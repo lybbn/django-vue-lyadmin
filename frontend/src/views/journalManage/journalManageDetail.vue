@@ -33,7 +33,7 @@
                 {{journalDetail && journalDetail.json_result ? journalDetail.json_result : ''}}
             </el-form-item>
             <el-form-item label="操作人：">
-                {{journalDetail && journalDetail.modifier_name ? journalDetail.modifier_name : ''}}
+                {{journalDetail && journalDetail.creator_name ? journalDetail.creator_name : ''}}
             </el-form-item>
             <el-form-item label="创建时间：">
                 {{journalDetail && journalDetail.create_datetime ? journalDetail.create_datetime : ''}}
