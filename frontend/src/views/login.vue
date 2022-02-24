@@ -52,12 +52,17 @@
     metaInfo: {
         // title: "页面标题",
         meta: [
-          { name: 'viewport', content: 'width=device-width,initial-scale=1.0,user-scalable=no' },
+          { name: 'viewport', content: 'width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no' },
         ],
       },
     created() {
       this.getuserpassword()
       this.getCaptcha()
+    },
+    beforeRouteLeave(to, form, next){
+        //离开页面去除动态添加该页面meta viewport 手机适配
+        document.querySelector("meta[name='viewport']")["content"] = ""
+        next()
     },
     methods: {
       // 获取用户名密码
