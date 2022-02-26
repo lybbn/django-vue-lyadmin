@@ -65,6 +65,10 @@ export const apiSystemDeptTree = params => ajaxGet({url: `system/dept_tree/`,par
 export const apiSystemRoleIdToMenu = params => ajaxGet({url: `system/role_id_to_menu/`,params})
 export const apiSystemRoleIdToMenuid = (id) => ajaxGet({url: `system/role_id_to_menu/`+id+'/'})
 
+//权限管理
+// 权限管理 -- 保存
+export const apiPermissionSave = params => ajaxPut({url: `system/permission/`,params})
+
 //管理员管理
 export const apiSystemUser = params => ajaxGet({url: `system/user/`,params})
 //管理员管理-新增

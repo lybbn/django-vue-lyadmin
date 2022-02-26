@@ -97,7 +97,7 @@
 </template>
 
 <script>
-    import {apiSystemRole,apiSystemRoleAdd,apiSystemDeptTree,apiSystemRoleIdToMenuid, apiSystemDept,apiSystemRoleEdit} from '@/api/api'
+    import {apiSystemRole,apiSystemRoleAdd,apiSystemDeptTree,apiSystemRoleIdToMenuid, apiSystemDept,apiSystemRoleEdit,apiPermissionSave} from '@/api/api'
     import XEUtils from 'xe-utils'
     export default {
         name: "authorityManage",
@@ -216,7 +216,7 @@
                 this.updateRequest(this.roleObj)
             },
             updateRequest (row) {
-                apiSystemRoleEdit(row).then(res=>{
+                apiPermissionSave(row).then(res=>{
                     if(res.code ==2000) {
                         this.$message.success(res.msg)
                         this.pageRequest()
@@ -267,8 +267,9 @@
             },
             // 获取部门数据
             getDeptData () {
-                apiSystemDeptTree().then((ret) => {
-                    this.deptOptions = ret.data.data
+                apiSystemDept({page:1,limit:9999}).then((ret) => {
+                    // 将列表数据转换为树形数据
+                    this.deptOptions = XEUtils.toArrayTree(res.data.data, { parentKey: 'parent', strict: false })
                 })
             },
             // 角色树被点击

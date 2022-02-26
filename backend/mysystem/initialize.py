@@ -161,8 +161,6 @@ if object.{key}:
              'name': '查询', 'value': 'Search', 'api': '/api/system/button/', 'method': 0},
             {'id': 'd1b3c15f0c664857aeca1d9065d9c499', 'menu_id': '3171db16eda048ae92b16536fc1241b6',
              'name': '查询', 'value': 'Search', 'api': '/api/messages/messagenotice/', 'method': 0},
-            {'id': '1688c5312a2447459e77aaee989207fb', 'menu_id': 'a607e820-36e5-45c0-aabf-85a8e4e2c7ac',
-             'name': '查询', 'value': 'Search', 'api': '/api/system/dept_tree/', 'method': 0},
             {'id': '540c51a0951e4d6091dff92a7822a502', 'menu_id': 'fd29ed011f5e4fcda595977c132dbb7e',
              'name': '查询', 'value': 'Search', 'api': '/api/address/area/area_root/', 'method': 0},
             {'id': '7aef1da4647844e3944a2745cef1bc6d', 'menu_id': 'ae5629946df4497cbec10419e8375dd9',
@@ -240,7 +238,7 @@ if object.{key}:
             {'id': 'e6ce37fdafce465baf5a314a377facfe', 'menu_id': 'fd29ed011f5e4fcda595977c132dbb7e',
              'name': '删除', 'value': 'Delete', 'api': '/api/address/area/{id}/', 'method': 3},
             {'id': '1a0c96cf-09a6-43b4-b08a-0c5b6e2f7bb8', 'menu_id': 'a607e820-36e5-45c0-aabf-85a8e4e2c7ac',
-             'name': '保存', 'value': 'Retrieve', 'api': '/api/system/role/{id}/', 'method': 2},
+             'name': '保存', 'value': 'Retrieve', 'api': '/api/system/permission/{id}/', 'method': 2},
             {'id': '353595a28cb1463b830cfbf79fea60b5', 'menu_id': '244b28685cd14a39a383189981510d4a',
              'name': '禁用', 'value': 'Disable', 'api': '/api/users/users/disableuser/{id}/', 'method': 2},
         ]

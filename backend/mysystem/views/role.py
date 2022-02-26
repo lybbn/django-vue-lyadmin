@@ -92,3 +92,19 @@ class RoleViewSet(CustomModelViewSet):
         instance = self.get_object()
         serializer = RoleSerializer(instance)
         return SuccessResponse(data=serializer.data)
+
+class PermissionViewSet(CustomModelViewSet):
+    """
+    角色管理-权限管理接口
+    list:查询
+    create:新增
+    update:修改
+    retrieve:单例
+    destroy:删除
+    """
+    queryset = Role.objects.all()
+    serializer_class = RoleSerializer
+    create_serializer_class = RoleCreateUpdateSerializer
+    update_serializer_class = RoleCreateUpdateSerializer
+    extra_filter_backends = []
+    filter_fields = ['status']
