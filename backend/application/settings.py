@@ -117,7 +117,7 @@ DATABASES = {
         'PASSWORD': DATABASE_PASSWORD,
         'HOST': DATABASE_HOST,
         'PORT': DATABASE_PORT,
-        'CONN_MAX_AGE':DATABASE_CONN_MAX_AG,
+        'CONN_MAX_AGE':DATABASE_CONN_MAX_AGE,
         'OPTIONS': {
                     'charset':DATABASE_CHARSET,
                     "init_command": "SET default_storage_engine='INNODB'" #innodb才支持事务
