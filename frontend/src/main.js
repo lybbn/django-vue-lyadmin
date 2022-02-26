@@ -52,12 +52,20 @@ import '@/utils/directive.js'
 Object.keys(custom).forEach(key => {
   Vue.filter(key, custom[key])
 })
-let to={},from={}
+// 进度条
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+// 简单配置
+NProgress.inc(0.4)
+NProgress.configure({ easing: 'ease', speed: 500, showSpinner: true })
 /**
  * 路由拦截
  * 权限验证
  */
+let to={},from={}
 router.beforeEach((to, from, next) => {
+  // 进度条
+  NProgress.start()
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
     let userId = sessionStorage.getItem('userId') ? sessionStorage.getItem('userId') : false
     if (userId) { // 通过vuex state获取当前的token是否存在
@@ -78,6 +86,10 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+})
+//在路由跳转后用NProgress.done()标记下结束
+router.afterEach(() => {
+  NProgress.done()
 })
 const $vue=new Vue({
   router,
