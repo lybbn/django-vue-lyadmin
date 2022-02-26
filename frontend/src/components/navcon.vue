@@ -14,7 +14,7 @@
     <div class="lyheader-right-menu">
       <!--全屏显示-->
       <div>
-        <span style="padding: 12px 12px;" @click="fullScreen">
+        <span style="padding: 12px 12px;cursor: pointer;" @click="fullScreen">
           <el-tooltip style="margin: 4px;text-align: center;" effect="dark" content="全屏" placement="bottom">
             <i class="fa fa-arrows-alt" style="font-size: 16px;color: white;"></i>
           </el-tooltip>
