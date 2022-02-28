@@ -26,11 +26,11 @@ from django.utils.decorators import method_decorator
 def ly_api_security(func):
     def inner(request,*args,**kwargs):
         server_float_time = time.time()
-        auth_header = request.META.get('HTTP_AUTH_API')
-        #332d3ddklllskkdwwwiissswewsw|1632392265.7424471|13234
-        if not auth_header:
-            return ErrorResponse(msg='缺少认证头部信息')
         try:
+            auth_header = request.META.get('HTTP_AUTH_API')
+            # 332d3ddklllskkdwwwiissswewsw|1632392265.7424471|13234
+            if not auth_header:
+                return ErrorResponse(msg='缺少认证头部信息')
             client_md5,client_time,random_str = auth_header.split('|',maxsplit=2)
         except Exception as e:
             return ErrorResponse(msg="接口安全校验值错误")

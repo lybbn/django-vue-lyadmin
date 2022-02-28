@@ -66,8 +66,8 @@ let to={},from={}
 router.beforeEach((to, from, next) => {
   // 进度条
   NProgress.start()
+  let userId = sessionStorage.getItem('userId') ? sessionStorage.getItem('userId') : false
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-    let userId = sessionStorage.getItem('userId') ? sessionStorage.getItem('userId') : false
     if (userId) { // 通过vuex state获取当前的token是否存在
       let menuList = JSON.parse(sessionStorage.getItem('menuList'))
       if(menuList.filter(item=>item.url == to.name).length > 0 || (to.name =='buttonConfig' &&  menuList.filter(item=>item.url=='menuManage').length >0) || (to.name =='buttonManage' &&  menuList.filter(item=>item.url=='menuManage').length >0)) {
@@ -84,7 +84,17 @@ router.beforeEach((to, from, next) => {
         })
     }
   } else {
-    next()
+    if(to.path=="/login" ||to.path=="/"){
+      if(userId){
+        next({
+          path: '/adminManage'
+        })
+      }else{
+        next()
+      }
+    }else{
+      next()
+    }
   }
 })
 //在路由跳转后用NProgress.done()标记下结束
