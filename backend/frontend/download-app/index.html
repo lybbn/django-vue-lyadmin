@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% load i18n static %}
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="{% static 'images/favicon.2554488.lllxs2download-app.ico' %}" type="image/x-icon" />
+    <title>APP下载</title>
+    <link rel="stylesheet" href="{% static 'css/index.2554488.lllxs2download-app.css' %}" />
+  </head>
+  <body>
+    <div class="page">
+      <!-- 丝带 -->
+      <div class="pattern left">
+        <img src="{% static 'images/download_pattern_left.2554488.lllxs2download-app.png' %}" />
+      </div>
+      <div class="pattern right">
+        <img src="{% static 'images/download_pattern_right.2554488.lllxs2download-app.png' %}" />
+      </div>
+      <!-- 内容 -->
+      <div class="wrap">
+        <img class="logo" src="{% static 'images/icon_logo.2554488.lllxs2download-app.png' %}" />
+        <div class="platform">
+          <img class="icon-env ios" src="{% static 'images/icon_ios_1.2554488.lllxs2download-app.png' %}" />
+          <img class="icon-env android" src="{% static 'images/icon_android_1.2554488.lllxs2download-app.png' %}" />
+          <span class="app-name">APP下载</span>
+        </div>
+        <div class="download-button">点击下载</div>
+{#        <div class="open-tips">已安装?立即打开</div>#}
+        <div class="browser-tips">
+          温馨提示：请在移动端（手机）浏览器打开此页面
+        </div>
+      </div>
+      <!-- 提示信息@即将开放 -->
+      <div class="dialog">
+        <div class="dialog-content">即将开放</div>
+      </div>
+      <!-- 提示信息@微信环境 -->
+      <img class="tips" src="{% static 'images/tips.2554488.lllxs2download-app.png' %}" />
+    </div>
+
+    <script src="{% static 'js/utils.2554488.lllxs2download-app.js' %}"></script>
+    <script src="{% static 'js/index.2554488.lllxs2download-app.js' %}"></script>
+  </body>
+</html>

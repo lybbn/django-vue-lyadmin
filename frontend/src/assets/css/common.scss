@@ -1,0 +1,384 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, menu, nav, output, ruby, section, summary, time, mark, audio, video, input {margin: 0;padding: 0;border: 0;font-size: 100%;font-weight: normal;vertical-align: baseline;}
+article, aside, details, figcaption, figure, footer, header, menu, nav, section {display: block;}
+body {line-height: 1;height: 100%;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after, q:before, q:after {content: none;}
+
+a {
+  color: #7e8c8d;
+  text-decoration: none;
+  -webkit-backface-visibility: hidden;
+}
+
+li {
+  list-style: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 15px;
+  background-color: rgba(125, 125, 125, 0.7);
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 15px;
+  background-color: rgba(125, 125, 125, 0.7);
+  -webkit-border-radius: 6px;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #f5f6fa;
+}
+
+body {
+  -webkit-text-size-adjust: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/*显示省略号*/
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.el-pagination .el-select .el-input .el-input__inner {
+  padding-right: 25px;
+  border-radius: 3px;
+  width: 100px;
+}
+
+input, textarea {
+  outline: none;
+  resize: none;
+  text-indent: 10px;
+  color: #9E9EA0;
+}
+
+::-webkit-input-placeholder {
+  font-size: 10px;
+  color: #9E9EA0; /* 使用webkit内核的浏览器 */
+}
+
+:-moz-placeholder {
+  font-size: 10px;
+  color: #9E9EA0;
+}
+
+/* Firefox版本4-18 */
+::-moz-placeholder {
+  font-size: 10px;
+  color: #9E9EA0;
+}
+
+/* Firefox版本19+ */
+:-ms-input-placeholder {
+  font-size: 10px;
+  color: #9E9EA0;
+}
+.el-radio {
+  margin-right: 10px !important;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  font-size: 12px!important;
+
+}
+::-moz-placeholder { /* Firefox 19+ */
+  font-size: 12px!important;
+
+}
+:-ms-input-placeholder { /* IE 10+ */
+  font-size: 12px!important;
+
+}
+:-moz-placeholder {
+  font-size: 12px!important;
+
+}
+*{
+  font-family:"\5FAE\8F6F\96C5\9ED1","Microsoft Yahei","Hiragino Sans GB",tahoma,arial,"\5B8B\4F53"  ;
+}
+
+.submenu.el-menu--horizontal>.el-submenu .el-submenu__title{
+  text-align: center;
+}
+
+.textDecorationUnderL{
+  text-decoration: underline;
+  color: #409EFF;
+  cursor: pointer
+}
+.tableSelect{
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 0 5px #cccccc;
+  margin-bottom: 10px;
+  .el-form-item{
+    margin: 5px !important;
+  }
+}
+.table-operate-btn{
+  color: #409eff;
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 13px;
+  &.color99{
+    color: #999999;
+    cursor: default;
+  }
+}
+
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 128px;
+  height: 128px;
+  line-height: 128px;
+  text-align: center;
+}
+.avatar {
+  width: 128px;
+  height: 128px;
+  display: block;
+}
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
+
+
+.ql-toolbar.ql-snow + .ql-container.ql-snow{
+  min-height: 400px;
+  height:calc(100vh - 640px)
+}
+.ql-snow .ql-picker-label{
+  display: flex;
+}
+.editor {
+  line-height: normal !important;
+  height: 500px;
+}
+.ql-snow .ql-tooltip[data-mode="link"]::before {
+  content: "请输入链接地址:";
+}
+.ql-snow .ql-tooltip.ql-editing a.ql-action::after {
+  border-right: 0px;
+  content: "保存";
+  padding-right: 0px;
+}
+
+.ql-snow .ql-tooltip[data-mode="video"]::before {
+  content: "请输入视频地址:";
+}
+
+/*.ql-snow .ql-picker.ql-size .ql-picker-label::before,*/
+/*.ql-snow .ql-picker.ql-size .ql-picker-item::before {*/
+/*content: "14px";*/
+/*}*/
+/*.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="small"]::before,*/
+/*.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="small"]::before {*/
+/*content: "10px";*/
+/*}*/
+/*.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="large"]::before,*/
+/*.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="large"]::before {*/
+/*content: "18px";*/
+/*}*/
+/*.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before,*/
+/*.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before {*/
+/*content: "32px";*/
+/*}*/
+.ql-editor .ql-size-12px {
+  font-size: 12px;
+}
+.ql-editor .ql-size-14px {
+  font-size: 14px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: '16px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="12px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before {
+  content: '12px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="14px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
+  content: '14px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="16px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
+  content: '16px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="18px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
+  content: '18px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="20px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before {
+  content: '20px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="22px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="22px"]::before {
+  content: '22px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="24px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before {
+  content: '24px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="26px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="26px"]::before {
+  content: '26px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="32px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="32px"]::before {
+  content: '32px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="48px"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="48px"]::before {
+  content: '48px';
+}
+
+
+.ql-snow .ql-picker.ql-header .ql-picker-label::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item::before {
+  content: "文本";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+  content: "标题1";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+  content: "标题2";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+  content: "标题3";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+  content: "标题4";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
+  content: "标题5";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
+  content: "标题6";
+}
+
+.ql-editor .ql-font-Microsoft-YaHei {
+  font-family: "Microsoft YaHei";
+}
+.ql-editor .ql-font-SimSun {
+  font-family: "SimSun";
+}
+.ql-editor .ql-font-SimHei {
+  font-family: "SimHei";
+}
+.ql-editor .ql-font-KaiTi {
+  font-family: "KaiTi";
+}
+.ql-editor .ql-font-Arial {
+  font-family: "Arial";
+}
+.ql-editor .Times-New-Roman {
+  font-family: "Times New Roman";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+  content: '微软雅黑';
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=Microsoft-YaHei]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=Microsoft-YaHei]::before {
+  content: "微软雅黑";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=SimSun]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=SimSun]::before {
+  content: "宋体";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=SimHei]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=SimHei]::before {
+  content: "黑体";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=KaiTi]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=KaiTi]::before {
+  content: "楷体";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=Arial]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=Arial]::before {
+  content: "Arial";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=Times-New-Roman]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=Times-New-Roman]::before {
+  content: "Times New Roman";
+}
+/*.ql-snow .ql-picker.ql-font .ql-picker-label::before,*/
+/*.ql-snow .ql-picker.ql-font .ql-picker-item::before {*/
+/*content: "标准字体";*/
+/*}*/
+/*.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="serif"]::before,*/
+/*.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before {*/
+/*content: "衬线字体";*/
+/*}*/
+/*.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,*/
+/*.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {*/
+/*content: "等宽字体";*/
+/*}*/
+/*!* 编辑器内部出现滚动条 *!*/
+/*.ql-container{*/
+/*overflow-y:auto;*/
+/*height:8rem!important;*/
+/*}*/
+/*!*滚动条整体样式*!*/
+/*.ql-container ::-webkit-scrollbar{*/
+/*width: 10px;!*竖向滚动条的宽度*!*/
+/*height: 10px;!*横向滚动条的高度*!*/
+/*}*/
+/*.ql-container ::-webkit-scrollbar-thumb{!*滚动条里面的小方块*!*/
+/*background: #666666;*/
+/*border-radius: 5px;*/
+/*}*/
+/*.ql-container ::-webkit-scrollbar-track{!*滚动条轨道的样式*!*/
+/*background: #ccc;*/
+/*border-radius: 5px;*/
+/*}*/
+
+
+

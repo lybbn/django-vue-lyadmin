@@ -1,0 +1,93 @@
+version: "3"
+services:
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    # privileged: true   #解决nginx得文件调用权限的问题
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - ./docker_env/nginx/logs:/var/log/nginx
+      - ./docker_env/nginx/my.conf:/etc/nginx/conf.d/my.conf
+    networks:
+      network:
+        ipv4_address: 10.10.10.12
+
+  db:
+    image: mysql:5.7
+    container_name: db
+    privileged: true
+    restart: always
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root" #输入自己的密码
+      MYSQL_DATABASE: "lyadmin_db"
+      TZ: Asia/Shanghai
+    command:
+      --wait_timeout=31536000
+      --interactive_timeout=31536000
+      --max_connections=1000
+      --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./docker_env/mysql/data:/var/lib/mysql
+      - ./docker_env/mysql/conf.d:/etc/mysql/conf.d"
+      - ./docker_env/mysql/logs:/logs
+    networks:
+      network:
+        ipv4_address: 10.10.10.13
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
+    volumes:
+      - ./docker_env/redis/data:/data
+      - ./docker_env/redis/redis.conf:/etc/redis/redis.conf
+    command: redis-server /etc/redis/redis.conf
+    networks:
+      network:
+        ipv4_address: 10.10.10.14
+
+  django:
+    build:
+      context: .
+      dockerfile: ./docker_env/django/Dockerfile
+    container_name: django
+    working_dir: /backend
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    command: daphne -b 0.0.0.0 -p 8000 --proxy-headers application.asgi:application
+    restart: always
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_HOST: db
+      TZ: Asia/Shanghai
+    volumes:
+      - ./backend:/backend
+      - ./docker_env/django/logs:/var/log
+    networks:
+      network:
+        ipv4_address: 10.10.10.11
+
+networks:
+  network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.10.10.0/24

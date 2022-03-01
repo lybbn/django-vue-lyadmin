@@ -1,0 +1,16 @@
+.idea
+logs
+# virtualenv
+/venv/
+*.log
+*.pot
+*.py[cod]
+__pycache__
+.env
+.venv
+#项目日志和上传资源目录
+/logs/
+#/media/
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
