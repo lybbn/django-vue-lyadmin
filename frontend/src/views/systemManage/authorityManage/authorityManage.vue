@@ -267,7 +267,7 @@
             },
             // 获取部门数据
             getDeptData () {
-                apiSystemDept({page:1,limit:9999}).then((ret) => {
+                apiSystemDept({page:1,limit:9999}).then((res) => {
                     // 将列表数据转换为树形数据
                     this.deptOptions = XEUtils.toArrayTree(res.data.data, { parentKey: 'parent', strict: false })
                 })
