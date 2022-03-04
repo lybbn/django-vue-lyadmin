@@ -16,7 +16,7 @@
         </el-input>
       </el-form-item>
       <el-checkbox class="remember" v-model="rememberpassword">记住密码</el-checkbox>
-      <el-form-item style="width:100%;margin-top: 40px">
+      <el-form-item style="width:100%;margin-top: 10px">
         <el-button type="primary" :loading="loadingLg" style="width:100%;" @click="submitForm('ruleForm')">登录</el-button>
       </el-form-item>
     </el-form>
@@ -193,6 +193,7 @@
                 await sessionStorage.setItem('refresh', res.data.refresh)
                 this.getMenu()
               } else {
+                this.getCaptcha()
                 this.$message.error(res.msg)
                 return false
               }
