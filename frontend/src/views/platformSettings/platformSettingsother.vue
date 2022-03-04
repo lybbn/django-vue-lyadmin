@@ -109,7 +109,7 @@
                 })
             },
             changeStatus(row) {
-                console.log(row,'row----')
+                // console.log(row,'row----')
             },
             addModule() {
                 this.$refs.addModuleFlag.addModuleFn(null,'新增')

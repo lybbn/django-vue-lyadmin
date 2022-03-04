@@ -58,8 +58,8 @@
         })
           .then(() => {
             this.$store.commit('logout', 'false')
-            this.$router.push({path: '/login'})
             sessionStorage.clear()
+            this.$router.push({path: '/login'})
             this.$message.success('已退出登录!')
           })
           .catch(() => {

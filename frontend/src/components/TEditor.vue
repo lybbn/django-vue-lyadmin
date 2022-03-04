@@ -161,7 +161,6 @@ export default {
           const uploadurl = url + 'platformsettings/uploadplatformimg/'
               // 图片上传
               axios.post(uploadurl, params, config).then(res => {
-                  console.log(res)
                 if (res.data.code == 2000) {
                     //这里很重要，你图片上传成功后，img的src需要在这里添加，res.path就是你服务器返回的图片链接。
                       let imgpath=''

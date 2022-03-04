@@ -104,7 +104,7 @@
                 }
             },
             submitData() {
-                console.log(this.formData,'this.formData------')
+                // console.log(this.formData,'this.formData------')
                 let param = {
                     ...this.formData
                 }

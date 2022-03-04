@@ -101,7 +101,7 @@ Vue.directive('dialogDrag', {
       const dialogHeaderEl = el.querySelector('.el-dialog__header')
       //弹窗
       const dragDom = el.querySelector('.el-dialog')
-      console.log(dragDom.style)
+      // console.log(dragDom.style)
       // dragBody.style.height = dragDom.clientHeight - 102 + 'px'
       //给弹窗加上overflow auto；不然缩小时框内的标签可能超出dialog；
       dragDom.style.overflow = 'auto'

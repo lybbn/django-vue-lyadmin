@@ -68,7 +68,7 @@ export default {
         tabs.forEach((tab, index) => {
           if (tab.name === targetName) {
             let nextTab = tabs[index + 1] || tabs[index - 1];
-            console.log(nextTab);
+            // console.log(nextTab);
             if (nextTab) {
               activeName = nextTab.name;
             }

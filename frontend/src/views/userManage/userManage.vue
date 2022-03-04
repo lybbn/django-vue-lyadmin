@@ -105,7 +105,7 @@
         },
         methods:{
             changeStatus(row) {
-                console.log(row,'row----')
+                // console.log(row,'row----')
             },
             addAdmin() {
                 this.$refs.addUserFlag.addUserFn(null,'新增')
