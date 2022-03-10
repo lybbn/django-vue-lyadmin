@@ -27,6 +27,20 @@ class SuccessResponse(Response):
         }
         super().__init__(std_data, status, template_name, headers, exception, content_type)
 
+class DetailResponse(Response):
+    """
+    不包含分页信息的接口返回,主要用于单条数据查询
+    (1)默认code返回2000, 不支持指定其他返回码
+    """
+
+    def __init__(self, data=None, msg='success', status=None, template_name=None, headers=None, exception=False,
+                 content_type=None,):
+        std_data = {
+            "code": 2000,
+            "data": data,
+            "msg": msg
+        }
+        super().__init__(std_data, status, template_name, headers, exception, content_type)
 
 class ErrorResponse(Response):
     """

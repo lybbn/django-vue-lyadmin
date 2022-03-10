@@ -455,7 +455,6 @@ CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge' # 加减乘除验证�
 # ================================================= #
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 API_LOG_ENABLE = True#全局控制日志记录
-# API_LOG_METHODS = 'ALL' # ['POST', 'DELETE']
 API_LOG_METHODS = ['POST', 'UPDATE', 'DELETE', 'PUT']  # ['POST', 'DELETE']
 #日志记录显示的请求模块中文名映射
 API_MODEL_MAP = {
@@ -466,9 +465,4 @@ API_MODEL_MAP = {
 TABLE_PREFIX = "lyadmin_"
 DJANGO_CELERY_BEAT_TZ_AWARE = False
 CELERY_TIMEZONE = 'Asia/Shanghai'  # celery 时区问题
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

@@ -76,9 +76,10 @@
                     show-checkbox
                     :expand-on-click-node="false"
                     :default-checked-keys="menuCheckedKeys"
-                    :check-on-click-node="true"
+                    :check-on-click-node="false"
                     :check-strictly="true"
-                    empty-text="请先选择角色">
+                    empty-text="请先选择角色"
+                    @check-change="handleCheckClick">
                   <span class="custom-tree-node" slot-scope="{ node, data }">
                     <div class="menu-data">
                       <div style="margin-right: 50px">{{ data.name }}</div>
@@ -285,6 +286,24 @@
                 if (value !== 4) {
                     // this.$refs.dept.setCheckedKeys([]);
                 }
+            },
+            /**
+             * 菜单树点击,全选权限部分数据
+             * @param data
+             */
+            handleCheckClick(data, checked) {
+              const {
+                menuPermission,
+                children
+              } = data
+              for (let item of menuPermission) {
+                this.$set(item, 'checked', checked)
+              }
+              if (children) {
+                for (let item of children) {
+                  this.$refs.menuTree.setChecked(item.id, checked)
+                }
+              }
             },
 
         },
