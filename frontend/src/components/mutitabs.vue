@@ -5,13 +5,24 @@
       type="card"
       closable
       @tab-remove="removeTab"
-      @tab-click="tabClick($event)">
+      @tab-click="tabClick($event)"
+      @contextmenu.prevent.native="openContextMenu($event)">
       <el-tab-pane
         :key="item.name"
         v-for="item in editableTabs"
         :label="item.title"
         :name="item.name"></el-tab-pane>
     </el-tabs>
+    <ul
+        v-show="contextMenuVisible"
+        :style="{left:left+'px',top:top+'px'}"
+        class="contextmenu">
+        <li @click="closeAllTabs">关闭所有</li>
+        <li @click="closeOtherTabs('left')">关闭左边</li>
+        <li @click="closeOtherTabs('right')">关闭右边</li>
+        <li @click="closeOtherTabs('other')">关闭其他</li>
+        <li @click="closeContextMenu()">取消操作</li>
+      </ul>
     <keep-alive>
       <router-view v-if="$route.meta.isActive"></router-view>
     </keep-alive>
@@ -24,7 +35,12 @@ export default {
   name: "mutitabs",
   components: {},
   data() {
-    return {};
+    return {
+      //右键自定义菜单
+      contextMenuVisible:false,
+      left:0,
+      top:0,
+    };
   },
   mounted() {
     //刷新加载sessionStorage存着地址
@@ -64,6 +80,10 @@ export default {
     removeTab(targetName) {
       let tabs = this.editableTabs;
       let activeName = this.editableTabsValue;
+      //只有一个标签不允许关闭
+      if(tabs.length === 1){
+        return
+      }
       if (activeName === targetName) {
         tabs.forEach((tab, index) => {
           if (tab.name === targetName) {
@@ -89,8 +109,35 @@ export default {
       }
     },
     tabClick(event) {
+      //关闭自定义菜单
+      this.closeContextMenu()
       //写一个点击tabs跳转
       this.$router.push({ name: event.name });
+    },
+    //自定义菜单
+    openContextMenu(e) {
+      var obj =  e.srcElement ? e.srcElement : e.target;
+      if (obj.id) {
+        let currentContextTabId = obj.id.split("-")[1];
+        this.contextMenuVisible = true;
+        this.$store.commit("saveCurContextTabId", currentContextTabId);
+        this.left = e.clientX;
+        this.top = e.clientY + 13;
+      }
+    },
+    // 关闭所有标签页
+    closeAllTabs() {
+      this.$store.commit("closeAllTabs");
+      this.contextMenuVisible = false;
+    },
+    // 关闭其它标签页
+    closeOtherTabs(par) {
+      this.$store.commit("closeOtherTabs", par);
+      this.contextMenuVisible = false;
+    },
+    // 关闭contextMenu
+    closeContextMenu() {
+      this.contextMenuVisible = false;
     },
   },
 };
@@ -104,13 +151,44 @@ export default {
   }
   /*去除顶部线*/
   .myeltas2 .el-tabs__header {
-    border: none;
-    margin: 0 0 5px;
+    /*border: none;*/
+    margin: 0 0 8px;
   }
   .myeltas2 .el-tabs__nav{
     /*background-color: lightgrey;*/
     background-color: white;
+    border: none;
   }
-
+  /*字体大小*/
+  .myeltas2  .el-tabs__item{
+    font-size: 13px;
+    color: #808695;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 15px;
+  }
+  /*自定义右键菜单*/
+  .contextmenu {
+    width: 100px;
+    margin: 0;
+    border: 1px solid #ccc;
+    background: #fff;
+    z-index: 3000;
+    position: absolute;
+    list-style-type: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.2);
+  }
+  .contextmenu li {
+    margin: 0;
+    padding: 7px 16px;
+  }
+  .contextmenu li:hover {
+    background: #f2f2f2;
+    cursor: pointer;
+  }
 
 </style>

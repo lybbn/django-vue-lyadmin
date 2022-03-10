@@ -11,7 +11,7 @@
             </el-form>
         </div>
         <div class="table">
-            <el-table size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
+            <el-table size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
 <!--                <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>-->
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <!--<el-table-column min-width="120" prop="name" label="图片">-->

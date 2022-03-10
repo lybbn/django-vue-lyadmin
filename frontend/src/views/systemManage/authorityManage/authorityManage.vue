@@ -19,7 +19,7 @@
                 >
                 </el-tree>
             </div>
-            <div class="auth-item" style="height: calc(100vh - 400px);">
+            <div class="auth-item" style="height: calc(100vh - 414px);">
                 <div class="auth-title">
                     数据授权：
                     <el-tooltip
@@ -56,7 +56,7 @@
 
             </div>
         </div>
-        <div class="auth-item" style="height: calc(100vh - 100px);">
+        <div class="auth-item" style="height: calc(100vh - 114px);">
             <div class="auth-title">
                 菜单授权：
                 <el-tooltip

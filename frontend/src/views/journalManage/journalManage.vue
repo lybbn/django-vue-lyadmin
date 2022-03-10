@@ -21,7 +21,7 @@
                 <el-form-item label=""><el-button size="small" @click="deleteAlllogs" type="danger" v-show="isShowBtn('journalManage','操作日志','Delete')">全部清空</el-button></el-form-item>
             </el-form>
         </div>
-        <el-table  size="small" height="calc(100vh - 260px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
+        <el-table  size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
             <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
             <el-table-column min-width="90" prop="request_modular" label="请求模块" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="120" prop="request_path" label="请求地址" show-overflow-tooltip></el-table-column>

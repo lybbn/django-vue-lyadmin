@@ -7,7 +7,7 @@
 
         <el-table
             size="small"
-            height="calc(100vh - 140px)"
+            height="calc(100vh - 145px)"
             border
             row-key="id"
             :data="tableData"

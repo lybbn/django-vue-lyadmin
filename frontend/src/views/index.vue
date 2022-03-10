@@ -95,7 +95,7 @@
     -ms-flex-preferred-size: auto;
     flex-basis: auto;
     overflow: auto;
-    padding: 20px 20px 0 20px;
+    padding: 8px 20px 0 20px;
     width: 100%;
   }
   .index-header{

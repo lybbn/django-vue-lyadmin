@@ -14,10 +14,10 @@ export default new Vuex.Store({
     state: {
         user: false,
         //mutitabs
-        tabsPage: [],
-        TabsValue: '',
+        tabsPage: sessionStorage.getItem('tabsPage')||[{"title":"管理员管理","name":"adminManage"}],//默认显示的页
+        TabsValue: sessionStorage.getItem('TabsValue')||'adminManage',//默认选中显示的标签页
         //控制是否支持多选项卡
-        isMultiTabs:false
+        isMultiTabs:true
 
     },
     mutations: {
@@ -76,7 +76,44 @@ export default new Vuex.Store({
             // 跳转
             router.push({ name: obj.attributes.url })
           }
-        }
+        },
+                //自定义右键菜单
+        // 保存右键点击tab的id
+        saveCurContextTabId(state, curContextTabId) {
+          state.TabsValue = curContextTabId
+        },
+        // 关闭所有标签
+        closeAllTabs(state) {
+          state.tabsPage = [{"title":"管理员管理","name":"adminManage"}];
+          router.push({ name: "adminManage"});
+        },
+        // 关闭其它标签页
+        closeOtherTabs(state, par) {
+          let tabs = state.tabsPage;
+          let length = tabs.length;
+          let curContextTabId = state.TabsValue;
+          let id; // 右键点击时的tab在整个tabs数组中的id
+          tabs.forEach((tab, index) => {
+            if (tab.name == curContextTabId) {
+                id = index
+                return false
+            }
+          })
+          if (par == "left") {
+            if (id > 0) {
+              state.tabsPage = state.tabsPage.slice(id, length)
+            }
+          }
+          if (par == "right") {
+            if (id > 0) {
+              state.tabsPage = state.tabsPage.slice(0, id + 1)
+            }
+          }
+          if (par == "other") {
+              state.tabsPage = [tabs[id]]
+              state.TabsValue = tabs[id].name
+          }
+        },
     },
     actions: {
         // 注册方法

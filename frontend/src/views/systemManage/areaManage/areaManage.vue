@@ -24,7 +24,7 @@
         <div class="table">
             <el-table
                 size="small"
-                height="calc(100vh - 190px)"
+                height="calc(100vh - 210px)"
                 border
                 row-key="id"
                 :data="tableData"
