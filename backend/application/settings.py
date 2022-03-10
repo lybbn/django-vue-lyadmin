@@ -459,7 +459,8 @@ API_LOG_METHODS = ['POST', 'UPDATE', 'DELETE', 'PUT']  # ['POST', 'DELETE']
 #日志记录显示的请求模块中文名映射
 API_MODEL_MAP = {
     "/token/": "登录模块",
-    "/api/token/": "登录模块"
+    "/api/token/": "登录模块",
+    "/api/system/operation_log/deletealllogs/": "日志清除",
 }
 # 表前缀
 TABLE_PREFIX = "lyadmin_"
