@@ -77,7 +77,13 @@ export default new Vuex.Store({
             router.push({ name: obj.attributes.url })
           }
         },
-                //自定义右键菜单
+        //自定义右键菜单
+        //自定义右键菜单
+        //切换tab菜单
+        switchtab(state,curContextTabName){
+          state.TabsValue = curContextTabName
+          router.push({ name: curContextTabName });
+        },
         // 保存右键点击tab的id
         saveCurContextTabId(state, curContextTabId) {
           state.TabsValue = curContextTabId
@@ -101,17 +107,21 @@ export default new Vuex.Store({
           })
           if (par == "left") {
             if (id > 0) {
-              state.tabsPage = state.tabsPage.slice(id, length)
+                state.tabsPage = state.tabsPage.slice(id, length)
+                sessionStorage.setItem('tabsPage', JSON.stringify(state.tabsPage))
             }
           }
           if (par == "right") {
             if (id > 0) {
-              state.tabsPage = state.tabsPage.slice(0, id + 1)
+                state.tabsPage = state.tabsPage.slice(0, id + 1)
+                sessionStorage.setItem('tabsPage', JSON.stringify(state.tabsPage))
             }
           }
           if (par == "other") {
               state.tabsPage = [tabs[id]]
               state.TabsValue = tabs[id].name
+              sessionStorage.setItem('tabsPage', JSON.stringify(state.tabsPage))
+              sessionStorage.setItem('TabsValue', state.TabsValue)
           }
         },
     },

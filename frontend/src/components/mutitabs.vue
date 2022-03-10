@@ -109,10 +109,10 @@ export default {
       }
     },
     tabClick(event) {
-      //关闭自定义菜单
-      this.closeContextMenu()
-      //写一个点击tabs跳转
-      this.$router.push({ name: event.name });
+        //关闭自定义菜单
+        this.closeContextMenu()
+        //写一个点击tabs跳转
+        this.$store.commit("switchtab",event.name)
     },
     //自定义菜单
     openContextMenu(e) {
