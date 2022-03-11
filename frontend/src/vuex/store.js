@@ -106,13 +106,13 @@ export default new Vuex.Store({
             }
           })
           if (par == "left") {
-            if (id > 0) {
+            if (id >= 0) {
                 state.tabsPage = state.tabsPage.slice(id, length)
                 sessionStorage.setItem('tabsPage', JSON.stringify(state.tabsPage))
             }
           }
           if (par == "right") {
-            if (id > 0) {
+            if (id >= 0) {
                 state.tabsPage = state.tabsPage.slice(0, id + 1)
                 sessionStorage.setItem('tabsPage', JSON.stringify(state.tabsPage))
             }
