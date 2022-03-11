@@ -13,6 +13,17 @@ import hashlib
 #手机号验证正则
 REGEX_MOBILE = "^1[356789]\d{9}$|^147\d{8}$|^176\d{8}$"
 
+#生成随机得指定位数字母+数字字符串
+def getRandomSet(bits):
+    """
+    bits:数字是几就生成几位
+    """
+    num_set = [chr(i) for i in range(48,58)]
+    char_set = [chr(i) for i in range(97,123)]
+    total_set = num_set + char_set
+    value_set = "".join(random.sample(total_set, bits))
+    return value_set
+
 def hide4mobile(mobile):
     """
     隐藏手机号中间四位
