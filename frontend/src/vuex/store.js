@@ -81,8 +81,9 @@ export default new Vuex.Store({
         //自定义右键菜单
         //切换tab菜单
         switchtab(state,curContextTabName){
-          state.TabsValue = curContextTabName
-          router.push({ name: curContextTabName });
+            state.TabsValue = curContextTabName
+            sessionStorage.setItem('TabsValue', curContextTabName)
+            router.push({ name: curContextTabName });
         },
         // 保存右键点击tab的id
         saveCurContextTabId(state, curContextTabId) {
