@@ -4,6 +4,7 @@
         :visible.sync="dialogVisible"
         width="1000px"
         center
+        top="2%"
         v-dialogDrag
         :close-on-click-modal="false"
         :before-close="handleClose">
