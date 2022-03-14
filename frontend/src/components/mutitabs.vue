@@ -167,6 +167,11 @@ export default {
     line-height: 30px;
     padding: 0 15px;
   }
+  /*标签左右箭头*/
+  .myeltas2 .el-tabs__nav-next, .el-tabs__nav-prev {
+    line-height: 30px;
+    font-size: 17px;
+  }
   /*自定义右键菜单*/
   .contextmenu {
     width: 100px;
