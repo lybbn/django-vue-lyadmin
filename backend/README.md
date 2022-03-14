@@ -17,12 +17,12 @@
 4. 安装依赖环境
 	pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 5. 执行迁移命令：
-	python3 manage.py makemigrations
-	python3 manage.py migrate
+	python manage.py makemigrations
+	python manage.py migrate
 6. 初始化数据
-	python3 manage.py init
+	python manage.py init
 7. 启动项目
-	python3 manage.py runserver 127.0.0.1:8000
+	python manage.py runserver 127.0.0.1:8000
     或使用 daphne :
     daphne -b 0.0.0.0 -p 8000 --proxy-headers application.asgi:application
 初始账号：superadmin 密码：123456
