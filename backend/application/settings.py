@@ -120,7 +120,7 @@ DATABASES = {
         'CONN_MAX_AGE':DATABASE_CONN_MAX_AGE,
         'OPTIONS': {
                     'charset':DATABASE_CHARSET,
-                    "init_command": "SET default_storage_engine='INNODB'" #innodb才支持事务
+                    'init_command': 'SET default_storage_engine=INNODB', #innodb才支持事务
                 }
     }
 }
