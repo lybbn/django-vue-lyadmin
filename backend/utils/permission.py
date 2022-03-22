@@ -37,6 +37,7 @@ class CustomPermission(BasePermission):
         #演示模式判断
         if IS_DEMO and not request.method in ['GET', 'OPTIONS']:
             raise ValidationError('演示模式，不允许操作!', 400)
+            return False
 
         # 对ViewSet下的def方法进行权限判断
         # 当权限为空时,则可以访问
