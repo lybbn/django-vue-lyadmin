@@ -74,7 +74,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'utils.middleware.ApiLoggingMiddleware',#自定义日志中间件
-    'utils.redirect_middleware.RedirectResponseMiddleWare',#关闭前端接口访问重定向
 ]
 
 
@@ -461,8 +460,7 @@ API_LOG_METHODS = ['POST', 'UPDATE', 'DELETE', 'PUT']  # ['POST', 'DELETE']
 API_MODEL_MAP = {
     "/token/": "登录模块",
     "/api/token/": "登录模块",
-    "/api/system/operation_log/deletealllogs/": "日志清除",
-    "/api/super/operate/":"前端API关闭/开启",
+    "/api/super/operate/":"前端API关闭开启",
 }
 # 表前缀
 TABLE_PREFIX = "lyadmin_"

@@ -28,6 +28,7 @@ DATABASE_CONN_MAX_AGE = 0 #7200（2小时）,使用 None 则是无限的持久�
 
 IS_DEMO = False #是否演示模式（演示模式只能查看无法保存、编辑、删除、新增）
 ALLOW_FRONTEND = True#是否关闭前端API访问
+FRONTEND_API_LIST = ['/api/app/','/api/xcx/']#前端接口API前缀
 DOMAIN_HOST = "http://127.0.0.1:8000"
 
 # ================================================= #

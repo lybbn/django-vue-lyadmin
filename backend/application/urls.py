@@ -44,7 +44,7 @@ from utils.streamingmedia_response import streamingmedia_serve
 from django.views.generic import TemplateView
 
 #是否允许前端接口访问
-from utils.redirect_middleware import OperateAllowFrontendView
+from utils.middleware import OperateAllowFrontendView
 
 schema_view = get_schema_view(
     openapi.Info(
