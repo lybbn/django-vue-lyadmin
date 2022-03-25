@@ -43,6 +43,9 @@ from utils.streamingmedia_response import streamingmedia_serve
 #部署vue
 from django.views.generic import TemplateView
 
+#是否允许前端接口访问
+from utils.redirect_middleware import OperateAllowFrontendView
+
 schema_view = get_schema_view(
     openapi.Info(
         title="django-vue-lyadmin API",
@@ -104,6 +107,9 @@ urlpatterns = [
     re_path(r'^api/areas/$', ProvinceAreasView.as_view(),name='省市区三级联动获取省'),
     re_path(r'^api/areas/(?P<pk>[1-9]\d*)/$', SubAreasView.as_view(),name='省市区三级联动获取市/区'),
     path('api/getaddressaccuracy/', GetAddressAccuracyView.as_view(), name='后台根据详细地址获取经纬度'),
+
+    #是否允许前端接口访问(临时操作，重启后无效)
+    path('api/super/operate/', OperateAllowFrontendView.as_view(), name='超级管理员动态操作是否允许前端api接口访问'),
 
     #集成部署后端管理页面
     path('downloadapp/',downloadapp ,name='前端APP下载页'),

@@ -202,3 +202,8 @@ export const platformsettingsOtherDelete= params => ajaxDelete({url: `platformse
 // 平台设置 图片上传
 export const platformsettingsUploadPlatformImg= params => uploadImg({url: `platformsettings/uploadplatformimg/`,params})
 
+//前端访问操作 获取
+export const superOerateGet= params => ajaxGet({url: `super/operate/`,params})
+//前端访问操作 设置
+export const superOerateSet= params => ajaxPost({url: `super/operate/`,params})
+

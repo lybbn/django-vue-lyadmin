@@ -8,6 +8,9 @@
                 <el-form-item label="">
                     <el-button size="small" @click="handleDelete" type="danger" :disabled="multiple" v-show="isShowBtn('platformSettingsother','其他设置','Delete')">删除</el-button>
                 </el-form-item>
+                <el-form-item label="">
+                    <el-switch v-model="is_allow_fronted" active-color="#13ce66" inactive-color="#ff4949" active-text="前端访问已开启" inactive-text="前端访问已关闭"  @change="handleSuperOperate"></el-switch>
+                </el-form-item>
             </el-form>
         </div>
         <div class="table">
@@ -47,7 +50,7 @@
     import addModule from "./components/addModuleOther";
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
-    import {platformsettingsOther,platformsettingsOtherDelete} from '@/api/api'
+    import {platformsettingsOther,platformsettingsOtherDelete,superOerateGet,superOerateSet} from '@/api/api'
     export default {
         components:{
             Pagination,
@@ -69,6 +72,7 @@
                     page: 1,
                     limit: 10,
                 },
+                is_allow_fronted:true,
                 pageparm: {
                     page: 1,
                     limit: 10,
@@ -136,6 +140,44 @@
                     })
                 }
             },
+            //关闭前端方法开始----------------
+            getSuperOperate(){
+                let vm = this
+                superOerateGet().then(res => {
+                     if(res.code ==2000) {
+                         vm.is_allow_fronted = res.data.data.is_allow
+                     }else{
+                         vm.$message.warning("获取前端访问权限失败")
+                     }
+                 })
+            },
+            handleSuperOperate(){
+                let vm = this
+                let flat = vm.is_allow_fronted
+                vm.is_allow_fronted = !vm.is_allow_fronted
+                let temp_is_allow = 1
+                vm.$confirm('确定要改变前端访问状态吗？',{
+                        closeOnClickModal:false
+                    }).then(res=>{
+                        flat ? vm.is_allow_fronted = true : vm.is_allow_fronted = false
+                        if(vm.is_allow_fronted){
+                            temp_is_allow = 1
+                        }else{
+                            temp_is_allow = 0
+                        }
+                        superOerateSet({is_allow:temp_is_allow}).then(res => {
+                             if(res.code ==2000) {
+                                 vm.is_allow_fronted = res.data.data.is_allow
+                                 vm.$message.warning(res.msg)
+                             }else{
+                                 vm.$message.warning(res.msg)
+                             }
+                         })
+                    }).catch(()=>{
+
+                    })
+            },
+            //关闭前端方法结束----------------
 
             callFather(parm) {
                 this.formInline.page = parm.page
@@ -174,6 +216,7 @@
         },
         created() {
             this.getData()
+            this.getSuperOperate()
         },
         timers(val){
             if (val) {
