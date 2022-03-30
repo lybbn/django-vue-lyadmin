@@ -170,6 +170,7 @@
                                  vm.is_allow_fronted = res.data.data.is_allow
                                  vm.$message.warning(res.msg)
                              }else{
+                                 flat ? vm.is_allow_fronted = false : vm.is_allow_fronted = true
                                  vm.$message.warning(res.msg)
                              }
                          })

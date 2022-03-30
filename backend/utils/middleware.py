@@ -17,6 +17,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.views import APIView
 from utils.jsonResponse import SuccessResponse,ErrorResponse
 from utils.common import get_parameter_dic
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 IS_ALLOW_FRONTEND = ALLOW_FRONTEND
 
@@ -138,6 +140,15 @@ class OperateAllowFrontendView(APIView):
         }
         return SuccessResponse(data=data,msg='success')
 
+    @swagger_auto_schema(
+        operation_summary='设置当前是否禁止前端访问',
+        request_body=openapi.Schema(  # POST请求需要
+        type=openapi.TYPE_OBJECT,
+        required=['is_allow'],
+        properties={
+            'is_allow': openapi.Schema(type=openapi.TYPE_INTEGER, description="1允许访问,0 禁止访问"),
+        },),
+        responses={200: 'success'},)
     def post(self,request):
         """
         设置当前是否禁止前端访问
