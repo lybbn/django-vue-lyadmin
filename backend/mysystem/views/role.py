@@ -77,7 +77,6 @@ class RoleViewSet(CustomModelViewSet):
     serializer_class = RoleSerializer
     create_serializer_class = RoleCreateUpdateSerializer
     update_serializer_class = RoleCreateUpdateSerializer
-    extra_filter_backends = []
     filter_fields = ['status']
 
     def roleId_to_menu(self, request, *args, **kwargs):
@@ -106,5 +105,4 @@ class PermissionViewSet(CustomModelViewSet):
     serializer_class = RoleSerializer
     create_serializer_class = RoleCreateUpdateSerializer
     update_serializer_class = RoleCreateUpdateSerializer
-    extra_filter_backends = []
     filter_fields = ['status']

@@ -8,7 +8,7 @@
             <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
             <el-table-column min-width="120" prop="image" :label="(formInline.type==1) ? '图片' :'图片'">
                 <template slot-scope="scope">
-                    <el-image  :src="scope.row.image" style="width: 60px;height: 60px" :preview-src-list="[scope.row.image]"></el-image>
+                    <el-image  :src="scope.row.image" style="width: 50px;height: 50px" :preview-src-list="[scope.row.image]"></el-image>
                 </template>
             </el-table-column>
             <el-table-column min-width="150" prop="title" label="标题" ></el-table-column>

@@ -11,6 +11,7 @@ from utils.jsonResponse import SuccessResponse
 from utils.serializers import CustomModelSerializer
 from utils.viewset import CustomModelViewSet
 from django.db.models import Q
+from rest_framework.decorators import action
 
 from rest_framework.permissions import IsAuthenticated
 
@@ -120,7 +121,6 @@ class MenuViewSet(CustomModelViewSet):
     update_serializer_class = MenuCreateSerializer
     filter_fields = ['name', 'status']
     search_fields = ['name', 'status']
-    permission_classes = []
 
     def menu_tree(self, request):
         """用于菜单添加修改中获取父级菜单"""
@@ -128,6 +128,7 @@ class MenuViewSet(CustomModelViewSet):
         serializer = MenuTreeSerializer(queryset, many=True)
         return SuccessResponse(data=serializer.data, msg="获取成功")
 
+    @action(methods=['get'], extra_filter_backends=[], detail=False)  # 会自动生成/api/system/menu/web_router/的路由
     def web_router(self, request):
         """用于前端获取当前角色的路由"""
         user = request.user

@@ -7,7 +7,7 @@ export const login = params => ajaxPost({url: `token/`,params})
 // 获取验证码
 export const getCaptcha = params => ajaxGet({url: `captcha/`,params})
 // 获取菜单
-export const apiSystemWebRouter = params => ajaxGet({url: `system/web_router/`,params})
+export const apiSystemWebRouter = params => ajaxGet({url: `system/menu/web_router/`,params})
 
 /**
 *系统管理
