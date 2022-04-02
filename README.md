@@ -28,6 +28,8 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 
 说明：django-vue-lyadmin 项目已升级vue3 elementplus 组件框架，如果对你有帮助请留下你的star [django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin)
 
+补充：如果想找到1.x版本标准模块（不带商城功能）的，可前往 [正式版v1.0.20](https://gitee.com/lybbn/django-vue-lyadmin/releases/v1.0.20) 版本进行下载
+
 ## 交流
 - 开发者WX号：laoyanyj
 
@@ -192,10 +194,19 @@ npm run build
 
 ![image-03](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/03.png)
 
+![image-08](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/08.png)
+
+![image-09](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/09.png)
+
 ![image-05](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/05.png)
 
 ## 捐赠该项目
 
-开源不易，可使用支付宝扫下面二维码以赏金的形式打赏支持。您的支持是我不断创作的动力！！！
+开源不易，可使用支付宝、微信扫下面二维码打赏支持。您的支持是我不断创作的动力！！！
 
-![image-alired](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/alired.jpg)
+<table>
+    <tr>
+        <td><img src="https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/alipay.jpg" height="420" width="380"/></td>
+        <td><img src="https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/wechat.jpg" height="420" width="380"/></td>
+    </tr>
+</table>
