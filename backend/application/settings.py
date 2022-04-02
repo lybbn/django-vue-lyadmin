@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'logins',
     'lyusers',
     'platformsettings',
+    'mall',
 ]
 
 MIDDLEWARE = [

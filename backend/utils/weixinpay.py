@@ -2,7 +2,7 @@
 
 #微信第三方app支付v3(需要APIV3 的apikey)（直连方式-普通商户）
 
-from config import WXPAY_CLIENT_CERT_PATH,WXPAY_CLIENT_KEY_PATH,WXPAY_APPID,WXPAY_MCHID,WXPAY_APIKEY,WXPAY_SERIAL_NO,WXPAY_CERT_DIR,WXPAY_CERT_DIR_RESPONSE,WXPAY_APIKEY_V1
+from config import WXPAY_CLIENT_CERT_PATH,WXPAY_CLIENT_KEY_PATH,WXPAY_APPID,WXPAY_MCHID,WXPAY_APIKEY,WXPAY_SERIAL_NO,WXPAY_CERT_DIR,WXPAY_CERT_DIR_RESPONSE,WXPAY_APIKEY_V1,WXPAY_APPID_APP,WXPAY_APIKEY_APP
 import requests
 import json
 import time
@@ -68,10 +68,13 @@ class WxAppPay:
 
     def __init__(self):
         self.appid = WXPAY_APPID
+        self.appid_app = WXPAY_APPID_APP
         self.mchid = WXPAY_MCHID
         self.apikey = WXPAY_APIKEY
+        self.apikey_app = WXPAY_APIKEY_APP
         self.url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/app'#微信app支付
         self.url2 = 'https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi'  # 微信小程序支付
+        self.url3 = 'https://api.mch.weixin.qq.com/v3/refund/domestic/refunds'  # 微信申请退款、查询单笔退款
         self.gate_way = 'https://api.mch.weixin.qq.com'
         self.notify_url = "https://weixin.qq.com/"#需要回调的默认url，实际上要填写自己的回调地址：要求https，且不能携带参数如：https://www.weixin.qq.com/wxpay/pay.php
         self.serial_no = WXPAY_SERIAL_NO  # 商户号证书序列号
@@ -82,12 +85,13 @@ class WxAppPay:
 
 
     # 统一下单(微信app支付)
-    def payorder(self, order_no, total, description,notify_url=None):
+    def payorder(self, order_no, total, description,attach,notify_url=None):
         data = {
             "mchid": self.mchid,
             "out_trade_no": order_no,
-            "appid": self.appid,
+            "appid": self.appid_app,
             "description": description,
+            "attach":attach,#标注，微信支付后会原样返回
             "notify_url": notify_url,#必填项
             "amount": {
                 "total": int(total),#订单总金额，单位为分
@@ -121,7 +125,7 @@ class WxAppPay:
         res = json.loads(response.content)
         random_str_app = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(32))
         time_stamps_app = str(int(time.time()))
-        sign_str_app = f"{WXPAY_APPID}\n{time_stamps_app}\n{random_str_app}\n{res['prepay_id']}\n"
+        sign_str_app = f"{WXPAY_APPID_APP}\n{time_stamps_app}\n{random_str_app}\n{res['prepay_id']}\n"
         sign_str_app_sign = get_sign(sign_str_app)
         res['paySign'] = sign_str_app_sign
         res['signType'] = 'RSA'
@@ -132,12 +136,13 @@ class WxAppPay:
         return res
 
     # 统一下单(微信小程序支付（JSAPI）)
-    def payorder_jsapi(self, order_no, total, description, openid,notify_url=None):
+    def payorder_jsapi(self, order_no, total, description,attach, openid,notify_url=None):
         data = {
             "mchid": self.mchid,
             "out_trade_no": order_no,
             "appid": self.appid,
             "description": description,
+            "attach": attach,  # 标注，微信支付后会原样返回
             "payer":{
                 "openid":openid
             },#（支付者openid）用户在直连商户appid下的唯一标识。 下单前需获取到用户的Openid
@@ -185,6 +190,103 @@ class WxAppPay:
         res['timestamp'] = time_stamps_app
         res['oderno'] = order_no
         return res
+
+    # 微信app退款申请
+    def refundsorder(self, out_refund_no,transaction_id,reason,refund,total,notify_url=None):
+        """
+        当交易发生之后一年内,卖家可以通过退款接口将支付金额退还给买家，微信支付将在收到退款请求并且验证成功之后，将支付款按原路退还至买家账号上。
+        退款有一定延时，建议在提交退款申请后1分钟发起查询退款状态，一般来说零钱支付的退款5分钟内到账，银行卡支付的退款1-3个工作日到账。
+        参考官方API：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_9.shtml
+        """
+        data = {
+            "out_refund_no": out_refund_no,#新退款单号
+            "transaction_id": transaction_id,#原支付交易对应的微信订单号
+            "reason": reason,#退款原因
+            "notify_url": notify_url,#必填项，退款回调通知地址
+            "amount": {
+                "refund": int(refund),#退款金额，单位为分，只能为整数，不能超过原订单支付金额
+                "total": int(total),#原订单金额，单位为分
+                "currency": "CNY"
+                },
+            }
+        data = json.dumps(data)  # 只能序列化一次
+        #构造微信支付签名验证
+        random_str = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(32))
+        time_stamps = str(int(time.time()))
+        """
+            HTTP请求方法\n
+            URL\n
+            请求时间戳\n
+            请求随机串\n
+            请求报文主体\n
+        """
+        sign_str = f"POST\n{'v3/refund/domestic/refunds'}\n{time_stamps}\n{random_str}\n{data}\n"
+        sign = get_sign(sign_str)
+        authorization = 'WECHATPAY2-SHA256-RSA2048 ' + f'mchid="{self.mchid}",nonce_str="{random_str}",signature="{sign}",timestamp="{time_stamps}",serial_no="{self.serial_no}"'
+        headers = {'Content-Type': 'application/json', 'Accept': 'application/json','Authorization':authorization}
+        response = requests.post(self.url, data=data, headers=headers)
+        logger.info("微信支付订单退款申请返回消息,退款单号：%s,金额：%s,微信返回信息：%s" % (out_refund_no,total/100,response.text))
+        """
+        正常返回
+        {
+          "refund_id": "50000000382019052709732678859",
+          "out_refund_no": "1217752501201407033233368018",
+          "transaction_id": "1217752501201407033233368018",
+          "out_trade_no": "1217752501201407033233368018",
+          "channel": "ORIGINAL",
+          "user_received_account": "招商银行信用卡0403",
+          "success_time": "2020-12-01T16:18:12+08:00",
+          "create_time": "2020-12-01T16:18:12+08:00",
+          "status": "SUCCESS",
+          "funds_account": "UNSETTLED",
+          "amount": {
+            "total": 100,
+            "refund": 100,
+            "from": [
+              {
+                "account": "AVAILABLE",
+                "amount": 444
+              }
+            ],
+            "payer_total": 90,
+            "payer_refund": 90,
+            "settlement_refund": 100,
+            "settlement_total": 100,
+            "discount_refund": 10,
+            "currency": "CNY"
+          },
+          "promotion_detail": [
+            {
+              "promotion_id": "109519",
+              "scope": "SINGLE",
+              "type": "DISCOUNT",
+              "amount": 5,
+              "refund_amount": 100,
+              "goods_detail": {
+                "merchant_goods_id": "1217752501201407033233368018",
+                "wechatpay_goods_id": "1001",
+                "goods_name": "iPhone6s 16G",
+                "unit_price": 528800,
+                "refund_amount": 528800,
+                "refund_quantity": 1
+              }
+            }
+          ]
+        }
+        """
+        res = json.loads(response.content)
+        return res
+
+    #查询单笔退款
+    def query_refundsorder(self,out_refund_no):
+        """
+        :param out_refund_no:商户系统内部的退款单号，示例值:'1217752501201407033233368018'
+        微信官方API：https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_2_10.shtml
+        """
+        newurl = self.url3+"/"+out_refund_no
+        path = newurl.split(self.gate_way)[1]
+        return self.request(path)
+
 
     def load_local_certificates(self):
         if self.cert_dir and os.path.exists(self.cert_dir):
@@ -369,48 +471,6 @@ class WxAppPay:
             return False
         return True
 
-
-#微信支付回调实例
-
-# class wechatpay_notify(APIView):
-#     """
-#     支付成功后，微信服务器异步通知回调（用于修改订单状态）
-#     """
-#     def post(self,request):
-#         wxpay = WxAppPay()
-#         logger.info("收到微信支付回调通知:%s" % (request.body))
-#         result = wxpay.decrypt_callback(request=request)
-#         logger.info("收到微信支付回调通知解密数据:%s" % (result))
-#         if result:
-#             resp = json.loads(result)
-#             appid = resp.get('appid')
-#             mchid = resp.get('mchid')
-#             out_trade_no = resp.get('out_trade_no')
-#             transaction_id = resp.get('transaction_id')
-#             trade_type = resp.get('trade_type')
-#             trade_state = resp.get('trade_state')
-#             trade_state_desc = resp.get('trade_state_desc')
-#             bank_type = resp.get('bank_type')
-#             attach = resp.get('attach')
-#             success_time = resp.get('success_time')
-#             payer = resp.get('payer')
-#             amount = resp.get('amount').get('total')
-#             # TODO: 根据返回参数进行必要的业务处理，处理完后返回200或204
-#             # 查询数据库中存在的订单
-#             order = BuyVipRecord.objects.filter(orderno=out_trade_no, status=False).first()
-#             if not order:
-#                 return HttpResponse('fail')
-#             order.tradeno = transaction_id
-#             order.status = True
-#             order.save()
-#             orderpaysuccess(order.id)
-#             return HttpResponse('success')
-#         else:
-#             return HttpResponse('fail')
-
-
-
-# #调用代码
-# if __name__=="__main__":
-#    wx=WxAppPay()
-#    print(wx.payorder("80480600",100,"订单支付").text)
+if __name__=="__main__":
+   wx=WxAppPay()
+   print(wx.payorder("80480600",100,"订单支付").text)

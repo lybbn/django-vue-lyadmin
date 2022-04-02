@@ -30,11 +30,12 @@ from utils.swagger import CustomOpenAPISchemaGenerator
 
 #前端接口view
 from apps.oauth.views import WeChatXCXLoginAPIView,XCXWeChatUserInfoUpdateAPIView,WeChatXCXMobileLoginAPIView,WeChatGZHLoginAPIView,WeChatGZHBindAPIView,GetXCXShareQrcodeView
-from apps.address.views import ProvinceAreasView,SubAreasView,GetAddressAccuracyView
+from apps.address.views import ProvinceAreasView,SubAreasView,GetAddressAccuracyView,GetAssressesListView,CreateUpdateAssressesView,DeleteAssressesView,SetDefaultAssressesView,GetProvinceAreasListView
 from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobileSMSLoginView,ForgetPasswdResetView,RegisterView
 from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView,uploadImagesView
 from apps.lymessages.views import UserMessagesView
-from apps.platformsettings.views import GetOtherManageDetailView,GetLunboManageListView
+from apps.platformsettings.views import GetOtherManageDetailView,GetLunboManageListView,APPUserLeavingMessageView
+from apps.mall.views import GoodsTypeView,GoodsListView,GoodsDetailView,CartsView,CartsSelectAllView,MyCouponView,GoodsOrderCancleView,OrdersCommitView,GoodsOrderConfirmReceiveView,GoodsOrdersListView,GoodsOrdersDetailView,PaymentView,alipay_notify,wechatpay_notify
 
 #app下载页
 from apps.lyusers.views import downloadapp
@@ -82,6 +83,7 @@ urlpatterns = [
     path('api/platformsettings/', include('apps.platformsettings.urls')),
     path('api/messages/', include('apps.lymessages.urls')),
     path('api/users/', include('apps.lyusers.urls')),
+    path('api/mall/', include('apps.mall.urls')),
 
     #前端用户接口
     path('api/app/register/', RegisterView.as_view(), name='app端手机号注册'),
@@ -100,9 +102,31 @@ urlpatterns = [
     path('api/xcx/getuserinfo/', XCXWeChatUserInfoUpdateAPIView.as_view(), name='微信小程序获取用户信息'),
     path('api/xcx/getshareqrcode/', GetXCXShareQrcodeView.as_view(), name='微信小程序用户获取推广小程序二维码'),
     path('api/xcx/usermessages/', UserMessagesView.as_view(), name='微信小程序获取系统通知信息/修改为已读'),
+    path('api/app/feeckback/', APPUserLeavingMessageView.as_view(), name='app端意见反馈'),
 
     path('api/getothersettings/', GetOtherManageDetailView.as_view(), name='前端用户获取平台其他设置'),
     path('api/getrotationimgs/', GetLunboManageListView.as_view(), name='前端用户获取平台轮播图设置'),
+
+    path('api/app/getaddress/', GetAssressesListView.as_view(), name='app用户获取地址'),
+    path('api/app/addeditaddress/', CreateUpdateAssressesView.as_view(), name='app用户新增编辑地址'),
+    path('api/app/deladdress/', DeleteAssressesView.as_view(), name='app用户删除地址'),
+    path('api/app/setdefaultaddress/', SetDefaultAssressesView.as_view(), name='app用户设置默认地址'),
+
+    path('api/app/getgoodstypelist/', GoodsTypeView.as_view(), name='app用户端商城-获取分类标签'),
+    path('api/app/getgoodslist/', GoodsListView.as_view(), name='app用户端商城-获取商品列表'),
+    path('api/app/getgoodsdetail/', GoodsDetailView.as_view(), name='app用户端商城-获取商品详情'),
+    path('api/app/cartoperate/', CartsView.as_view(), name='app用户端商城-购物车操作'),
+    path('api/app/cartselectall/', CartsSelectAllView.as_view(), name='app用户端商城-购物车全选\取消全选'),
+    path('api/app/mycoupon/', MyCouponView.as_view(), name='app用户端-我的优惠券'),
+    path('api/app/goodsordercancel/', GoodsOrderCancleView.as_view(), name='app用户端-取消商城订单'),
+    path('api/app/goodsordercommit/', OrdersCommitView.as_view(), name='app用户端-商城订单生成'),
+    path('api/app/goodsorderconfirmrev/', GoodsOrderConfirmReceiveView.as_view(), name='app用户端-商城订单生成'),
+    path('api/app/goodsorderlist/', GoodsOrdersListView.as_view(), name='app用户端-商城订单列表'),
+    path('api/app/goodsorderdetail/', GoodsOrdersDetailView.as_view(), name='app用户端-商城订单详情'),
+
+    path('api/app/payment/', PaymentView.as_view(), name='app端购买接口'),
+    path('api/app/ali_notify/', alipay_notify.as_view(), name='支付宝异步通知回调接口'),
+    path('api/app/wechatpay_notify/', wechatpay_notify.as_view(), name='微信支付异步通知回调接口'),
 
     re_path(r'^api/areas/$', ProvinceAreasView.as_view(),name='省市区三级联动获取省'),
     re_path(r'^api/areas/(?P<pk>[1-9]\d*)/$', SubAreasView.as_view(),name='省市区三级联动获取市/区'),

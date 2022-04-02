@@ -2,84 +2,73 @@
     <div>
         <div class="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
-                <el-form-item label="用户昵称：">
-                    <el-input size="small" v-model.trim="formInline.nickname" maxlength="60"  clearable placeholder="用户昵称" @change="search" style="width:200px"></el-input>
-<!--                </el-form-item>-->
-<!--                                <el-form-item label="创建时间：">-->
-<!--                                    <el-date-picker-->
-<!--                                            style="width:100% !important;"-->
-<!--                                            v-model="timers"-->
-<!--                                            size="small"-->
-<!--                                            type="datetimerange"-->
-<!--                                            @change="timeChange"-->
-<!--                                            range-separator="至"-->
-<!--                                            start-placeholder="开始日期"-->
-<!--                                            end-placeholder="结束日期">-->
-<!--                                    </el-date-picker>-->
-                  </el-form-item>
-                <el-form-item label="手机号：">
-                    <el-input size="small" v-model.trim="formInline.mobile" maxlength="60"  clearable placeholder="手机号" @change="search" style="width:200px"></el-input>
-                  </el-form-item>
-                <el-form-item label="创建时间：">
-                    <el-date-picker
-                            style="width:100% !important;"
-                            v-model="timers"
-                            size="small"
-                            type="datetimerange"
-                            @change="timeChange"
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期">
-                    </el-date-picker>
-                  </el-form-item>
-<!--                <el-form-item label=""><el-button size="small" @click="addAdmin" type="primary" v-show="isShowBtn('goodsClass','分类管理','Create')">新增</el-button></el-form-item>-->
-                <el-form-item label=""><el-button size="small" @click="handleDelete" type="danger" :disabled="multiple" v-show="isShowBtn('userFeekback','意见反馈','Delete')">删除</el-button></el-form-item>
+                <el-form-item label="分类名称：">
+                    <el-input size="small" v-model.trim="formInline.search" maxlength="60"  clearable placeholder="分类名称" @change="search" style="width:200px"></el-input>
+                </el-form-item>
+                <!--                <el-form-item label="创建时间：">-->
+                <!--                    <el-date-picker-->
+                <!--                            style="width:100% !important;"-->
+                <!--                            v-model="timers"-->
+                <!--                            size="small"-->
+                <!--                            type="datetimerange"-->
+                <!--                            @change="timeChange"-->
+                <!--                            range-separator="至"-->
+                <!--                            start-placeholder="开始日期"-->
+                <!--                            end-placeholder="结束日期">-->
+                <!--                    </el-date-picker>-->
+                <!--                </el-form-item>-->
+
+                 <!--代理商有此权限 v-show="isShowBtn('applyQuotaAgent','代理商申请额度','Create')"-->
+                <el-form-item label=""><el-button size="small" @click="addModule" type="primary" v-show="isShowBtn('goodsType','商品分类','Create')">新增</el-button></el-form-item>
+                <el-form-item label=""><el-button size="small" @click="handleDelete" type="danger" :disabled="multiple" v-show="isShowBtn('goodsType','商品分类','Delete')">删除</el-button></el-form-item>
             </el-form>
         </div>
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="60" align="center" label="序号"></el-table-column>
-<!--                <el-table-column type="selection" width="55" align="center"></el-table-column>-->
-                <el-table-column min-width="70" prop="avatar" label="用户头像">
+            <el-table size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%"
+                      @selection-change="handleSelectionChange" row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+<!--                <el-table-column type="selection" width="55"></el-table-column>-->
+                <el-table-column type="selection" width="60" align="center"></el-table-column>
+                <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
+                <el-table-column min-width="100" prop="name" label="分类名称"></el-table-column>
+                <el-table-column min-width="60" sortable prop="sort" label="排序"></el-table-column>
+                <el-table-column min-width="80" prop="default_image" label="图标">
                     <template slot-scope="scope">
-                        <img  :src="scope.row.avatar ? scope.row.avatar : defaultImg" style="width: 30px;height: 30px" :onerror="defaultImg">
+                        <el-image  :src="scope.row.default_image" style="width: 30px;height:30px" :preview-src-list="[scope.row.default_image]" v-if="scope.row.default_image"></el-image>
                     </template>
                 </el-table-column>
-                <el-table-column min-width="100" prop="nickname" label="用户"></el-table-column>
-                <el-table-column min-width="100" prop="mobile" label="手机号"></el-table-column>
-                <el-table-column min-width="200" prop="message" label="反馈内容" show-overflow-tooltip=""></el-table-column>
-<!--                <el-table-column min-width="100" label="状态">-->
+<!--                <el-table-column min-width="100" label="状态" prop="status">-->
 <!--                    <template slot-scope="scope">-->
-<!--                        <el-tag v-if="scope.row.status">正常</el-tag>-->
-<!--                        <el-tag v-else type="danger">禁用</el-tag>-->
+<!--                        <el-tag v-if="scope.row.status" size="small">正常</el-tag>-->
+<!--                        <el-tag v-else type="danger" size="small">禁用</el-tag>-->
 <!--                    </template>-->
 <!--                </el-table-column>-->
                 <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-                <el-table-column label="操作" width="100">
+                <el-table-column label="操作"  width="180">
                     <template slot-scope="scope">
-<!--                        v-show="isShowBtn('goodClass','分类','Delete')"-->
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('userFeekback','意见反馈','Retrieve')">详情</span>
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('userFeekback','意见反馈','Delete')">删除</span>
+<!--                        <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('viptypeManage','会员卡管理','Retrieve')">详情</span>-->
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('goodsType','商品分类','Update')">编辑</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('goodsType','商品分类','Delete')">删除</span>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
-        <add-module ref="addModuleFlag"></add-module>
+        <add-module-goods-type ref="addModuleFlag" @refreshData="search"></add-module-goods-type>
     </div>
 </template>
 <script>
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
-    import {PlatformsettingsUserfeeckback,PlatformsettingsUserfeeckbackDelete} from '@/api/api'
-    import AddModule from "./components/addModule";
+    import {mallGoodstype,mallGoodstypeDelete} from '@/api/api'
+    import XEUtils from "xe-utils";
+    import AddModuleGoodsType from "./components/addModuleGoodsType";
     export default {
         components:{
-            AddModule,
+            AddModuleGoodsType,
             Pagination,
         },
-        name:'userFeekback',
+        name:'goodsType',
         data() {
             return {
                 loadingPage:false,
@@ -89,14 +78,14 @@
                 single: true,
                 // 非多个禁用
                 multiple: true,
-                defaultImg:require('../../assets/img/avatar.jpg'),
                 formInline:{
+                    search:'',
                     page: 1,
-                    limit: 10,
+                    limit: 100,
                 },
                 pageparm: {
                     page: 1,
-                    limit: 10,
+                    limit: 100,
                     total: 0
                 },
                 statusList:[
@@ -104,7 +93,8 @@
                     {id:0,name:'禁用'}
                 ],
                 timers:[],
-                tableData:[]
+                tableData:[],
+                selectData:[]
             }
         },
         methods:{
@@ -123,7 +113,7 @@
                     cancelButtonText: "取消",
                     type: "warning"
                 }).then(function() {
-                    return PlatformsettingsUserfeeckbackDelete({id:ids}).then(res=>{
+                    return mallGoodstypeDelete({id:ids}).then(res=>{
                         if(res.code == 2000) {
                             vm.$message.success(res.msg)
                             vm.search()
@@ -133,19 +123,25 @@
                     })
                 })
             },
-            // addAdmin() {
-            //     this.$refs.addGoodClassModuleFlag.addGoodClassModuleFn(null,'新增')
-            // },
+            changeStatus(row) {
+                console.log(row,'row----')
+            },
+            addModule() {
+                this.$refs.addModuleFlag.addModuleFn(null,'新增')
+            },
             handleEdit(row,flag) {
                 if(flag=='detail') {
                     this.$refs.addModuleFlag.addModuleFn(row,'详情')
                 }
+                if(flag=='edit') {
+                    this.$refs.addModuleFlag.addModuleFn(row,'编辑')
+                }
                 if(flag=='delete') {
                     let vm = this
-                    vm.$confirm('您确定要删除选中的分类？',{
+                    vm.$confirm('您确定要删除选中的数据吗？',{
                         closeOnClickModal:false
                     }).then(res=>{
-                        PlatformsettingsUserfeeckbackDelete({id:row.id}).then(res=>{
+                        mallGoodstypeDelete({id:row.id}).then(res=>{
                             if(res.code == 2000) {
                                 vm.$message.success(res.msg)
                                 vm.search()
@@ -166,16 +162,18 @@
             },
             search() {
                 this.formInline.page = 1
-                this.formInline.limit = 10
+                this.formInline.limit = 100
                 this.getData()
             },
             //获取列表
-            async getData() {
+            async getData(){
                 this.loadingPage = true
-                PlatformsettingsUserfeeckback(this.formInline).then(res => {
+                 mallGoodstype(this.formInline).then(res => {
                      this.loadingPage = false
                      if(res.code ==2000) {
                          this.tableData = res.data.data
+                         // // 将列表数据转换为树形数据
+                         // this.tableData = XEUtils.toArrayTree(res.data.data, { parentKey: 'parent', strict: false })
                          this.pageparm.page = res.data.page;
                          this.pageparm.limit = res.data.limit;
                          this.pageparm.total = res.data.total;
@@ -209,3 +207,6 @@
         },
     }
 </script>
+
+
+

@@ -13,6 +13,27 @@ import hashlib
 #手机号验证正则
 REGEX_MOBILE = "^1[356789]\d{9}$|^147\d{8}$|^176\d{8}$"
 
+#生成订单号
+def getminrandomodernum():
+    basecode = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    chagecode1 = random.randint(10,99)
+    chagecode3 = str(time.time()).replace('.','')[-7:]
+    return str(basecode)+str(chagecode1)+chagecode3
+
+#微信GMT+8 转换成标准时间字符串
+def format_wechat_gmt_8_to_normal(wgmt8):
+    """
+    wgmt8:2022-01-12T16:35:42+08:00
+    return:2022-01-12 16:35:42
+    """
+    try:
+        a1 = wgmt8.split('T')
+        a2 = a1[1].split('+')
+        a3 = a1[0]+' '+a2[0]
+        return a3
+    except Exception as e:
+        return wgmt8
+
 #生成随机得指定位数字母+数字字符串
 def getRandomSet(bits):
     """

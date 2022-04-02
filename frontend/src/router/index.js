@@ -58,6 +58,7 @@ export default new VueRouter({
           index: '/userManage',
         }
       },
+        //平台设置
         {
             path: '/carouselSettingsimg',
             name: 'carouselSettingsimg',
@@ -76,7 +77,6 @@ export default new VueRouter({
                 index: '/platformSettingsother',
             }
         },
-
       {
         path: '/userFeekback',
         name: 'userFeekback',
@@ -86,7 +86,55 @@ export default new VueRouter({
           index: '/userFeekback',
         }
       },
-
+        //营销管理
+        {
+        path: '/couponManage',
+        name: 'couponManage',
+        component: resolve => require(['../views/marketManage/couponManage.vue'], resolve),
+        meta: {
+          requireAuth: true,
+          index: '/couponManage',
+        }
+      },
+      //商城管理
+        {
+        path: '/goodsManage',
+        name: 'goodsManage',
+        component: resolve => require(['../views/mallManage/goodsManage.vue'], resolve),
+        meta: {
+          requireAuth: true,
+          index: '/goodsManage',
+        }
+      },
+        {
+        path: '/goodsType',
+        name: 'goodsType',
+        component: resolve => require(['../views/mallManage/goodsType.vue'], resolve),
+        meta: {
+          requireAuth: true,
+          index: '/goodsType',
+        }
+      },
+      //订单管理
+        {
+        path: '/mallOrderManage',
+        name: 'mallOrderManage',
+        component: resolve => require(['../views/orderManage/mallOrderManage.vue'], resolve),
+        meta: {
+          requireAuth: true,
+          index: '/mallOrderManage',
+        }
+      },
+        //财务管理
+        {
+        path: '/financeStatisticsGoods',
+        name: 'financeStatisticsGoods',
+        component: resolve => require(['../views/financeManage/financeStatisticsGoods.vue'], resolve),
+        meta: {
+          requireAuth: true,
+          index: '/financeStatisticsGoods',
+        }
+      },
       // 系统管理
       {
         path: '/departmentManage',

@@ -1,5 +1,6 @@
 from django.db import models
 from utils.modles import CoreModel,BaseModel
+from mysystem.models import Users
 
 # Create your models here.
 
@@ -39,3 +40,31 @@ class OtherManage(CoreModel):
         db_table = 'tb_other_manage'
         verbose_name = "平台其他设置"
         verbose_name_plural = verbose_name
+
+# ================================================= #
+# ************** 意见反馈 model************** #
+# ================================================= #
+class UserLeavingMessage(CoreModel):
+    """
+    意见反馈/留言
+    """
+    MESSAGE_CHOICES = (
+        (1, "留言"),
+        (2, "投诉"),
+        (3, "询问"),
+        (4, "售后"),
+        (5, "求购"),
+    )
+    user = models.ForeignKey(Users, on_delete=models.CASCADE,related_name='leavingmessage_user', verbose_name="用户")
+    message_type = models.SmallIntegerField(default=1, choices=MESSAGE_CHOICES, verbose_name="留言类型",help_text=u"留言类型: 1(留言),2(投诉),3(询问),4(售后),5(求购)")
+    subject = models.CharField(max_length=100, default="", verbose_name="主题",null=True,blank=True)
+    message = models.TextField(default="", verbose_name="留言内容", help_text="留言内容")
+    images = models.CharField(max_length=3000, default="", verbose_name="上传的图片", null=True, blank=True)
+
+    class Meta:
+        db_table = 'tb_user_leaving'
+        verbose_name = "用户反馈"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.message

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #coding=utf-8
 
-# 支付宝app支付
+# 支付宝支付
 from alipay import AliPay
 from config import ALIPAY_APPID,ALIPAY_PRIVATE_KEY_PATH,ALIPAY_PUBLIC_KEY_PATH
 
@@ -41,6 +41,67 @@ def alipay_trade_app(out_trade_no,total_amount,notify_url):
     # 拼接应答地址(支付宝app支付不需要拼接ALIPAY_URL)
     pay_url = order_string
     return pay_url
+
+def alipay_trade_refund(trade_no,refund_amount,notify_url):
+    """
+    功能：支付宝退款申请
+    trade_no:原支付宝支付返回的订单号
+    total_amount:需要支付金额
+    return 返回支付地址
+    """
+    alipay = initalipay()
+    order_string=alipay.api_alipay_trade_refund(
+        trade_no=trade_no,
+        refund_amount=str(refund_amount),
+        notify_url=notify_url# 可选, 不填则使用默认notify url
+    )
+
+    res = order_string
+    return res
+
+def alipay_cashout(out_trade_no,payee_account,amount,payee_real_name=None, remark=None, payer_show_name=None,payee_type="ALIPAY_LOGONID"):
+    """
+    功能：支付宝转账（提现）
+    :param out_biz_no: 转账订单号（必选）
+    :param payee_account: 收款方账户 （必选） 与payee_type配合使用。付款方和收款方不能是同一个账户
+    :param amount: 转账金额 （必选） 如：12.23
+    :param payee_real_name:收款方姓名 （可选）如：如果本参数不为空，则会校验该账户在支付宝登记的实名是否与收款方真实姓名一致。
+    :param remark: 转账备注 （可选）
+    :param payer_show_name:付款方姓名 （可选） 如：上海交通卡退款
+    :param payee_type: 收款方账户类型（必选）  ALIPAY_USERID 支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成、ALIPAY_LOGONID 支付宝登录号，支持邮箱和手机号格式
+    :return:
+    """
+    alipay = initalipay()
+    result = alipay.api_alipay_fund_trans_toaccount_transfer(
+        out_biz_no=out_trade_no,
+        payee_type=payee_type,  # 收款方账户类型
+        payee_account=payee_account,  # 收款方账户
+        amount=amount,  # 转账金额
+        payee_real_name=payee_real_name,  # 收款方姓名（可选，若不匹配则转账失败）
+        remark=remark,  # 转账备注
+        payer_show_name=payer_show_name  # 付款方姓名
+
+    )
+    # result={'code':'10000','msg':'Success','order_id': '','out_biz_no': '',  'pay_date': '2017-06-26 14:36:25'}
+    # 接口文档：https://docs.open.alipay.com/api_28/alipay.fund.trans.toaccount.transfer
+
+    # if result['code'] == '10000':
+    #     if result['msg'] == "Success":
+    #         print("转账成功" + "  交易单号：" + result["order_id"])
+    #
+    # else:
+    #     print(result)
+    #     print(result['sub_msg'])
+
+    return result
+
+def alipay_trade_query(out_trade_no=None, trade_no=None):
+    """
+    支付宝账单查询
+    """
+    alipay = initalipay()
+    result = alipay.api_alipay_trade_query(out_trade_no,trade_no)
+    print(result)
 
 
 #支付宝回调实例

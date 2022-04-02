@@ -146,20 +146,6 @@ export const getCityDistrictByID= params => ajaxGetDetailByID({url: `areas/`,par
 export const getAddressaccuracy= params => ajaxGet({url: `getaddressaccuracy/`,params})
 
 
-/**
- *意见反馈
- * */
-
-// 意见反馈 列表
-export const retrieveUserfeeckback= params => ajaxGet({url: `retrieve/userfeeckback/`,params})
-// 意见反馈 新增
-export const retrieveUserfeeckbackAdd= params => ajaxPost({url: `retrieve/userfeeckback/`,params})
-// 意见反馈 编辑
-export const retrieveUserfeeckbackEdit= params => ajaxPut({url: `retrieve/userfeeckback/`,params})
-// 意见反馈 删除
-export const retrieveUserfeeckbackDelete= params => ajaxDelete({url: `retrieve/userfeeckback/`,params})
-
-
 
 /**
  *用户管理
@@ -207,3 +193,94 @@ export const superOerateGet= params => ajaxGet({url: `super/operate/`,params})
 //前端访问操作 设置
 export const superOerateSet= params => ajaxPost({url: `super/operate/`,params})
 
+/**
+ *意见反馈
+ * */
+
+// 意见反馈 列表
+export const PlatformsettingsUserfeeckback= params => ajaxGet({url: `platformsettings/userfeeckback/`,params})
+// 意见反馈 新增
+export const PlatformsettingsUserfeeckbackAdd= params => ajaxPost({url: `platformsettings/userfeeckback/`,params})
+// 意见反馈 编辑
+export const PlatformsettingsUserfeeckbackEdit= params => ajaxPut({url: `platformsettings/userfeeckback/`,params})
+// 意见反馈 删除
+export const PlatformsettingsUserfeeckbackDelete= params => ajaxDelete({url: `platformsettings/userfeeckback/`,params})
+
+
+/**
+ *商城管理
+ * */
+
+// 商品分类 列表
+export const mallGoodstype= params => ajaxGet({url: `mall/goodstype/`,params})
+// 商品分类 新增
+export const mallGoodstypeAdd= params => ajaxPost({url: `mall/goodstype/`,params})
+// 商品分类 编辑
+export const mallGoodstypeEdit= params => ajaxPut({url: `mall/goodstype/`,params})
+// 商品分类 删除
+export const mallGoodstypeDelete= params => ajaxDelete({url: `mall/goodstype/`,params})
+
+// 商品管理 列表
+export const mallGoodsspu= params => ajaxGet({url: `mall/goodsspu/`,params})
+// 商品管理 新增
+export const mallGoodsspuAdd= params => ajaxPost({url: `mall/goodsspu/`,params})
+// 商品管理 编辑
+export const mallGoodsspuEdit= params => ajaxPut({url: `mall/goodsspu/`,params})
+// 商品管理 删除
+export const mallGoodsspuDelete= params => ajaxDelete({url: `mall/goodsspu/`,params})
+
+// 商品管理 上下架
+export const mallGoodsspuIslaunched= params => ajaxPut({url: `mall/goodsspu/islaunched/`,params})
+
+// 商品管理 修改商品SKU价格
+export const mallGoodsspueEditskups= params => ajaxPut({url: `mall/goodsspu/editskups/`,params})
+
+// 商城订单 列表
+export const mallGoodsOrder= params => ajaxGet({url: `mall/goodsorder/`,params})
+// 商城订单 新增
+export const mallGoodsOrderAdd= params => ajaxPost({url: `mall/goodsorder/`,params})
+// 商城订单 编辑
+export const mallGoodsOrderEdit= params => ajaxPut({url: `mall/goodsorder/`,params})
+// 商城订单 删除
+export const mallGoodsOrderDelete= params => ajaxDelete({url: `mall/goodsorder/`,params})
+
+// 商城订单 发货
+export const mallGoodsSendoutgoods= params => ajaxPost({url: `mall/goodsorder/sendoutgoods/`,params})
+
+// 商城订单 订单价格 订单量统计
+export const mallGoodsOrderstatistics= params => ajaxGet({url: `mall/goodsorder/orderstatistics/`,params})
+
+//营销管理
+
+// 优惠券管理 列表
+export const mallGoodscoupon= params => ajaxGet({url: `mall/goodscoupon/`,params})
+// 优惠券管理 新增
+export const mallGoodscouponAdd= params => ajaxPost({url: `mall/goodscoupon/`,params})
+// 优惠券管理 编辑
+export const mallGoodscouponEdit= params => ajaxPut({url: `mall/goodscoupon/`,params})
+// 优惠券管理 删除
+export const mallGoodscouponDelete= params => ajaxDelete({url: `mall/goodscoupon/`,params})
+
+// 优惠券记录 列表
+export const mallCouponrecord= params => ajaxGet({url: `mall/couponrecord/`,params})
+// 优惠券记录 新增
+export const mallCouponrecordAdd= params => ajaxPost({url: `mall/couponrecord/`,params})
+// 优惠券记录 编辑
+export const mallCouponrecordEdit= params => ajaxPut({url: `mall/couponrecord/`,params})
+// 优惠券记录 删除
+export const mallCouponrecordDelete= params => ajaxDelete({url: `mall/couponrecord/`,params})
+
+/**
+ * 财务统计
+ * **/
+
+//商品订单统计
+export const mallGoodsforderinfo= params => ajaxGet({url: `mall/goodsforderinfo/`,params})
+// 商品订单统计 新增
+export const mallGoodsforderinfoAdd= params => ajaxPost({url: `mall/goodsforderinfo/`,params})
+// 商品订单统计 编辑
+export const mallGoodsforderinfoEdit= params => ajaxPut({url: `mall/goodsforderinfo/`,params})
+// 商品订单统计 删除
+export const mallGoodsforderinfoDelete= params => ajaxDelete({url: `mall/goodsforderinfo/`,params})
+// 商品订单统计 总金额统计
+export const mallGoodsforderinfoOrderstatistics= params => ajaxGet({url: `mall/goodsforderinfo/orderstatistics/`,params})
