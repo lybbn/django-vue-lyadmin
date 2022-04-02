@@ -520,7 +520,7 @@ class OrderInfoSerializer(CustomModelSerializer):
     pay_time = serializers.SerializerMethodField(read_only=True)
     pay_method_name = serializers.SerializerMethodField(read_only=True)
 
-    def get(self,obj):
+    def get_pay_time(self,obj):
         return formatdatetime(obj.pay_time)
 
     def get_pay_method_name(self,obj):
