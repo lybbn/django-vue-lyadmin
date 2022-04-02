@@ -206,7 +206,7 @@ npm run build
 
 <table>
     <tr>
-        <td><img src="https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/alipay.jpg" height="420" width="380"/></td>
-        <td><img src="https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/wechat.jpg" height="420" width="380"/></td>
+        <td><img src="https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/alipay.jpg" height="350" width="400"/></td>
+        <td><img src="https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/wechat.jpg" height="350" width="400"/></td>
     </tr>
 </table>
