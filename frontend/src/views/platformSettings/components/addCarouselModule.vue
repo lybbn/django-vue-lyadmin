@@ -13,6 +13,7 @@
                         class="avatar-uploader"
                         action=""
                         :show-file-list="false"
+                        ref="uploadDefaultImage"
                         :http-request="imgUploadRequest"
                         :on-success="imgUploadSuccess"
                         :before-upload="imgBeforeUpload">
@@ -160,10 +161,8 @@
                     vm.$message.warning(res.msg)
                 }
             },
-            imgUploadSuccess(res) {
-                // if (res) {
-                //     this.formData.image = res.url
-                // }
+            imgUploadSuccess() {
+                this.$refs.uploadDefaultImage.clearFiles()
             }
         }
     }

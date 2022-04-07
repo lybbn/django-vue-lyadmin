@@ -30,7 +30,13 @@ class LunbotuManage(CoreModel):
 # ================================================= #
 
 class OtherManage(CoreModel):
+    TYPE_CHOICES = (
+        (1, "正常值"),
+        (2, "富文本"),
+        (3, "图片"),
+    )
     status = models.BooleanField(default=True,verbose_name="状态")
+    type = models.IntegerField(choices=TYPE_CHOICES,default=1,verbose_name="类型")
     name = models.CharField(max_length=50, verbose_name="名称", default="")
     key = models.CharField(max_length=50,verbose_name="键名",default="")
     value = models.TextField(verbose_name="键值", default="")

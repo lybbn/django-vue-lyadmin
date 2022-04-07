@@ -38,9 +38,10 @@
                 <span style="color: red;font-size: 10px;margin-left: 8px">提示：该项添加后不能修改</span>
             </el-form-item>
             <el-form-item label="类型：">
-                <el-radio-group v-model="type">
-                    <el-radio label="1">正常</el-radio>
+                <el-radio-group v-model="type" :disabled="loadingTitle=='编辑'">
+                    <el-radio label="1">正常值</el-radio>
                     <el-radio label="2">富文本</el-radio>
+                    <el-radio label="3">图片</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="" v-if="type==2">
@@ -51,6 +52,19 @@
 <!--                    <quill-editor ref="myQuillEditor" v-model="formData.value" :options="editorOptions">-->
 <!--                    </quill-editor>-->
 <!--                </div>-->
+            </el-form-item>
+            <el-form-item label="" v-if="type==3">
+                <el-upload
+                        class="avatar-uploader"
+                        action=""
+                        :show-file-list="false"
+                        ref="uploadDefaultImage"
+                        :http-request="imgUploadRequest"
+                        :on-success="imgUploadSuccess"
+                        :before-upload="imgBeforeUpload">
+                    <img v-if="formData.value" :src="formData.value" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
             </el-form-item>
             <el-form-item label="键值：" prop="value" v-if="type==1">
                 <el-input v-model.trim="formData.value" style="width: 300px"></el-input>
@@ -72,7 +86,7 @@
 </template>
 
 <script>
-    import {platformsettingsOtherAdd,platformsettingsOtherEdit} from "@/api/api";
+    import {platformsettingsOtherAdd,platformsettingsOtherEdit,platformsettingsUploadPlatformImg} from "@/api/api";
     import TEditor from '@/components/TEditor'
     import 'quill/dist/quill.core.css'
     import 'quill/dist/quill.snow.css'
@@ -103,7 +117,7 @@
                         {required: true, message: '请输入键名',trigger: 'blur'}
                     ],
                     value: [
-                        {required: true, message: '请输入键值',trigger: 'blur'}
+                        {required: true, message: '请设置该类型的键值',trigger: 'blur'}
                     ],
                 },
             }
@@ -124,6 +138,9 @@
                     sort:'',
                     status:true,
                 }
+                if(item){
+                    this.type = item.type.toString()
+                }
             },
             submitData() {
                 this.$refs['rulesForm'].validate(obj=>{
@@ -133,6 +150,7 @@
                             ...this.formData
                         }
                         if(this.formData.id){
+                            // param.type = this.type
                             platformsettingsOtherEdit(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
@@ -144,6 +162,7 @@
                                 }
                             })
                         }else{
+                            param.type = this.type
                             platformsettingsOtherAdd(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
@@ -159,6 +178,33 @@
                     }
                 })
             },
+            imgBeforeUpload(file) {
+                const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
+                if (!isJPG) {
+                    this.$message.error('图片只能是 JPG/PNG 格式!');
+                    return false
+                }
+                return isJPG;
+            },
+            async imgUploadRequest(param) {
+                var vm = this
+                let obj= await platformsettingsUploadPlatformImg(param)
+                if(obj.code == 2000) {
+                    let res=''
+                    if (obj.data.data[0].indexOf("://")>=0){
+                        res = obj.data.data[0]
+
+                    }else{
+                        res = url.split('/api')[0]+obj.data.data[0]
+                    }
+                    vm.formData.value = res
+                } else {
+                    vm.$message.warning(res.msg)
+                }
+            },
+            imgUploadSuccess() {
+                this.$refs.uploadDefaultImage.clearFiles()
+            }
         }
     }
 </script>
