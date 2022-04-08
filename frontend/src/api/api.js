@@ -162,6 +162,9 @@ export const UsersUsersDelete= params => ajaxDelete({url: `users/users/`,params}
 // 用户管理 禁用用户
 export const UsersUsersdisableEdit= params => ajaxPut({url: `users/users/disableuser/`,params})
 
+// 用户管理 导出
+export const UsersUsersExportexecl= params => ajaxGet({url: `users/users/exportexecl/`,params})
+
 
 /**
 *平台设置

@@ -15,6 +15,7 @@ from drf_yasg.utils import swagger_auto_schema
 from utils.imageupload import ImageUpload
 from mysystem.models import Users
 from utils.filters import UsersManageTimeFilter
+from utils.export_excel import export_excel
 # Create your views here.
 
 # ================================================= #
@@ -33,6 +34,21 @@ class UserManageSerializer(CustomModelSerializer):
         extra_kwargs = {
             'post': {'required': False},
         }
+
+class ExportUserManageSerializer(CustomModelSerializer):
+    """
+    导出 用户信息 简单序列化器
+    """
+    is_active_name = serializers.SerializerMethodField()
+    def get_is_active_name(self, obj):
+        if obj.is_active:
+            return "正常"
+        else:
+            return "禁用"
+
+    class Meta:
+        model = Users
+        fields = ('id', 'nickname','mobile', 'is_active_name','create_datetime')
 
 class UserManageViewSet(CustomModelViewSet):
     """
@@ -54,6 +70,12 @@ class UserManageViewSet(CustomModelViewSet):
             return SuccessResponse(data=None, msg="修改成功")
         else:
             return ErrorResponse(msg="未获取到用户")
+
+    def exportexecl(self, request):
+        field_data = ['主键','昵称', '手机号', '状态','创建时间']
+        queryset = self.filter_queryset(self.get_queryset())
+        data = ExportUserManageSerializer(queryset, many=True).data
+        return SuccessResponse(data=export_excel(request, field_data, data, '用户数据.xls'), msg='success')
 
 
 # ================================================= #

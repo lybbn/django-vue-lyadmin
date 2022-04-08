@@ -20,6 +20,7 @@
                             end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
+                <el-form-item label=""><el-button size="small" @click="exportDataBackend" type="primary">导出</el-button></el-form-item>
 <!--                <el-form-item label=""><el-button size="small" @click="addAdmin" type="primary" v-show="isShowBtn('userManage','用户管理','Create')">新增</el-button></el-form-item>-->
             </el-form>
         </div>
@@ -69,7 +70,7 @@
     import addUser from "./components/addUser";
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
-    import {UsersUsers,UsersUsersDelete,UsersUsersdisableEdit} from '@/api/api'
+    import {UsersUsers,UsersUsersDelete,UsersUsersdisableEdit,UsersUsersExportexecl} from '@/api/api'
     export default {
         components:{
             Pagination,
@@ -169,6 +170,28 @@
 
                 })
 
+            },
+            /**
+             * 从URL里下载文件
+            */
+            // 下载文件
+            downloadFileURL(url) {
+                var iframe =document.createElement("iframe")
+                iframe.style.display ="none";
+                iframe.src = url;
+                document.body.appendChild(iframe);
+            },
+            exportDataBackend() {
+                var params = {
+                    page: 1,
+                    limit: 9999,
+                }
+                UsersUsersExportexecl(params).then(res => {
+                     if(res.code ==2000) {
+                         this.downloadFileURL(res.data.data)
+                         //this.$message.warning(res.data.data)
+                     }
+                 })
             },
             callFather(parm) {
                 this.formInline.page = parm.page
