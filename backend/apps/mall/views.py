@@ -763,7 +763,7 @@ class GoodsListView(APIView):
                     'spec_type':m.spec_type
                 })
 
-        return SuccessResponse(data=data, msg='success')
+        return page_obj.get_paginated_response(data=data)
 
 
 
@@ -1421,7 +1421,7 @@ class GoodsOrdersListView(APIView):
                     'goods_list':goods_list,
                 })
 
-        return SuccessResponse(data=data, msg='success')
+        return page_obj.get_paginated_response(data=data)
 
 class UserAddressSerializer(serializers.ModelSerializer):
     """
