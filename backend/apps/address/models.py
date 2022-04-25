@@ -1,5 +1,5 @@
 from django.db import models
-from utils.modles import BaseModel
+from utils.modles import BaseModel,CoreModel
 from mysystem.models import Users
 # Create your models here.
 
@@ -7,7 +7,7 @@ from mysystem.models import Users
 # ************** 全国省区市 model************** #
 # ================================================= #
 
-class Area(models.Model):
+class Area(CoreModel):
     """省市区"""
     name = models.CharField(max_length=50, verbose_name='名称')
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, related_name='subs', null=True, blank=True, verbose_name='上级行政区划')#外键链接自己
