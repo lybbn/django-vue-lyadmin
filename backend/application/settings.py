@@ -456,7 +456,17 @@ CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge' # 加减乘除验证�
 # ================================================= #
 DJANGO_CELERY_BEAT_TZ_AWARE = False
 CELERY_TIMEZONE = 'Asia/Shanghai'  # celery 时区问题
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/15' # Broker配置，使用Redis作为消息中间件
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/10' # Broker配置，使用Redis作为消息中间件
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/11' # 把任务结果存在了Redis
+CELERY_FORCE_EXECV = True    # 非常重要,有些情况下可以防止死锁
+CELERY_RESULT_SERIALIZER = 'json' # 结果序列化方案
+CELERY_TASK_RESULT_EXPIRES = 60 * 60 * 24 #任务过期时间
+#CELERY_CONCURRENCY = 1 #并发worker数（worker个数）
+#CELERY_MAX_TASKS_PER_CHILD = 1#每个worker最多执行任务数（每个worker最多执行完1个任务就会被销毁，可防止内存泄露）
+# 指定导入的任务模块，可以指定多个
+#CELERY_IMPORTS = (
+#    'other_dir.tasks',
+#)
 # ================================================= #
 # ******************** 其他配置 ******************** #
 # ================================================= #
