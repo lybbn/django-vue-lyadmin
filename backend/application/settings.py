@@ -452,6 +452,12 @@ CAPTCHA_NOISE_FUNCTIONS = (
 # CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge' #字母验证码
 CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge' # 加减乘除验证码
 # ================================================= #
+# ******************** celery配置 ******************** #
+# ================================================= #
+DJANGO_CELERY_BEAT_TZ_AWARE = False
+CELERY_TIMEZONE = 'Asia/Shanghai'  # celery 时区问题
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/15' # Broker配置，使用Redis作为消息中间件
+# ================================================= #
 # ******************** 其他配置 ******************** #
 # ================================================= #
 # DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
@@ -465,8 +471,6 @@ API_MODEL_MAP = {
 }
 # 表前缀
 TABLE_PREFIX = "lyadmin_"
-DJANGO_CELERY_BEAT_TZ_AWARE = False
-CELERY_TIMEZONE = 'Asia/Shanghai'  # celery 时区问题
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

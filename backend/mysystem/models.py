@@ -11,19 +11,28 @@ GENDER_CHOICES = (
     )
 
 class Users(AbstractUser, CoreModel):
+    IDENTITY_CHOICES = (
+        (0, "超级管理员"),
+        (1, "系统管理员"),
+        (2, "前端用户"),
+
+    )
     username = models.CharField(max_length=50, unique=True, db_index=True, verbose_name='用户账号', help_text="用户账号")
     email = models.EmailField(max_length=60, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
-    mobile = models.CharField(max_length=11,verbose_name="电话", null=True, blank=True, help_text="电话")
+    mobile = models.CharField(max_length=50,verbose_name="电话", null=True, blank=True, help_text="电话")
     avatar = models.CharField(max_length=200,verbose_name="头像", null=True, blank=True, help_text="头像")
     name = models.CharField(max_length=40, verbose_name="姓名", help_text="姓名")
     nickname = models.CharField(max_length=100, help_text="用户昵称", verbose_name="用户昵称",default="")
-    gender = models.IntegerField(choices=GENDER_CHOICES, verbose_name="性别", null=True, blank=True, help_text="性别")
+    gender = models.SmallIntegerField(choices=GENDER_CHOICES, verbose_name="性别", null=True, blank=True, help_text="性别")
     post = models.ManyToManyField(to='Post', verbose_name='关联岗位', db_constraint=False, help_text="关联岗位")
     role = models.ManyToManyField(to='Role', verbose_name='关联角色', db_constraint=False, help_text="关联角色")#这个就是保留跨表查询的便利(双下划线跨表查询```),但是不用约束字段了,一般公司都用false,这样就省的报错,因为没有了约束(Field字段对象,既约束,又建立表与表之间的关系
-    dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True,
-                             blank=True, help_text="关联部门")
+    dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True, blank=True, help_text="关联部门")
 
     # 自定义
+    identity = models.SmallIntegerField(choices=IDENTITY_CHOICES, verbose_name="身份标识", null=True, blank=True,default=1,help_text="身份标识")
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='钱包余额')  # 钱包余额
+    # vipid = models.CharField(max_length=100, unique=True, help_text="会员id", verbose_name="会员id", null=True, blank=True)
+    is_delete = models.BooleanField(default=False, verbose_name="是否逻辑删除", help_text="是否逻辑删除")
 
     class Meta:
         db_table = table_prefix + "users"
@@ -70,7 +79,7 @@ class Role(CoreModel):
         (3, "全部数据权限"),
         (4, "自定数据权限"),
     )
-    data_range = models.IntegerField(default=0, choices=DATASCOPE_CHOICES, verbose_name="数据权限范围", help_text="数据权限范围")
+    data_range = models.SmallIntegerField(default=0, choices=DATASCOPE_CHOICES, verbose_name="数据权限范围", help_text="数据权限范围")
     remark = models.TextField(verbose_name="备注", help_text="备注", null=True, blank=True)
     dept = models.ManyToManyField(to='Dept', verbose_name='数据权限-关联部门', db_constraint=False, help_text="数据权限-关联部门")#自定义数据权限时，即data_range=4时会用到，可以关联多个部门
     menu = models.ManyToManyField(to='Menu', verbose_name='关联菜单', db_constraint=False, help_text="关联菜单")
@@ -94,7 +103,7 @@ class Dept(CoreModel):
         (0, "禁用"),
         (1, "启用"),
     )
-    status = models.IntegerField(choices=STATUS_CHOICES, default=1, verbose_name="部门状态", null=True, blank=True,
+    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1, verbose_name="部门状态", null=True, blank=True,
                                  help_text="部门状态")
     parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=False, verbose_name="上级部门",
                                db_constraint=False, null=True, blank=True, help_text="上级部门")
@@ -127,7 +136,7 @@ class Menu(CoreModel):
         (0, "否"),
         (1, "是"),
     )
-    is_link = models.IntegerField(choices=ISLINK_CHOICES, default=0, verbose_name="是否外链", help_text="是否外链")
+    is_link = models.SmallIntegerField(choices=ISLINK_CHOICES, default=0, verbose_name="是否外链", help_text="是否外链")
     web_path = models.CharField(max_length=128, verbose_name="路由地址", null=True, blank=True, help_text="路由地址")
     component = models.CharField(max_length=128, verbose_name="组件地址", null=True, blank=True, help_text="组件地址")
     component_name = models.CharField(max_length=50, verbose_name="组件名称", null=True, blank=True, help_text="组件名称")
@@ -135,22 +144,22 @@ class Menu(CoreModel):
         (0, "禁用"),
         (1, "启用"),
     )
-    status = models.IntegerField(choices=STATUS_CHOICES, default=1, verbose_name="菜单状态", help_text="菜单状态")
+    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1, verbose_name="菜单状态", help_text="菜单状态")
     isautopm_CHOICES=(
         (0,'不自动创建'),
         (1,"自动创建")
     )
-    isautopm = models.IntegerField(choices=isautopm_CHOICES, default=1, verbose_name="自动创建按钮权限", help_text="自动创建按钮权限")
+    isautopm = models.SmallIntegerField(choices=isautopm_CHOICES, default=1, verbose_name="自动创建按钮权限", help_text="自动创建按钮权限")
     CACHE_CHOICES = (
         (0, '禁用'),
         (1, "启用")
     )
-    cache = models.IntegerField(choices=CACHE_CHOICES, default=0, verbose_name="是否页面缓存", help_text="是否页面缓存")
+    cache = models.SmallIntegerField(choices=CACHE_CHOICES, default=0, verbose_name="是否页面缓存", help_text="是否页面缓存")
     VISIBLE_CHOICES=(
         (0,'不可见'),
         (1,"可见")
     )
-    visible = models.IntegerField(choices=CACHE_CHOICES, default=1, verbose_name="侧边栏中是否显示", help_text="侧边栏中是否显示")
+    visible = models.SmallIntegerField(choices=CACHE_CHOICES, default=1, verbose_name="侧边栏中是否显示", help_text="侧边栏中是否显示")
 
     class Meta:
         db_table = table_prefix + "menu"
@@ -187,7 +196,7 @@ class Dictionary(CoreModel):
         (0, "禁用"),
         (1, "启用"),
     )
-    status = models.IntegerField(choices=STATUS_CHOICES, default=1, verbose_name="状态", help_text="状态")
+    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1, verbose_name="状态", help_text="状态")
     sort = models.IntegerField(default=1, verbose_name="显示排序", null=True, blank=True, help_text="显示排序")
     parent = models.ForeignKey(to="Dictionary", db_constraint=False, on_delete=models.PROTECT, blank=True, null=True,
                                verbose_name="父级", help_text="父级")
@@ -210,7 +219,7 @@ class SysDictionarylist(CoreModel):
         (0, "禁用"),
         (1, "启用"),
     )
-    status = models.IntegerField(choices=STATUS_CHOICES, default=1, verbose_name="状态", help_text="状态")
+    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1, verbose_name="状态", help_text="状态")
     remark = models.CharField(max_length=255, blank=True, null=True, verbose_name="备注", help_text="备注")
 
     class Meta:
@@ -241,13 +250,15 @@ class OperationLog(CoreModel):
 
 
 class LoginLog(CoreModel):
-    session_id = models.CharField(max_length=64, verbose_name="会话标识", null=True, blank=True, help_text="会话标识")
-    browser = models.CharField(max_length=64, verbose_name="浏览器", help_text="浏览器")
-    ipaddr = models.CharField(max_length=32, verbose_name="ip地址", null=True, blank=True, help_text="ip地址")
-    loginLocation = models.CharField(max_length=64, verbose_name="登录位置", null=True, blank=True, help_text="登录位置")
-    msg = models.TextField(verbose_name="操作信息", null=True, blank=True, help_text="操作信息")
-    os = models.CharField(max_length=64, verbose_name="操作系统", null=True, blank=True, help_text="操作系统")
-    status = models.BooleanField(default=False, verbose_name="登录状态", help_text="登录状态")
+    LOGIN_TYPE_CHOICES = (
+        (1, '后台登录'),
+    )
+    username = models.CharField(max_length=32, verbose_name="登录用户名", null=True, blank=True, help_text="登录用户名")
+    ip = models.CharField(max_length=32, verbose_name="登录ip", null=True, blank=True, help_text="登录ip")
+    agent = models.CharField(max_length=1500,verbose_name="agent信息", null=True, blank=True, help_text="agent信息")
+    browser = models.CharField(max_length=200, verbose_name="浏览器名", null=True, blank=True, help_text="浏览器名")
+    os = models.CharField(max_length=150, verbose_name="操作系统", null=True, blank=True, help_text="操作系统")
+    login_type = models.IntegerField(default=1, choices=LOGIN_TYPE_CHOICES, verbose_name="登录类型", help_text="登录类型")
 
     class Meta:
         db_table = table_prefix + 'login_log'

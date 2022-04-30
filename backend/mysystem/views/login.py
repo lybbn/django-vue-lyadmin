@@ -17,6 +17,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from mysystem.models import Users
 from utils.jsonResponse import SuccessResponse
 from utils.validator import CustomValidationError
+from utils.request_util import save_login_log
 
 class CaptchaView(APIView):
     """
@@ -109,6 +110,10 @@ class LoginSerializer(TokenObtainPairSerializer):
             data['userId'] = self.user.id
             data['refresh'] = str(refresh)
             data['access'] = str(refresh.access_token)
+            request = self.context.get('request')
+            request.user = self.user
+            # 记录登录成功日志
+            save_login_log(request=request)
             result = {
                 "code": 2000,
                 "msg": "请求成功",
