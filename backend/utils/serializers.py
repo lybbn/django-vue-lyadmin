@@ -48,18 +48,20 @@ class CustomModelSerializer(ModelSerializer):
 
     def create(self, validated_data):
         if self.request:
-            if self.modifier_field_id in self.fields.fields:
-                validated_data[self.modifier_field_id] = self.get_request_user_id()
-            if self.creator_field_id in self.fields.fields:
-                validated_data[self.creator_field_id] = self.request.user
-            if self.dept_belong_id_field_name in self.fields.fields and validated_data.get(self.dept_belong_id_field_name, None):
-                validated_data[self.dept_belong_id_field_name] = getattr(self.request.user, 'dept_id', None)
+            if str(self.request.user) != "AnonymousUser":
+                if self.modifier_field_id in self.fields.fields:
+                    validated_data[self.modifier_field_id] = self.get_request_user_id()
+                if self.creator_field_id in self.fields.fields:
+                    validated_data[self.creator_field_id] = self.request.user
+                if self.dept_belong_id_field_name in self.fields.fields and validated_data.get(self.dept_belong_id_field_name, None) is None:
+                    validated_data[self.dept_belong_id_field_name] = getattr(self.request.user, 'dept_id', None)
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
         if self.request:
             if hasattr(self.instance, self.modifier_field_id):
-                self.instance.modifier = self.get_request_username()
+                # self.instance.modifier = self.get_request_username()#更新人的用户名
+                setattr(self.instance, self.modifier_field_id, self.get_request_user_id())#更新人的id
         return super().update(instance, validated_data)
 
     def get_request_username(self):
@@ -77,49 +79,49 @@ class CustomModelSerializer(ModelSerializer):
             return getattr(self.request.user, 'id', None)
         return None
 
-    @cached_property
-    def fields(self):
-        fields = BindingDict(self)
-        for key, value in self.get_fields().items():
-            fields[key] = value
-
-        if not hasattr(self, '_context'):
-            return fields
-        is_root = self.root == self
-        parent_is_list_root = self.parent == self.root and getattr(self.parent, 'many', False)
-        if not (is_root or parent_is_list_root):
-            return fields
-
-        try:
-            request = self.request or self.context['request']
-        except KeyError:
-            return fields
-        params = getattr(
-            request, 'query_params', getattr(request, 'GET', None)
-        )
-        if params is None:
-            pass
-        try:
-            filter_fields = params.get('_fields', None).split(',')
-        except AttributeError:
-            filter_fields = None
-
-        try:
-            omit_fields = params.get('_exclude', None).split(',')
-        except AttributeError:
-            omit_fields = []
-
-        existing = set(fields.keys())
-        if filter_fields is None:
-            allowed = existing
-        else:
-            allowed = set(filter(None, filter_fields))
-
-        omitted = set(filter(None, omit_fields))
-        for field in existing:
-            if field not in allowed:
-                fields.pop(field, None)
-            if field in omitted:
-                fields.pop(field, None)
-
-        return fields
+    # @cached_property
+    # def fields(self):
+    #     fields = BindingDict(self)
+    #     for key, value in self.get_fields().items():
+    #         fields[key] = value
+    #
+    #     if not hasattr(self, '_context'):
+    #         return fields
+    #     is_root = self.root == self
+    #     parent_is_list_root = self.parent == self.root and getattr(self.parent, 'many', False)
+    #     if not (is_root or parent_is_list_root):
+    #         return fields
+    #
+    #     try:
+    #         request = self.request or self.context['request']
+    #     except KeyError:
+    #         return fields
+    #     params = getattr(
+    #         request, 'query_params', getattr(request, 'GET', None)
+    #     )
+    #     if params is None:
+    #         pass
+    #     try:
+    #         filter_fields = params.get('_fields', None).split(',')
+    #     except AttributeError:
+    #         filter_fields = None
+    #
+    #     try:
+    #         omit_fields = params.get('_exclude', None).split(',')
+    #     except AttributeError:
+    #         omit_fields = []
+    #
+    #     existing = set(fields.keys())
+    #     if filter_fields is None:
+    #         allowed = existing
+    #     else:
+    #         allowed = set(filter(None, filter_fields))
+    #
+    #     omitted = set(filter(None, omit_fields))
+    #     for field in existing:
+    #         if field not in allowed:
+    #             fields.pop(field, None)
+    #         if field in omitted:
+    #             fields.pop(field, None)
+    #
+    #     return fields

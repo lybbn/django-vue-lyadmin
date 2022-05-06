@@ -36,6 +36,8 @@ class CustomModelViewSet(ModelViewSet):
     (1)ORM性能优化, 尽可能使用values_queryset形式
     (2)create_serializer_class 新增时,使用的序列化器
     (3)update_serializer_class 修改时,使用的序列化器
+    即xxx_serializer_class 某个方法下使用的序列化器(xxx=create|update|list|retrieve|destroy)
+
     """
     values_queryset = None
     ordering_fields = '__all__'
@@ -69,7 +71,6 @@ class CustomModelViewSet(ModelViewSet):
         serializer = self.get_serializer(data=request.data, request=request)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
         return SuccessResponse(data=serializer.data, msg="新增成功")
 
     def list(self, request, *args, **kwargs):
@@ -78,9 +79,6 @@ class CustomModelViewSet(ModelViewSet):
         if page is not None:
             serializer = self.get_serializer(page, many=True, request=request)
             return self.get_paginated_response(serializer.data)
-            # result = self.get_paginated_response(serializer.data)
-            # print(51,result.data)
-            # return JsonResponse(code=2000,msg="获取成功", data=result.data)
         serializer = self.get_serializer(queryset, many=True, request=request)
         return SuccessResponse(data=serializer.data, msg="获取成功")
 

@@ -49,8 +49,8 @@ class OtherManageSerializer(CustomModelSerializer):
 
     class Meta:
         model = OtherManage
-        # fields = "__all__"
-        exclude=['dept_belong_id','modifier','creator','description']
+        fields = "__all__"
+        # exclude=['dept_belong_id','modifier','creator','description']
         read_only_fields = ["id"]
 
 class OtherManageViewSet(CustomModelViewSet):

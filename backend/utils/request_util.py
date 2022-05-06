@@ -201,8 +201,8 @@ def save_login_log(request):
     :return:
     """
     ip = get_request_ip(request=request)
-    analysis_data = ip
-    analysis_data['username'] = request.user.username
+    analysis_data = {}
+    analysis_data['username'] = str(request.user.username)
     analysis_data['ip'] = ip
     analysis_data['agent'] = str(parse(request.META['HTTP_USER_AGENT']))
     analysis_data['browser'] = get_browser(request)
