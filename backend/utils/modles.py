@@ -42,8 +42,8 @@ class BaseModel(models.Model):
         基本模型,可直接继承使用，一般不需要使用审计字段的模型可以使用
         覆盖字段时, 字段名称请勿修改
     """
-    create_datetime = models.DateTimeField(auto_now=True, null=True, blank=True,verbose_name='创建时间')
-    update_datetime = models.DateTimeField(auto_now_add=True,null=True, blank=True, verbose_name='更新时间')
+    update_datetime = models.DateTimeField(auto_now=True, null=True, blank=True, verbose_name='更新时间')
+    create_datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name='创建时间')
 
     class Meta:
         abstract = True  # 表示该类是一个抽象类，只用来继承，不参与迁移操作
