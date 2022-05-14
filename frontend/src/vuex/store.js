@@ -14,8 +14,10 @@ export default new Vuex.Store({
     state: {
         user: false,
         //mutitabs
-        tabsPage: sessionStorage.getItem('tabsPage')||[{"title":"管理员管理","name":"adminManage"}],//默认显示的页
-        TabsValue: sessionStorage.getItem('TabsValue')||'adminManage',//默认选中显示的标签页
+        // tabsPage: sessionStorage.getItem('tabsPage')||[{"title":"管理员管理","name":"adminManage"}],//默认显示的页
+        // TabsValue: sessionStorage.getItem('TabsValue')||'adminManage',//默认选中显示的标签页
+        tabsPage: sessionStorage.getItem('tabsPage')||[],//默认显示的页
+        TabsValue: sessionStorage.getItem('TabsValue')||'',//默认选中显示的标签页
         //控制是否支持多选项卡
         isMultiTabs:true
 
@@ -29,7 +31,21 @@ export default new Vuex.Store({
         // 退出
         logout(state, user) {
             state.user = "";
-            sessionStorage.setItem("userInfo", "");
+            state.tabsPage=[]
+            state.TabsValue = ""
+            sessionStorage.clear()
+        },
+        //首次登录第一个标签页获取
+        firstTabs(state,datas){
+            if(state.tabsPage.length==0){
+                state.tabsPage=datas[0]
+                sessionStorage.setItem("tabsPage", JSON.stringify(state.tabsPage))
+            }
+            if(state.TabsValue=="") {
+                state.TabsValue = datas[1]
+                sessionStorage.setItem("TabsValue", state.TabsValue)
+            }
+
         },
         //mutitabs
         editableTabs: (state, obj) => {
@@ -89,10 +105,12 @@ export default new Vuex.Store({
         saveCurContextTabId(state, curContextTabId) {
           state.TabsValue = curContextTabId
         },
-        // 关闭所有标签
+        // 关闭所有标签(只保留第一个标签页)
         closeAllTabs(state) {
-          state.tabsPage = [{"title":"管理员管理","name":"adminManage"}];
-          router.push({ name: "adminManage"});
+          // state.tabsPage = [{"title":"管理员管理","name":"adminManage"}];
+          // router.push({ name: "adminManage"});
+            state.tabsPage = [state.tabsPage[0]];
+            router.push({ name: state.tabsPage[0].name});
         },
         // 关闭其它标签页
         closeOtherTabs(state, par) {

@@ -129,8 +129,11 @@
             } else {
               this.$message.warning('暂无授权任何菜单权限~')
             }
-
             sessionStorage.setItem('allmenu', JSON.stringify(this.allmenu))
+            //优化首次登录后第一个标签页显示
+            let tabsPage = [{"title":menuTree[0].text,"name":menuTree[0].attributes.url}]
+            let TabsValue = menuTree[0].attributes.url
+            this.$store.commit('firstTabs', [tabsPage,TabsValue])
             this.$forceUpdate()
           } else {
             this.$message.warning(res.msg)
