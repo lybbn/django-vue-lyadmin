@@ -46,6 +46,12 @@ def CustomExceptionHandler(ex, context):
                     msg = errorMsg[key][0]
         except:
             msg = errorMsg[0]
+    elif 'django.db.utils.IntegrityError' in str(type(ex)):
+        msg=str(ex)
+        res = msg.split(', ')
+        print(msg)
+        if res[0] == '(1062':
+            msg="数据有重复，请检查后重试:%s"%msg
     elif isinstance(ex, DRFAPIException):
         set_rollback()
         msg = str(ex.detail)
