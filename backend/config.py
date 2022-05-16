@@ -55,10 +55,10 @@ WX_XCX_APPSECRET = "xxxxxxxxxxxxxxxxxxxxxx"
 
 
 # ================================================= #
-# ************** 微信公众平台（服务号） 配置  ************** #
+# ************** 微信开放平台（服务号） 配置  ************** #
 # ================================================= #
 
-#微信公众平台申请的appid
+#微信开放平台申请的appid
 WX_GZPT_APPID = "XXXXXXXXXXXXXX"
 #微信公众平台申请的appsecret
 WX_GZPT_APPSECRET = "XXXXXXXXXXXXXXXXXXXXXXXX"
@@ -111,12 +111,12 @@ python无法使用双向证书，使用openssl导出：(从微信下载的证书
 """
 
 # 微信支付相关
-WXPAY_APPID = 'wx023axxxxxx'#'微信分配的公众账号ID'\申请商户号的appid或商户号绑定的appid\app支付为开放平台申请的appid
-WXPAY_APPID_APP = 'wxc5155xxxxx'#'微信app支付、app支付为开放平台申请的appid
+WXPAY_APPID = 'wx023axxxxxx'#微信小程序支付（'微信分配的公众账号ID'\申请商户号的appid或商户号绑定的appid）
+WXPAY_APPID_APP = 'wxc5155xxxxx'#'微信app支付（app支付为开放平台申请的appid）
 WXPAY_MCHID = 'xxxxxxxxxxxx'#'商户号'
-WXPAY_APIKEY_V1 = '商户平台设置的密钥KEY'#v1
+WXPAY_APIKEY_V1 = '商户平台设置的密钥KEY'#v2
 WXPAY_APIKEY = 'C1098Dxxxxxxxxx0978A8F4B291C1'#v3
-WXPAY_APIKEY_APP = '8b5a28877d25ed36b48xxxxx'#微信app支付
+WXPAY_APIKEY_APP = '8b5a28877d25ed36b48xxxxx'#微信app支付（使用v3可不填写）
 WXPAY_SERIAL_NO = "7367035E134xxxxxxxxxFED20C5071E83341"#商户号证书序列号，登录商户平台【API安全】->【API证书】->【查看证书】，可查看商户API证书序列号
 
 # 服务器存放证书路径（微信支付签发的）
@@ -130,13 +130,13 @@ WXPAY_CERT_DIR_RESPONSE = os.path.join(WXPAY_CERT_DIR, 'wechatpay_response_key')
 # ************** 支付宝支付APP 配置  ************** #
 # ================================================= #
 """
-使用OpenSSL生成证书
+使用OpenSSL生成证书app_private_key.pem（私钥）、app_public_key.pem（公钥）
 1. 生成私钥
 genrsa -out app_private_key.pem 2048
 2. 生成公钥
 rsa -in app_private_key.pem -pubout -out app_public_key.pem
 
-注意 1和2步骤也可以使用支付宝自己得签名工具（支付宝开放平台开发助手）生成签名来完成
+注意 1和2步骤也可以使用支付宝自己得签名工具（支付宝开放平台开发助手）生成签名来完成（签名工具秘钥长度选择-RSA2）
 
 3.cat app_public_key.pem 查看公钥的内容
 

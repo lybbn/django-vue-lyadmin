@@ -20,8 +20,8 @@
                             end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
+                <el-form-item label=""><el-button size="small" @click="addAdmin" type="primary" v-show="isShowBtn('userManage','用户管理','Create')">新增</el-button></el-form-item>
                 <el-form-item label=""><el-button size="small" @click="exportDataBackend" type="primary">导出</el-button></el-form-item>
-<!--                <el-form-item label=""><el-button size="small" @click="addAdmin" type="primary" v-show="isShowBtn('userManage','用户管理','Create')">新增</el-button></el-form-item>-->
             </el-form>
         </div>
 
@@ -51,8 +51,8 @@
                 <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
                 <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
-<!--                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('userManage','用户管理','Update')">详情</span>-->
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('userManage','用户管理','Retrieve')">详情</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('userManage','用户管理','Update')">编辑</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('userManage','用户管理','Retrieve')">详情</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('userManage','用户管理','Delete')">删除</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'disable')" v-show="isShowBtn('userManage','用户管理','Update')">
                             <span v-if="scope.row.is_active">禁用</span>
@@ -64,6 +64,7 @@
         </div>
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
         <add-user ref="addUserFlag" @refreshData="search"></add-user>
+        <user-detail ref="userDetailFlag"></user-detail>
     </div>
 </template>
 <script>
@@ -71,8 +72,10 @@
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
     import {UsersUsers,UsersUsersDelete,UsersUsersdisableEdit,UsersUsersExportexecl} from '@/api/api'
+    import UserDetail from "./components/userDetail";
     export default {
         components:{
+            UserDetail,
             Pagination,
             addUser
         },
@@ -96,9 +99,7 @@
                 ],
                 identityList:[
                     {id:0,name:'普通用户'},
-                    {id:1,name:'回收员'},
-                    {id:2,name:'回收站点'},
-                    {id:3,name:'代理商'},
+                    {id:1,name:'会员'},
                 ],
                 timers:[],
                 tableData:[]
@@ -113,7 +114,10 @@
             },
             handleEdit(row,flag) {
                 if(flag=='edit') {
-                    this.$refs.addUserFlag.addUserFn(row,'详情')
+                    this.$refs.addUserFlag.addUserFn(row,'编辑')
+                }
+                if(flag=='detail') {
+                    this.$refs.userDetailFlag.addUserFn(row,'详情')
                 }
                 if(flag=='disable'){
                     let vm = this

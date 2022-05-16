@@ -30,9 +30,10 @@ class UserManageSerializer(CustomModelSerializer):
     class Meta:
         model = Users
         read_only_fields = ["id"]
-        exclude = ['password']
+        exclude = ['password','role','post','dept']
         extra_kwargs = {
             'post': {'required': False},
+            'role': {'required': False},
         }
 
 class ExportUserManageSerializer(CustomModelSerializer):
