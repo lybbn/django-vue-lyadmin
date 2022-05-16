@@ -86,6 +86,15 @@ ALIYUN_SMS_ACCESS_KEY_SECRET = "xxxxxxxxxxxxxxxxxxxxxxx"
 ALIYUN_SMS_SIGN='xxx'#短信签名名称
 ALIYUM_SMS_TEMPLATE='SMS_221xxxxx'#模板code
 
+# ================================================= #
+# ************** 腾讯云发送短信 配置  ************** #
+# ================================================= #
+# SECRETID/SECRETKEY 根据实际申请的账号信息进行替换
+TENCENT_SMS_SECRETID = "xxxxxxxxxxxxxxxxxxxxxxxx"#CAM ID
+TENCENT_SMS_SECRETKEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"#CAM密匙
+TENCENT_SMS_APPID = "14003xxxxx"#SdkAppId
+TENCENT_SMS_SIGN='lybbn测试名称'#短信签名名称
+TENCENT_SMS_TEMPLATE_ID='65xxxx'#模板id
 
 # ================================================= #
 # ************** 微信支付 配置  ************** #

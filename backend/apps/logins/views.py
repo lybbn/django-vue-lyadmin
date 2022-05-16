@@ -17,6 +17,7 @@ import uuid
 from config import ALIYUN_SMS_SIGN,ALIYUM_SMS_TEMPLATE
 from utils.aliyunsms import send_sms
 import json
+from utils.tencentsms import tencentsms
 # ================================================= #
 # ************** 前端用户登录 view  ************** #
 # ================================================= #
@@ -174,7 +175,7 @@ class SendSmsCodeView(APIView):
             # 生成验证码
             code = self.generate_code()
 
-            #云片网api短信接口调用
+            #云片网api短信接口调用-----------开始
             # yun_pian = YunPian(SMS_API_KEY)
             # sms_status = yun_pian.send_sms(code=code, mobile=mobile)
             #
@@ -190,8 +191,8 @@ class SendSmsCodeView(APIView):
             #     mydata = {}
             #     mydata["mobile"] = mobile
             #     return Response(ly_api_res(200,mydata,"短信验证码发送成功"), status=status.HTTP_200_OK)
-
-            #unicloud短信接口api调用
+            # 云片网api短信接口调用-----------结束
+            #unicloud短信接口api调用-----------开始
             # unicloudsms = UniCloudSms()
             # sms_status = unicloudsms.send_sms(code=code, mobile=mobile,expminute=codeexpire)
             # #返回内容
@@ -214,34 +215,49 @@ class SendSmsCodeView(APIView):
             #     mydata = {}
             #     mydata["mobile"] = mobile
             #     return ErrorResponse(data=mydata, msg=sms_status['msg'])
-
-            #阿里云短信
-            __business_id = uuid.uuid1()
-            # 一个验证码发送的例子
-            params = '{\"code\":\"'+code+'\"}'  # 模板参数
-            sms_status= send_sms(__business_id,mobile,ALIYUN_SMS_SIGN,ALIYUM_SMS_TEMPLATE,params)
-            # 返回内容byte类型
-            # {
-            #     "Message": "OK",
-            #     "RequestId": "F655A8D5-B967-440B-8683-DAD6FF8DE990",
-            #     "Code": "OK",
-            #     "BizId": "900619746936498440^0"
-            # }
-            sms_status_str = sms_status.decode()
-            sms_status_json = json.loads(sms_status)
-            if 'Code' in sms_status_str:  # 判断返回内容是否存在code的key，错误时不返回code
-                if sms_status_json["Code"] == 'OK':
-                    # 存储短信验证码到redis
-                    redis_conn.setex('sms_%s' % mobile, codeexpire, code)  # 默认300秒5分钟过期时间
-                    # 存储一个标记，表示此手机号已发送过短信，标记有效期为60s
-                    redis_conn.setex('send_flag_%s' % mobile, 60, 1)
-                    mydata = {}
-                    mydata["mobile"] = mobile
-                    return SuccessResponse(data=mydata, msg="短信验证码发送成功")
-                else:
-                    return ErrorResponse(data=sms_status_json, msg='发送失败')
+            # unicloud短信接口api调用-----------结束
+            #阿里云短信-----------开始
+            # __business_id = uuid.uuid1()
+            # # 一个验证码发送的例子
+            # params = '{\"code\":\"'+code+'\"}'  # 模板参数
+            # sms_status= send_sms(__business_id,mobile,ALIYUN_SMS_SIGN,ALIYUM_SMS_TEMPLATE,params)
+            # # 返回内容byte类型
+            # # {
+            # #     "Message": "OK",
+            # #     "RequestId": "F655A8D5-B967-440B-8683-DAD6FF8DE990",
+            # #     "Code": "OK",
+            # #     "BizId": "900619746936498440^0"
+            # # }
+            # sms_status_str = sms_status.decode()
+            # sms_status_json = json.loads(sms_status)
+            # if 'Code' in sms_status_str:  # 判断返回内容是否存在code的key，错误时不返回code
+            #     if sms_status_json["Code"] == 'OK':
+            #         # 存储短信验证码到redis
+            #         redis_conn.setex('sms_%s' % mobile, codeexpire, code)  # 默认300秒5分钟过期时间
+            #         # 存储一个标记，表示此手机号已发送过短信，标记有效期为60s
+            #         redis_conn.setex('send_flag_%s' % mobile, 60, 1)
+            #         mydata = {}
+            #         mydata["mobile"] = mobile
+            #         return SuccessResponse(data=mydata, msg="短信验证码发送成功")
+            #     else:
+            #         return ErrorResponse(data=sms_status_json, msg='发送失败')
+            # else:
+            #     return ErrorResponse(data=sms_status_json, msg='发送失败')
+            # 阿里云短信-----------结束
+            # 腾讯云短信-----------开始
+            sms_status_json = tencentsms("+" + str(86) + str(mobile), code)
+            # sms_status_json = 'Ok'
+            if 'Ok' in sms_status_json:  #
+                # 存储短信验证码到redis
+                redis_conn.setex('sms_%s' % mobile, codeexpire, code)  # 默认300秒5分钟过期时间
+                # 存储一个标记，表示此手机号已发送过短信，标记有效期为60s
+                redis_conn.setex('send_flag_%s' % mobile, 60, 1)
+                mydata = {}
+                mydata["mobile"] = mobile
+                return SuccessResponse(data=mydata, msg="success")
             else:
-                return ErrorResponse(data=sms_status_json, msg='发送失败')
+                return ErrorResponse(data=sms_status_json, msg='error')
+            # 腾讯云短信-----------结束
 
         else:
             return ErrorResponse(msg="smstype短信验证码类型错误")

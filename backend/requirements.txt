@@ -62,3 +62,4 @@ python-alipay-sdk
 pycryptodomex>=3.14.1
 jpush
 psutil
+tencentcloud-sdk-python
