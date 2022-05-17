@@ -189,6 +189,18 @@ CACHES = {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # 连接选项(默认，不改)
             }
         },
+    "singletoken": {  # jwt单用户登录（确保一个账户只有一个地点登录，后一个会顶掉前一个）
+            'BACKEND': 'django_redis.cache.RedisCache',  # 缓存后端 Redis
+            # 连接Redis数据库(服务器地址)
+            # 一主带多从(可以配置多个Redis，写走第一台，读走其他的机器)
+            'LOCATION': [
+                'redis://localhost:6379/5',
+            ],
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # 连接选项(默认，不改)
+                'CONNECTION_POOL_KWARGS': {'decode_responses': True}, # 添加这一行,防止取出的值带有b'' bytes
+            }
+        },
 }
 
 REDIS_TIMEOUT = 7 * 24 * 60 * 60

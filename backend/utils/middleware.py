@@ -10,15 +10,16 @@ from django.utils.deprecation import MiddlewareMixin
 from mysystem.models import OperationLog
 from utils.request_util import get_request_user, get_request_ip, get_request_data, get_request_path, get_os, get_browser, get_verbose_name
 
-from django.http import HttpResponseForbidden
-from config import ALLOW_FRONTEND,FRONTEND_API_LIST
+from django.http import HttpResponseForbidden,HttpResponse
+from config import ALLOW_FRONTEND,FRONTEND_API_LIST,IS_SINGLE_TOKEN
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication,JWTTokenUserAuthentication
 from rest_framework.views import APIView
 from utils.jsonResponse import SuccessResponse,ErrorResponse
 from utils.common import get_parameter_dic
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from django_redis import get_redis_connection
 
 IS_ALLOW_FRONTEND = ALLOW_FRONTEND
 
@@ -97,6 +98,25 @@ class ApiLoggingMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         self.__handle_request(request)
+
+        if IS_SINGLE_TOKEN:#保证设备登录的唯一性
+            if request.request_path[0:9] not in FRONTEND_API_LIST:
+                jwt_token = request.META.get('HTTP_AUTHORIZATION', None)
+                if jwt_token and 'JWT' in jwt_token and jwt_token.split('JWT ')[1]!='null':
+                    errordata = {'msg': '身份认证已经过期，请重新登入', 'code': 4001, 'data': ''}
+                    try:
+                        user,token = JWTTokenUserAuthentication().authenticate(request)
+                        redis_conn = get_redis_connection("singletoken")
+                        k = "lybbn-single-token{}".format(user.id)
+                        cache_token = redis_conn.get(k)
+                        if cache_token:
+                            if not str(token) == str(cache_token):
+                                return HttpResponse(json.dumps(errordata), content_type='application/json',status=200,charset='utf-8')
+                        else:
+                            return HttpResponse(json.dumps(errordata), content_type='application/json',status=200,charset='utf-8')
+                    except Exception as e:
+                        print(e)
+                        return HttpResponse(json.dumps(errordata), content_type='application/json',status=200,charset='utf-8')
 
     def process_response(self, request, response):
         """

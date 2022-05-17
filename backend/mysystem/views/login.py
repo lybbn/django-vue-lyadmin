@@ -4,6 +4,7 @@
 @Remark:管理后台登录视图
 """
 import base64
+import datetime
 from datetime import datetime, timedelta
 from captcha.views import CaptchaStore, captcha_image
 from django.utils.translation import gettext_lazy as _
@@ -18,6 +19,9 @@ from mysystem.models import Users
 from utils.jsonResponse import SuccessResponse
 from utils.validator import CustomValidationError
 from utils.request_util import save_login_log
+from django_redis import get_redis_connection
+from django.conf import settings
+from config import IS_SINGLE_TOKEN
 
 class CaptchaView(APIView):
     """
@@ -114,6 +118,14 @@ class LoginSerializer(TokenObtainPairSerializer):
             request.user = self.user
             # 记录登录成功日志
             save_login_log(request=request)
+            #缓存用户的jwt token
+            if IS_SINGLE_TOKEN:
+                redis_conn = get_redis_connection("singletoken")
+                k = "lybbn-single-token{}".format(user.id)
+                TOKEN_EXPIRE_CONFIG = getattr(settings, 'SIMPLE_JWT', None)
+                if TOKEN_EXPIRE_CONFIG:
+                    TOKEN_EXPIRE = TOKEN_EXPIRE_CONFIG['ACCESS_TOKEN_LIFETIME']
+                    redis_conn.set(k, data['access'], TOKEN_EXPIRE)
             result = {
                 "code": 2000,
                 "msg": "请求成功",
