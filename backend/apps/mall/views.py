@@ -1008,15 +1008,15 @@ class MyCouponView(APIView):
         if queryset:
             for m in queryset:
                 desc = '无门槛'
-                if m.is_condition:#有门槛
-                    return "满"+str(int(m.use_min_price))+"减"+str(int(m.coupon.price))
+                if m.coupon.is_condition:#有门槛
+                    return "满"+str(int(m.coupon.use_min_price))+"减"+str(int(m.coupon.price))
                 data.append({
                     'id':m.id,
                     'name':m.coupon.name,
                     'price':m.coupon.price,
                     'coupon_expiretime':m.coupon.coupon_expiretime,
-                    'is_condition':m.is_condition,
-                    'condition_price':m.use_min_price,
+                    'is_condition':m.coupon.is_condition,
+                    'condition_price':m.coupon.use_min_price,
                     'condition':desc,
                     'coupon_type':m.coupon.get_coupon_type_display(),
                     'status':m.status,
