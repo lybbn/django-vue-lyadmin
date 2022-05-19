@@ -11,6 +11,7 @@ from django.db.utils import DatabaseError
 from rest_framework import exceptions
 from rest_framework.exceptions import APIException as DRFAPIException, AuthenticationFailed,NotAuthenticated,ValidationError
 from rest_framework.views import set_rollback
+from django.http.response import Http404
 
 from utils.jsonResponse import ErrorResponse
 
@@ -52,6 +53,9 @@ def CustomExceptionHandler(ex, context):
         print(msg)
         if res[0] == '(1062':
             msg="数据有重复，请检查后重试:%s"%msg
+    elif isinstance(ex,Http404):
+        code = 404
+        msg = "404错误：您访问的地址不存在"
     elif isinstance(ex, DRFAPIException):
         set_rollback()
         msg = str(ex.detail)
