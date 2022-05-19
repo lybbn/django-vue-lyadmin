@@ -806,7 +806,7 @@ class GoodsDetailView(APIView):
                 for temps in spuspecvalues:
                     spu_options['values'].append({
                         'id':temps.id,
-                        'spec_value':temps.vaule
+                        'spec_value':temps.value
                     })
                 myspecs.append(spu_options)
         skus_list = []#skus
