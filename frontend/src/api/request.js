@@ -36,7 +36,12 @@ function ajax(opt,method){
 
   if(opt.params){
     //对传入的参数进行深拷贝，防止传入的参数对象被页面上其他逻辑改变，导致签名错误
-    params=JSON.parse(JSON.stringify(opt.params));
+    if (Object.prototype.toString.call(opt.params) != '[object FormData]') {
+      // 不是formdata类型
+      params = JSON.parse(JSON.stringify(opt.params));
+    }else{//formdata类型
+      params= opt.params
+    }
     if(method=='GET') {
       params={
         ...params,
