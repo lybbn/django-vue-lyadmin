@@ -304,6 +304,9 @@ class GoodsSPUSerializer(CustomModelSerializer):
         #fields = "__all__"
         exclude = ['dept_belong_id','description','modifier','creator']
         read_only_fields = ["id"]
+        extra_kwargs = {
+            'spu_specs': {'required': False},
+        }
 
 class SKUSpecificationSPUUpdateSerialzier(CustomModelSerializer):
     """
@@ -697,13 +700,14 @@ class GoodsTypeView(APIView):
             queryset = GoodsCategory.objects.filter(default_image__isnull=False,is_delete=False).order_by('sort')
         else:
             return ErrorResponse(msg='type类型错误')
-        data={}
+        data = []
         if queryset:
-            data={
-                'id':queryset.id,
-                'name':queryset.name,
-                'default_image':queryset.default_image,
-            }
+            for q in queryset:
+                data.append({
+                    'id': q.id,
+                    'name': q.name,
+                    'default_image': q.default_image,
+                })
         return SuccessResponse(data=data,msg="success")
 
 class GoodsListView(APIView):

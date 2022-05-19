@@ -50,7 +50,6 @@ def CustomExceptionHandler(ex, context):
     elif 'django.db.utils.IntegrityError' in str(type(ex)):
         msg=str(ex)
         res = msg.split(', ')
-        print(msg)
         if res[0] == '(1062':
             msg="数据有重复，请检查后重试:%s"%msg
     elif isinstance(ex,Http404):

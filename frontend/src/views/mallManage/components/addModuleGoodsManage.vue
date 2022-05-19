@@ -49,6 +49,7 @@
                 <el-tab-pane label="商品图片" name="2">
                     <el-form-item label="商品缩略图：" prop="default_image">
                         <el-upload
+                                ref="lyimagupload"
                                 class="avatar-uploader"
                                 :limit="1"
                                 action=""
@@ -867,10 +868,8 @@
                     vm.$message.warning(res.msg)
                 }
             },
-            imgUploadSuccess(res) {
-                if (res) {
-                    this.formData.default_image = res.url
-                }
+            imgUploadSuccess(response,file,fileList) {
+               this.$refs.lyimagupload.clearFiles()
             },
             //获取商品分类列表
             getMallGoodscategoryList(){
