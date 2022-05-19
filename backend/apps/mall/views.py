@@ -280,6 +280,10 @@ class GoodsSPUSerializer(CustomModelSerializer):
                             spuspec_instance = SPUSpecification.objects.filter(spu_id=spu.id,name=sp['spec']).first()
                             spuspec_option_instance = SPUSpecificationOption.objects.filter(spec_id=spuspec_instance.id, value=sp['option']).first()
                             SKUSpecification.objects.create(sku_id=sku_instance.id,spec_id=spuspec_instance.id,option_id=spuspec_option_instance.id)
+                    # 获取价格最低的sku保存到spu的price中
+                    minpricesku = SKU.objects.filter(spu=spu).order_by('price').first()
+                    spu.price = minpricesku.price
+                    spu.save()
 
                 else:#单规格
                     if len(skus)<=0:
