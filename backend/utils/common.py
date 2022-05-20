@@ -245,6 +245,21 @@ def ismoney(num):
     except Exception as e:
         return False
 
+#判断是否为正确的价格（正整数、小数（小数点后两位）、非0）
+def isRealPrice(num):
+    try:
+        if num == "" or num == None or num == 0 or num == '0':
+            return False
+        value = str(num)
+        pattern = re.compile(r"(^[0-9]\d*$)|(^(([1-9]{1}\d*)|(0{1}))(\.\d{0,2})?$)")#正整数判断和小数判断
+        result = pattern.match(value)
+        if result:
+            return True
+        else:
+            return False
+    except Exception as e:
+        return False
+
 #把字符串转换成数组对象等
 def ast_convert(str):
     if str:
