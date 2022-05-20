@@ -734,7 +734,7 @@ class GoodsListView(APIView):
         category = get_parameter_dic(request).get('category')  # 分类
         if is_tuijian not in [0,1,2]:
             return ErrorResponse("is_tuijian error")
-        if order_by and order_by not in ['sort','price','-price','sales','sales']:
+        if order_by and order_by not in ['sort','price','-price','-sales','sales']:
             return ErrorResponse("order_by error")
         else:
             order_by = "sort"
