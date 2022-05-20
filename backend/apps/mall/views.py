@@ -826,6 +826,7 @@ class GoodsDetailView(APIView):
             'spu_id': spu.id,
             'price': spu.price,
             'default_image': spu.default_image,
+            'goods_imagelist': SPUImage.objects.filter(spu=spu).values_list('image', flat=True).order_by('sort'),
             'name': spu.name,
             'sales': spu.sales,
             'spec_type': spu.spec_type,
