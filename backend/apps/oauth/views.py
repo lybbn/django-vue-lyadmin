@@ -5,7 +5,7 @@ from utils.jsonResponse import SuccessResponse,ErrorResponse
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from utils.common import get_parameter_dic,REGEX_MOBILE
-from config import WX_XCX_APPID,WX_XCX_APPSECRET,WX_GZH_APPID,WX_GZH_APPSECRET,WX_GZPT_APPSECRET,WX_GZPT_APPID
+from config import WX_XCX_APPID,WX_XCX_APPSECRET,WX_GZH_APPID,WX_GZH_APPSECRET,WX_GZPT_APPSECRET,WX_GZPT_APPID,TT_XCX_APPID,TT_XCX_APPSECRET
 import requests
 import base64
 import json
@@ -586,3 +586,121 @@ class WeChatGZHBindAPIView(APIView):
         OAuthWXUser.objects.create(user=user,gzh_openid=openid)
         resdata = XCXLoginSerializer.get_token(user)
         return SuccessResponse(data=resdata,msg="success")
+
+# ================================================= #
+# ************** 字节跳动小程序登录 view  ************** #
+# ================================================= #
+#接口调用凭证getAccessToken，获取的access_token有效期2 小时，重复获取 access_token 会导致上次 access_token 失效。为了平滑过渡，新老 access_token 在 5 分钟内都可使用
+def get_tt_access_token():
+    """
+    正确返回信息：
+    {
+      "err_no": 0,
+      "err_tips": "success",
+      "data": {
+        "access_token": "0801121***********",
+        "expires_in": 7200
+      }
+    }
+    """
+    api_url = "https://developer.toutiao.com/api/apps/v2/token"
+    headers = {'Content-Type': 'application/json'}
+    data = {'appid':TT_XCX_APPID,'secret':TT_XCX_APPSECRET,'grant_type':'client_credential'}
+    r = requests.post(url=api_url,data=json.dumps(data),headers=headers)
+    return r
+#获取字节跳动code2Session（返回值有openid）
+def get_tt_code2Session(code):
+    """
+    code：为前端小程序通过tt.login传过来的code
+    小程序正确返回信息：
+    {
+      "err_no": 0,
+      "err_tips": "success",
+      "data": {
+        "session_key": "hZy6t19VPjFqm********",
+        "openid": "V3WvSshYq9******",
+        "anonymous_openid": "",
+        "unionid": "f7510d9ab***********"
+      }
+    }
+    """
+    api_url = 'https://developer.toutiao.com/api/apps/v2/jscode2session'
+    headers = {'Content-Type': 'application/json'}
+    data = {'appid': TT_XCX_APPID, 'secret': TT_XCX_APPSECRET, 'code': code}
+    r = requests.post(url=api_url, data=json.dumps(data), headers=headers)
+    return r
+
+#字节跳动小程序登录接口
+class TTXCXLoginAPIView(APIView):
+    """
+    post:
+    字节跳动小程序登录接口
+    字节跳动小程序code获取openid
+    """
+    permission_classes = []
+    authentication_classes = []
+
+    @transaction.atomic  # 开启事务,当方法执行完成以后，自动提交事务
+    def post(self, request):
+        jscode = get_parameter_dic(request)['code']
+        nickname = get_parameter_dic(request)['nickname']
+        avatar_url = get_parameter_dic(request)['avatar_url']
+        gender = get_parameter_dic(request)['gender']
+        if not jscode:
+            return ErrorResponse(msg="code不能为空")
+        resp = get_tt_code2Session(jscode)
+        openid = None
+        session_key = None
+        unionid = None
+        if resp.status_code != 200:
+            return ErrorResponse(msg="服务器到微信网络连接失败，请重试")
+        # json_data = {'errcode':0,'openid':'111','session_key':'test'}
+        json_data =json.loads(resp.content)
+        if not int(json_data['err_no']) ==0:#如果获取失败返回失败信息
+            print(json_data)
+            return ErrorResponse(msg=json_data['err_tips'])
+
+        openid = json_data['data']['openid']
+        session_key = json_data['data']['session_key']
+
+        if "unionid" in json_data:
+            unionid = json_data['data']['unionid']
+
+        # 判断用户是否存在
+        try:
+            wxuser = Users.objects.get(username=openid)
+            if not wxuser.is_active:
+                return ErrorResponse(msg="该用户已禁用，请联系管理员")
+            wxuser.oauthwxuser.session_key = session_key  # 小写oauthwxuser 表示关联的外键
+            wxuser.oauthwxuser.xcx_openid = openid
+            wxuser.oauthwxuser.unionId = unionid
+            wxuser.oauthwxuser.avatarUrl = avatar_url
+            wxuser.oauthwxuser.sex = gender
+            wxuser.oauthwxuser.nick = nickname
+            wxuser.oauthwxuser.save()
+            wxuser.nickname = nickname
+            wxuser.avatar = avatar_url
+            wxuser.gender = gender
+            wxuser.save()
+            resdata = XCXLoginSerializer.get_token(wxuser)
+            return SuccessResponse(data=resdata, msg="success")
+        except Exception as e:  # 新用户
+            with transaction.atomic():
+                try:
+                    savepoint = transaction.savepoint()
+                    user = Users()
+                    user.username = openid
+                    user.password = uuid.uuid4()  # 先随机生成一个密码，防止别人获取openid直接被登录情况
+                    user.identity = 3 # 用户身份3表示前端普通用户
+                    user.nickname = nickname
+                    user.name = nickname
+                    user.avatar = avatar_url
+                    user.save()
+                    OAuthWXUser.objects.create(user=user, session_key=session_key, xcx_openid=openid,avatarUrl=avatar_url, sex=gender, nick=nickname)
+                except Exception as e:
+                    transaction.savepoint_rollback(savepoint)
+                    return ErrorResponse(msg=str(e))
+                # 清除保存点
+                transaction.savepoint_commit(savepoint)
+                resdata = XCXLoginSerializer.get_token(user)
+                return SuccessResponse(data=resdata, msg="success")

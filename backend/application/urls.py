@@ -29,7 +29,7 @@ from mysystem.views.login import LoginView,CaptchaView
 from utils.swagger import CustomOpenAPISchemaGenerator
 
 #前端接口view
-from apps.oauth.views import WeChatXCXLoginAPIView,XCXWeChatUserInfoUpdateAPIView,WeChatXCXMobileLoginAPIView,WeChatGZHLoginAPIView,WeChatGZHBindAPIView,GetXCXShareQrcodeView
+from apps.oauth.views import WeChatXCXLoginAPIView,XCXWeChatUserInfoUpdateAPIView,WeChatXCXMobileLoginAPIView,WeChatGZHLoginAPIView,WeChatGZHBindAPIView,GetXCXShareQrcodeView,TTXCXLoginAPIView
 from apps.address.views import ProvinceAreasView,SubAreasView,GetAddressAccuracyView,GetAssressesListView,CreateUpdateAssressesView,DeleteAssressesView,SetDefaultAssressesView,GetProvinceAreasListView
 from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobileSMSLoginView,ForgetPasswdResetView,RegisterView
 from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView,uploadImagesView
@@ -87,6 +87,7 @@ urlpatterns = [
 
     #前端用户接口
     path('api/app/register/', RegisterView.as_view(), name='app端手机号注册'),
+    path('api/xcx/ttlogin/', TTXCXLoginAPIView.as_view(), name='字节跳动小程序登录认证'),
     path('api/app/login/', APPMobilePasswordLoginView.as_view(), name='app端手机号密码登录认证'),
     path('api/app/wxlogin/', WeChatGZHLoginAPIView.as_view(), name='app端手机号微信登录认证'),
     path('api/app/wxbindlogin/', WeChatGZHBindAPIView.as_view(), name='app端手机号微信登录认证绑定微信'),
