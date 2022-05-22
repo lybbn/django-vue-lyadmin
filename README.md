@@ -2,7 +2,7 @@
 
 [![img](https://img.shields.io/badge/python-%3E=3.9.x-green.svg)](https://python.org/)  [![PyPI - Django Version badge](https://img.shields.io/badge/django%20versions-4.x-blue)](https://docs.djangoproject.com/zh-hans/4.0/) [![img](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![img](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin)
 
-[QQ群聊](https://jq.qq.com/?_wv=1027&k=StAkGqk5) | [在线体验（admin/123456）](http://django-vue-lyadmin.lybbn.cn) | [开发文档](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264002&doc_id=2214316) | [在线课程](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5476409&doc_id=2214316) | [django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin)
+[QQ群聊](https://jq.qq.com/?_wv=1027&k=StAkGqk5) | [在线体验（admin/123456）](http://django-vue-lyadmin.lybbn.cn) | [开发文档](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264002&doc_id=2214316) | [在线课程](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5476409&doc_id=2214316) | [django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin) | [捐赠](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264497&doc_id=2214316) 
 
 ## 平台简介
 
