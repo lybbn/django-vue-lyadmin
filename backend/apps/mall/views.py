@@ -1018,7 +1018,7 @@ class MyCouponView(APIView):
             for m in queryset:
                 desc = '无门槛'
                 if m.coupon.is_condition:#有门槛
-                    return "满"+str(int(m.coupon.use_min_price))+"减"+str(int(m.coupon.price))
+                    desc = "满"+str(int(m.coupon.use_min_price))+"减"+str(int(m.coupon.price))
                 data.append({
                     'id':m.id,
                     'name':m.coupon.name,
