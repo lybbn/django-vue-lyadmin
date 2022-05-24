@@ -1031,6 +1031,7 @@ class MyCouponView(APIView):
                     'status':m.status,
                     'status_name':m.get_status_display()
                 })
+        return SuccessResponse(data=data, msg="success")
 
     def post(self, request):
         user = request.user
