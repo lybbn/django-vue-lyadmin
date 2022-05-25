@@ -8,16 +8,16 @@
                 <el-form-item label="菜单名称：">
                     <el-input size="small" clearable v-model.trim="formInline.name" maxlength="60" placeholder="菜单名称" @change="getData" style="width:200px"></el-input>
                 </el-form-item>
-                <el-form-item label="缓存：">
-                    <el-select size="small" v-model="formInline.cache" clearable placeholder="请选择" @change="getData">
-                        <el-option
-                                v-for="item in statusList1"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.id">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
+<!--                <el-form-item label="缓存：">-->
+<!--                    <el-select size="small" v-model="formInline.cache" clearable placeholder="请选择" @change="getData">-->
+<!--                        <el-option-->
+<!--                                v-for="item in statusList1"-->
+<!--                                :key="item.id"-->
+<!--                                :label="item.name"-->
+<!--                                :value="item.id">-->
+<!--                        </el-option>-->
+<!--                    </el-select>-->
+<!--                </el-form-item>-->
                 <el-form-item label="侧边可见：">
                     <el-select size="small" v-model="formInline.visible" clearable placeholder="请选择" @change="getData">
                         <el-option

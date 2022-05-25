@@ -12,7 +12,7 @@
                 </template>
             </el-table-column>
             <el-table-column min-width="150" prop="title" label="标题" ></el-table-column>
-            <el-table-column min-width="150" prop="link" label="链接" ></el-table-column>
+            <el-table-column min-width="150" prop="link" label="跳转内容" ></el-table-column>
             <el-table-column min-width="150" prop="sort" label="排序" ></el-table-column>
             <el-table-column min-width="100" label="状态">
                 <template slot-scope="scope">

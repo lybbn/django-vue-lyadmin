@@ -7,18 +7,23 @@ from mysystem.models import Users
 # ================================================= #
 # ************** 轮播图设置 model************** #
 # ================================================= #
-LUNBOTU_CHOICES = (
+class LunbotuManage(CoreModel):
+    LUNBOTU_CHOICES = (
         (1, "首页轮播图"),
         (2, "分类首页轮播图"),
     )
-
-class LunbotuManage(CoreModel):
+    LINK_TYPE_CHOICES = (
+        (0, "无"),
+        (1, "链接"),
+        (2, "富文本"),
+    )
     title = models.CharField(max_length=100, verbose_name='标题',null=True,blank=True)
     type = models.IntegerField(choices=LUNBOTU_CHOICES, verbose_name="轮播图类型")
     status = models.BooleanField(default=True,verbose_name="状态")
     sort = models.IntegerField(default=1, verbose_name="排序", help_text="显示顺序")
     image = models.CharField(max_length=255, verbose_name="图片", default="")
-    link = models.CharField(max_length=100, verbose_name="链接", default="")
+    link = models.TextField(verbose_name="链接/富文本内容", default="",null=True,blank=True)
+    link_type = models.IntegerField(choices=LINK_TYPE_CHOICES, verbose_name="跳转类型",default=0)
 
     class Meta:
         db_table = 'tb_lunbo_manage'

@@ -2,7 +2,7 @@
     <el-dialog
             :title="loadingTitle"
             :visible.sync="dialogVisible"
-            width="560px"
+            width="680px"
             center
             v-dialogDrag
             :close-on-click-modal="false"
@@ -22,13 +22,25 @@
                 </el-upload>
             </el-form-item>
             <el-form-item label="标题：" prop="title">
-                <el-input type="text" v-model.trim="formData.title" style="width: 300px"></el-input>
-            </el-form-item>
-            <el-form-item label="跳转链接：" prop="link" v-if="formData.type==1 || formData.type==2">
-                <el-input v-model.trim="formData.link" style="width: 300px"></el-input>
+                <el-input type="text" v-model.trim="formData.title" style="width: 400px"></el-input>
             </el-form-item>
             <el-form-item label="排序：" prop="sort">
                 <el-input-number v-model="formData.sort"  :min="1" :max="9999"></el-input-number>
+            </el-form-item>
+            <el-form-item label="跳转类型：" prop="link_type">
+                <el-radio-group v-model="formData.link_type">
+                    <el-radio :label="0">无</el-radio>
+                    <el-radio :label="1">跳转链接</el-radio>
+                    <el-radio :label="2">富文本</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item label="跳转链接：" prop="link" v-if="formData.link_type==1">
+                <el-input v-model.trim="formData.link" style="width: 400px"></el-input>
+            </el-form-item>
+            <el-form-item label="" v-if="formData.link_type==2">
+                <div style="width: 100%">
+                    <TEditor v-model="formData.link"  v-if="dialogVisible"></TEditor>
+                </div>
             </el-form-item>
             <el-form-item label="状态：" prop="status">
                 <el-switch
@@ -48,8 +60,10 @@
 <script>
     import {platformsettingsLunboimgAdd,platformsettingsLunboimgEdit,platformsettingsUploadPlatformImg} from "@/api/api";
     import {url} from '@/api/url'
+    import TEditor from '@/components/TEditor'
     export default {
         name: "addModule",
+        components: { TEditor },
         data() {
             return {
                 dialogVisible:false,
@@ -62,15 +76,16 @@
                     image:'',
                     type:'',
                     sort:'',
+                    link_type:0,
                     status:true
                 },
                 rules:{
                     image: [
                         {required: true, message: '请上传图片',trigger: 'blur'}
                     ],
-                    link: [
-                        {required: true, message: '请输入链接',trigger: 'blur'}
-                    ],
+                    // link: [
+                    //     {required: true, message: '请输入链接',trigger: 'blur'}
+                    // ],
                     title: [
                         {required: true, message: '请输入标题',trigger: 'blur'}
                     ]
@@ -81,6 +96,15 @@
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
+                this.formData={
+                    title:'',
+                    link:'',
+                    image:'',
+                    type:'',
+                    sort:'',
+                    link_type:0,
+                    status:true
+                }
                 this.$emit('refreshData')
             },
             addModuleFn(item,flag,activeName) {
@@ -93,6 +117,7 @@
                     image:'',
                     type:activeName,
                     sort:'',
+                    link_type:0,
                     status:true
                 }
             },

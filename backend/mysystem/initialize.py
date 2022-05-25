@@ -364,6 +364,7 @@ if object.{key}:
              "type": 1, "status": 1,
              "sort": 1,
              "image": "http://127.0.0.1:8000/media/platform/2021-10-27/20211027110807_498.jpg",
+             "link_type": 1,
              "link": "http://www.xxx.com",
              },
         ]
