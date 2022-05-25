@@ -895,6 +895,9 @@ class CartsView(APIView):
 
         if type=="add":#添加购物车,在redis中保存用户的购物车记录
             count = int(get_parameter_dic(request)['count'])  # 购物车该商品的数量
+            selected = int(get_parameter_dic(request)['selected'])  # 购物车操作类型 1勾选 0 不勾选
+            if selected not in [0, 1]:
+                return ErrorResponse(msg="selected error")
             if sku_id is None or count is None:
                 return ErrorResponse(msg='sku_id/count不能为空')
             if not isinstance(count,int):
@@ -911,7 +914,9 @@ class CartsView(APIView):
             return SuccessResponse(msg='success')
         elif type == "edit":#购物车记录更新
             count = int(get_parameter_dic(request)['count'])  # 购物车该商品的数量
-            selected = get_parameter_dic(request)['selected']#是否选中
+            selected = int(get_parameter_dic(request)['selected'])  # 是否选中
+            if selected not in [0, 1]:
+                return ErrorResponse(msg="selected error")
             if sku_id is None or count is None:
                 return ErrorResponse(msg='sku_id/count不能为空')
             if not isinstance(count,int):
