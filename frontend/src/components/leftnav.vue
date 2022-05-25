@@ -185,8 +185,10 @@ export default {
   padding: 0px;
 }
 .el-menu-item.is-active {
-  background: #3C444D !important;
+  /*background: #3C444D !important;*/
   position: relative;
+  border-left: 2px solid rgb(36, 122, 243);
+  background-color: rgb(48, 54, 62) !important;
   &:before{
     width: 2px;
     height: 100%;
