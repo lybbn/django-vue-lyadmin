@@ -1042,7 +1042,7 @@ class MyCouponView(APIView):
         user = request.user
         if user.identity != 1:
             return ErrorResponse(msg="用户类型错误")
-        coupon_id = int(get_parameter_dic(request)['coupon_id'])
+        coupon_id = get_parameter_dic(request)['coupon_id']
         type = get_parameter_dic(request)['type']
         if type not in ['del','get']:
             return ErrorResponse(msg='type error')

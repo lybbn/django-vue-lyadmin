@@ -21,8 +21,8 @@ class CoreModel(models.Model):
     核心标准抽象模型模型,可直接继承使用
     增加审计字段, 覆盖字段时, 字段名称请勿修改, 必须统一审计字段名称
     """
-
-    id = models.CharField(max_length=100, primary_key=True, default=make_uuid, help_text="Id", verbose_name="Id")
+    #id = models.BigAutoField(primary_key=True, help_text="Id", verbose_name="Id")#使用自增数字作为id
+    id = models.CharField(max_length=100, primary_key=True, default=make_uuid, help_text="Id", verbose_name="Id")#使用uuid随机32位字符字符串作为id
     description = models.CharField(max_length=100, verbose_name="描述", null=True, blank=True, help_text="描述")
     creator = models.ForeignKey(to=settings.AUTH_USER_MODEL, related_query_name='creator_query', null=True,
                                 verbose_name='创建人', help_text="创建人", on_delete=models.SET_NULL, db_constraint=False)
@@ -39,8 +39,8 @@ class CoreModel(models.Model):
 
 class BaseModel(models.Model):
     """
-        基本模型,可直接继承使用，一般不需要使用审计字段的模型可以使用
-        覆盖字段时, 字段名称请勿修改
+    基本模型,可直接继承使用，一般不需要使用审计字段的模型可以使用
+    覆盖字段时, 字段名称请勿修改
     """
     update_datetime = models.DateTimeField(auto_now=True, null=True, blank=True, verbose_name='更新时间')
     create_datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name='创建时间')
