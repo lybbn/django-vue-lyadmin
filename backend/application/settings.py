@@ -459,7 +459,7 @@ CAPTCHA_FOREGROUND_COLOR = '#0033FF'  # 前景色
 CAPTCHA_BACKGROUND_COLOR = '#F5F7F4'  # 背景色
 CAPTCHA_NOISE_FUNCTIONS = (
     'captcha.helpers.noise_arcs', # 线
-    'captcha.helpers.noise_dots', # 点
+    # 'captcha.helpers.noise_dots', # 点
 )
 # CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge' #字母验证码
 CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge' # 加减乘除验证码
