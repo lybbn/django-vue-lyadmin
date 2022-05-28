@@ -1216,7 +1216,7 @@ class OrdersCommitView(APIView):
                 return ErrorResponse(msg='要购买的商品不能为空')
             if count <= 0:
                 return ErrorResponse(msg='要购买商品数量错误')
-            sku = SKU.objects.filter(id=sku_id, is_launched=True).first()
+            sku = SKU.objects.filter(id=sku_id, spu__is_launched=True).first()
             if not sku:
                 return ErrorResponse(msg='不存在该商品，或该商品暂不支持购买')
             if sku.stock < count:
