@@ -201,7 +201,7 @@
                             ...this.formData
                         }
                         if( typeof this.formData.parent== 'object') {
-                            param.parent = ((this.formData.parent.length==1 && this.formData.parent[0] == undefined) || this.formData.parent.length==0) ?  '' : this.formData.parent[this.formData.parent.length-1]
+                            param.parent = (this.formData.parent==null || (this.formData.parent.length==1 && this.formData.parent[0] == undefined) || this.formData.parent.length==0) ?  '' : this.formData.parent[this.formData.parent.length-1]
                         }
                         this.loadingSave=true
                         if(this.dialogTitle=="新增"){
