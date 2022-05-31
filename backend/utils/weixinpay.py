@@ -2,7 +2,7 @@
 
 #微信第三方app支付v3(需要APIV3 的apikey)（直连方式-普通商户）
 
-from config import WXPAY_CLIENT_CERT_PATH,WXPAY_CLIENT_KEY_PATH,WXPAY_APPID,WXPAY_MCHID,WXPAY_APIKEY,WXPAY_SERIAL_NO,WXPAY_CERT_DIR,WXPAY_CERT_DIR_RESPONSE,WXPAY_APIKEY_V1,WXPAY_APPID_APP,WXPAY_APIKEY_APP
+from config import WXPAY_CLIENT_CERT_PATH,WXPAY_CLIENT_KEY_PATH,WXPAY_APPID,WXPAY_MCHID,WXPAY_APIKEY,WXPAY_SERIAL_NO,WXPAY_CERT_DIR,WXPAY_CERT_DIR_RESPONSE,WXPAY_APPID_APP
 import requests
 import json
 import time
@@ -71,7 +71,6 @@ class WxAppPay:
         self.appid_app = WXPAY_APPID_APP
         self.mchid = WXPAY_MCHID
         self.apikey = WXPAY_APIKEY
-        self.apikey_app = WXPAY_APIKEY_APP
         self.url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/app'#微信app支付
         self.url2 = 'https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi'  # 微信小程序支付
         self.url3 = 'https://api.mch.weixin.qq.com/v3/refund/domestic/refunds'  # 微信申请退款、查询单笔退款
