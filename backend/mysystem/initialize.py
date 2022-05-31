@@ -336,6 +336,7 @@ if object.{key}:
              "is_superuser": 1, "is_staff": 1,
              "is_active": 1, "username": "superadmin", "name": "超级管理员",
              "dept_id": "d2c03bd9-dad0-4262-88ca-c3681d224fc3",
+             "identity":0,
              },
             {"id": "d1431450-5068-4461-b57e-7862c005a547",
              "password": "pbkdf2_sha256$260000$DO6dpT8e4Ls0yD51grncC8$KZfswxNJ8MILTWwy+bicRyU7Q3PKC4orn4SJbhIkN4Q=",
@@ -343,6 +344,7 @@ if object.{key}:
              "is_active": 1, "username": "admin", "name": "管理员",
              "dept_id": "d2c03bd9-dad0-4262-88ca-c3681d224fc3",
              "role": ["36001d1a-1b3e-4413-bdfe-b3bc04375f46"],
+             "identity": 1,
              },
             {"id": "244b28685cd14a39a383189981510d4a",
              "password": "pbkdf2_sha256$260000$oivECWOjB0GJyMjPsrqb3t$9FvnYtXtsNWDva2P3A/eIg6cRMLOp7kiIOuwfLKyDAY=",
@@ -350,6 +352,7 @@ if object.{key}:
              "is_active": 1, "username": "test", "name": "测试用户","mobile":"18888888888","nickname":"测试用户",
              "dept_id": "",
              "role": [],
+             "identity": 2,
              },
         ]
         self.save(Users, data, "用户表")
