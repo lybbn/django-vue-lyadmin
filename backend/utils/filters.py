@@ -262,10 +262,12 @@ class FinanceOrderInfoTimeFilter(django_filters.rest_framework.FilterSet):
     order_id = django_filters.CharFilter(field_name='order_id', lookup_expr='icontains')  # icontains表示该字段模糊搜索
     # 自定义
     gname = django_filters.CharFilter(method='my_filter')  # 自定义过滤
+    # 精确搜索
+    status = django_filters.CharFilter(field_name='status')  # 自定义过滤
 
     def my_filter(self, queryset, field_name, value):
         return queryset.filter(ordergoods__sku__spu__name__contains=value)
 
     class Meta:
         model = OrderInfo
-        fields = ['beginAt', 'endAt','nickname','order_id','gname']
+        fields = ['beginAt', 'endAt','nickname','order_id','gname','status']
