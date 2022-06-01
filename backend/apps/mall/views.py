@@ -1506,6 +1506,7 @@ class GoodsOrdersDetailView(APIView):
                 'pay_time':m.pay_time,
                 'goods_list':goods_list,
                 'logistics_id': m.logistics_id,  # 物流单号
+                'remark': m.remark,
             }
 
         return SuccessResponse(data=data, msg='success')
