@@ -1365,17 +1365,57 @@ class GoodsOrderCancleView(APIView):
     authentication_classes = [JWTAuthentication]
 
     def get(self,request):
+        user = request.user
         id = get_parameter_dic(request)['id']
         if not id:
             return ErrorResponse(msg='id参数错误')
-        order = OrderInfo.objects.filter(id=id,status__in=[1,2]).first()
+        order = OrderInfo.objects.filter(id=id,user=user,status__in=[1,2]).first()
         if not order:
             return ErrorResponse(msg='该订单不存在,或该状态不支持取消')
-        #退款逻辑
+        with transaction.atomic():
+            savepoint = transaction.savepoint()
+            #把取消的库存增加回去
+            skus = order.ordergoodsskus.all()
+            for s in skus:
+                # 每遍历出一个sku_id，就还原一次库存和销量
+                for i in range(5):
+                    #  (1)乐观锁step1：获取旧库存和销量
+                    sku = SKU.objects.get(id=s.sku.id)
+                    stock_old = sku.stock
 
-        order.status = 6
-        order.save()
-        return SuccessResponse(msg="订单取消成功")
+                    count = s.count # 购买数量
+                    sales_old = sku.sales # sku原销量
+                    sales_spu_old = sku.spu.sales # spu原销量
+                    # (2)、乐观锁step2：根据旧数据计算新库存和销量 —— 耗时操作
+                    stock_new = stock_old + count
+                    sales_new = sales_old - count
+                    sales_spu_new = sales_spu_old - count
+                    # 乐观锁step3: 基于旧库存和销量过滤查找模型类对象，然后更新
+                    # 查询集批量修改函数update有整数返回值 —— 表示被修改了的对象有几个再次按照旧的库存获取商品,获取到更新,获取不到返回再次操作(乐观锁)
+                    res = SKU.objects.filter(id=s.sku.id, stock=stock_old, sales=sales_old).update(stock=stock_new,sales=sales_new)
+                    if res == 0:
+                        # (3.2)、说明没有数据被成功修改，继而说明filter过滤出空查询集，进一步说明"根据旧库存找不到原有的sku，有别的事务介入"
+                        continue
+                    else:  # (3.1)、res返回值不为0，说明，没有别的事务介入，成功修改了
+                        for n in range(5):
+                            res2 = SPU.objects.filter(id=s.spu.id,sales=sales_spu_old).update(sales=sales_spu_old)
+                            if res2 ==0:
+                                continue
+                            else:
+                                break
+                        break
+                if res == 0 or res2==0:  # 重试了6此结果都没有操作成功
+                    # 回滚到保存点
+                    transaction.savepoint_rollback(savepoint)
+                    return ErrorResponse(msg='服务器繁忙，请稍后再试')
+            # 退款逻辑
+            if order.status == 2:
+                orderrefund(order.id)
+            order.status = 6
+            order.save()
+            # 清除保存点
+            transaction.savepoint_commit(savepoint)
+            return SuccessResponse(msg="订单取消成功")
 
 class GoodsOrderConfirmReceiveView(APIView):
     """
