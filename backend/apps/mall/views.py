@@ -990,6 +990,7 @@ class MyCouponView(APIView):
     """
     get：
     我的优惠券列表
+    【参数】：type ((0, '通用'),(1, '商城类'), (2, '服务类'), (10, '通用、商城'), (20, '通用、服务'))
     【参数】：status ((0, '未领取'),(1, '未使用'), (2, '已使用'), (3, '已过期'), (4, '已撤回'))
     post:
     立即领取优惠券
@@ -1001,40 +1002,75 @@ class MyCouponView(APIView):
     authentication_classes = [JWTAuthentication]
 
     def get(self, request):
-        user=request.user
-        if user.identity !=1:
+        user = request.user
+        if user.identity != 1:
             return ErrorResponse(msg="用户类型错误")
         status = int(get_parameter_dic(request)['status'])
-        if status not in [0,1,2,3,4,10]:
+        if status not in [0, 1, 2, 3, 4, 10]:
             return ErrorResponse(msg="status error")
-
-        #判断优惠券中是否有手动领取的劵，有的话则需要创建到用户优惠券表，并设置状态为未领取
-        coupon_res = GoodsCoupon.objects.filter(receive_type=1,is_delete=False,status=True).order_by('create_datetime')
+        type = get_parameter_dic(request).get('status')
+        if type:
+            type = int(type)
+            if type not in [0, 1, 2, 10, 20]:
+                return ErrorResponse(msg="status error")
+        # 判断优惠券中是否有手动领取的劵，有的话则需要创建到用户优惠券表，并设置状态为未领取(手动领取的劵针对的是全部用户)
+        coupon_res = GoodsCoupon.objects.filter(receive_type=1, is_delete=False, status=True).order_by(
+            'create_datetime')
         if coupon_res:
             for c in coupon_res:
-                obj,created = CouponRecord.objects.get_or_create(user=user,coupon=c)
+                obj, created = CouponRecord.objects.get_or_create(user=user, coupon=c)
+        # 检查自己的未使用的优惠券是否过期
+        queryset_isexpire = CouponRecord.objects.filter(user=user, status=1)
+        nowtime = datetime.datetime.now()
+        if queryset_isexpire:
+            for e in queryset_isexpire:
+                receive_time = e.receive_time
+                expiretime = receive_time + datetime.timedelta(days=e.coupon.coupon_expiretime)  # 领取后的过期时间
+                if expiretime < nowtime:
+                    e.status = 3
+                    e.save()
 
-        if status == 10:
-            queryset = CouponRecord.objects.filter(user=user,status__in=[0,1],is_delete=False).order_by('-create_datetime')
+        if type:
+            if type == 10:
+                if status == 10:
+                    queryset = CouponRecord.objects.filter(user=user, status__in=[0, 1], coupon__coupon_type__in=[0, 1],is_delete=False).order_by('-create_datetime')
+                else:
+                    queryset = CouponRecord.objects.filter(user=user, status=status, coupon__coupon_type__in=[0, 1],is_delete=False).order_by('-create_datetime')
+            elif type == 20:
+                if status == 10:
+                    queryset = CouponRecord.objects.filter(user=user, status__in=[0, 1], coupon__coupon_type__in=[0, 2],is_delete=False).order_by('-create_datetime')
+                else:
+                    queryset = CouponRecord.objects.filter(user=user, status=status, coupon__coupon_type__in=[0, 2],is_delete=False).order_by('-create_datetime')
+            else:
+                if status == 10:
+                    queryset = CouponRecord.objects.filter(user=user, status__in=[0, 1], coupon__coupon_type=type,is_delete=False).order_by('-create_datetime')
+                else:
+                    queryset = CouponRecord.objects.filter(user=user, status=status, coupon__coupon_type=type,is_delete=False).order_by('-create_datetime')
         else:
-            queryset = CouponRecord.objects.filter(user=user,status=status,is_delete=False).order_by('-create_datetime')
-        data=[]
+            if status == 10:
+                queryset = CouponRecord.objects.filter(user=user, status__in=[0, 1], is_delete=False).order_by('-create_datetime')
+            else:
+                queryset = CouponRecord.objects.filter(user=user, status=status, is_delete=False).order_by('-create_datetime')
+        data = []
         if queryset:
             for m in queryset:
                 desc = '无门槛'
-                if m.coupon.is_condition:#有门槛
-                    desc = "满"+str(int(m.coupon.use_min_price))+"减"+str(int(m.coupon.price))
+                if m.coupon.is_condition:  # 有门槛
+                    desc = "满" + str(int(m.coupon.use_min_price)) + "减" + str(int(m.coupon.price))
                 data.append({
-                    'id':m.id,
-                    'name':m.coupon.name,
-                    'price':m.coupon.price,
-                    'coupon_expiretime':m.coupon.coupon_expiretime,
-                    'is_condition':m.coupon.is_condition,
-                    'condition_price':m.coupon.use_min_price,
-                    'condition':desc,
-                    'coupon_type':m.coupon.get_coupon_type_display(),
-                    'status':m.status,
-                    'status_name':m.get_status_display()
+                    'id': m.id,
+                    'name': m.coupon.name,
+                    'price': m.coupon.price,
+                    'coupon_expiretime': m.coupon.coupon_expiretime,
+                    'create_datetime': formatdatetime(m.create_datetime),
+                    'receive_time': formatdatetime(m.receive_time),
+                    'is_condition': m.coupon.is_condition,
+                    'condition_price': m.coupon.use_min_price,
+                    'condition': desc,
+                    'coupon_type': m.coupon.get_coupon_type_display(),
+                    'type': m.coupon.coupon_type,
+                    'status': m.status,
+                    'status_name': m.get_status_display()
                 })
         return SuccessResponse(data=data, msg="success")
 
@@ -1053,6 +1089,7 @@ class MyCouponView(APIView):
             if not res:
                 return ErrorResponse(msg='无此优惠券')
             res.status = 1
+            res.receive_time = datetime.datetime.now()
             res.save()
         else:
             res = CouponRecord.objects.filter(id=coupon_id, is_delete=False, user=user, status__in=[2,3]).first()
