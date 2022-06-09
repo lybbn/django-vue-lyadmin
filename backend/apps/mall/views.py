@@ -1008,11 +1008,11 @@ class MyCouponView(APIView):
         status = int(get_parameter_dic(request)['status'])
         if status not in [0, 1, 2, 3, 4, 10]:
             return ErrorResponse(msg="status error")
-        type = get_parameter_dic(request).get('status')
+        type = get_parameter_dic(request).get('type')
         if type:
             type = int(type)
             if type not in [0, 1, 2, 10, 20]:
-                return ErrorResponse(msg="status error")
+                return ErrorResponse(msg="type error")
         # 判断优惠券中是否有手动领取的劵，有的话则需要创建到用户优惠券表，并设置状态为未领取(手动领取的劵针对的是全部用户)
         coupon_res = GoodsCoupon.objects.filter(receive_type=1, is_delete=False, status=True).order_by(
             'create_datetime')
