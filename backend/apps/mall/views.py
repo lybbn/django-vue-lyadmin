@@ -1398,7 +1398,7 @@ class GoodsOrderCancleView(APIView):
                         continue
                     else:  # (3.1)、res返回值不为0，说明，没有别的事务介入，成功修改了
                         for n in range(5):
-                            res2 = SPU.objects.filter(id=s.spu.id,sales=sales_spu_old).update(sales=sales_spu_old)
+                            res2 = SPU.objects.filter(id=s.sku.spu.id,sales=sales_spu_old).update(sales=sales_spu_old)
                             if res2 ==0:
                                 continue
                             else:
