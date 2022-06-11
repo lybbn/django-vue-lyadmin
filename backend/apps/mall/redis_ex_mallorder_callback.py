@@ -8,6 +8,7 @@ from apps.mall.models import OrderInfo
 import logging
 logger = logging.getLogger(__name__)
 import random
+import threading
 
 # 连接redis数据库
 client = get_redis_connection('carts')
@@ -56,12 +57,16 @@ def event_handler(msg):
 #订阅redis键空间通知
 pubsub.psubscribe(**{'__keyevent@3__:expired': event_handler})
 
+def sub():
+    # 死循环,不停的接收订阅的通知
+    while True:
+        message = pubsub.get_message()
+        if message:
+            # print(message)
+            pass
+        else:
+            time.sleep(0.01)
 
-# 死循环,不停的接收订阅的通知
-while True:
-    message = pubsub.get_message()
-    if message:
-        # print(message)
-        pass
-    else:
-        time.sleep(0.01)
+t = threading.Thread(target=sub)  #一般把此代码放在 apps.py ready方法中 在django启动时自动启动
+t.daemon = True  #设置为守护线程 因为django 在启动时会执行检查代码和启动程序，当主进程杀死时,该线程结束
+t.start()
