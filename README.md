@@ -23,6 +23,14 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 
 演示地址：[http://django-vue-lyadmin.lybbn.cn](http://django-vue-lyadmin.lybbn.cn) 账号：admin 密码：123456
 
+Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)
+
+eleunipy系统是结合
+[django-vue-lyadmin](https://gitee.com/lybbn/django-vue-lyadmin)
+[django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin)
+[unielepy](https://gitee.com/lybbn/unielepy)
+在全栈开发中，能让开发者挑选模板/组件/源码实现低代码、避免重复造轮子快速完成项目，模板持续更新中...
+
 ## 文档地址
 
 文档地址：文档在本项目的wiki中会持续更新，也可以通过官网访问：[www.lybbn.cn](http://www.lybbn.cn)
