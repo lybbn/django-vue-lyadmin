@@ -46,6 +46,10 @@ class ApiLoggingMiddleware(MiddlewareMixin):
         # 请求含有password则用*替换掉(暂时先用于所有接口的password请求参数)
         if isinstance(body, dict) and body.get('password', ''):
             body['password'] = '*' * len(body['password'])
+        if isinstance(body, dict) and body.get('oldPassword', '') and body.get('newPassword', '') and body.get('newPassword2', ''):
+            body['oldPassword'] = '*' * len(body['oldPassword'])
+            body['newPassword'] = '*' * len(body['newPassword'])
+            body['newPassword2'] = '*' * len(body['newPassword2'])
         if not hasattr(response, 'data') or not isinstance(response.data, dict):
             response.data = {}
         try:
