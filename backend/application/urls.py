@@ -131,6 +131,7 @@ urlpatterns = [
 
     re_path(r'^api/areas/$', ProvinceAreasView.as_view(),name='省市区三级联动获取省'),
     re_path(r'^api/areas/(?P<pk>[1-9]\d*)/$', SubAreasView.as_view(),name='省市区三级联动获取市/区'),
+    path('api/getallareaslist/', GetProvinceAreasListView.as_view(), name='递归获取所有省市区数据'),
     path('api/getaddressaccuracy/', GetAddressAccuracyView.as_view(), name='后台根据详细地址获取经纬度'),
 
     #是否允许前端接口访问(临时操作，重启后无效)
