@@ -23,7 +23,7 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 
 演示地址：[http://django-vue-lyadmin.lybbn.cn](http://django-vue-lyadmin.lybbn.cn) 账号：admin 密码：123456
 
-Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)
+Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)  账号/密码： 自行注册使用
 
 eleunipy系统是结合
 [django-vue-lyadmin](https://gitee.com/lybbn/django-vue-lyadmin)
