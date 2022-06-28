@@ -40,7 +40,7 @@ class LunbotuManageViewSet(CustomModelViewSet):
     """
     queryset = LunbotuManage.objects.all().order_by('sort')
     serializer_class = LunbotuManageSerializer
-    filter_fields = ('type',)
+    filterset_fields = ('type',)
 
 class OtherManageSerializer(CustomModelSerializer):
     """
@@ -102,9 +102,9 @@ class UserLeavingMessageViewSet(CustomModelViewSet):
     """
     queryset = UserLeavingMessage.objects.all().order_by('-create_datetime')
     serializer_class = UserLeavingMessageSerializer
-    # filter_fields = ('name',)
+    # filterset_fields = ('name',)
     # search_fields = ['user__nickname','message']
-    filter_class = UserLeavingMessageTimeFilter
+    filterset_class = UserLeavingMessageTimeFilter
 
 #后端平台设置图片上传
 class PlatformImagesUploadView(APIView):

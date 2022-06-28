@@ -60,7 +60,7 @@ class DictionaryViewSet(CustomModelViewSet):
     serializer_class = DictionarySerializer
     extra_filter_backends = []
     permission_classes = []
-    filter_fields = ['status']
+    filterset_fields = ['status']
     search_fields = ['label']
 
     def dictionary_tree(self, request):

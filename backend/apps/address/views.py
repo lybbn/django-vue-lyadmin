@@ -57,7 +57,7 @@ class AreaViewSet(CustomModelViewSet):
     """
     queryset = Area.objects.all().order_by('id')
     serializer_class = AreaSerializer
-    filter_fields = ['status','id','parent']
+    filterset_fields = ['status','id','parent']
     search_fields = ('name',)
 
     def area_root(self, request):

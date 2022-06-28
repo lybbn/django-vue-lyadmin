@@ -42,7 +42,7 @@ class OperationLogViewSet(CustomModelViewSet):
     """
     queryset = OperationLog.objects.all().order_by('-create_datetime')
     serializer_class = OperationLogSerializer
-    filter_fields = '__all__'
+    filterset_fields = '__all__'
     search_fields = ('request_modular','request_path','request_ip','request_os','request_body')
 
     def deletealllogs(self,request):

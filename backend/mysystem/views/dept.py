@@ -64,7 +64,7 @@ class DeptViewSet(CustomModelViewSet):
     """
     queryset = Dept.objects.all()
     serializer_class = DeptSerializer
-    filter_fields = ['status']
+    filterset_fields = ['status']
     create_serializer_class = DeptCreateUpdateSerializer
     update_serializer_class = DeptCreateUpdateSerializer
 

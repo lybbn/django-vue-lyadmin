@@ -57,7 +57,7 @@ class UserManageViewSet(CustomModelViewSet):
     """
     queryset = Users.objects.exclude(is_superuser=True).exclude(role__admin=True).exclude(role__isnull=False).all().order_by("-create_datetime")#排除管理员
     serializer_class = UserManageSerializer
-    filter_class = UsersManageTimeFilter
+    filterset_class = UsersManageTimeFilter
 
     def disableuser(self,request,*args, **kwargs):
         """禁用用户"""

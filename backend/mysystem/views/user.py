@@ -99,7 +99,7 @@ class UserViewSet(CustomModelViewSet):
     serializer_class = UserSerializer
     create_serializer_class = UserCreateSerializer
     update_serializer_class = UserUpdateSerializer
-    filter_fields = ('name','is_active','username')
+    filterset_fields = ('name','is_active','username')
     # permission_classes=[IsAuthenticated]
 
     def user_info(self,request):

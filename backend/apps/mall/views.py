@@ -125,7 +125,7 @@ class CouponRecordManageViewSet(CustomModelViewSet):
     queryset = CouponRecord.objects.filter(is_delete=False).order_by("-create_datetime")
     serializer_class = CouponRecordManageSerializer
     # search_fields = ('name',)
-    filter_fields = ('user_id','status')
+    filterset_fields = ('user_id','status')
 
 class SPUSpecificationOptionSerializer(CustomModelSerializer):
     """
@@ -417,7 +417,7 @@ class GoodsSPUViewSet(CustomModelViewSet):
     create_serializer_class = GoodsSPUSerializer
     update_serializer_class =GoodsSPUUpdateSerializer
     search_fields = ('name',)
-    filter_fields = ('is_launched','category1')
+    filterset_fields = ('is_launched','category1')
 
     def islaunched(self, request, *args, **kwargs):
         """上下架商品"""
@@ -497,7 +497,7 @@ class FinanceOrderInfoViewSet(CustomModelViewSet):
     queryset = OrderInfo.objects.filter(pay_status=1).order_by("-create_datetime")
     serializer_class = FinanceOrderInfoSerializer
     # search_fields = ('name',)
-    filter_class = FinanceOrderInfoTimeFilter
+    filterset_class = FinanceOrderInfoTimeFilter
 
     def orderstatistics(self,request):
         """
@@ -593,7 +593,7 @@ class GoodsOrderManageViewSet(CustomModelViewSet):
     """
     queryset = OrderInfo.objects.all().order_by('-create_datetime')
     serializer_class = OrderInfoSerializer
-    filter_class = FinanceOrderInfoTimeFilter
+    filterset_class = FinanceOrderInfoTimeFilter
 
     def closeorder(self,request):
         # 按照原来的过滤查询

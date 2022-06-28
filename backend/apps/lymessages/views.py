@@ -34,7 +34,7 @@ class MyMessageTemplateViewSet(CustomModelViewSet):
     """
     queryset = MyMessageTemplate.objects.all().order_by('create_datetime')
     serializer_class = MyMessageTemplateSerializer
-    filter_fields = ('title',)
+    filterset_fields = ('title',)
 
 class MyMessageSerializer(CustomModelSerializer):
     """
@@ -73,7 +73,7 @@ class MyMessageViewSet(CustomModelViewSet):
     serializer_class = MyMessageSerializer
     create_serializer_class = MyMessageCreateUpdateSerializer
     update_serializer_class = MyMessageCreateUpdateSerializer
-    filter_fields = ('msg_title',)
+    filterset_fields = ('msg_title',)
 
 def send_sys_template_message(revuser,code):
     """
