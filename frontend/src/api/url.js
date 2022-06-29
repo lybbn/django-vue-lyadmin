@@ -6,6 +6,3 @@ if (process.env.NODE_ENV == "development") {
     _url = 'http://django-vue-lyadmin.lybbn.cn/api/'; //线上地址
 }
 export const url = _url;
-export function getbaseurl() {
-    return _url
-}

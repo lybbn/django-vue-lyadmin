@@ -70,7 +70,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
     if (userId) { // 通过vuex state获取当前的token是否存在
       let menuList = JSON.parse(sessionStorage.getItem('menuList'))
-      if(menuList.filter(item=>item.url == to.name).length > 0 || (to.name =='buttonConfig' &&  menuList.filter(item=>item.url=='menuManage').length >0) || (to.name =='buttonManage' &&  menuList.filter(item=>item.url=='menuManage').length >0)) {
+      if(menuList.filter(item=>item.url == to.name).length > 0) {
         next()
       } else {
         next({
