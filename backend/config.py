@@ -79,8 +79,10 @@ WX_GZPT_APPSECRET = "XXXXXXXXXXXXXXXXXXXXXXXX"
 WX_GZH_APPID = "xxxxxxxxxxxxxxxxx"
 #微信公众号秘钥
 WX_GZH_APPSECRET = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-#微信公众号——服务器域名
-# WX_GZH_DOMAIN = "http://www.xxxx.com/"
+#微信公众号--服务器配置：服务器域名
+WX_GZH_DOMAIN = "http://www.xxxx.com/"
+#微信公众号--服务器配置：TOKEN
+WX_GZH_TOKEN = "xxxx"
 # #微信公众号——证书路径
 # # WX_GZH_KEYSPATH = os.path.join(BASE_DIR, 'keys')
 # # WX_GZH_MCH_CERT= os.path.join(WX_GZH_KEYSPATH, r"apiclient_cert.pem"),

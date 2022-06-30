@@ -5,7 +5,7 @@ from utils.jsonResponse import SuccessResponse,ErrorResponse
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from utils.common import get_parameter_dic,REGEX_MOBILE
-from config import WX_XCX_APPID,WX_XCX_APPSECRET,WX_GZH_APPID,WX_GZH_APPSECRET,WX_GZPT_APPSECRET,WX_GZPT_APPID,TT_XCX_APPID,TT_XCX_APPSECRET
+from config import WX_XCX_APPID,WX_XCX_APPSECRET,WX_GZH_APPID,WX_GZH_APPSECRET,WX_GZH_TOKEN,WX_GZPT_APPSECRET,WX_GZPT_APPID,TT_XCX_APPID,TT_XCX_APPSECRET
 import requests
 import base64
 import json
@@ -26,6 +26,8 @@ import datetime
 from  django.conf import settings
 from config import DOMAIN_HOST
 from utils.common import renameuploadimg
+import hashlib
+from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
 # Create your views here.
@@ -470,7 +472,7 @@ def get_wechat_access_token_url(code):
 }
 """
 def getWxUserInfo(access_token,openid):
-    api_url = "https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}"
+    api_url = "https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}&lang=zh_CN"
     get_url = api_url.format(access_token,openid)
     r = requests.get(get_url)
     return r
@@ -585,6 +587,104 @@ class WeChatGZHBindAPIView(APIView):
             return ErrorResponse(msg="无法绑定，无此用户或已绑定")
         OAuthWXUser.objects.create(user=user,gzh_openid=openid)
         resdata = XCXLoginSerializer.get_token(user)
+        return SuccessResponse(data=resdata,msg="success")
+
+# ================================================= #
+# ************** 微信公众号H5网页授权登录 view  ************** #
+# ================================================= #
+def get_wechat_access_token_h5_url(code):
+    api_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code"
+    get_url = api_url.format(WX_GZH_APPID,WX_GZH_APPSECRET,code)
+    r = requests.get(get_url)
+    return r
+
+#接口配置：校验微信发送的验证信息
+class CheckWeChatGZHH5APIView(APIView):
+    """
+    get:
+    接口配置：校验微信发送的验证信息
+    微信会发送随机字符，校验服务器是否真实存在
+    """
+    permission_classes = []
+    authentication_classes = []
+
+    def get(self, request):
+        signature = get_parameter_dic(request)['signature']
+        timestamp = get_parameter_dic(request)['timestamp']
+        nonce = get_parameter_dic(request)['nonce']
+        echostr = get_parameter_dic(request)['echostr']
+        token = WX_GZH_TOKEN
+        if not wx_h5_checkSignature(token,timestamp, nonce, signature):
+            return HttpResponse('fail')
+        return HttpResponse(echostr)
+
+def wx_h5_checkSignature(token, timestamp, nonce, signature):
+    temp = [token, timestamp, nonce]
+    temp.sort()
+    res = hashlib.sha1("".join(temp).encode('utf8')).hexdigest()
+    return True if res == signature else False
+
+def wx_h5_checkSignature(token, timestamp, nonce, signature):
+    temp = [token, timestamp, nonce]
+    temp.sort()
+    res = hashlib.sha1("".join(temp).encode('utf8')).hexdigest()
+    return True if res == signature else False
+
+
+#微信公众号H5网页授权登录接口
+class WeChatGZHH5LoginAPIView(APIView):
+    """
+    post:
+    微信公众号网页授权登录接口
+    微信公众号code获取openid和access_token，新用户获取用户信息（昵称头像等）：
+    引导用户访问如下授权链接：
+    https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9747c4bf89d5ce34&redirect_uri=http%3A%2F%2Fdvlyadmin.lybbn.cn%2Fapi%2Fxcx%2Fwxh5login%2F&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+    """
+    permission_classes = []
+    authentication_classes = []
+
+    def get(self, request):
+        jscode = get_parameter_dic(request)['code']
+        if not jscode:
+            return ErrorResponse(msg="code不能为空")
+        resp = get_wechat_access_token_h5_url(jscode)
+        openid = ""
+        unionid = ""
+        access_token = ""
+        refresh_token = ""
+        scope = None
+        if resp.status_code != 200:
+            return ErrorResponse(msg="服务器到微信网络连接失败，请重试")
+        json_data =json.loads(resp.content)
+        if 'errcode' in json_data and json_data['errcode'] !=0:#如果获取失败返回失败信息
+            logger.error("微信app登录服务错误，用户提交code:%s，微信返回错误信息：%s" % (jscode, json_data))
+            return ErrorResponse(msg=json_data['errmsg'])
+
+        openid = json_data['openid']
+        access_token = json_data['access_token']
+        refresh_token = json_data['refresh_token']
+        scope = json_data['scope']
+        if "unionid" in json_data:
+            unionid = json_data['unionid']
+
+        #判断用户是否存在(根据openID判断用户是否是第一次登陆)
+        user = Users.objects.filter(is_active=True,oauthwxuser__gzh_openid=openid).first()
+        if not user:#如果不存在则提示绑定用户关系
+            userinfo_res = getWxUserInfo(access_token, openid)
+            userinfo = json.loads(userinfo_res.content)
+            if 'errcode' in userinfo and userinfo['errcode'] != 0:  # 如果获取失败返回失败信息
+                logger.error("微信公众号网页授权登录服务错误，用户提交code:%s，微信返回错误信息：%s" % (jscode, userinfo))
+                return ErrorResponse(msg=userinfo['errmsg'])
+            nickname = userinfo['nickname']
+            sex = userinfo['sex']
+            if "unionid" in userinfo:
+                unionid = userinfo['unionid']
+            avatar = userinfo['headimgurl']
+            user = Users.objects.create(username=openid,password=uuid.uuid4(),is_staff=False,is_active=True,nickname=nickname,name=nickname,avatar=avatar,gender=sex)
+            OAuthWXUser.objects.create(user=user, gzh_openid=openid,avatarUrl=avatar,nick=nickname,sex=sex,gzh_access_token=access_token)
+
+        #返回token
+        resdata  = XCXLoginSerializer.get_token(user)
         return SuccessResponse(data=resdata,msg="success")
 
 # ================================================= #
