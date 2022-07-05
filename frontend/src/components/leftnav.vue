@@ -21,7 +21,7 @@
     <div v-for="menu in allmenu">
       <el-submenu v-if="menu.hasChildren" :index="menu.text" :key="menu.id">
         <template slot="title" >
-          <i class="iconfont" :class="menu.attributes.icon"></i>
+          <i class="iconfont" :class="menu.attributes.icon?menu.attributes.icon:'el-icon-menu'"></i>
           <span slot="title">{{menu.text}}</span>
         </template>
         <el-menu-item-group  v-if="menu.hasChildren">
@@ -31,13 +31,13 @@
             :key="chmenu.id"
             @click="handleOpen2(chmenu)"
           >
-            <i class="iconfont" :class="chmenu.attributes.icon"></i>
+            <i class="iconfont" :class="menu.attributes.icon?menu.attributes.icon:'el-icon-menu'"></i>
             <span slot="title">{{chmenu.text}}</span>
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item  v-else :index="'/'+menu.attributes.url" :key="menu.id" @click="handleOpen2(menu)">
-        <i class="iconfont" :class="menu.attributes.icon"></i>
+        <i class="iconfont" :class="menu.attributes.icon?menu.attributes.icon:'el-icon-menu'"></i>
         <span slot="title">{{menu.text}}</span>
       </el-menu-item>
     </div>
