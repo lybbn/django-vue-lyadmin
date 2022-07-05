@@ -31,7 +31,7 @@
             :key="chmenu.id"
             @click="handleOpen2(chmenu)"
           >
-            <i class="iconfont" :class="menu.attributes.icon?menu.attributes.icon:'el-icon-menu'"></i>
+            <i class="iconfont" :class="chmenu.attributes.icon?chmenu.attributes.icon:'el-icon-menu'"></i>
             <span slot="title">{{chmenu.text}}</span>
           </el-menu-item>
         </el-menu-item-group>
