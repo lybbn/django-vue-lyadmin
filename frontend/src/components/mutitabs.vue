@@ -17,6 +17,7 @@
         v-show="contextMenuVisible"
         :style="{left:left+'px',top:top+'px'}"
         class="contextmenu">
+        <li @click="refresh">刷新</li>
         <li @click="closeAllTabs">关闭所有</li>
         <li @click="closeOtherTabs('left')">关闭左边</li>
         <li @click="closeOtherTabs('right')">关闭右边</li>
@@ -24,9 +25,9 @@
         <li @click="closeContextMenu()">取消操作</li>
       </ul>
     <keep-alive>
-      <router-view v-if="$route.meta.isActive"></router-view>
+      <router-view :key="key" v-if="$route.meta.isActive"></router-view>
     </keep-alive>
-      <router-view v-if="!$route.meta.isActive"></router-view>
+      <router-view :key="key" v-if="!$route.meta.isActive"></router-view>
   </div>
 </template>
 
@@ -40,6 +41,7 @@ export default {
       contextMenuVisible:false,
       left:0,
       top:0,
+      key:0,
     };
   },
   mounted() {
@@ -124,6 +126,11 @@ export default {
         this.left = e.clientX;
         this.top = e.clientY + 13;
       }
+    },
+    // 刷新当前选中页
+    refresh(){
+        this.key = Date.now()
+        this.contextMenuVisible = false;
     },
     // 关闭所有标签页
     closeAllTabs() {
