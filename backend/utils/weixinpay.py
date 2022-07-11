@@ -74,10 +74,11 @@ class WxAppPay:
         self.url = 'https://api.mch.weixin.qq.com/v3/pay/transactions/app'#微信app支付
         self.url2 = 'https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi'  # 微信小程序支付
         self.url3 = 'https://api.mch.weixin.qq.com/v3/refund/domestic/refunds'  # 微信申请退款、查询单笔退款
+        self.url4 = 'https://api.mch.weixin.qq.com/v3/transfer/batches'  # 商家转账到零钱（提现--原来得【企业付款到零钱】的升级款）
         self.gate_way = 'https://api.mch.weixin.qq.com'
         self.notify_url = "https://weixin.qq.com/"#需要回调的默认url，实际上要填写自己的回调地址：要求https，且不能携带参数如：https://www.weixin.qq.com/wxpay/pay.php
         self.serial_no = WXPAY_SERIAL_NO  # 商户号证书序列号
-        self.certificates = []#动态请求商户平台证书(验证回调应答签名要使用，目前只能通过api访问)
+        self.certificates = []#动态请求微信支付平台证书列表(验证回调应答签名要使用，目前只能通过api访问)
         self.cert_dir = WXPAY_CERT_DIR_RESPONSE + '/' if WXPAY_CERT_DIR_RESPONSE else None## 微信支付平台证书缓存目录，减少证书下载调用次数。 初始调试时可不设置，调试通过后再设置，示例值：'./cert'
         self.load_local_certificates()
 
@@ -134,7 +135,7 @@ class WxAppPay:
         res['oderno'] = order_no
         return res
 
-    # 统一下单(微信小程序支付（JSAPI）)
+    # 统一下单(微信小程序支付、微信公众号网页支付（JSAPI）)
     def payorder_jsapi(self, order_no, total, description,attach, openid,notify_url=None):
         data = {
             "mchid": self.mchid,
@@ -189,6 +190,59 @@ class WxAppPay:
         res['timestamp'] = time_stamps_app
         res['oderno'] = order_no
         return res
+
+    # 微信【商家转账到零钱】(提现)采用apiv3接口（原来的微信企业付款（提现）企业付款到零钱新用户已无法申请）
+    # 开通要求：商户号已入驻90日且截止今日回推30天商户号保持连续不间的交易。
+    # 开通方法：商户进入微信支付【商户平台—>产品中心—>商家转账到零钱】，点击开通进入开通流程
+    # 开通产品后，商户进入微信支付【商户平台—>产品中心—>商家转账到零钱—>产品设置】，配置发起方式，开启验密批量API。并配置API 调用的IP 地址。
+    # 该接口原官网是支持最多3000比的同时转账，这里只支持同时一个用户转账，如需支持多用户的形式的，需要自行扩展
+    def cashout(self,order_no,amount,openid):
+        batch_name = "转账"
+        batch_remark = "转账"
+        data = {
+            "appid": self.appid,
+            "out_batch_no": order_no,
+            "batch_name": batch_name,#批次名字：示例值：2019年1月深圳分部报销单
+            "batch_remark": batch_remark,  # 转账说明，UTF8编码，最多允许32个字符,示例值：2019年1月深圳分部报销单
+            "total_amount": int(amount), # int类型，转账总金额， 转账金额单位为“分”。转账总金额必须与批次内所有明细转账金额之和保持一致，否则无法发起转账操作
+            "total_num":1, # int类型 转账笔数 ，一个转账批次单最多发起三千笔转账。转账总笔数必须与批次内所有明细之和保持一致，否则无法发起转账操作
+            "transfer_detail_list":[#转账明细，最多三千笔
+                {
+                    "out_detail_no": order_no,
+                    "transfer_amount": int(amount),
+                    "transfer_remark": batch_remark,
+                    "openid": openid,
+                },
+            ],
+        }
+        data = json.dumps(data)  # 只能序列化一次
+        # 构造微信签名验证
+        random_str = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(32))
+        time_stamps = str(int(time.time()))
+        """
+            HTTP请求方法\n
+            URL\n
+            请求时间戳\n
+            请求随机串\n
+            请求报文主体\n
+        """
+        sign_str = f"POST\n{'/v3/transfer/batches'}\n{time_stamps}\n{random_str}\n{data}\n"
+        sign = get_sign(sign_str)
+        authorization = 'WECHATPAY2-SHA256-RSA2048 ' + f'mchid="{self.mchid}",nonce_str="{random_str}",signature="{sign}",timestamp="{time_stamps}",serial_no="{self.serial_no}"'
+        headers = {'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': authorization}
+        response = requests.post(self.url4, data=data, headers=headers)
+        logger.info("微信提现【商家转账到零钱】返回消息,订单号：%s,金额：%s,微信返回信息：状态码：%s：%s" % (order_no, amount / 100, response.status_code,response.text))
+        """
+        正常返回：状态码200
+        {
+          "out_batch_no": "plfk2020042013",#自己的系统内部单号
+          "batch_id": "1030000071100999991182020050700019480001",#微信的交易标识单号
+          "create_time": "2015-05-20T13:29:35.120+08:00"
+        }
+        错误返回：非200状态码
+        {"code":"NO_AUTH","message":"商户号无权限"}
+        """
+        return response
 
     # 微信app退款申请
     def refundsorder(self, out_refund_no,transaction_id,reason,refund,total,notify_url=None):
@@ -339,7 +393,7 @@ class WxAppPay:
                 raise Exception('failed to verify signature')
         return response.status_code, response.text
 
-    #更新商户证书
+    #更新-获取微信支付平台证书列表
     def update_certificates(self):
         path = '/v3/certificates'
         code, message = self.request(path, skip_verify=False if self.certificates else True)

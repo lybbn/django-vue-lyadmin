@@ -6,7 +6,7 @@ import hashlib
 import requests
 import re
 
-# 微信企业付款（提现）
+# 微信企业付款（提现）APIV2 # 新用户因官网关闭只能使用【商家转账到零钱】APIV3,因此无法使用此接口
 
 def get_client_ip(request):
     """
