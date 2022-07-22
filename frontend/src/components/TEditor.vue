@@ -124,8 +124,11 @@ export default {
     return {
       myValue: this.value,
       init: {
+        relative_urls : false,
+        convert_urls: false,
+        deprecation_warnings: false,
         cleanup: true,
-        forced_root_block:'',//去除回车换行自动添加的p标签
+        // forced_root_block:false,//去除回车换行自动添加的p标签
         selector: '#tinymce',
         language_url: 'static/tinymce/langs/zh_CN.js', // 汉化路径是自定义的，一般放在public或static里面
         language: 'zh_CN',
