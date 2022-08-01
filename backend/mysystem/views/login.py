@@ -4,7 +4,6 @@
 @Remark:管理后台登录视图
 """
 import base64
-import datetime
 from datetime import datetime, timedelta
 from captcha.views import CaptchaStore, captcha_image
 from django.utils.translation import gettext_lazy as _
@@ -118,7 +117,7 @@ class LoginSerializer(TokenObtainPairSerializer):
             request.user = self.user
             # 记录登录成功日志
             save_login_log(request=request)
-            #缓存用户的jwt token
+            # 缓存用户的jwt token
             if IS_SINGLE_TOKEN:
                 redis_conn = get_redis_connection("singletoken")
                 k = "lybbn-single-token{}".format(user.id)

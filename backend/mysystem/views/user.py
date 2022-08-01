@@ -22,7 +22,7 @@ class UserSerializer(CustomModelSerializer):
     rolekey = serializers.SerializerMethodField(read_only=True)  # 新增自定义字段
 
     def get_rolekey(self,obj):
-        queryset = Role.objects.filter(users__id=obj.id).values('key')
+        queryset = Role.objects.filter(users__id=obj.id).values_list('key',flat=True)
         return queryset
 
     class Meta:
@@ -95,7 +95,7 @@ class UserViewSet(CustomModelViewSet):
     """
     后台管理员用户接口:
     """
-    queryset = Users.objects.exclude(is_superuser=1).filter(role__isnull=False).filter(is_staff=True)#排除超级管理员和前端用户
+    queryset = Users.objects.exclude(is_superuser=1).filter(is_staff=True).order_by('-create_datetime')#排除超级管理员和前端用户
     serializer_class = UserSerializer
     create_serializer_class = UserCreateSerializer
     update_serializer_class = UserUpdateSerializer

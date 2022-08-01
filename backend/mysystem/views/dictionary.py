@@ -58,8 +58,6 @@ class DictionaryViewSet(CustomModelViewSet):
     """
     queryset = Dictionary.objects.all()
     serializer_class = DictionarySerializer
-    extra_filter_backends = []
-    permission_classes = []
     filterset_fields = ['status']
     search_fields = ['label']
 

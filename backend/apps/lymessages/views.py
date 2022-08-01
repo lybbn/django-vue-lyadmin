@@ -74,6 +74,7 @@ class MyMessageViewSet(CustomModelViewSet):
     create_serializer_class = MyMessageCreateUpdateSerializer
     update_serializer_class = MyMessageCreateUpdateSerializer
     filterset_fields = ('msg_title',)
+    search_fields = ('msg_title',)
 
 def send_sys_template_message(revuser,code):
     """

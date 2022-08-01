@@ -134,12 +134,13 @@ class SPU(CoreModel):
     brand = models.ForeignKey(GoodsBrand, on_delete=models.PROTECT, related_name="brands", blank=True, null=True,verbose_name="品牌")
     spec_type = models.PositiveIntegerField(choices=SPU_SPEC_TYPE, default=0, verbose_name="规格类型")#默认单规格
     default_image = models.CharField(max_length=255, null=True, blank=True, verbose_name='商品主图')  #（单个图片）
+    image_list = models.CharField(max_length=2000, null=True, blank=True, verbose_name='商品轮播图')  # （多个图片）
     price = models.DecimalField(max_digits=10, decimal_places=2,default=0, verbose_name="售价")#sku中选择一个最低的售价写入
     # market_price = models.DecimalField(max_digits=10, decimal_places=2,default=0, verbose_name="市场价")
     # cost_price = models.DecimalField(max_digits=10, decimal_places=2,default=0, verbose_name="成本价")
     sales = models.IntegerField(default=0, verbose_name='销量')
-    # stock = models.IntegerField(default=0, verbose_name="库存")
-    # unit = models.CharField(max_length=30, default="", blank=True,null=True,verbose_name="商品单位")
+    stock = models.IntegerField(default=0, verbose_name="库存")
+    unit = models.CharField(max_length=30, default="", blank=True,null=True,verbose_name="商品单位")
     comments = models.IntegerField(default=0, verbose_name='评论量',null=True, blank=True)
     desc_detail = models.TextField(default='', verbose_name='详细介绍',null=True, blank=True)#商品详情
     desc_pack = models.TextField(default='', verbose_name='包装信息',null=True, blank=True)
@@ -169,9 +170,11 @@ class SKU(CoreModel):
     unite = models.CharField(max_length=20, verbose_name='商品单位',null=True, blank=True)
     sales = models.IntegerField(default=0, verbose_name='商品销量',null=True, blank=True)
     default_image = models.CharField(max_length=255, null=True, blank=True, verbose_name='默认图片')#商品主图(单张)
+    is_launched = models.BooleanField(default=True, verbose_name='是否上架销售')
     is_delete = models.BooleanField(default=False, verbose_name="是否逻辑删除", help_text="是否逻辑删除")
 
     class Meta:
+        ordering = ["create_datetime"]
         db_table = 'tb_goods_sku'
         verbose_name = '商品SKU'
         verbose_name_plural = verbose_name
@@ -180,20 +183,18 @@ class SKU(CoreModel):
         return f'{self.spu.name}的SKU'
 
 
-class SPUImage(CoreModel):
-    """SPU图片"""
-    spu = models.ForeignKey(SPU, on_delete=models.CASCADE, verbose_name='商品sku',related_name='goods_imagelist')
+class SKUImage(CoreModel):
+    """SKU图片"""
+    sku = models.ForeignKey(SKU, on_delete=models.CASCADE, verbose_name='商品sku',related_name='goods_imagelist')
     image = models.CharField(max_length=255,verbose_name='图片')
     sort = models.PositiveSmallIntegerField(default=0, verbose_name="排序")
 
     class Meta:
         ordering=  ["sort"]
-        db_table = 'tb_goods_spu_image'
-        verbose_name = 'SPU图片'
+        db_table = 'tb_goods_sku_image'
+        verbose_name = 'SKU图片'
         verbose_name_plural = verbose_name
 
-    def __str__(self):
-        return f'{self.spu.title} {self.id}'
 
 class SPUSpecification(CoreModel):
     """商品SPU规格名"""
@@ -201,6 +202,7 @@ class SPUSpecification(CoreModel):
     name = models.CharField(max_length=20, verbose_name='规格名称')
 
     class Meta:
+        ordering = ["create_datetime"]
         db_table = 'tb_goods_spu_specification'
         verbose_name = '商品SPU规格'
         verbose_name_plural = verbose_name
@@ -214,6 +216,7 @@ class SPUSpecificationOption(CoreModel):
     value = models.CharField(max_length=20, verbose_name='选项值')
 
     class Meta:
+        ordering = ["create_datetime"]
         db_table = 'tb_goods_spu_specification_option'
         verbose_name = '规格选项'
         verbose_name_plural = verbose_name
@@ -228,6 +231,7 @@ class SKUSpecification(CoreModel):
     option = models.ForeignKey(SPUSpecificationOption, on_delete=models.CASCADE, verbose_name='规格值')
 
     class Meta:
+        ordering = ["create_datetime"]
         db_table = 'tb_goods_sku_specification'
         verbose_name = 'SKU规格'
         verbose_name_plural = verbose_name
@@ -275,7 +279,9 @@ class OrderInfo(CoreModel):
     order_id = models.CharField(max_length=64, verbose_name="订单号",unique=True)#内部
     trade_id = models.CharField(max_length=100, unique=True, null=True, blank=True, verbose_name="支付编号")#外部
     user = models.ForeignKey(Users, on_delete=models.PROTECT,related_name='createorderuser1' ,verbose_name="下单用户")
-    address = models.ForeignKey(Address, on_delete=models.PROTECT, verbose_name="收货地址")
+    address_name = models.CharField(max_length=50, null=True, blank=True, verbose_name="收货人姓名")
+    address_mobile = models.CharField(max_length=20, null=True, blank=True, verbose_name="收货人手机号")
+    address_place = models.CharField(max_length=100, null=True, blank=True, verbose_name="收货详细地址")
     couponrecord_id = models.CharField(max_length=60, unique=True, null=True, blank=True, verbose_name="用户优惠券id")
     couponrecord_price = models.DecimalField(max_digits=10, decimal_places=2, default=0,null=True, blank=True, verbose_name="优惠券面值")
     total_count = models.IntegerField(default=1, verbose_name="商品总数")

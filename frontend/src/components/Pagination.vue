@@ -2,8 +2,10 @@
 * 分页组件
 */
 <template>
+  <el-row>
   <el-pagination class="page-box" @size-change="handleSizeChange" @current-change="handleCurrentChange" background :current-page="childMsg.page" :page-sizes="[10,20,30,40,50,100]" :page-size="childMsg.limit" layout="total, sizes, prev, pager, next, jumper" :total="childMsg.total">
   </el-pagination>
+  </el-row>
 </template>
 <script>
   export default {

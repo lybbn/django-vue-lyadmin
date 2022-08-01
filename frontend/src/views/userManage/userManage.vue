@@ -1,18 +1,17 @@
 <template>
-    <div>
-        <div class="tableSelect">
+    <div :class="{'ly-is-full':isFull}">
+        <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
-                <el-form-item label="用户名称：">
-                    <el-input size="small" v-model.trim="formInline.username" maxlength="60"  clearable placeholder="用户名称" @change="search" style="width:200px"></el-input>
+                <el-form-item label="用户昵称：">
+                    <el-input size="default" v-model.trim="formInline.nickname" maxlength="60"  clearable placeholder="用户昵称" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号：">
-                    <el-input size="small" v-model.trim="formInline.mobile" maxlength="60"  clearable placeholder="手机号" @change="search" style="width:200px"></el-input>
+                    <el-input size="default" v-model.trim="formInline.mobile" maxlength="60"  clearable placeholder="手机号" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间：">
                     <el-date-picker
                             style="width:100% !important;"
                             v-model="timers"
-                            size="small"
                             type="datetimerange"
                             @change="timeChange"
                             range-separator="至"
@@ -20,24 +19,30 @@
                             end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label=""><el-button size="small" @click="addAdmin" type="primary" v-show="isShowBtn('userManage','用户管理','Create')">新增</el-button></el-form-item>
-                <el-form-item label=""><el-button size="small" @click="exportDataBackend" type="primary">导出</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('userManage','用户管理','Search')">查询</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="addAdmin" type="primary" icon="Plus" v-show="isShowBtn('userManage','用户管理','Create')">新增</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="exportDataBackend" type="primary">导出</el-button></el-form-item>
             </el-form>
         </div>
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
-                <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
+            <el-table  :height="'calc('+(tableHeight)+'px)'" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
+                <el-table-column type="index" width="60" align="center" label="序号">
+                    <template #default="scope">
+                        <span v-text="getIndex(scope.$index)"></span>
+                    </template>
+                </el-table-column>
                 <el-table-column min-width="70" prop="avatar" label="用户头像">
-                    <template slot-scope="scope">
-                        <img  :src="scope.row.avatar ? scope.row.avatar : defaultImg" style="width: 30px;height: 30px" :onerror="defaultImg">
+                    <template #default="scope">
+                        <img  :src="scope.row.avatar ? scope.row.avatar : defaultImg" style="width: 30px;height: 30px" :onerror="defaultImg" >
                     </template>
                 </el-table-column>
                 <el-table-column min-width="110" prop="username" label="用户名"></el-table-column>
                 <el-table-column min-width="110" prop="nickname" label="用户昵称"></el-table-column>
                 <el-table-column min-width="100" prop="mobile" label="手机号"></el-table-column>
                 <el-table-column min-width="100" label="状态">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <el-tag v-if="scope.row.is_active">正常</el-tag>
                         <el-tag v-else type="danger">禁用</el-tag>
 <!--                        <el-switch-->
@@ -49,8 +54,18 @@
                     </template>
                 </el-table-column>
                 <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-                <el-table-column label="操作" width="180">
-                    <template slot-scope="scope">
+                <el-table-column label="操作" fixed="right" width="180">
+                    <template #header>
+                        <div style="display: flex;justify-content: space-between;align-items: center;">
+                            <div>操作</div>
+                            <div @click="setFull">
+                                <el-tooltip content="全屏" placement="bottom">
+                                    <el-icon ><full-screen /></el-icon>
+                                </el-tooltip>
+                            </div>
+                        </div>
+                    </template>
+                    <template #default="scope">
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('userManage','用户管理','Update')">编辑</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('userManage','用户管理','Retrieve')">详情</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('userManage','用户管理','Delete')">删除</span>
@@ -70,7 +85,7 @@
 <script>
     import addUser from "./components/addUser";
     import Pagination from "@/components/Pagination";
-    import {dateFormats} from "@/utils/util";
+    import {dateFormats,getTableHeight} from "@/utils/util";
     import {UsersUsers,UsersUsersDelete,UsersUsersdisableEdit,UsersUsersExportexecl} from '@/api/api'
     import UserDetail from "./components/userDetail";
     export default {
@@ -82,12 +97,14 @@
         name:'userManage',
         data() {
             return {
+                isFull:false,
+                tableHeight:500,
                 loadingPage:false,
                 formInline:{
                     page: 1,
                     limit: 10,
                 },
-                defaultImg:"this.src='"+require('../../assets/img/avatar.jpg')+"'",
+                defaultImg:require('../../assets/img/avatar.jpg'),
                 pageparm: {
                     page: 1,
                     limit: 10,
@@ -105,7 +122,16 @@
                 tableData:[]
             }
         },
+
         methods:{
+            // 表格序列号
+            getIndex($index) {
+                // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
+                return (this.pageparm.page-1)*this.pageparm.limit + $index +1
+            },
+            setFull(){
+                this.isFull=!this.isFull
+            },
             changeStatus(row) {
                 // console.log(row,'row----')
             },
@@ -116,10 +142,10 @@
                 if(flag=='edit') {
                     this.$refs.addUserFlag.addUserFn(row,'编辑')
                 }
-                if(flag=='detail') {
+                else if(flag=='detail') {
                     this.$refs.userDetailFlag.addUserFn(row,'详情')
                 }
-                if(flag=='disable'){
+                else if(flag=='disable'){
                     let vm = this
                     UsersUsersdisableEdit({id:row.id}).then(res=>{
                             if(res.code == 2000) {
@@ -130,7 +156,7 @@
                             }
                         })
                 }
-                if(flag=='delete') {
+                else if(flag=='delete') {
                     let vm = this
                     vm.$confirm('您确定要删除选中的数据吗？',{
                         closeOnClickModal:false
@@ -147,33 +173,18 @@
 
                     })
                 }
-            },
-            /**
-             * 从URL里下载文件,参数files为el-upload上传的文件file
-            */
-            downloadFile(files) {
-                //url转blob
-                fetch(files.url)
-                .then(response => response.blob())
-                .then(blob => {
-                    // 处理blob
-                    let url = window.URL.createObjectURL(new Blob([blob]))
-                    let link = document.createElement('a')
-                    link.style.display = 'none'
-                    link.href = url
-                    // link.download = url.split('/')[url.split('/').length -1] //  // 下载文件的名字
-                    if(typeof files.name == "undefined"){
-                        link.download = url.split('/')[url.split('/').length -1]
-                    }else{
-                        link.download = files.name
+                else if(flag=="reset"){
+                    this.formInline = {
+                        page:1,
+                        limit: 10
                     }
-                    document.body.appendChild(link)
-                    link.click()
-                    document.body.removeChild(link) // 下载完成移除元素
-                    window.URL.revokeObjectURL(url) // 释放掉blob对象
-
-                })
-
+                    this.pageparm={
+                        page: 1,
+                        limit: 10,
+                        total: 0
+                    }
+                    this.getData()
+                }
             },
             /**
              * 从URL里下载文件
@@ -231,9 +242,31 @@
                 }
                 this.search()
             },
+            // 计算搜索栏的高度
+            listenResize() {
+				this.$nextTick(() => {
+				    this.getTheTableHeight()
+				})
+			},
+            getTheTableHeight(){
+               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+            }
+
         },
         created() {
             this.getData()
+        },
+        mounted() {
+            // 监听页面宽度变化搜索框的高度
+            window.addEventListener('resize', this.listenResize);
+            this.$nextTick(() => {
+              this.getTheTableHeight()
+            })
+        },
+
+        unmounted() {
+             // 页面销毁，去掉监听事件
+			window.removeEventListener("resize", this.listenResize);
         },
         timers(val){
             if (val) {

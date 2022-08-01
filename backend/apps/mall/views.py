@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from mysystem.models import Users,Role,Dept
 from apps.oauth.models import OAuthWXUser
-from apps.mall.models import GoodsCategory,GoodsCoupon,CouponRecord,SPU,SKU,SPUImage,SKUSpecification,SPUSpecification,SPUSpecificationOption,OrderInfo,OrderGoods,CouponRecord,GoodsCoupon,OrderRefunds
+from apps.mall.models import GoodsCategory,GoodsCoupon,CouponRecord,SPU,SKU,SKUImage,SKUSpecification,SPUSpecification,SPUSpecificationOption,OrderInfo,OrderGoods,CouponRecord,GoodsCoupon,OrderRefunds
 from apps.address.models import Address
 from utils.jsonResponse import SuccessResponse,ErrorResponse
 from rest_framework import serializers
@@ -186,7 +186,7 @@ class GoodsSPUImageSerialzier(CustomModelSerializer):
     """
 
     class Meta:
-        model = SPUImage
+        model = SKUImage
         fields = ('image',)
 
 class GoodsSKUSerializer(CustomModelSerializer):
@@ -212,20 +212,9 @@ class GoodsSPUSerializer(CustomModelSerializer):
     spu_specs = SPUSpecModelSerializer(many=True,required=False)
     skus = GoodsSKUSerializer(many=True,required=False)
 
-    # 商品banner图片
-    goods_imagelist = GoodsSPUImageSerialzier(many=True,required=False)  # 只显示，不可写
-
     category1_name = serializers.SerializerMethodField(read_only=True)
 
-    shop_price = serializers.SerializerMethodField(read_only=True)#默认多规格选择价格最低的sku商品信息
     stock = serializers.SerializerMethodField(read_only=True)#默认多规格选择为所有sku库存的合计
-
-    def get_shop_price(self,obj):
-        if obj.spec_type:#多规格
-            allskus = obj.skus.all().aggregate(minprice=Min('price'))
-            return float2dot(allskus['minprice'])
-        else:#单规格
-            return float2dot(obj.skus.first().price)
 
     def get_stock(self,obj):
         if obj.spec_type:#多规格
@@ -238,6 +227,16 @@ class GoodsSPUSerializer(CustomModelSerializer):
         if obj.category1:
             return obj.category1.name
 
+    def to_representation(self, instance):  # 序列化
+        ret = super().to_representation(instance)
+        ret['image_list'] = ast_convert(ret['image_list'])  # 可以保存的修改字段值的方法
+        return ret
+
+    def to_internal_value(self, data):
+        # 进提取所需要的数据，对其进行反序列化，data代表未验证的数据
+        data['image_list'] = str(data['image_list'])
+        return super().to_internal_value(data)
+
     def create(self, validated_data):
         """
         重写create方法，来手动插入中间表(SKUSpecification)数据记录新增sku拥有的规格和选项信息和轮播图
@@ -247,7 +246,6 @@ class GoodsSPUSerializer(CustomModelSerializer):
         # specs记录的是中间表数据，无法用于新建SKU，所以先从有效数据中移除
         # specs = [{spec_id:1, option_id:2}, {...}...]
         # 获取规格信息,并从validated_data数据中,删除规格信息数据
-        imagelists_data = validated_data.pop('goods_imagelist')  # 商品的图片字典数组形式[{image:'1.png'},{image:'2.png'},...]
         spec_type = validated_data['spec_type']
         spu_sepcs = validated_data.pop('spu_specs')  # 商品的spu规格字典数组形式[ { "name": "颜色", "options": [ { "value": "白色" }, { "value": "黑色" } ] }, { "name": "大小", "options": [ { "value": "X" }, { "value": "S" } ] } ]
         skus = validated_data.pop('skus')
@@ -255,13 +253,6 @@ class GoodsSPUSerializer(CustomModelSerializer):
             try:
                 savepoint = transaction.savepoint()
                 spu = SPU.objects.create(**validated_data)
-                # 新建sku的商品轮播图片
-                num = 0
-                for imagelist_data in imagelists_data:
-                    num = num + 1
-                    imagelist_data['sort'] = num
-                    imagelist_data['spu_id'] = spu.id
-                    SPUImage.objects.create(**imagelist_data)
                 if spec_type:#多规格
                     if len(spu_sepcs) <=0 or len(skus) <=0:
                         # 回滚到保存点
@@ -306,7 +297,7 @@ class GoodsSPUSerializer(CustomModelSerializer):
     class Meta:
         model = SPU
         #fields = "__all__"
-        exclude = ['dept_belong_id','description','modifier','creator']
+        exclude = ['dept_belong_id','description','modifier','creator','unit','brand','comments','desc_pack','desc_service']
         read_only_fields = ["id"]
         extra_kwargs = {
             'spu_specs': {'required': False},
@@ -357,18 +348,18 @@ class GoodsSKUSPUUpdateSerializer(CustomModelSerializer):
 
 class GoodsSPUUpdateSerializer(CustomModelSerializer):
 
-    # 商品banner图片
-    goods_imagelist = GoodsSPUImageSerialzier(many=True, required=False)  # 只显示，不可写
-
     # skus = serializers.ListField(required=True)
     skus = GoodsSKUSPUUpdateSerializer(many=True, required=True)
 
     # spu_specs = serializers.ListField(required=False)
 
+    def to_internal_value(self, data):
+        # 进提取所需要的数据，对其进行反序列化，data代表未验证的数据
+        data['image_list'] = str(data['image_list'])
+        return super().to_internal_value(data)
+
     def update(self, instance, validated_data):
         # 获取规格信息,并从validated_data数据中,删除规格信息数据
-        # print(validated_data)
-        imagelists_data = validated_data.pop('goods_imagelist')  # 商品的图片字典数组形式[{image:'1.png'},{image:'2.png'},...]
         spec_type = validated_data['spec_type']
         if instance.spec_type != spec_type:
             raise serializers.ValidationError("商品规格类型不能更改", 400)
@@ -383,15 +374,6 @@ class GoodsSPUUpdateSerializer(CustomModelSerializer):
                 savepoint = transaction.savepoint()
                 # 方案一： 调用父类 ，去实现没有问题的数据更新
                 instance = super().update(instance, validated_data)
-                # 更新spu的商品轮播图片
-                # 删除旧图片
-                num = 0
-                SPUImage.objects.filter(spu_id=instance.id).delete()
-                for imagelist_data in imagelists_data:
-                    num = num + 1
-                    imagelist_data['sort'] = num
-                    imagelist_data['spu_id'] = instance.id
-                    SPUImage.objects.create(**imagelist_data)
 
                 if spec_type:  # 多规格（只能修改现有规格库存和价格，不能添加和减少规格）前端直接修改，不通过本接口修改
                     pass
@@ -826,7 +808,7 @@ class GoodsDetailView(APIView):
             'spu_id': spu.id,
             'price': spu.price,
             'default_image': spu.default_image,
-            'goods_imagelist': SPUImage.objects.filter(spu=spu).values_list('image', flat=True).order_by('sort'),
+            'goods_imagelist': SKUImage.objects.filter(spu=spu).values_list('image', flat=True).order_by('sort'),
             'name': spu.name,
             'sales': spu.sales,
             'spec_type': spu.spec_type,

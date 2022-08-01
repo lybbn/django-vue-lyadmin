@@ -1,76 +1,71 @@
 <template>
-    <el-dialog
-            title="详情"
-            :visible.sync="dialogVisible"
-            width="900px"
-            center
-            top="3%"
-            :destroy-on-close="true"
-            :close-on-click-modal="false"
-            :before-close="handleClose">
-        <el-form :inline="false" label-position="right" label-width="110px" class="form-order" v-model="formData">
-            <el-form-item label="收货信息：">
-                <span>收货人：{{formData.address.receiver}}</span>
-                <span>联系电话：{{formData.address.mobile}}</span>
-                <span>收货地址：{{formData.address.areas}}</span>
-<!--                <span>价格：13333333333</span>-->
-            </el-form-item>
-            <el-form-item label="备注：">
-                <span>{{formData.remark}}</span>
-            </el-form-item>
-            <el-form-item label="物流单号：" style="width:100%">
-                <span>{{formData.logistics_id}}</span>
-            </el-form-item>
-            <el-form-item label="订单信息：" style="width:100%">
-                <div>
-                    <span style="display: inline;margin-right: 20px">订单编号：{{formData.order_id}}</span>
-                    <span style="display: inline">付款时间：{{formData.pay_time}}</span>
-                </div>
-                <el-table border size="small" :data="formData.goodsinfo" :span-method="objectSpanMethod">
-                    <el-table-column label="商品信息" show-overflow-tooltip width="200">
-                        <template slot-scope="scope">
-                            <div style="display: flex;align-items: center">
-                                <img :src="scope.row.sku_default_image" style="width: 40px;height:40px;margin-right: 5px">
-                                <span style="width: 150px" class="ellipsis">{{scope.row.sku_spec}}</span>
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="单价" >
-                        <template slot-scope="scope">
-                            <span>{{scope.row.price}}积分</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="数量">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.count}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="总价" >{{Number(formData.total_amount)}}</el-table-column>
-                    <el-table-column label="状态">
-                        <template slot-scope="scope">
-                            <span>{{orderStatusList.filter(item=>item.id==formData.status)[0].name}}</span>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </el-form-item>
-        </el-form>
-        <span slot="footer">
-            <el-button @click="deliverGoods">发货</el-button>
-            <el-button @click="handleClose" type="primary">取消</el-button>
-        </span>
-        <deliver-goods-module ref="deliverGoodsModuleFlag"></deliver-goods-module>
-    </el-dialog>
+    <div>
+        <ly-dialog v-model="dialogVisible" :title="loadingTitle" width="500px" :before-close="handleClose">
+            <el-form :inline="false" label-position="right" label-width="110px" class="form-order" v-model="formData">
+                <el-form-item label="收货信息：">
+                    <span>收货人：{{formData.address.receiver}}</span>
+                    <span>联系电话：{{formData.address.mobile}}</span>
+                    <span>收货地址：{{formData.address.areas}}</span>
+                </el-form-item>
+                <el-form-item label="备注：">
+                    <span>{{formData.remark}}</span>
+                </el-form-item>
+                <el-form-item label="物流单号：" style="width:100%">
+                    <span>{{formData.logistics_id}}</span>
+                </el-form-item>
+                <el-form-item label="订单信息：" style="width:100%">
+                    <div>
+                        <span style="display: inline;margin-right: 20px">订单编号：{{formData.order_id}}</span>
+                        <span style="display: inline">付款时间：{{formData.pay_time}}</span>
+                    </div>
+                    <el-table border size="small" :data="formData.goodsinfo" :span-method="objectSpanMethod">
+                        <el-table-column label="商品信息" show-overflow-tooltip width="200">
+                            <template #default="scope">
+                                <div style="display: flex;align-items: center">
+                                    <img :src="scope.row.sku_default_image" style="width: 40px;height:40px;margin-right: 5px">
+                                    <span style="width: 150px" class="ellipsis">{{scope.row.sku_spec}}</span>
+                                </div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="单价" >
+                            <template #default="scope">
+                                <span>{{scope.row.price}}积分</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="数量">
+                            <template #default="scope">
+                                <span>{{scope.row.count}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="总价" >{{Number(formData.total_amount)}}</el-table-column>
+                        <el-table-column label="状态">
+                            <template #default="scope">
+                                <span>{{orderStatusList.filter(item=>item.id==formData.status)[0].name}}</span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="deliverGoods">发货</el-button>
+                <el-button @click="handleClose" type="primary">取消</el-button>
+            </template>
+            <deliver-goods-module ref="deliverGoodsModuleFlag"></deliver-goods-module>
+        </ly-dialog>
+    </div>
 </template>
 
 <script>
     import deliverGoodsModule from "./deliverGoodsModule";
+    import LyDialog from "../../../components/dialog/dialog";
     export default {
         name: "shoppingMallOrderDetail",
-        components: {deliverGoodsModule},
+        components: {LyDialog, deliverGoodsModule},
         data() {
             return {
                 dialogVisible:false,
                 loadingPage:false,
+                loadingTitle:"详情",
                 formData:{
                     logistics_id:'',
                     address:{

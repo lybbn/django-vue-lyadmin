@@ -1,62 +1,57 @@
 <template>
-    <el-dialog
-            :title="dialogTitle"
-            :visible.sync="dialogVisible"
-            width="640px"
-            center
-            v-dialogDrag
-            :close-on-click-modal="false"
-            :before-close="handleClose">
-        <el-form :inline="true" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px" class="form-store">
-            <el-form-item label="ID：" prop="id" v-if="dialogTitle=='详情'">
-                <el-input v-model.trim="formData.id" disabled style="width: 380px"></el-input>
-            </el-form-item>
-            <el-form-item label="父级部门：" prop="parent">
-                <el-cascader
-                        style="width: 300px"
-                        :key="isResourceShow"
-                        :show-all-levels="false"
-                        :options="options"
-                        ref="myCascader"
-                        v-model="formData.parent"
-                        @change="handleChange"
-                        :props="{ checkStrictly: true ,label:'name',value:'id'}"
-                        clearable></el-cascader>
-            </el-form-item>
-            <el-form-item label="部门名称：" prop="name">
-                <el-input v-model.trim="formData.name" style="width: 380px"></el-input>
-            </el-form-item>
-            <el-form-item label="负责人：" prop="owner">
-                <el-input v-model.trim="formData.owner" style="width: 380px"></el-input>
-            </el-form-item>
-            <el-form-item label="联系电话：" prop="phone">
-                <el-input v-model.trim="formData.phone" style="width: 380px"></el-input>
-            </el-form-item>
-            <el-form-item label="邮箱：" prop="email">
-                <el-input v-model.trim="formData.email" style="width: 380px"></el-input>
-            </el-form-item>
-            <el-form-item label="状态：" prop="status">
-                <el-radio-group v-model="formData.status" style="width: 380px">
-                    <el-radio :label="1">启用</el-radio>
-                    <el-radio :label="0">禁用</el-radio>
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item label="排序：" prop="sort">
-                <el-input-number v-model="formData.sort" :min="1" :max="999999"></el-input-number>
-            </el-form-item>
+    <div>
+        <ly-dialog v-model="dialogVisible" :title="dialogTitle" width="640px" :before-close="handleClose">
+            <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto" class="form-store">
+                <el-form-item label="父级部门：" prop="parent">
+                    <el-cascader
+                            style="width: 100%"
+                            :key="isResourceShow"
+                            :show-all-levels="false"
+                            :options="options"
+                            ref="myCascader"
+                            v-model="formData.parent"
+                            @change="handleChange"
+                            :props="{ checkStrictly: true ,label:'name',value:'id'}"
+                            clearable></el-cascader>
+                </el-form-item>
+                <el-form-item label="部门名称：" prop="name">
+                    <el-input v-model.trim="formData.name"></el-input>
+                </el-form-item>
+                <el-form-item label="负责人：" prop="owner">
+                    <el-input v-model.trim="formData.owner"></el-input>
+                </el-form-item>
+                <el-form-item label="联系电话：" prop="phone">
+                    <el-input v-model.trim="formData.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱：" prop="email">
+                    <el-input v-model.trim="formData.email"></el-input>
+                </el-form-item>
+                <el-form-item label="状态：" prop="status">
+                    <el-radio-group v-model="formData.status">
+                        <el-radio :label="1">启用</el-radio>
+                        <el-radio :label="0">禁用</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="排序：" prop="sort">
+                    <el-input-number v-model="formData.sort" :min="0" :max="999999"></el-input-number>
+                </el-form-item>
 
-        </el-form>
-        <span slot="footer">
-            <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
-            <el-button type="primary" @click="submitData" :loading="loadingSave" v-if="dialogTitle!='详情'">确定</el-button>
-        </span>
-    </el-dialog>
+            </el-form>
+            <template #footer>
+                <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
+                <el-button type="primary" @click="submitData" :loading="loadingSave" v-if="dialogTitle!='详情'">确定</el-button>
+            </template>
+        </ly-dialog>
+    </div>
 </template>
 
 <script>
     import utils from '@/utils/util'
     import {apiSystemDeptAdd,apiSystemDept,apiSystemDeptEdit} from '@/api/api'
+    import LyDialog from "../../../../components/dialog/dialog";
     export default {
+        components: {LyDialog},
+        emits: ['refreshData'],
         name: "addDepartment",
         data() {
             return {
@@ -65,13 +60,12 @@
                 dialogTitle:'',
                 isResourceShow:0,
                 formData:{
-                    id:null,
                     parent:'',
                     name:'',
                     phone:'',
                     owner:'',
                     status:1,
-                    sort:'',
+                    sort:0,
                 },
                 rules:{
                     // parent: [
@@ -118,15 +112,8 @@
                 //解决Cannot read property ‘level‘ of null问题
                 this.options=[]
                 this.isResourceShow=0
-
-                this.formData=item ? item : {
-                    id:null,
-                    parent:'',
-                    name:'',
-                    phone:'',
-                    owner:'',
-                    status:1,
-                    sort:'',
+                if(item){
+                    this.formData = item
                 }
                 this.getapiSystemDept()
             },

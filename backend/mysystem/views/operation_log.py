@@ -8,6 +8,7 @@ from mysystem.models import OperationLog
 from utils.serializers import CustomModelSerializer
 from utils.viewset import CustomModelViewSet
 from utils.jsonResponse import SuccessResponse, ErrorResponse
+from utils.filters import OperationLogTimeFilter
 
 
 class OperationLogSerializer(CustomModelSerializer):
@@ -42,7 +43,8 @@ class OperationLogViewSet(CustomModelViewSet):
     """
     queryset = OperationLog.objects.all().order_by('-create_datetime')
     serializer_class = OperationLogSerializer
-    filterset_fields = '__all__'
+    # filterset_fields = '__all__'
+    filterset_class = OperationLogTimeFilter
     search_fields = ('request_modular','request_path','request_ip','request_os','request_body')
 
     def deletealllogs(self,request):

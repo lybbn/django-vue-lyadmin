@@ -13,12 +13,8 @@ import hashlib
 #手机号验证正则
 REGEX_MOBILE = "^1[356789]\d{9}$|^147\d{8}$|^176\d{8}$"
 
-#生成订单号
-def getminrandomodernum():
-    basecode = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-    chagecode1 = random.randint(10,99)
-    chagecode3 = str(time.time()).replace('.','')[-7:]
-    return str(basecode)+str(chagecode1)+chagecode3
+#身份证正则
+IDCARD_MOBILE ="^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$"
 
 #微信GMT+8 转换成标准时间字符串
 def format_wechat_gmt_8_to_normal(wgmt8):
@@ -33,6 +29,11 @@ def format_wechat_gmt_8_to_normal(wgmt8):
         return a3
     except Exception as e:
         return wgmt8
+
+#随机生成6位大写的邀请码:8614LY
+def getinvitecode6():
+    random_str = getRandomSet(6)
+    return random_str.upper()
 
 #生成随机得指定位数字母+数字字符串
 def getRandomSet(bits):
@@ -60,7 +61,10 @@ def float2dot(str):
     """
     把数字或字符串10.00 转换成保留后两位（字符串）输出
     """
-    return '%.2f' % round(float(str),2)
+    try:
+        return '%.2f' % round(float(str),2)
+    except:
+        return str
 
 """
 格式化日期时间为指定格式
@@ -220,7 +224,14 @@ def getrealip(request):
             regip = ""
     return regip
 
-#生成订单号
+#生成订单号(短订单号)
+def getminrandomodernum():
+    basecode = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    chagecode1 = random.randint(10,99)
+    chagecode3 = str(time.time()).replace('.','')[-7:]
+    return str(basecode)+str(chagecode1)+chagecode3
+
+#生成订单号（长订单号）
 def getrandomodernum():
     basecode = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
     chagecode1 = random.randint(100,999)

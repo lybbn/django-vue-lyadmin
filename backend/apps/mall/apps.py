@@ -7,12 +7,12 @@ class MallConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.mall'
 
-    # 启动django时自动执行该脚本
-    def ready(self):
-        if ismainrun():
-            print("商城订单超时自动取消功能正在启动........")
-            excutemallordercancle()
-            print("商城订单超时自动取消功能已启动")
+    # # 启动django时自动执行该脚本
+    # def ready(self):
+    #     if ismainrun():
+    #         print("商城订单超时自动取消功能正在启动........")
+    #         excutemallordercancle()
+    #         print("商城订单超时自动取消功能已启动")
 
 
 def excutemallordercancle():

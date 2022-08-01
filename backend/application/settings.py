@@ -29,7 +29,7 @@ from config import *
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%8)h%p^$eoqbcp1=o5z)3v^i(@d-8m-z+toc$)4zaz^_yd9ul4'
+SECRET_KEY = 'django-insecure-n=x1q3su^3va9tb&tn$p1b+ko1@e5%wh0bg&8y&!bp00x1s554'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #other app
+    # 'channels',#websocket
     'django_comment_migrate',
     'rest_framework',
     'django_filters',
@@ -63,6 +64,8 @@ INSTALLED_APPS = [
     'lyusers',
     'platformsettings',
     'mall',
+    'lymonitor',
+    'lywebsocket',
 ]
 
 MIDDLEWARE = [
@@ -97,8 +100,8 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'application.asgi.application'
 WSGI_APPLICATION = 'application.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -203,9 +206,25 @@ CACHES = {
         },
 }
 
+
 REDIS_TIMEOUT = 7 * 24 * 60 * 60
 CUBES_REDIS_TIMEOUT = 60 * 60
 NEVER_REDIS_TIMEOUT = 365 * 24 * 60 * 60
+
+CHANNEL_LAYERS = {
+    'default': {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"  # 默认用内存
+    },
+}
+# # 配置channels_redis，windows redis运行后报错：aioredis.errors.ReplyError: ERR unknown command 'BZPOPMIN'，请注释以下配置或升级redis到5.0及以上
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": ["redis://localhost:6379/5"],
+#         },
+#     },
+# }
 
 # session使用的存储方式
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -229,7 +248,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -464,35 +482,23 @@ CAPTCHA_NOISE_FUNCTIONS = (
 # CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge' #字母验证码
 CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge' # 加减乘除验证码
 # ================================================= #
-# ******************** celery配置 ******************** #
-# ================================================= #
-DJANGO_CELERY_BEAT_TZ_AWARE = False
-CELERY_TIMEZONE = 'Asia/Shanghai'  # celery 时区问题
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/10' # Broker配置，使用Redis作为消息中间件
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/11' # 把任务结果存在了Redis
-CELERY_FORCE_EXECV = True    # 非常重要,有些情况下可以防止死锁
-CELERY_RESULT_SERIALIZER = 'json' # 结果序列化方案
-CELERY_TASK_RESULT_EXPIRES = 60 * 60 * 24 #任务过期时间
-#CELERY_CONCURRENCY = 1 #并发worker数（worker个数）
-#CELERY_MAX_TASKS_PER_CHILD = 1#每个worker最多执行任务数（每个worker最多执行完1个任务就会被销毁，可防止内存泄露）
-# 指定导入的任务模块，可以指定多个
-#CELERY_IMPORTS = (
-#    'other_dir.tasks',
-#)
-# ================================================= #
 # ******************** 其他配置 ******************** #
 # ================================================= #
 # DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 API_LOG_ENABLE = True#全局控制日志记录
+# API_LOG_METHODS = 'ALL' # ['POST', 'DELETE']
 API_LOG_METHODS = ['POST', 'UPDATE', 'DELETE', 'PUT']  # ['POST', 'DELETE']
 #日志记录显示的请求模块中文名映射
 API_MODEL_MAP = {
     "/token/": "登录模块",
     "/api/token/": "登录模块",
     "/api/super/operate/":"前端API关闭开启",
+    "/api/platformsettings/uploadplatformimg/":"图片上传",
 }
 # 表前缀
 TABLE_PREFIX = "lyadmin_"
+DJANGO_CELERY_BEAT_TZ_AWARE = False
+CELERY_TIMEZONE = 'Asia/Shanghai'  # celery 时区问题
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

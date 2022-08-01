@@ -15,6 +15,7 @@ from drf_yasg.utils import swagger_auto_schema
 from utils.imageupload import ImageUpload
 from mysystem.models import Users
 from utils.filters import UsersManageTimeFilter
+from django.contrib.auth.hashers import make_password
 from utils.export_excel import export_excel
 # Create your views here.
 
@@ -30,12 +31,59 @@ class UserManageSerializer(CustomModelSerializer):
     class Meta:
         model = Users
         read_only_fields = ["id"]
-        exclude = ['password','role','post','dept']
+        exclude = ['password', 'role', 'post', 'dept']
         extra_kwargs = {
             'post': {'required': False},
             'role': {'required': False},
         }
 
+class UserManageCreateSerializer(CustomModelSerializer):
+    """
+    用户管理-序列化器
+    """
+
+    # 新增重写
+    def create(self, validated_data):
+        if "password" in validated_data.keys():
+            if validated_data['password']:
+                validated_data['password'] = make_password(validated_data['password'])
+        validated_data['identity'] = 2
+        return super().create(validated_data)
+
+    class Meta:
+        model = Users
+        read_only_fields = ["id"]
+        exclude = ['role', 'post', 'dept']
+        extra_kwargs = {
+            'post': {'required': False},
+            'role': {'required': False},
+            'name': {'required': False},
+            'password': {'required': False},
+        }
+
+class UserManageUpdateSerializer(CustomModelSerializer):
+    """
+    用户管理-序列化器
+    """
+    # 更新重写
+    def update(self, instance, validated_data):
+        if "password" in validated_data.keys():
+            if validated_data['password']:
+                validated_data['password'] = make_password(validated_data['password'])
+            else:
+                validated_data.pop('password', None)
+        return super().update(instance,validated_data)
+
+    class Meta:
+        model = Users
+        read_only_fields = ["id"]
+        exclude = ['role', 'post', 'dept','identity']
+        extra_kwargs = {
+            'post': {'required': False},
+            'role': {'required': False},
+            'name': {'required': False},
+            'password': {'required': False},
+        }
 class ExportUserManageSerializer(CustomModelSerializer):
     """
     导出 用户信息 简单序列化器
@@ -55,8 +103,10 @@ class UserManageViewSet(CustomModelViewSet):
     """
     后台用户管理 接口:
     """
-    queryset = Users.objects.exclude(is_superuser=True).exclude(role__admin=True).exclude(role__isnull=False).all().order_by("-create_datetime")#排除管理员
+    queryset = Users.objects.filter(identity=2).order_by("-create_datetime")#排除管理员
     serializer_class = UserManageSerializer
+    create_serializer_class = UserManageCreateSerializer
+    update_serializer_class = UserManageUpdateSerializer
     filterset_class = UsersManageTimeFilter
 
     def disableuser(self,request,*args, **kwargs):
@@ -73,11 +123,10 @@ class UserManageViewSet(CustomModelViewSet):
             return ErrorResponse(msg="未获取到用户")
 
     def exportexecl(self, request):
-        field_data = ['主键','昵称', '手机号', '状态','创建时间']
+        field_data = ['主键', '昵称', '手机号', '状态', '创建时间']
         queryset = self.filter_queryset(self.get_queryset())
         data = ExportUserManageSerializer(queryset, many=True).data
         return SuccessResponse(data=export_excel(request, field_data, data, '用户数据.xls'), msg='success')
-
 
 # ================================================= #
 # ************** 前端用户中心 view  ************** #

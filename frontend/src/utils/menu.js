@@ -14,7 +14,7 @@ const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 function supplementPath (menu) {
   return menu.map(e => ({
     ...e,
-    path: e.path || uniqueId('d2-menu-empty-'),
+    path: e.path || uniqueId('ly-menu-empty-'),
     ...e.children ? {
       children: supplementPath(e.children)
     } : {}
@@ -70,7 +70,7 @@ export const getMenu = function (self) {
   }).then((res) => {
     // 设置动态路由
     const menuData = res.data.data
-    sessionStorage.setItem('menuData', JSON.stringify(menuData))
+    localStorage.setItem('menuData', JSON.stringify(menuData))
     return menuData
   })
 }

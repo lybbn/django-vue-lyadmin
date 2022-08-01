@@ -30,12 +30,12 @@ from utils.swagger import CustomOpenAPISchemaGenerator
 
 #前端接口view
 from apps.oauth.views import WeChatXCXLoginAPIView,XCXWeChatUserInfoUpdateAPIView,WeChatXCXMobileLoginAPIView,WeChatGZHLoginAPIView,WeChatGZHBindAPIView,GetXCXShareQrcodeView,TTXCXLoginAPIView,WeChatGZHH5LoginAPIView,CheckWeChatGZHH5APIView
-from apps.address.views import ProvinceAreasView,SubAreasView,GetAddressAccuracyView,GetAssressesListView,CreateUpdateAssressesView,DeleteAssressesView,SetDefaultAssressesView,GetProvinceAreasListView
+from apps.address.views import *
 from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobileSMSLoginView,ForgetPasswdResetView,RegisterView
 from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView,uploadImagesView
 from apps.lymessages.views import UserMessagesView
-from apps.platformsettings.views import GetOtherManageDetailView,GetLunboManageListView,APPUserLeavingMessageView
-from apps.mall.views import GoodsTypeView,GoodsListView,GoodsDetailView,CartsView,CartsSelectAllView,MyCouponView,GoodsOrderCancleView,OrdersCommitView,GoodsOrderConfirmReceiveView,GoodsOrdersListView,GoodsOrdersDetailView,PaymentView,alipay_notify,wechatpay_notify
+from apps.platformsettings.views import *
+from apps.mall.views import *
 
 #app下载页
 from apps.lyusers.views import downloadapp
@@ -43,7 +43,6 @@ from apps.lyusers.views import downloadapp
 from utils.streamingmedia_response import streamingmedia_serve
 #部署vue
 from django.views.generic import TemplateView
-
 #是否允许前端接口访问
 from utils.middleware import OperateAllowFrontendView
 
@@ -74,18 +73,24 @@ urlpatterns = [
     path(r'lyredoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     #管理后台的标准接口
     path('api/system/', include('mysystem.urls')),
-    path('api/address/', include('apps.address.urls')),
+    path('api/monitor/', include('lymonitor.urls')),
+    path('api/terminal/', include('lywebsocket.urls')),
     path('api/token/', LoginView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/captcha/', CaptchaView.as_view()),
 
     #管理后台其他自定义接口
     path('api/platformsettings/', include('apps.platformsettings.urls')),
+    path('api/address/', include('apps.address.urls')),
     path('api/messages/', include('apps.lymessages.urls')),
     path('api/users/', include('apps.lyusers.urls')),
     path('api/mall/', include('apps.mall.urls')),
 
-    #前端用户接口
+
+    # ========================================================================================= #
+    # ********************************** 前端微服务API用户接口************************************ #
+    # ========================================================================================= #
+    #登录
     path('api/app/register/', RegisterView.as_view(), name='app端手机号注册'),
     path('api/xcx/ttlogin/', TTXCXLoginAPIView.as_view(), name='字节跳动小程序登录认证'),
     path('api/xcx/wxh5logincheck/', CheckWeChatGZHH5APIView.as_view(), name='微信服务器校验服务器'),
@@ -95,26 +100,26 @@ urlpatterns = [
     path('api/app/wxbindlogin/', WeChatGZHBindAPIView.as_view(), name='app端手机号微信登录认证绑定微信'),
     path('api/app/sendsms/', SendSmsCodeView.as_view(), name='app端手机号发送短信验证码'),
     path('api/app/moilelogin/', APPMobileSMSLoginView.as_view(), name='app端手机号短信登录认证'),
+    path('api/xcx/login/', WeChatXCXLoginAPIView.as_view(), name='微信小程序登录认证'),
+    path('api/xcx/mobilelogin/', WeChatXCXMobileLoginAPIView.as_view(), name='微信小程序手机号授权绑定登录认证'),
+
+    #用户信息
     path('api/app/restpassword/', ForgetPasswdResetView.as_view(), name='app端手机号重置密码'),
     path('api/app/setnickname/', SetUserNicknameView.as_view(), name='app端修改昵称'),
     path('api/app/changeavatar/', ChangeAvatarView.as_view(), name='app端回收员修改头像'),
     path('api/app/uploadimage/', uploadImagesView.as_view(), name='app端上传图片'),
-
-    path('api/xcx/login/', WeChatXCXLoginAPIView.as_view(), name='微信小程序登录认证'),
-    path('api/xcx/mobilelogin/', WeChatXCXMobileLoginAPIView.as_view(), name='微信小程序手机号授权绑定登录认证'),
     path('api/xcx/getuserinfo/', XCXWeChatUserInfoUpdateAPIView.as_view(), name='微信小程序获取用户信息'),
     path('api/xcx/getshareqrcode/', GetXCXShareQrcodeView.as_view(), name='微信小程序用户获取推广小程序二维码'),
     path('api/xcx/usermessages/', UserMessagesView.as_view(), name='微信小程序获取系统通知信息/修改为已读'),
     path('api/app/feeckback/', APPUserLeavingMessageView.as_view(), name='app端意见反馈'),
 
-    path('api/getothersettings/', GetOtherManageDetailView.as_view(), name='前端用户获取平台其他设置'),
-    path('api/getrotationimgs/', GetLunboManageListView.as_view(), name='前端用户获取平台轮播图设置'),
-
+    #用户地址管理API
     path('api/app/getaddress/', GetAssressesListView.as_view(), name='app用户获取地址'),
     path('api/app/addeditaddress/', CreateUpdateAssressesView.as_view(), name='app用户新增编辑地址'),
     path('api/app/deladdress/', DeleteAssressesView.as_view(), name='app用户删除地址'),
     path('api/app/setdefaultaddress/', SetDefaultAssressesView.as_view(), name='app用户设置默认地址'),
 
+    #商城API
     path('api/app/getgoodstypelist/', GoodsTypeView.as_view(), name='app用户端商城-获取分类标签'),
     path('api/app/getgoodslist/', GoodsListView.as_view(), name='app用户端商城-获取商品列表'),
     path('api/app/getgoodsdetail/', GoodsDetailView.as_view(), name='app用户端商城-获取商品详情'),
@@ -127,10 +132,14 @@ urlpatterns = [
     path('api/app/goodsorderlist/', GoodsOrdersListView.as_view(), name='app用户端-商城订单列表'),
     path('api/app/goodsorderdetail/', GoodsOrdersDetailView.as_view(), name='app用户端-商城订单详情'),
 
+    #支付API
     path('api/app/payment/', PaymentView.as_view(), name='app端购买接口'),
     path('api/app/ali_notify/', alipay_notify.as_view(), name='支付宝异步通知回调接口'),
     path('api/app/wechatpay_notify/', wechatpay_notify.as_view(), name='微信支付异步通知回调接口'),
 
+    #获取平台信息
+    path('api/getothersettings/', GetOtherManageDetailView.as_view(), name='前端用户获取平台其他设置'),
+    path('api/getrotationimgs/', GetLunboManageListView.as_view(), name='前端用户获取平台轮播图设置'),
     re_path(r'^api/areas/$', ProvinceAreasView.as_view(),name='省市区三级联动获取省'),
     re_path(r'^api/areas/(?P<pk>[1-9]\d*)/$', SubAreasView.as_view(),name='省市区三级联动获取市/区'),
     path('api/getallareaslist/', GetProvinceAreasListView.as_view(), name='递归获取所有省市区数据'),

@@ -115,12 +115,12 @@ class MenuViewSet(CustomModelViewSet):
     retrieve:单例
     destroy:删除
     """
-    queryset = Menu.objects.all()
+    queryset = Menu.objects.all().order_by('sort')
     serializer_class = MenuSerializer
     create_serializer_class = MenuCreateSerializer
     update_serializer_class = MenuCreateSerializer
-    filterset_fields = ['name', 'status']
-    search_fields = ['name', 'status']
+    filterset_fields = ['name', 'status','visible']
+    search_fields = ['name','web_path']
 
     def menu_tree(self, request):
         """用于菜单添加修改中获取父级菜单"""
@@ -128,7 +128,7 @@ class MenuViewSet(CustomModelViewSet):
         serializer = MenuTreeSerializer(queryset, many=True)
         return SuccessResponse(data=serializer.data, msg="获取成功")
 
-    @action(methods=['get'], extra_filter_backends=[], detail=False)  # 会自动生成/api/system/menu/web_router/的路由
+    @action(methods=['get'],extra_filter_backends=[],detail=False)#会自动生成/api/system/menu/web_router/的路由
     def web_router(self, request):
         """用于前端获取当前角色的路由"""
         user = request.user

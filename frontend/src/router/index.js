@@ -1,17 +1,18 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-// 解决路由访问重复时报错问题：
-const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
-Vue.use(VueRouter)
-//静态路由
+import { createRouter, createWebHistory ,createWebHashHistory } from 'vue-router'
+import store from '../store'
+// 进度条
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+import '../assets/css/nprogress.scss'//自定义样式
+// 简单配置
+NProgress.inc(0.4)
+NProgress.configure({ easing: 'ease', speed: 500, showSpinner: true })
+
 const routes = [
-      {
+  {
     path: '/',
     name: '',
-    component: resolve => require(['../views/login.vue'], resolve),
+    component: () => import('../views/login.vue'),
     hidden: true,
     meta: {
       requireAuth: false,
@@ -20,17 +21,28 @@ const routes = [
   },
     {
     path: '/login',
-    name: '登录',
-    component: resolve => require(['../views/login.vue'], resolve),
+    name: 'login',
+    component: () => import('../views/login.vue'),
     hidden: true,
     meta: {
       requireAuth: false,
       index: '/login',
     }
-  }, {
+  },
+    {
+    path: '/lyterminal',
+    name: 'lyterminal',
+    component: () => import('../views/lyterminal.vue'),
+    hidden: true,
+    meta: {
+      requireAuth: true,
+      index: '/lyterminal',
+    }
+  },
+  {
     path: '/index',
     name: '首页',
-    component: resolve => require(['../views/index.vue'], resolve),
+    component: () => import('../views/index.vue'),
     iconCls: 'el-icon-tickets',
     meta: {
       requireAuth: false,
@@ -41,7 +53,7 @@ const routes = [
       {
         path: '/adminManage',
         name: 'adminManage',
-        component: resolve => require(['../views/adminManage/adminManage.vue'], resolve),
+        component: () => import('../views/adminManage/adminManage.vue'),
         meta: {
           requireAuth: true,
           index: '/adminManage',
@@ -50,17 +62,25 @@ const routes = [
       {
         path: '/userManage',
         name: 'userManage',
-        component: resolve => require(['../views/userManage/userManage.vue'], resolve),
+        component: () => import('../views/userManage/userManage.vue'),
         meta: {
           requireAuth: true,
           index: '/userManage',
         }
       },
-        //平台设置
+        {
+        path: '/userManageCrud',
+        name: 'userManageCrud',
+        component: () => import('../views/userManage/userManageCrud.vue'),
+        meta: {
+          requireAuth: true,
+          index: '/userManageCrud',
+        }
+      },
         {
             path: '/carouselSettingsimg',
             name: 'carouselSettingsimg',
-            component: resolve => require(['../views/platformSettings/carouselSettingsimg.vue'], resolve),
+            component: () => import('../views/platformSettings/carouselSettingsimg.vue'),
             meta: {
                 requireAuth: true,
                 index: '/carouselSettingsimg',
@@ -69,93 +89,36 @@ const routes = [
         {
             path: '/platformSettingsother',
             name: 'platformSettingsother',
-            component: resolve => require(['../views/platformSettings/platformSettingsother.vue'], resolve),
+            component: () => import('../views/platformSettings/platformSettingsother.vue'),
             meta: {
                 requireAuth: true,
                 index: '/platformSettingsother',
             }
         },
+
       {
         path: '/userFeekback',
         name: 'userFeekback',
-        component: resolve => require(['../views/userFeekback/userFeekback.vue'], resolve),
+        component: () => import('../views/userFeekback/userFeekback.vue'),
         meta: {
           requireAuth: true,
           index: '/userFeekback',
-        }
-      },
-        //营销管理
-        {
-        path: '/couponManage',
-        name: 'couponManage',
-        component: resolve => require(['../views/marketManage/couponManage.vue'], resolve),
-        meta: {
-          requireAuth: true,
-          index: '/couponManage',
-        }
-      },
-      //商城管理
-        {
-        path: '/goodsManage',
-        name: 'goodsManage',
-        component: resolve => require(['../views/mallManage/goodsManage.vue'], resolve),
-        meta: {
-          requireAuth: true,
-          index: '/goodsManage',
-        }
-      },
-        {
-        path: '/goodsType',
-        name: 'goodsType',
-        component: resolve => require(['../views/mallManage/goodsType.vue'], resolve),
-        meta: {
-          requireAuth: true,
-          index: '/goodsType',
-        }
-      },
-      //订单管理
-        {
-        path: '/mallOrderManage',
-        name: 'mallOrderManage',
-        component: resolve => require(['../views/orderManage/mallOrderManage.vue'], resolve),
-        meta: {
-          requireAuth: true,
-          index: '/mallOrderManage',
-        }
-      },
-        //财务管理
-        {
-        path: '/financeStatisticsGoods',
-        name: 'financeStatisticsGoods',
-        component: resolve => require(['../views/financeManage/financeStatisticsGoods.vue'], resolve),
-        meta: {
-          requireAuth: true,
-          index: '/financeStatisticsGoods',
         }
       },
       // 系统管理
       {
         path: '/departmentManage',
         name: 'departmentManage',
-        component: resolve => require(['../views/systemManage/departmentManage/departmentManage.vue'], resolve),
+        component: () => import('../views/systemManage/departmentManage/departmentManage.vue'),
         meta: {
           requireAuth: true,
           index: '/departmentManage',
         }
       },
-        {
-        path: '/areaManage',
-        name: 'areaManage',
-        component: resolve => require(['../views/systemManage/areaManage/areaManage.vue'], resolve),
-        meta: {
-          requireAuth: true,
-          index: '/areaManage',
-        }
-      },
       {
         path: '/menuManage',
         name: 'menuManage',
-        component: resolve => require(['../views/systemManage/menuManage/menuManage.vue'], resolve),
+        component: () => import('../views/systemManage/menuManage/menuManage.vue'),
         meta: {
           requireAuth: true,
           index: '/menuManage',
@@ -165,25 +128,27 @@ const routes = [
       {
         path: '/roleManage',
         name: 'roleManage',
-        component: resolve => require(['../views/systemManage/roleManage/roleManage.vue'], resolve),
+        component: () => import('../views/systemManage/roleManage/roleManage.vue'),
         meta: {
           requireAuth: true,
           index: '/roleManage',
         }
       },
+
+
       {
         path: '/authorityManage',
         name: 'authorityManage',
-        component: resolve => require(['../views/systemManage/authorityManage/authorityManage.vue'], resolve),
+        component: () => import('../views/systemManage/authorityManage/authorityManage.vue'),
         meta: {
           requireAuth: true,
           index: '/authorityManage',
         }
       },
       {
-        path: '/buttonConfig',
+        path: 'buttonConfig/:id/:name',
         name: 'buttonConfig',
-        component: resolve => require(['../views/systemManage/buttonConfig/buttonConfig.vue'], resolve),
+        component: () => import('../views/systemManage/buttonConfig/buttonConfig.vue'),
         meta: {
           requireAuth: true,
           index: '/buttonConfig',
@@ -192,7 +157,7 @@ const routes = [
         {
         path: '/buttonManage',
         name: 'buttonManage',
-        component: resolve => require(['../views/systemManage/button/buttonManage.vue'], resolve),
+        component: () => import('../views/systemManage/button/buttonManage.vue'),
         meta: {
           requireAuth: true,
           index: '/buttonManage',
@@ -201,7 +166,7 @@ const routes = [
       {
         path: '/messagTemplate',
         name: 'messagTemplate',
-        component: resolve => require(['../views/messageCenter/messagTemplate.vue'], resolve),
+        component: () => import('../views/messageCenter/messagTemplate.vue'),
         meta: {
           requireAuth: true,
           index: '/messagTemplate',
@@ -210,7 +175,7 @@ const routes = [
       {
         path: '/messagNotice',
         name: 'messagNotice',
-        component: resolve => require(['../views/messageCenter/messagNotice.vue'], resolve),
+        component: () => import('../views/messageCenter/messagNotice.vue'),
         meta: {
           requireAuth: true,
           index: '/messagNotice',
@@ -219,7 +184,7 @@ const routes = [
       {
         path: '/personalCenter',
         name: 'personalCenter',
-        component: resolve => require(['../views/personalCenter/personalCenter.vue'], resolve),
+        component: () => import('../views/personalCenter/personalCenter.vue'),
         meta: {
           requireAuth: true,
           index: '/personalCenter',
@@ -228,17 +193,16 @@ const routes = [
       {
         path: '/journalManage',
         name: 'journalManage',
-        component: resolve => require(['../views/journalManage/journalManage.vue'], resolve),
+        component: () => import('../views/journalManage/journalManage.vue'),
         meta: {
           requireAuth: true,
           index: '/journalManage',
         }
       },
 
-      // 自定义
-
     ]
-  }]
+  }
+]
 
 // 路由自动化注册（默认注册到index的children里面）(静态路由优先级高于动态自动路由)
 const requireComponent = require.context('../views', true, /\.vue$/) // 找到 modules 路径下的所有文件
@@ -247,12 +211,12 @@ const autoRouters = getAutoRouterList(names)
 function getAutoRouterList(names) {
     const routerList = [];
     names.forEach((name, index) => {
-        if(name.indexOf("/components/")==-1 && name !='./index.vue' &&  name !='./login.vue'){
+        if(name.indexOf("/components/")==-1 && name !='./index.vue' &&  name !='./login.vue' &&  name !='./lyterminal.vue'){
             let isSame = false
             const componentConfig = requireComponent(name)
             const componentName = name.split('/').pop()?.split('.')[0]//根据路径截取name文件名（去除后缀和前面目录）
             for(var i=0;i<routes.length;i++){
-                if(routes[i].path=="/"||routes[i].path=="/login"){
+                if(routes[i].path=="/"||routes[i].path=="/login" ||routes[i].path=="/lyterminal"){
                     continue
                 }
                 if(routes[i].name === componentName){
@@ -294,6 +258,55 @@ function getAutoRouterList(names) {
     return routerList;
 }
 
-export default new VueRouter({
+const router = createRouter({
+  //history模式
+  // history: createWebHistory(process.env.BASE_URL),
+  //hash模式
+  history: createWebHashHistory(),
   routes: routes
 })
+
+/**
+ * 路由拦截
+ * 权限验证
+ */
+let to={},from={}
+router.beforeEach((to, from, next) => {
+  // 进度条
+  NProgress.start()
+  let userId = store.getters.getUserId ? store.getters.getUserId : ''
+  if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
+    if (userId) { // 通过vuex state获取当前的token是否存在
+      let menuList = JSON.parse(localStorage.getItem('menuList'))
+      if(menuList.filter(item=>item.url == to.name).length > 0 || (to.name =='buttonConfig' &&  menuList.filter(item=>item.url=='menuManage').length >0) || (to.name =='lyterminal' &&  menuList.filter(item=>item.url=='menuManage').length >0) || (to.name =='buttonManage' &&  menuList.filter(item=>item.url=='menuManage').length >0)) {
+        next()
+      } else {
+        next({
+          path: '/login'
+        })
+      }
+    } else {
+        next({
+          path: '/login'
+        })
+    }
+  } else {
+    if(to.path=="/login" ||to.path=="/"){
+      if(userId){
+        let tabsPage = JSON.parse(localStorage.getItem("tabsPage"))
+        if (tabsPage) {
+          store.commit("switchtab",tabsPage[0].name)
+        }
+      }else{
+        next()
+      }
+    }else{
+      next()
+    }
+  }
+})
+//在路由跳转后用NProgress.done()标记下结束
+router.afterEach(() => {
+  NProgress.done()
+})
+export default router

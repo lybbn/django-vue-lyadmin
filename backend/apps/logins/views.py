@@ -17,7 +17,6 @@ import uuid
 from config import ALIYUN_SMS_SIGN,ALIYUM_SMS_TEMPLATE
 from utils.aliyunsms import send_sms
 import json
-from utils.tencentsms import tencentsms
 # ================================================= #
 # ************** 前端用户登录 view  ************** #
 # ================================================= #
@@ -161,21 +160,21 @@ class SendSmsCodeView(APIView):
         mobile = get_parameter_dic(request)['mobile']
         smstype = get_parameter_dic(request)['smstype']
         if smstype == "login" or smstype == "restpass" or smstype == "wxbind":
-            #创建序列化器
-            serializer = SmsSerializer(data=request.data,context={"request": request,"smstype":smstype})
-            #验证是否有效
+            # 创建序列化器
+            serializer = SmsSerializer(data=request.data, context={"request": request, "smstype": smstype})
+            # 验证是否有效
             serializer.is_valid(raise_exception=True)
             # 判断该手机号60s内是否已经发送过短信
             redis_conn = get_redis_connection('verify_codes')
-            send_flag = redis_conn.get('send_flag_%s'%mobile)
-            if send_flag:#如果取到了标记，说明该手机号60s内发送过短信验证码
+            send_flag = redis_conn.get('send_flag_%s' % mobile)
+            if send_flag:  # 如果取到了标记，说明该手机号60s内发送过短信验证码
                 return ErrorResponse(msg="请一分钟后再获取验证码")
-            #验证码过期时间
-            codeexpire = 300 #300秒，默认5分钟
+            # 验证码过期时间
+            codeexpire = 300  # 300秒，默认5分钟
             # 生成验证码
             code = self.generate_code()
 
-            #云片网api短信接口调用-----------开始
+            # 云片网api短信接口调用-----------开始
             # yun_pian = YunPian(SMS_API_KEY)
             # sms_status = yun_pian.send_sms(code=code, mobile=mobile)
             #
@@ -192,7 +191,7 @@ class SendSmsCodeView(APIView):
             #     mydata["mobile"] = mobile
             #     return Response(ly_api_res(200,mydata,"短信验证码发送成功"), status=status.HTTP_200_OK)
             # 云片网api短信接口调用-----------结束
-            #unicloud短信接口api调用-----------开始
+            # unicloud短信接口api调用-----------开始
             # unicloudsms = UniCloudSms()
             # sms_status = unicloudsms.send_sms(code=code, mobile=mobile,expminute=codeexpire)
             # #返回内容
@@ -216,7 +215,7 @@ class SendSmsCodeView(APIView):
             #     mydata["mobile"] = mobile
             #     return ErrorResponse(data=mydata, msg=sms_status['msg'])
             # unicloud短信接口api调用-----------结束
-            #阿里云短信-----------开始
+            # 阿里云短信-----------开始
             # __business_id = uuid.uuid1()
             # # 一个验证码发送的例子
             # params = '{\"code\":\"'+code+'\"}'  # 模板参数

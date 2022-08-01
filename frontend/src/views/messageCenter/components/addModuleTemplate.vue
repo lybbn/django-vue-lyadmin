@@ -1,10 +1,11 @@
 <template>
+    <div v-dialogDrag>
     <el-dialog
             :title="loadingTitle"
-            :visible.sync="dialogVisible"
-            width="60%"
+            v-model="dialogVisible"
+            width="50%"
             center
-            v-dialogDrag
+            :destroy-on-close="true"
             :close-on-click-modal="false"
             :before-close="handleClose">
         <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
@@ -17,9 +18,8 @@
             </el-form-item>
             <el-form-item label="模板内容：" prop="content">
 <!--                <el-input type="textarea" v-model.trim="formData.name" style="width: 300px"></el-input>-->
-                <div class="messageTxt">
-                    <quill-editor ref="myQuillEditor" v-model="formData.content" :options="editorOptions">
-                    </quill-editor>
+                <div>
+                    <TEditor v-model="formData.content" ></TEditor>
                 </div>
             </el-form-item>
 <!--            <el-form-item label="状态：" prop="status">-->
@@ -35,19 +35,18 @@
             <el-button type="primary" @click="submitData" :loading="loadingSave">确定</el-button>
         </span>
     </el-dialog>
+    </div>
 </template>
 
 <script>
-    import 'quill/dist/quill.core.css'
-    import 'quill/dist/quill.snow.css'
-    import 'quill/dist/quill.bubble.css'
-    import quillConfig from '@/utils/quill-config.js'
     import {messagesMessagetemplateAdd,messagesMessagetemplateEdit} from "@/api/api";
+    import TEditor from '@/components/TEditor'
     export default {
+        components: { TEditor },
+        emits: ['refreshData'],
         name: "addModuleTemplate",
         data() {
             return {
-                editorOptions: quillConfig,
                 dialogVisible:false,
                 loadingSave:false,
                 loadingTitle:'',

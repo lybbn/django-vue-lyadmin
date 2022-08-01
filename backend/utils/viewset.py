@@ -190,7 +190,6 @@ class CustomModelViewSet(ModelViewSet):
     ), operation_summary='批量删除')
     @action(methods=['delete'], detail=False)
     def multiple_delete(self, request, *args, **kwargs):
-        #print(request.data)
         request_data = request.data
         keys = request_data.get('keys', None)
         if keys:

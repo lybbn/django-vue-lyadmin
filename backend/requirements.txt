@@ -10,7 +10,6 @@ constantly
 coreapi
 coreschema
 cryptography
-celery
 daphne
 Django
 django-comment-migrate
@@ -48,6 +47,8 @@ ruamel.yaml.clib
 service-identity
 six
 sqlparse
+Twisted
+twisted-iocpsupport
 txaio
 typing-extensions
 ua-parser
@@ -61,5 +62,9 @@ hiredis
 python-alipay-sdk==1.8.0
 pycryptodomex>=3.14.1
 jpush
-psutil
 tencentcloud-sdk-python
+psutil
+chardet
+channels
+channels_redis
+paramiko

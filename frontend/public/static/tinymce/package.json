@@ -1,38 +1,36 @@
 {
-  "_args": [
-    [
-      "tinymce@5.10.3",
-      "E:\\myproject\\django-vue-lyadmin\\frontend"
-    ]
-  ],
-  "_from": "tinymce@5.10.3",
-  "_id": "tinymce@5.10.3",
+  "_from": "tinymce",
+  "_id": "tinymce@5.10.2",
   "_inBundle": false,
-  "_integrity": "sha512-O59ssHNnujWvSk5Gt8hIGrdNCMKVWVQv9F8siAgLTRgTh0t3NDHrP1UlLtCxArUi9DPWZvlBeUz8D5fJTu7vnA==",
+  "_integrity": "sha512-5QhnZ6c8F28fYucLLc00MM37fZoAZ4g7QCYzwIl38i5TwJR5xGqzOv6YMideyLM4tytCzLCRwJoQen2LI66p5A==",
   "_location": "/tinymce",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "tinymce@5.10.3",
+    "raw": "tinymce",
     "name": "tinymce",
     "escapedName": "tinymce",
-    "rawSpec": "5.10.3",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "5.10.3"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/tinymce/-/tinymce-5.10.3.tgz",
-  "_spec": "5.10.3",
-  "_where": "E:\\myproject\\django-vue-lyadmin\\frontend",
+  "_resolved": "https://registry.npmmirror.com/tinymce/-/tinymce-5.10.2.tgz",
+  "_shasum": "cf1ff01025909be26c64348509e6de8e70d58e1d",
+  "_spec": "tinymce",
+  "_where": "E:\\laoyansoft\\python\\django-vue3-lyadmin\\frontend",
   "author": {
     "name": "Tiny Technologies, Inc"
   },
   "bugs": {
     "url": "https://github.com/tinymce/tinymce/issues"
   },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "Web based JavaScript HTML WYSIWYG editor control.",
   "homepage": "https://www.tiny.cloud/",
   "keywords": [
@@ -58,5 +56,5 @@
     "directory": "modules/tinymce"
   },
   "types": "tinymce.d.ts",
-  "version": "5.10.3"
+  "version": "5.10.2"
 }

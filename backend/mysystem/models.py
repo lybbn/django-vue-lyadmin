@@ -19,17 +19,18 @@ class Users(AbstractUser, CoreModel):
     )
     username = models.CharField(max_length=50, unique=True, db_index=True, verbose_name='用户账号', help_text="用户账号")
     email = models.EmailField(max_length=60, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
-    mobile = models.CharField(max_length=50,verbose_name="电话", null=True, blank=True, help_text="电话")
+    mobile = models.CharField(max_length=11,verbose_name="电话", null=True, blank=True, help_text="电话")
     avatar = models.CharField(max_length=200,verbose_name="头像", null=True, blank=True, help_text="头像")
     name = models.CharField(max_length=40, verbose_name="姓名", help_text="姓名")
     nickname = models.CharField(max_length=100, help_text="用户昵称", verbose_name="用户昵称",default="")
     gender = models.SmallIntegerField(choices=GENDER_CHOICES, verbose_name="性别", null=True, blank=True, help_text="性别")
     post = models.ManyToManyField(to='Post', verbose_name='关联岗位', db_constraint=False, help_text="关联岗位")
     role = models.ManyToManyField(to='Role', verbose_name='关联角色', db_constraint=False, help_text="关联角色")#这个就是保留跨表查询的便利(双下划线跨表查询```),但是不用约束字段了,一般公司都用false,这样就省的报错,因为没有了约束(Field字段对象,既约束,又建立表与表之间的关系
-    dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True, blank=True, help_text="关联部门")
+    dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True,
+                             blank=True, help_text="关联部门")
 
     # 自定义
-    identity = models.SmallIntegerField(choices=IDENTITY_CHOICES, verbose_name="身份标识", null=True, blank=True,default=1,help_text="身份标识")
+    identity = models.SmallIntegerField(choices=IDENTITY_CHOICES, verbose_name="身份标识", null=True, blank=True, default=1,help_text="身份标识")
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='钱包余额')  # 钱包余额
     # vipid = models.CharField(max_length=100, unique=True, help_text="会员id", verbose_name="会员id", null=True, blank=True)
     is_delete = models.BooleanField(default=False, verbose_name="是否逻辑删除", help_text="是否逻辑删除")
@@ -66,12 +67,12 @@ class Role(CoreModel):
         (0, "禁用"),
         (1, "启用"),
     )
-    status = models.IntegerField(choices=STATUS_CHOICES, default=1, verbose_name="角色状态", help_text="角色状态")
+    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=1, verbose_name="角色状态", help_text="角色状态")
     ADMIN_CHOICES = (
         (0, "否"),
         (1, "是"),
     )
-    admin = models.IntegerField(choices=ADMIN_CHOICES, default=0, verbose_name="是否为admin", help_text="是否为admin")
+    admin = models.SmallIntegerField(choices=ADMIN_CHOICES, default=0, verbose_name="是否为admin", help_text="是否为admin")
     DATASCOPE_CHOICES = (
         (0, "仅本人数据权限"),
         (1, "本部门数据权限"),
@@ -180,7 +181,7 @@ class MenuButton(CoreModel):
         (2, "PUT"),
         (3, "DELETE"),
     )
-    method = models.IntegerField(default=0, verbose_name="接口请求方法", null=True, blank=True, help_text="接口请求方法")
+    method = models.SmallIntegerField(default=0, verbose_name="接口请求方法", null=True, blank=True, help_text="接口请求方法")
 
     class Meta:
         db_table = table_prefix + "menu_button"

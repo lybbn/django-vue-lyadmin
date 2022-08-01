@@ -3,9 +3,10 @@
 """
 @Remark: 用户地址管理
 """
+import re
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-from apps.address.models import Area,Address
+from apps.address.models import *
 from utils.jsonResponse import SuccessResponse,ErrorResponse
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from utils.common import get_parameter_dic,REGEX_MOBILE
@@ -15,7 +16,6 @@ from utils.serializers import CustomModelSerializer
 from utils.viewset import CustomModelViewSet
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-import re
 from django.db.models import Q,F
 
 # ================================================= #
@@ -161,8 +161,8 @@ def CommentTree(datas):
        if not obj['pid']:#判断根评论
            root=tree[obj['id']]
            lists.append(root)#添加到列表
-           # if 'childlist' not in tree[obj['id']]:
-           #     tree[obj['id']]['childlist'] = []
+           if 'childlist' not in tree[obj['id']]:
+               tree[obj['id']]['childlist'] = []
        else:
            parent_id=obj['pid']
            if 'childlist' not in tree[parent_id]:
@@ -217,6 +217,7 @@ class GetAddressAccuracyView(APIView):
             return ErrorResponse(msg="要查询的地址不能为空")
         data = gettecentlnglat(address)
         return  SuccessResponse(data=data,msg="success")
+
 
 # ================================================= #
 # ************** 前端用户地址操作 view  ************** #

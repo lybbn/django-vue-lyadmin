@@ -1,28 +1,44 @@
 <template>
-    <div>
-
-        <div class="tableSelect">
+    <div :class="{'ly-is-full':isFull}">
+        <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
                 <el-form-item label="关键词：">
-                    <el-input size="small" v-model.trim="formInline.search" maxlength="60" clearable placeholder="关键词" @change="search"></el-input>
+                    <el-input size="default" v-model.trim="formInline.search" maxlength="60" style="width:200px;" clearable placeholder="关键词" @change="search"></el-input>
                 </el-form-item>
                 <el-form-item label="请求模块：">
-                    <el-input size="small" v-model.trim="formInline.request_modular" maxlength="60" clearable placeholder="请求模块" @change="search"></el-input>
+                    <el-input size="default" v-model.trim="formInline.request_modular" maxlength="60" style="width:100px;" clearable placeholder="请求模块" @change="search"></el-input>
                 </el-form-item>
                 <el-form-item label="请求地址：">
-                    <el-input size="small" v-model.trim="formInline.request_path" maxlength="60" clearable placeholder="请求地址" @change="search"></el-input>
+                    <el-input size="default" v-model.trim="formInline.request_path" maxlength="60" style="width:150px;" clearable placeholder="请求地址" @change="search"></el-input>
                 </el-form-item>
                 <el-form-item label="请求方法：">
-                    <el-input size="small" v-model.trim="formInline.request_method" maxlength="30" clearable placeholder="请求方法" @change="search" style="width:130px"></el-input>
+                    <el-input size="default" v-model.trim="formInline.request_method" maxlength="30" style="width:100px;" clearable placeholder="请求方法" @change="search"></el-input>
                 </el-form-item>
                 <el-form-item label="IP地址：">
-                    <el-input size="small" v-model.trim="formInline.request_ip" maxlength="60" clearable placeholder="IP地址" @change="search"></el-input>
+                    <el-input size="default" v-model.trim="formInline.request_ip" maxlength="60" style="width:180px;" clearable placeholder="IP地址" @change="search"></el-input>
                 </el-form-item>
-                <el-form-item label=""><el-button size="small" @click="deleteAlllogs" type="danger" v-show="isShowBtn('journalManage','操作日志','Delete')">全部清空</el-button></el-form-item>
+                <el-form-item label="创建时间：">
+                    <el-date-picker
+                            style="width:100% !important;"
+                            v-model="timers"
+                            type="datetimerange"
+                            @change="timeChange"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('journalManage','操作日志','Search')">查询</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
+                 <el-form-item label=""><el-button  @click="deleteAlllogs" type="danger" v-show="isShowBtn('journalManage','操作日志','Delete')">全部清空</el-button></el-form-item>
             </el-form>
         </div>
-        <el-table  size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
-            <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
+        <el-table  :height="'calc('+(tableHeight)+'px)'"  border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
+            <el-table-column type="index" width="60" align="center" label="序号">
+                <template #default="scope">
+                    <span v-text="getIndex(scope.$index)"></span>
+                </template>
+            </el-table-column>
             <el-table-column min-width="90" prop="request_modular" label="请求模块" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="120" prop="request_path" label="请求地址" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="70" prop="request_method" label="请求方法" show-overflow-tooltip></el-table-column>
@@ -32,9 +48,19 @@
             <el-table-column min-width="60" prop="response_code" label="响应码" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="200" prop="json_result" label="返回信息" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="120" prop="creator_name" label="操作人"></el-table-column>
-            <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-            <el-table-column label="操作" width="120">
-                <template slot-scope="scope">
+            <el-table-column min-width="150" prop="create_datetime" label="创建时间" show-overflow-tooltip></el-table-column>
+            <el-table-column label="操作" fixed="right" width="120">
+                <template #header>
+                    <div style="display: flex;justify-content: space-between;align-items: center;">
+                        <div>操作</div>
+                        <div @click="setFull">
+                            <el-tooltip content="全屏" placement="bottom">
+                                <el-icon ><full-screen /></el-icon>
+                            </el-tooltip>
+                        </div>
+                    </div>
+                </template>
+                <template #default="scope">
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('journalManage','操作日志','Retrieve')">详情</span>
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('journalManage','操作日志','Delete')">删除</span>
                 </template>
@@ -49,6 +75,7 @@
     import {systemOperationlog,systemOperationlogDelete,systemOperationlogDeletealllogsDelete} from '@/api/api'
     import Pagination from "@/components/Pagination";
     import journalManageDetail from "./journalManageDetail";
+    import {dateFormats,getTableHeight} from "@/utils/util";
     export default {
         name: "journalManage",
         components:{
@@ -57,6 +84,8 @@
         },
         data() {
             return {
+                isFull:false,
+                tableHeight:500,
                 loadingPage:false,
                 formInline:{
                     page: 1,
@@ -67,6 +96,7 @@
                     limit: 10,
                     total: 0
                 },
+                timers:[],
                 tableData:[]
             }
         },
@@ -74,6 +104,14 @@
             this.getData()
         },
         methods:{
+            setFull(){
+                this.isFull=!this.isFull
+            },
+            // 表格序列号
+            getIndex($index) {
+                // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
+                return (this.pageparm.page-1)*this.pageparm.limit + $index +1
+            },
             deleteAlllogs(){
                 let vm = this
                 vm.$confirm('是否确认清空全部日志数据', "警告", {
@@ -92,11 +130,11 @@
                 })
             },
             handleEdit(row,flag) {
+                let vm = this
                 if(flag=='detail') {
                    this.$refs.journalManageDetailFlag.journalManageDetailFn(row)
                 }
-                if(flag=='delete') {
-                    let vm = this
+                else if(flag=='delete') {
                     vm.$confirm('您确定要删除选中的数据吗？',{
                         closeOnClickModal:false
                     }).then(res=>{
@@ -112,6 +150,18 @@
 
                     })
                 }
+                else if(flag=="reset"){
+                    this.formInline = {
+                        page:1,
+                        limit: 10
+                    }
+                    this.pageparm={
+                        page: 1,
+                        limit: 10,
+                        total: 0
+                    }
+                    this.getData()
+                }
             },
             callFather(parm) {
                 this.formInline.page = parm.page
@@ -120,7 +170,18 @@
             },
             search() {
                 this.formInline.page = 1
+                this.formInline.limit = 10
                 this.getData()
+            },
+            timeChange(val){
+                if (val) {
+                    this.formInline.beginAt=dateFormats(val[0],'yyyy-MM-dd hh:mm:ss');
+                    this.formInline.endAt=dateFormats(val[1],'yyyy-MM-dd hh:mm:ss');
+                } else {
+                    this.formInline.beginAt = null
+                    this.formInline.endAt = null
+                }
+                this.search()
             },
             getData() {
                 this.loadingPage = true
@@ -134,6 +195,36 @@
                     }
                 })
             },
-        }
+            // 计算搜索栏的高度
+            listenResize() {
+				this.$nextTick(() => {
+				    this.getTheTableHeight()
+				})
+			},
+            getTheTableHeight(){
+               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+            }
+        },
+        mounted() {
+            // 监听页面宽度变化搜索框的高度
+            window.addEventListener('resize', this.listenResize);
+            this.$nextTick(() => {
+              this.getTheTableHeight()
+            })
+        },
+        unmounted() {
+              // 页面销毁，去掉监听事件
+            window.removeEventListener("resize", this.listenResize);
+        },
+        timers(val){
+            if (val) {
+                this.formInline.beginAt=dateFormats(val[0],'yyyy-MM-dd hh:mm:ss');
+                this.formInline.endAt=dateFormats(val[1],'yyyy-MM-dd hh:mm:ss');
+            } else {
+                this.formInline.beginAt = ''
+                this.formInline.endAt = ''
+            }
+            this.getData()
+        },
     }
 </script>

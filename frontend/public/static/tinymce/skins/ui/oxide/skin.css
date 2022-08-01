@@ -85,7 +85,7 @@
 }
 .tox-tinymce-aux {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  z-index: 1300;
+  z-index: 130000000;
 }
 .tox-tinymce *:focus,
 .tox-tinymce-aux *:focus {
@@ -981,7 +981,7 @@ button::-moz-focus-inner {
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 5;
+  z-index: 500000;
 }
 .tox .tox-comment__reply {
   display: flex;
@@ -1022,7 +1022,7 @@ button::-moz-focus-inner {
   right: 0;
   text-align: center;
   top: 0;
-  z-index: 5;
+  z-index: 500000;
 }
 .tox .tox-comment__loading-text {
   align-items: center;
@@ -1043,7 +1043,7 @@ button::-moz-focus-inner {
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 10;
+  z-index: 1000000;
 }
 .tox .tox-comment__overlaytext p {
   background-color: #fff;
@@ -1064,7 +1064,7 @@ button::-moz-focus-inner {
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 20;
+  z-index: 2000000;
 }
 .tox .tox-comment__scroll {
   display: flex;
@@ -1126,7 +1126,7 @@ button::-moz-focus-inner {
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 1100;
+  z-index: 110000000;
 }
 .tox .tox-dialog-wrap__backdrop {
   background-color: rgba(255, 255, 255, 0.75);
@@ -1135,7 +1135,7 @@ button::-moz-focus-inner {
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 1;
+  z-index: 100000;
 }
 .tox .tox-dialog-wrap__backdrop--opaque {
   background-color: #fff;
@@ -1154,7 +1154,7 @@ button::-moz-focus-inner {
   overflow: hidden;
   position: relative;
   width: 95vw;
-  z-index: 2;
+  z-index: 200000;
 }
 @media only screen and (max-width:767px) {
   body:not(.tox-force-desktop) .tox .tox-dialog {
@@ -1164,7 +1164,7 @@ button::-moz-focus-inner {
   }
 }
 .tox .tox-dialog-inline {
-  z-index: 1100;
+  z-index: 110000000;
 }
 .tox .tox-dialog__header {
   align-items: center;
@@ -1178,7 +1178,7 @@ button::-moz-focus-inner {
   position: relative;
 }
 .tox .tox-dialog__header .tox-button {
-  z-index: 1;
+  z-index: 100000;
 }
 .tox .tox-dialog__draghandle {
   cursor: grab;
@@ -1379,7 +1379,7 @@ button::-moz-focus-inner {
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 3;
+  z-index: 300000;
 }
 .tox .tox-dialog__table {
   border-collapse: collapse;
@@ -1402,7 +1402,7 @@ button::-moz-focus-inner {
 .tox .tox-dialog__popups {
   position: absolute;
   width: 100%;
-  z-index: 1100;
+  z-index: 110000000;
 }
 .tox .tox-dialog__body-iframe {
   display: flex;
@@ -1522,7 +1522,7 @@ body.tox-dialog__disable-scroll {
   overflow: hidden;
 }
 .tox .tox-editor-header {
-  z-index: 1;
+  z-index: 100000;
 }
 .tox:not(.tox-tinymce-inline) .tox-editor-header {
   box-shadow: none;
@@ -1604,7 +1604,7 @@ body.tox-dialog__disable-scroll {
 .tox .tox-color-input {
   display: flex;
   position: relative;
-  z-index: 1;
+  z-index: 100000;
 }
 .tox .tox-color-input .tox-textfield {
   z-index: -1;
@@ -1936,14 +1936,14 @@ body.tox-dialog__disable-scroll {
   left: 0;
   position: fixed;
   top: 0;
-  z-index: 1200;
+  z-index: 120000000;
 }
 .tox.tox-tinymce.tox-fullscreen {
   background-color: transparent;
 }
 .tox-fullscreen .tox.tox-tinymce-aux,
 .tox-fullscreen ~ .tox.tox-tinymce-aux {
-  z-index: 1201;
+  z-index: 120100000;
 }
 .tox .tox-help__more-link {
   list-style: none;
@@ -2093,7 +2093,7 @@ body.tox-dialog__disable-scroll {
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
-  z-index: 1150;
+  z-index: 115000000;
 }
 .tox .tox-menu.tox-collection.tox-collection--list {
   padding: 0;
@@ -2663,7 +2663,7 @@ body.tox-dialog__disable-scroll {
   margin-left: 4px;
 }
 .tox .tox-throbber {
-  z-index: 1299;
+  z-index: 129900000;
 }
 .tox .tox-throbber__busy-spinner {
   align-items: center;
@@ -3024,7 +3024,7 @@ body.tox-dialog__disable-scroll {
   height: 100%;
   position: absolute;
   width: 100%;
-  z-index: 1000;
+  z-index: 100000000;
 }
 .tox .tox-tab {
   cursor: pointer;

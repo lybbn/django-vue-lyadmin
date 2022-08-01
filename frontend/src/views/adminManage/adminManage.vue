@@ -1,18 +1,18 @@
 <template>
-    <div>
-        <div class="tableSelect">
+    <div :class="{'ly-is-full':isFull}">
+        <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
                 <el-form-item label="管理员名称：">
-                    <el-input size="small" v-model.trim="formInline.name" maxlength="60"  clearable placeholder="管理员名称" @change="search" style="width:200px"></el-input>
+                    <el-input size="default" v-model.trim="formInline.name" maxlength="60"  clearable placeholder="管理员名称" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="管理员账号：">
-                    <el-input size="small" v-model.trim="formInline.username" maxlength="60"  clearable placeholder="管理员账号" @change="search" style="width:200px"></el-input>
+                    <el-input size="default" v-model.trim="formInline.username" maxlength="60"  clearable placeholder="管理员账号" @change="search" style="width:200px"></el-input>
                 </el-form-item>
 <!--                <el-form-item label="权限字符：">-->
 <!--                    <el-input size="small" v-model.trim="formInline.name" maxlength="60" placeholder="权限字符" @change="search" style="width:200px"></el-input>-->
 <!--                </el-form-item>-->
                 <el-form-item label="状态：">
-                    <el-select size="small" v-model="formInline.is_active" placeholder="请选择" clearable style="width: 120px" @change="search">
+                    <el-select size="default" v-model="formInline.is_active" placeholder="请选择" clearable style="width: 120px" @change="search">
                         <el-option
                                 v-for="item in statusList"
                                 :key="item.id"
@@ -33,34 +33,50 @@
 <!--                            end-placeholder="结束日期">-->
 <!--                    </el-date-picker>-->
 <!--                </el-form-item>-->
-                <el-form-item label=""><el-button size="small" @click="addAdmin" type="primary" v-show="isShowBtn('adminManage','管理员管理','Create')">新增</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('adminManage','管理员管理','Search')">查询</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
+                <el-form-item label=""><el-button  icon="Plus" @click="addAdmin" type="primary" v-show="isShowBtn('adminManage','管理员管理','Create')">新增</el-button></el-form-item>
             </el-form>
         </div>
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
-                <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
+            <el-table  :height="'calc('+(tableHeight)+'px)'" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
+                <el-table-column type="index" width="60" align="center" label="序号">
+                    <template #default="scope">
+                        <span v-text="getIndex(scope.$index)"></span>
+                    </template>
+                </el-table-column>
                 <!--<el-table-column min-width="150" prop="id" label="管理员编号" show-overflow-tooltip></el-table-column>-->
                 <el-table-column min-width="120" prop="name" label="管理员名称"></el-table-column>
                 <el-table-column min-width="150" prop="username" label="管理员账号"></el-table-column>
                 <el-table-column min-width="100" prop="rolekey" label="权限字符">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <span v-for='(item,index) in scope.row.rolekey' :key="index">
-                                {{(index>0 && index < scope.row.rolekey.length?'、':'') + item.key}}
+                                {{(index>0 && index < scope.row.rolekey.length?'、':'') + item}}
                         </span>
                     </template>
                 </el-table-column>
                 <!--<el-table-column min-width="100" prop="name" label="显示排序"></el-table-column>-->
                 <el-table-column min-width="100" label="状态">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <el-tag v-if="scope.row.is_active">正常</el-tag>
                         <el-tag v-else type="danger">禁用</el-tag>
 
                     </template>
                 </el-table-column>
                 <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-                <el-table-column label="操作"  width="100">
-                    <template slot-scope="scope">
+                <el-table-column label="操作" fixed="right" width="120">
+                    <template #header>
+                        <div style="display: flex;justify-content: space-between;align-items: center;">
+                            <div>操作</div>
+                            <div @click="setFull">
+                                <el-tooltip content="全屏" placement="bottom">
+                                    <el-icon ><full-screen /></el-icon>
+                                </el-tooltip>
+                            </div>
+                        </div>
+                    </template>
+                    <template #default="scope">
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('adminManage','管理员管理','Update')">编辑</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('adminManage','管理员管理','Delete')">删除</span>
                     </template>
@@ -74,7 +90,7 @@
 <script>
     import addAdmin from "./components/addAdmin";
     import Pagination from "@/components/Pagination";
-    import {dateFormats} from "@/utils/util";
+    import {dateFormats,getTableHeight} from "@/utils/util";
     import {apiSystemUser,apiSystemUserDelte} from '@/api/api'
     export default {
         components:{
@@ -84,6 +100,9 @@
         name:'adminManage',
         data() {
             return {
+                isFull:false,
+                visible:false,
+                tableHeight:500,
                 loadingPage:false,
                 formInline:{
                     search:'',
@@ -105,6 +124,14 @@
             }
         },
         methods:{
+            // 表格序列号
+            getIndex($index) {
+                // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
+                return (this.pageparm.page-1)*this.pageparm.limit + $index +1
+            },
+            setFull(){
+                this.isFull=!this.isFull
+            },
             addAdmin() {
                 this.$refs.addAdminFlag.addAdminFn(null,'新增')
             },
@@ -112,7 +139,7 @@
                 if(flag=='edit') {
                     this.$refs.addAdminFlag.addAdminFn(row,'编辑')
                 }
-                if(flag=='delete') {
+                else if(flag=='delete') {
                     let vm = this
                     vm.$confirm('您确定要删除选中的管理员？',{
                         closeOnClickModal:false
@@ -128,6 +155,18 @@
                     }).catch(()=>{
 
                     })
+                }
+                else if(flag=="reset"){
+                    this.formInline = {
+                        page:1,
+                        limit: 10
+                    }
+                    this.pageparm={
+                        page: 1,
+                        limit: 10,
+                        total: 0
+                    }
+                    this.getData()
                 }
             },
 
@@ -165,9 +204,29 @@
                 }
                 this.search()
             },
+            // 计算搜索栏的高度
+            listenResize() {
+				this.$nextTick(() => {
+				    this.getTheTableHeight()
+				})
+			},
+            getTheTableHeight(){
+               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+            }
         },
         created() {
             this.getData()
+        },
+        mounted() {
+            // 监听页面宽度变化搜索框的高度
+            window.addEventListener('resize', this.listenResize);
+            this.$nextTick(() => {
+              this.getTheTableHeight()
+            })
+        },
+        unmounted() {
+              // 页面销毁，去掉监听事件
+			window.removeEventListener("resize", this.listenResize);
         },
         timers(val){
             if (val) {

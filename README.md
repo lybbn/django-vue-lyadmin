@@ -2,32 +2,40 @@
 
 [![img](https://img.shields.io/badge/python-%3E=3.9.x-green.svg)](https://python.org/)  [![PyPI - Django Version badge](https://img.shields.io/badge/django%20versions-4.x-blue)](https://docs.djangoproject.com/zh-hans/4.0/) [![img](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![img](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin)
 
-[QQ群聊](https://jq.qq.com/?_wv=1027&k=StAkGqk5) | [在线体验（admin/123456）](http://django-vue-lyadmin.lybbn.cn) | [开发文档](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264002&doc_id=2214316) | [在线课程](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5476409&doc_id=2214316) | [django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin) | [捐赠](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264497&doc_id=2214316) 
+[QQ群聊](https://jq.qq.com/?_wv=1027&k=StAkGqk5) | [在线体验（admin/123456）](http://django-vue3-lyadmin.lybbn.cn) | [开发文档](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264002&doc_id=2214316) | [在线课程](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5476409&doc_id=2214316) | [捐赠](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264497&doc_id=2214316) 
+
+## slogon
+
+前端frontend：做一个专业前端能用的框架，后台人员也能面向配置的、能改得动的CRUD
+后端backend ：强大的功能集合，让你开箱即用，成为初学者的领航员
 
 ## 平台简介
 
 django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台（内置简易商城模块），去繁从简、还你一个干净的后台管理系统
 
-* 前端采用Vue（element-ui）
+* 前端采用Vue3（elementplus 2.2.12 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
+* 前端支持面向配置的CRUD和自定义页面的CRUD双开发模式
+* DashBoard： 数据分析查看
+* 服务器监控面板（运维能力），支持windows和linux服务器的实时服务器资源状态监控
+* 终端服务webssh（运维能力），支持基于channels的websocket与xterm的webssh（实现websocket的simple-jwt认证，并实现请求方法和接口地址的权限控制）
 * 后端采用Python语言Django框架
 * 权限认证使用JWT（djangorestframework-simplejwt），支持多终端认证系统
 * 接口采用（drf）djangorestframework，支持后台一键关闭前端API访问功能
 * 支持加载动态权限菜单，内置常用模块，多方式轻松权限控制，支持单用户登录（踢掉上一个）
 * 支持支付宝、微信支付、微信登录、阿里云短信、腾讯云短信等
-* 新增商城模块：商品管理、订单管理、财务统计、支付接口（供参考）....
+* 新增商城模块：商品管理、订单管理、财务统计、支付接口（微信支付（app端、小程序端）、支付宝（app端）供参考）....
 * 适合刚入门或苦于寻找django web快速开发框架的小伙伴们
 
-特别鸣谢：本平台后端设计模式，其部分参考[django-vue-admin-pro](https://gitee.com/dvadmin/django-vue-admin-pro)
+特别鸣谢：本平台后端权限设计模式，部分逻辑参考[django-vue-admin-pro](https://gitee.com/dvadmin/django-vue-admin-pro)
 
 ## 在线体验
 
-演示地址：[http://django-vue-lyadmin.lybbn.cn](http://django-vue-lyadmin.lybbn.cn) 账号：admin 密码：123456
+演示地址：[http://django-vue-lyadmin.lybbn.cn](http://django-vue3-lyadmin.lybbn.cn) 账号：admin 密码：123456
 
 Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)  账号/密码： 自行注册使用
 
 eleunipy系统是结合
 [django-vue-lyadmin](https://gitee.com/lybbn/django-vue-lyadmin)
-[django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin)
 [unielepy](https://gitee.com/lybbn/unielepy)
 在全栈开发中，能让开发者挑选模板/组件/源码实现低代码、避免重复造轮子快速完成项目，模板持续更新中...
 
@@ -35,9 +43,9 @@ eleunipy系统是结合
 
 文档地址：文档在本项目的wiki中会持续更新，也可以通过官网访问：[www.lybbn.cn](http://www.lybbn.cn)
 
-说明：django-vue-lyadmin 项目已升级vue3 elementplus 组件框架，如果对你有帮助请留下你的star [django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin)
+说明：django-vue3-lyadmin 项目功能已合并至django-vue-lyadmin项目下，如果仅需要简约功能框架可访问： [django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin)
 
-补充：如果想找到1.x版本标准模块（不带商城功能）的，可前往 [正式版v1.0.20](https://gitee.com/lybbn/django-vue-lyadmin/releases/v1.0.20) 版本进行下载
+补充：如果想找到1.x版本（vue2）标准模块（不带商城功能）的，可前往 [正式版v1.0.20](https://gitee.com/lybbn/django-vue-lyadmin/releases/v1.0.20) 版本进行下载
 
 ## 交流
 - 开发者WX号：laoyanyj
@@ -53,26 +61,29 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 
 ## 内置功能
 
-1.   部门管理：配置系统组织机构（公司、部门、角色），树结构展现支持数据权限。
-2.   菜单管理：配置系统菜单，操作权限，按钮权限标识、后端接口权限等。
-3.   角色管理：角色菜单权限、数据权限、设置角色按部门进行数据范围权限划分。
-4.   权限管理：授权角色的权限范围。
-5.   地区管理：国内省市区管理。
-6.   管理员管理：主要管理系统管理员账号。
-7.   用户管理：主要管理前端用户。
-8.   个人中心：主要设置登录系统的个人昵称、密码等账号信息。
-9.   操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
-10.  平台设置：系统设置如字典参数、轮播图。
-11.  其他设置：支持一键关闭前端API访问功能、类似字典功能支持富文本、图片、text文本方式。
-12.  意见反馈：配合前端接口收集用户的反馈信息
-13.  商品管理：支持多规格、单规格添加商品、提供对应的支付接口和前端商品详情接口供参考
-14.  订单管理：主要为商品订单的管理有发货、统计......
-15.  财务统计：平台订单等财务统计
-16.  其他功能：内置微信登录、小程序登录、短信登录、密码登录、微信企业到零钱、微信支付、支付宝支付、极光推送等API。
+01.   DashBoard： 数据分析查看
+02.   CRUD： 面向配置的crud功能
+03.   服务器监控面板（运维能力），支持windows和linux服务器的实时服务器资源状态监控
+04.   终端服务webssh（运维能力），支持基于channels的websocket与xterm的webssh（实现websocket的simple-jwt认证，并实现请求方法和接口地址的权限控制）
+05.   部门管理：配置系统组织机构（公司、部门、角色），树结构展现支持数据权限。
+06.   菜单管理：配置系统菜单，操作权限，按钮权限标识、后端接口权限等。
+07.   角色管理：角色菜单权限、数据权限、设置角色按部门进行数据范围权限划分。
+08.   权限管理：授权角色的权限范围。
+09.   地区管理：国内省市区管理。
+10.  管理员管理：主要管理系统管理员账号。
+11.  用户管理：主要管理前端用户。
+12.  个人中心：主要设置登录系统的个人昵称、密码等账号信息。
+13.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
+14.  平台设置：系统设置如字典参数、轮播图
+15.  意见反馈：配合前端接口收集用户的反馈信息
+16.  商品管理：支持多规格、单规格添加商品、提供对应的支付接口和前端商品详情接口供参考
+17.  订单管理：主要为商品订单的管理有发货、统计......
+18.  财务统计：平台订单等财务统计
+19.  其他功能：内置微信登录、小程序登录、短信登录、密码登录、微信企业到零钱、微信支付、支付宝支付、极光推送等API。
 
 ## django-vue-lyadmin项目启动视频讲解
 
-[![Watch the video](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/01.png)](https://v.kuaishouapp.com/s/VIJPdIx6)
+[![Watch the video](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/099.png)](https://v.kuaishouapp.com/s/VIJPdIx6)
 
 ## lyadmin后端
 
@@ -148,8 +159,8 @@ django-vue-lyadmin 是一套前后端分离的前端后台管理框架，是适�
 
 
 ```
-1、VUE
-2、elementui
+1、VUE3
+2、elementplus
 3、富文本编辑器采用 vue-quill-editor 和 tinymce 两种 可以自行选择
 ```
 
@@ -191,21 +202,23 @@ npm run build
 
 ## 演示图
 
-![image-01](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/01.png)
+![image-188](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/188.png)
 
-![image-07](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/07.png)
+![image-100](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/100.png)
+
+![image-099](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/099.png)
+
+![image-098](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/098.png)
+
+![image-088](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/088.png)
 
 ![image-04](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/04.png)
 
 ![image-02](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/02.png)
 
-![image-06](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/06.png)
-
 ![image-03](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/03.png)
 
-![image-08](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/08.png)
-
-![image-09](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/09.png)
+![image-06](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/06.png)
 
 ![image-05](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/05.png)
 

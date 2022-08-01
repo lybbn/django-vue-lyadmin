@@ -1,69 +1,52 @@
 <template>
-    <el-dialog
-            :title="loadingTitle"
-            :visible.sync="dialogVisible"
-            width="680px"
-            center
-            v-dialogDrag
-            :close-on-click-modal="false"
-            :before-close="handleClose">
-        <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
-            <el-form-item :label="(formData.type==1) ? '图片：' :'图片：'" prop="image">
-                <el-upload
-                        class="avatar-uploader"
-                        action=""
-                        :show-file-list="false"
-                        ref="uploadDefaultImage"
-                        :http-request="imgUploadRequest"
-                        :on-success="imgUploadSuccess"
-                        :before-upload="imgBeforeUpload">
-                    <img v-if="formData.image" :src="formData.image" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-            <el-form-item label="标题：" prop="title">
-                <el-input type="text" v-model.trim="formData.title" style="width: 400px"></el-input>
-            </el-form-item>
-            <el-form-item label="排序：" prop="sort">
-                <el-input-number v-model="formData.sort"  :min="1" :max="9999"></el-input-number>
-            </el-form-item>
-            <el-form-item label="跳转类型：" prop="link_type">
-                <el-radio-group v-model="formData.link_type">
-                    <el-radio :label="0">无</el-radio>
-                    <el-radio :label="1">跳转链接</el-radio>
-                    <el-radio :label="2">富文本</el-radio>
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item label="跳转链接：" prop="link" v-if="formData.link_type==1">
-                <el-input v-model.trim="formData.link" style="width: 400px"></el-input>
-            </el-form-item>
-            <el-form-item label="" v-if="formData.link_type==2">
-                <div style="width: 100%">
-                    <TEditor v-model="formData.link"  v-if="dialogVisible"></TEditor>
-                </div>
-            </el-form-item>
-            <el-form-item label="状态：" prop="status">
-                <el-switch
-                        v-model="formData.status"
-                        active-color="#13ce66"
-                        inactive-color="#ff4949">
-                </el-switch>
-            </el-form-item>
-        </el-form>
-        <span slot="footer">
-            <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
-            <el-button type="primary" @click="submitData" :loading="loadingSave">确定</el-button>
-        </span>
-    </el-dialog>
+    <div>
+        <ly-dialog v-model="dialogVisible" :title="loadingTitle" width="560px" :before-close="handleClose">
+            <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto">
+                <el-form-item :label="(formData.type==1) ? '图片：' :'图片：'" prop="image">
+                    <el-upload
+                            class="avatar-uploader"
+                            action=""
+                            :show-file-list="false"
+                            :http-request="imgUploadRequest"
+                            :on-success="imgUploadSuccess"
+                            :before-upload="imgBeforeUpload">
+                        <img v-if="formData.image" :src="formData.image" class="avatar" />
+                        <el-icon v-else class="avatar-uploader-icon" size="medium"><Plus /></el-icon>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="标题：" prop="title">
+                    <el-input type="text" v-model.trim="formData.title"></el-input>
+                </el-form-item>
+                <el-form-item label="跳转链接：" prop="link" v-if="formData.type==1 || formData.type==2">
+                    <el-input v-model.trim="formData.link"></el-input>
+                </el-form-item>
+                <el-form-item label="排序：" prop="sort">
+                    <el-input-number v-model="formData.sort"  :min="0" :max="9999"></el-input-number>
+                </el-form-item>
+                <el-form-item label="状态：" prop="status">
+                    <el-switch
+                            v-model="formData.status"
+                            active-color="#13ce66"
+                            inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
+                <el-button type="primary" @click="submitData" :loading="loadingSave">确定</el-button>
+            </template>
+        </ly-dialog>
+    </div>
 </template>
 
 <script>
     import {platformsettingsLunboimgAdd,platformsettingsLunboimgEdit,platformsettingsUploadPlatformImg} from "@/api/api";
     import {url} from '@/api/url'
-    import TEditor from '@/components/TEditor'
+    import LyDialog from "../../../components/dialog/dialog";
     export default {
+        components: {LyDialog},
+        emits: ['refreshData'],
         name: "addModule",
-        components: { TEditor },
         data() {
             return {
                 dialogVisible:false,
@@ -75,17 +58,16 @@
                     link:'',
                     image:'',
                     type:'',
-                    sort:'',
-                    link_type:0,
+                    sort:0,
                     status:true
                 },
                 rules:{
                     image: [
                         {required: true, message: '请上传图片',trigger: 'blur'}
                     ],
-                    // link: [
-                    //     {required: true, message: '请输入链接',trigger: 'blur'}
-                    // ],
+                    link: [
+                        {required: true, message: '请输入链接',trigger: 'blur'}
+                    ],
                     title: [
                         {required: true, message: '请输入标题',trigger: 'blur'}
                     ]
@@ -96,15 +78,6 @@
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
-                this.formData={
-                    title:'',
-                    link:'',
-                    image:'',
-                    type:'',
-                    sort:'',
-                    link_type:0,
-                    status:true
-                }
                 this.$emit('refreshData')
             },
             addModuleFn(item,flag,activeName) {
@@ -116,8 +89,7 @@
                     link:'',
                     image:'',
                     type:activeName,
-                    sort:'',
-                    link_type:0,
+                    sort:0,
                     status:true
                 }
             },
@@ -186,10 +158,37 @@
                     vm.$message.warning(res.msg)
                 }
             },
-            imgUploadSuccess() {
-                this.$refs.uploadDefaultImage.clearFiles()
+            imgUploadSuccess(res) {
+                // if (res) {
+                //     this.formData.image = res.url
+                // }
             }
         }
     }
 </script>
+<style scoped>
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 128px;
+      height: 128px;
+      line-height: 128px;
+      text-align: center;
+    }
+    .avatar {
+      width: 128px;
+      height: 128px;
+      display: block;
+    }
+</style>
 

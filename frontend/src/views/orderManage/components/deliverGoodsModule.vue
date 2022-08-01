@@ -1,45 +1,40 @@
 <template>
-    <el-dialog
-            title="发货"
-            :visible.sync="dialogVisible"
-            width="500px"
-            center
-            top="3%"
-            v-dialogDrag
-            :destroy-on-close="true"
-            :close-on-click-modal="false"
-            :before-close="handleClose"
-            append-to-body>
-        <el-form :inline="false" label-position="right" :rules="rules" ref="rulesForm" label-width="130px" :model="formData">
-            <el-form-item label="物流公司：" prop="logistics_company">
-                <el-select  v-model="formData.logistics_company" placeholder="请选择"   >
-                        <el-option
-                                v-for="item in wuliuList"
-                                :key="item.id"
-                                :label="item.name"
-                                :value="item.name">
-                        </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="物流单号：" prop="orderNo">
-                <el-input v-model.trim="formData.orderNo"></el-input>
-            </el-form-item>
-        </el-form>
-        <span slot="footer">
-            <el-button @click="handleClose">取消</el-button>
-            <el-button @click="deliverGoods" :loading="loadingPage" type="primary">发货</el-button>
-        </span>
-    </el-dialog>
+    <div>
+        <ly-dialog v-model="dialogVisible" :title="loadingTitle" width="500px" :before-close="handleClose">
+            <el-form :inline="false" label-position="right" :rules="rules" ref="rulesForm" label-width="130px" :model="formData">
+                <el-form-item label="物流公司：" prop="logistics_company">
+                    <el-select  v-model="formData.logistics_company" placeholder="请选择"   >
+                            <el-option
+                                    v-for="item in wuliuList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.name">
+                            </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="物流单号：" prop="orderNo">
+                    <el-input v-model.trim="formData.orderNo"></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="handleClose">取消</el-button>
+                <el-button @click="deliverGoods" :loading="loadingPage" type="primary">发货</el-button>
+            </template>
+        </ly-dialog>
+    </div>
 </template>
 
 <script>
     import {mallGoodsSendoutgoods} from '@/api/api'
+    import LyDialog from "../../../components/dialog/dialog";
     export default {
         name: "deliverGoodsModule",
+        components: {LyDialog},
         data() {
             return {
                 dialogVisible:false,
                 loadingPage:false,
+                loadingTitle:"发货",
                 formData:{
                     id:'',
                     orderNo:'',

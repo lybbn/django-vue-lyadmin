@@ -78,6 +78,7 @@ class RoleViewSet(CustomModelViewSet):
     create_serializer_class = RoleCreateUpdateSerializer
     update_serializer_class = RoleCreateUpdateSerializer
     filterset_fields = ['status']
+    search_fields = ('name', 'key')
 
     def roleId_to_menu(self, request, *args, **kwargs):
         """通过角色id获取该角色用于的菜单"""

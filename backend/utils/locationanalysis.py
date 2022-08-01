@@ -128,9 +128,9 @@ def computeMD5(message):
     m = hashlib.md5()
     m.update(message.encode(encoding='utf-8'))
     return m.hexdigest()
-# ================================================= #
+# ================================================================= #
 # ******************** 腾讯地图详细地址解析成经纬度 ******************** #
-# ================================================= #
+# =================================================================#
 #限制 10,000 次/日
 #限制 并发 5 次/秒
 key = "M4NBZ-STTK5-OARIA-Q7T4R-YO5OQ-MTB7O"
@@ -181,3 +181,26 @@ def gettecentlnglat(address):
 #         "level": 9
 #     }
 # }
+
+# ========================================================================= #
+# ******************** 腾讯地图逆地址解析-经纬度解析成地址信息 ******************** #
+# =========================================================================#
+def gettecentaddress(location):
+    """
+    location=lat<纬度>,lng<经度>
+    例如：location= 39.984154,116.307490
+    """
+    # url = 'https://apis.map.qq.com/ws/geocoder/v1/?address='+address+'&key='+key
+    queryStr1 = '/ws/geocoder/v1/'
+    queryStr2 = 'key='+key+'&location='+location
+    # 计算sig
+    sig = computeMD5(queryStr1+'?'+queryStr2+secretkey)
+    url = 'https://apis.map.qq.com'+queryStr1+'?'+queryStr2+'&sig='+sig
+    try:
+        response = requests.get(url)
+        res = response.json()
+        # print(res)
+    except Exception as e:
+        res=None
+
+    return res

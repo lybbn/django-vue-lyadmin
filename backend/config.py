@@ -20,17 +20,19 @@ DATABASE_NAME = "lyadmin_db"
 #数据库编码
 DATABASE_CHARSET = "utf8mb4"
 # 数据库长连接时间（默认为0，单位秒）即每次请求都重新连接,debug模式下该值应该写为0 ，mysql默认长连接超时时间为8小时
-DATABASE_CONN_MAX_AGE = 0 #7200（2小时）,使用 None 则是无限的持久连接
+DATABASE_CONN_MAX_AGE = 0 #推荐120（2分钟），使用 None 则是无限的持久连接（不推荐）。
 
 # ================================================= #
 # ************** 服务器基本 配置  ************** #
 # ================================================= #
 
 IS_DEMO = False #是否演示模式（演示模式只能查看无法保存、编辑、删除、新增）
-ALLOW_FRONTEND = True #是否允许前端API访问
+ALLOW_FRONTEND = True#是否关闭前端API访问
 IS_SINGLE_TOKEN = False #是否只允许单用户单一地点登录(只有一个人在线上)(默认多地点登录),只针对后台用户生效
-FRONTEND_API_LIST = ['/api/app/','/api/xcx/']#前端接口API前缀
+FRONTEND_API_LIST = ['/api/app/','/api/xcx/']
 DOMAIN_HOST = "http://127.0.0.1:8000"
+EXEC_LOG_PATH =  os.path.join(BASE_DIR, 'logs','lybbnexec.log')
+TEMP_EXEC_PATH =  os.path.join(BASE_DIR, 'logs')
 
 # ================================================= #
 # ************** 极光推送 配置  ************** #
@@ -62,12 +64,11 @@ WX_XCX_APPID = "xxxxxxxxxxxxxxxxxx"
 #小程序秘钥
 WX_XCX_APPSECRET = "xxxxxxxxxxxxxxxxxxxxxx"
 
-
 # ================================================= #
 # ************** 微信开放平台（服务号） 配置  ************** #
 # ================================================= #
 
-#微信开放平台申请的appid
+#微信公众平台申请的appid
 WX_GZPT_APPID = "XXXXXXXXXXXXXX"
 #微信公众平台申请的appsecret
 WX_GZPT_APPSECRET = "XXXXXXXXXXXXXXXXXXXXXXXX"
@@ -96,6 +97,16 @@ ALIYUN_SMS_ACCESS_KEY_ID = "xxxxxxxxxxxxx"
 ALIYUN_SMS_ACCESS_KEY_SECRET = "xxxxxxxxxxxxxxxxxxxxxxx"
 ALIYUN_SMS_SIGN='xxx'#短信签名名称
 ALIYUM_SMS_TEMPLATE='SMS_221xxxxx'#模板code
+
+# ================================================= #
+# ************** 腾讯云发送短信 配置  ************** #
+# ================================================= #
+# SECRETID/SECRETKEY 根据实际申请的账号信息进行替换
+TENCENT_SMS_SECRETID = "xxxxxxxxxxxxxxxxxxxxxxxx"#CAM ID
+TENCENT_SMS_SECRETKEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"#CAM密匙
+TENCENT_SMS_APPID = "14003xxxxx"#SdkAppId
+TENCENT_SMS_SIGN='lybbn测试名称'#短信签名名称
+TENCENT_SMS_TEMPLATE_ID='65xxxx'#模板id
 
 # ================================================= #
 # ************** 腾讯云发送短信 配置  ************** #

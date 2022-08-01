@@ -1,118 +1,68 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue';
-import Vuex from 'vuex'
-import axios from 'axios'
+import { createApp } from 'vue'
+//引入ElementPlus
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+// 统一导入el-icon图标
+import * as Icons from '@element-plus/icons-vue'
+//引入ElementPlus 结束
 
-Vue.use(Vuex)
-Vue.prototype.axios = axios
-// 引入element UI
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-import './assets/css/common.scss'
 
 import "babel-polyfill";
-import App from './App';
 import 'xe-utils'
-// 引入路由
-import router from './router';
-//富文本编辑器
 
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-import VueQuillEditor from 'vue-quill-editor'
-Vue.use(VueQuillEditor)
-import Quill from "quill"
-import { ImageDrop } from 'quill-image-drop-module'
-import ImageResize from 'quill-image-resize-module'
-Quill.register('modules/imageDrop', ImageDrop)
-Quill.register('modules/imageResize', ImageResize)
+//多标签bus通信
+import mitt from 'mitt'
+
+//导入自定义css
+import './assets/css/common.scss'
+//elementplus暗黑主题从（element-plus/theme-chalk/dark/css-vars.css）拷贝
+import './assets/css/elementplus-theme-dark-css-vars.css'
+
+import App from './App.vue'
+import store from './store'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+import router from './router'
+
+const app = createApp(App)
+
+app.config.globalProperties.axios = axios
+
+// vue3.x的全局实例，要挂载在config.globalProperties上
+app.config.globalProperties.$Bus = new mitt()
+
+//引入状态管理
+import {isShowBtn,hasPermission,formatUnitSize} from './utils/util'
+app.config.globalProperties.isShowBtn = isShowBtn
+app.config.globalProperties.hasPermission = hasPermission
+app.config.globalProperties.formatUnitSize = formatUnitSize
+// 过滤器
+import * as custom from './utils/util'
+Object.keys(custom).forEach(key => {
+  app.component(key, custom[key])
+})
 
 //引入font-awesome字体图标
 import 'font-awesome/scss/font-awesome.scss'
+// 注册全局elementplus icon组件
+Object.keys(Icons).forEach((key) => {
+  app.component(key, Icons[key]);
+});
 
-//单独页面设置meta标签
-import Meta from 'vue-meta'
-Vue.use(Meta)
+// //进入自定义指令
+import directivePlugin from '@/utils/directive.js'
 
-// 引入状态管理
-import store from './vuex/store';
-import {isShowBtn} from './utils/util'
-Vue.prototype.isShowBtn = isShowBtn
-// 引入icon
-import VueClipboard from 'vue-clipboard2'
-Vue.use(VueClipboard)
-// 过滤器
-import * as custom from './utils/util'
-Vue.config.productionTip = false;
-// 使用element UI
-Vue.use(ElementUI);
-import '@/utils/directive.js'
-Object.keys(custom).forEach(key => {
-  Vue.filter(key, custom[key])
+app.use(ElementPlus,{
+  size: 'default',  // 默认控件尺寸default
+  zIndex: 3000,  // 弹出组件的zIndex
+  locale: zhCn,
 })
-// 进度条
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
-// 简单配置
-NProgress.inc(0.4)
-NProgress.configure({ easing: 'ease', speed: 500, showSpinner: true })
-/**
- * 路由拦截
- * 权限验证
- */
-let to={},from={}
-router.beforeEach((to, from, next) => {
-  // 进度条
-  NProgress.start()
-  let userId = sessionStorage.getItem('userId') ? sessionStorage.getItem('userId') : false
-  if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-    if (userId) { // 通过vuex state获取当前的token是否存在
-      let menuList = JSON.parse(sessionStorage.getItem('menuList'))
-      if(menuList.filter(item=>item.url == to.name).length > 0) {
-        next()
-      } else {
-        next({
-          path: '/login'
-        })
-      }
-    } else {
-      // console.info("进入登陆")
-        next({
-          path: '/login'
-        })
-    }
-  } else {
-    if(to.path=="/login" ||to.path=="/"){
-      if(userId){
-        next({
-          path: '/adminManage'
-        })
-      }else{
-        next()
-      }
-    }else{
-      next()
-    }
-  }
-})
-//在路由跳转后用NProgress.done()标记下结束
-router.afterEach(() => {
-  NProgress.done()
-})
-const $vue=new Vue({
-  router,
-  store,
-  render: h => h(App),
-  data: {
-    Bus: new Vue()
-  }
-}).$mount('#app')
-export default  $vue
+app.use(store)
+app.use(router)
+app.use(VueAxios,axios)
+app.use(directivePlugin)
+app.mount('#app')
 
-//进入xss
-// import xss from 'xss'
-// Object.defineProperty(Vue.prototype, '$xss', {
-//   value: xss
-// })
+

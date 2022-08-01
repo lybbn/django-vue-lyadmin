@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <div class="tableSelect">
+    <div :class="{'ly-is-full':isFull}">
+        <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
                 <el-form-item label="用户昵称：">
-                    <el-input size="small" v-model.trim="formInline.nickname" maxlength="60"  clearable placeholder="用户昵称" @change="search" style="width:200px"></el-input>
+                    <el-input v-model.trim="formInline.nickname" maxlength="60"  clearable placeholder="用户昵称" @change="search" style="width:200px"></el-input>
 <!--                </el-form-item>-->
 <!--                                <el-form-item label="创建时间：">-->
 <!--                                    <el-date-picker-->
@@ -18,13 +18,12 @@
 <!--                                    </el-date-picker>-->
                   </el-form-item>
                 <el-form-item label="手机号：">
-                    <el-input size="small" v-model.trim="formInline.mobile" maxlength="60"  clearable placeholder="手机号" @change="search" style="width:200px"></el-input>
+                    <el-input  v-model.trim="formInline.mobile" maxlength="60"  clearable placeholder="手机号" @change="search" style="width:200px"></el-input>
                   </el-form-item>
                 <el-form-item label="创建时间：">
                     <el-date-picker
                             style="width:100% !important;"
                             v-model="timers"
-                            size="small"
                             type="datetimerange"
                             @change="timeChange"
                             range-separator="至"
@@ -32,17 +31,23 @@
                             end-placeholder="结束日期">
                     </el-date-picker>
                   </el-form-item>
-<!--                <el-form-item label=""><el-button size="small" @click="addAdmin" type="primary" v-show="isShowBtn('goodsClass','分类管理','Create')">新增</el-button></el-form-item>-->
-                <el-form-item label=""><el-button size="small" @click="handleDelete" type="danger" :disabled="multiple" v-show="isShowBtn('userFeekback','意见反馈','Delete')">删除</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('userFeekback','意见反馈','Search')">查询</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="handleDelete" type="danger" :disabled="multiple" v-show="isShowBtn('userFeekback','意见反馈','Delete')">删除</el-button></el-form-item>
             </el-form>
         </div>
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="60" align="center" label="序号"></el-table-column>
+            <el-table :height="tableHeight"  border :data="tableData" v-loading="loadingPage" ref="tableref" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="60" align="center"></el-table-column>
+                <el-table-column type="index" width="60" align="center" label="序号">
+                    <template #default="scope">
+                        <span v-text="getIndex(scope.$index)"></span>
+                    </template>
+                </el-table-column>
 <!--                <el-table-column type="selection" width="55" align="center"></el-table-column>-->
                 <el-table-column min-width="70" prop="avatar" label="用户头像">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <img  :src="scope.row.avatar ? scope.row.avatar : defaultImg" style="width: 30px;height: 30px" :onerror="defaultImg">
                     </template>
                 </el-table-column>
@@ -57,7 +62,17 @@
 <!--                </el-table-column>-->
                 <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
                 <el-table-column label="操作" width="100">
-                    <template slot-scope="scope">
+                    <template #header>
+                        <div style="display: flex;justify-content: space-between;align-items: center;">
+                            <div>操作</div>
+                            <div @click="setFull">
+                                <el-tooltip content="全屏" placement="bottom">
+                                    <el-icon ><full-screen /></el-icon>
+                                </el-tooltip>
+                            </div>
+                        </div>
+                    </template>
+                    <template #default="scope">
 <!--                        v-show="isShowBtn('goodClass','分类','Delete')"-->
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('userFeekback','意见反馈','Retrieve')">详情</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('userFeekback','意见反馈','Delete')">删除</span>
@@ -74,7 +89,9 @@
     import {dateFormats} from "@/utils/util";
     import {PlatformsettingsUserfeeckback,PlatformsettingsUserfeeckbackDelete} from '@/api/api'
     import AddModule from "./components/addModule";
+    import { lyMixins } from "@/mixins/mixins"
     export default {
+        mixins: [lyMixins],
         components:{
             AddModule,
             Pagination,
@@ -82,6 +99,7 @@
         name:'userFeekback',
         data() {
             return {
+                isFull:false,
                 loadingPage:false,
                 // 选项框选中数组
                 ids: [],
@@ -108,6 +126,14 @@
             }
         },
         methods:{
+            setFull(){
+                this.isFull=!this.isFull
+            },
+            // 表格序列号
+            getIndex($index) {
+                // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
+                return (this.pageparm.page-1)*this.pageparm.limit + $index +1
+            },
             //多选项框被选中数据
             handleSelectionChange(selection) {
                 this.ids = selection.map(item => item.id);
@@ -140,7 +166,7 @@
                 if(flag=='detail') {
                     this.$refs.addModuleFlag.addModuleFn(row,'详情')
                 }
-                if(flag=='delete') {
+                else if(flag=='delete') {
                     let vm = this
                     vm.$confirm('您确定要删除选中的分类？',{
                         closeOnClickModal:false
@@ -156,6 +182,18 @@
                     }).catch(()=>{
 
                     })
+                }
+                else if(flag=="reset"){
+                    this.formInline = {
+                        page:1,
+                        limit: 10
+                    }
+                    this.pageparm={
+                        page: 1,
+                        limit: 10,
+                        total: 0
+                    }
+                    this.getData()
                 }
             },
 

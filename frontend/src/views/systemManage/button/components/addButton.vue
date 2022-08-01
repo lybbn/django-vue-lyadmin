@@ -1,10 +1,11 @@
 <template>
+    <div v-dialogDrag>
     <el-dialog
             :title="dialogTitle"
-            :visible.sync="dialogVisible"
+            v-model="dialogVisible"
             width="560px"
             center
-            v-dialogDrag
+            :destroy-on-close="true"
             :close-on-click-modal="false"
             :before-close="handleClose">
         <el-form :inline="true" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
@@ -15,16 +16,18 @@
                 <el-input  v-model.trim="formData.value" style="width: 300px"></el-input>
             </el-form-item>
         </el-form>
-        <span slot="footer">
+        <template #footer>
             <el-button @click="handleClose" :loading="loadingSave">关闭</el-button>
             <el-button type="primary" @click="submitData"  :loading="loadingSave">保存</el-button>
-        </span>
+        </template>
     </el-dialog>
+    </div>
 </template>
 
 <script>
     import {systemButtonAdd,systemButtonEdit} from '@/api/api'
     export default {
+        emits: ['refreshData'],
         name: "addButton",
         data() {
             return {

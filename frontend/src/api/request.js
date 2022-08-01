@@ -1,37 +1,17 @@
 import axios from 'axios';
-import Vue from '../main.js';
+import { ElMessage } from 'element-plus'
 require("babel-polyfill");
 import { url } from './url';
-import md5 from 'js-md5';
 import router from '../router';
-// import store from '@/store';
+import store from '../store'
 
 var request = axios.create({
-  timeout: 120000,
+    timeout: 60000,
 });
 
-function sortObj(params) {
-  let sortedStr = '';
-  let keys = Object.keys(params).sort();
-  for (let key of keys) {
-    if (Array.isArray(params[key])) {
-      if (Object.prototype.toString.call(params[key][0]) === '[object Object]') {
-        for (let obj of params[key]) {
-          sortedStr += (key + "=" + sortObj(obj));
-        }
-      } else {
-        sortedStr += (key + "=" + JSON.stringify(params[key]));
-      }
-    } else {
-      sortedStr += (key + "=" + params[key]);
-    }
-  }
-  return sortedStr;
-}
-
 function ajax(opt,method){
-  var token= sessionStorage.getItem('logintoken')
-  var timestamp=new Date().getTime();
+  var token= store.getters.getLogintoken
+  // var timestamp=new Date().getTime();
   var params;
 
   if(opt.params){
@@ -77,7 +57,6 @@ function ajax(opt,method){
 
       method==="PUT"&&(config.params=params);
       return new Promise((resolve,reject)=>{
-          // console.log(config,'config')
           request({
                 url: config.url,
                 method: method,
@@ -88,20 +67,20 @@ function ajax(opt,method){
               }).then(res=>{
               if(res.data.code==4001){
                   localStorage.clear();
-                  router.replace("/login");
                   sessionStorage.clear();
+                  router.replace("/login");
                   reject(res.data)
               }else{
                   resolve(res.data)
               }
           }).catch(res=>{
-              Vue.$message.error("请求失败");
+              ElMessage.$message.error("请求失败");
               // Vue.$message.error(JSON.stringify(res));
               reject(res)
           })
       })
   }else if(method == 'GET2'){
-      var config={
+      var config2={
           url: url + opt.url + params.id+'/',
           method: 'GET',
           headers:{
@@ -109,7 +88,7 @@ function ajax(opt,method){
           }
       }
       if(!params.id){
-          config={
+          config2={
               url: url + opt.url,
               method: 'GET',
               headers:{
@@ -120,7 +99,7 @@ function ajax(opt,method){
       return new Promise((resolve,reject)=>{
           // console.log(config,'config')
           request({
-              url: config.url,
+              url: config2.url,
               method: 'GET',
               headers:{
                   Authorization: 'JWT ' + token,
@@ -136,25 +115,25 @@ function ajax(opt,method){
                   resolve(res.data)
               }
           }).catch(res=>{
-              Vue.$message.error("请求失败");
+              ElMessage.$message.error("请求失败");
               // Vue.$message.error(JSON.stringify(res));
               reject(res)
           })
       })
   }
   else {
-      var config={
+      var config1={
           url: url + opt.url,
           method: method,
           headers:{
               Authorization: 'JWT ' + token,
           }
       }
-      method==="GET"&&(config.params=params);
-      method==="POST"&&(config.data=params);
-      method==="PATCH"&&(config.data=params);
+      method==="GET"&&(config1.params=params);
+      method==="POST"&&(config1.data=params);
+      method==="PATCH"&&(config1.data=params);
       return new Promise((resolve,reject)=>{
-          request(config).then(res=>{
+          request(config1).then(res=>{
               if(res.data.code==4001){
                   localStorage.clear();
                   router.replace("/login");
@@ -164,7 +143,7 @@ function ajax(opt,method){
                   resolve(res.data)
               }
           }).catch(res=>{
-              Vue.$message.error("请求失败");
+              ElMessage.$message.error("请求失败");
               // Vue.$message.error(JSON.stringify(res));
               reject(res)
           })
@@ -194,16 +173,25 @@ export function ajaxGetDetailByID (opt) {
     return ajax(opt,"GET2")
 }
 
+//websocket获取jwt请求token
+export function getJWTAuthorization() {
+    var token= store.getters.getLogintoken
+    var jwt = 'JWTlybbn' + token
+    return jwt
+}
+
 export function reqExpost (method, url, params) {
-  const timestamp = new Date().getTime().toString();
-  let token = sessionStorage.getItem('logintoken')
+  // const timestamp = new Date().getTime().toString();
+  let token = store.getters.getLogintoken
   for (let key in params){
     if(params[key]==null || params[key] == 'undefined' ||  params[key]==''){
       delete params[key]
     }
   }
   const keys = Object.keys(params).sort(); let i;
-  const length = keys.length; let key; let sortedString = '';
+  const length = keys.length;
+  let key;
+  let sortedString = '';
   for (i = 0; i < length; i++) {
     key = keys[i];
     sortedString += (key + '=' + params[key]);
@@ -218,12 +206,12 @@ export function reqExpost (method, url, params) {
     data: params,
     responseType: 'blob' // 表明返回服务器返回的数据类型
   }).then(res => res.data);
-};
+}
 // 上传图片
 export function uploadImg (param) {
     let formData = new FormData()
     formData.append('file', param.params.file)
-    let token= sessionStorage.getItem('logintoken')
+    let token= store.getters.getLogintoken
     return axios({
         method: 'post',
         url: url+param.url ,
@@ -236,10 +224,11 @@ export function uploadImg (param) {
             // progressEvent.loaded:已上传文件大小
             // progressEvent.total:被上传文件的总大小
             let loadProgress = (progressEvent.loaded / progressEvent.total * 100)
-            param.params.onProgress({percent: loadProgress})
+            if(param.params.onProgress){
+                param.params.onProgress({percent: loadProgress})
+            }
             // console.info(progressEvent.loaded)
             // console.info(progressEvent.total)
           }
     }).then(res => res.data);
-};
-
+}

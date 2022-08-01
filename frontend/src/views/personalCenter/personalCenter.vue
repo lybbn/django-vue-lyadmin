@@ -1,15 +1,15 @@
 <template>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" @tab-click="handleClick" tab-position="left">
       <el-tab-pane label="用户设置" name="userInfo" >
           <el-form ref="userInfoForm" :model="userInfo" :disabled="!isShowBtn('personalCenter','个人中心','Update')"  required-asterisk :rules="userInforules" :label-position="position" center label-width="120px" style="margin: 50px auto">
             <el-form-item prop="name" required label="昵称:">
-              <el-input v-model="userInfo.name" clearable style="width: 360px" ></el-input>
+              <el-input size="large" v-model="userInfo.name" clearable style="width: 360px" ></el-input>
             </el-form-item>
             <el-form-item label="电话号码:" prop="mobile">
-              <el-input v-model="userInfo.mobile" clearable style="width: 360px" ></el-input>
+              <el-input size="large" v-model="userInfo.mobile" clearable style="width: 360px" ></el-input>
             </el-form-item>
             <el-form-item label="邮箱:" prop="email">
-              <el-input v-model="userInfo.email" clearable style="width: 360px" ></el-input>
+              <el-input size="large" v-model="userInfo.email" clearable style="width: 360px" ></el-input>
             </el-form-item>
             <el-form-item label="性別:" prop="gender">
               <el-radio-group v-model="userInfo.gender">
@@ -33,16 +33,16 @@
       <el-tab-pane label="密码设置" name="passwrod"  >
           <el-form ref="userPasswordForm" :model="userPasswordInfo" required-asterisk :label-position="position" :rules="passwordRules" center  label-width="120px" style="margin: 50px auto">
             <el-form-item label="原密码：" required prop="oldPassword">
-              <el-input v-model="userPasswordInfo.oldPassword" clearable style="width: 360px"></el-input>
+              <el-input size="large" v-model="userPasswordInfo.oldPassword" clearable style="width: 360px"></el-input>
             </el-form-item>
             <el-form-item required prop="newPassword" label="新密码：">
-              <el-input type="password" v-model="userPasswordInfo.newPassword" clearable style="width: 360px"></el-input>
+              <el-input size="large" type="password" v-model="userPasswordInfo.newPassword" clearable style="width: 360px"></el-input>
             </el-form-item>
             <el-form-item required prop="newPassword2" label="确认密码：">
-              <el-input type="password" v-model="userPasswordInfo.newPassword2" clearable style="width: 360px"></el-input>
+              <el-input size="large" type="password" v-model="userPasswordInfo.newPassword2" clearable style="width: 360px"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="settingPassword" v-show="isShowBtn('personalCenter','个人中心','Changepassword')">
+              <el-button  type="primary" @click="settingPassword" v-show="isShowBtn('personalCenter','个人中心','Changepassword')">
                 <i class="fa fa-check"></i>提交
               </el-button>
               <el-button @click="resetForm('passwordForm')" type="info" v-show="isShowBtn('personalCenter','个人中心','Changepassword')">
@@ -56,6 +56,7 @@
 
 <script>
     import {systemUserUserInfoEdit,systemUserUserInfo,systemUserChangePassword} from '@/api/api'
+    import store from '@/store/index'
     export default {
         name: "personalCenter",
         data() {
@@ -182,7 +183,7 @@
 
               _self.$refs.userPasswordForm.validate((valid) => {
                 if (valid) {
-                  const userId = sessionStorage.getItem('userId')
+                  const userId = store.getters.getUserId
                   if (userId) {
                     const params = JSON.parse(JSON.stringify(_self.userPasswordInfo))
                       params.id = userId
@@ -207,8 +208,14 @@
     }
 </script>
 
-<style>
-  .el-tabs__content{
-    background-color: white;
+<style scoped>
+  .el-tabs .el-tabs__content{
+    background-color: var(--el-bg-color) !important;
+  }
+  .el-tabs{
+    background-color: var(--el-bg-color) !important;
+  }
+  ::v-deep(.el-tabs__header){
+    margin-top: 20px !important;
   }
 </style>

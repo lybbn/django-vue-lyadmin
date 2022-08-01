@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <div class="tableSelect">
+    <div :class="{'ly-is-full':isFull}">
+        <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
                 <el-form-item label="分类名称：">
-                    <el-input size="small" v-model.trim="formInline.search" maxlength="60"  clearable placeholder="分类名称" @change="search" style="width:200px"></el-input>
+                    <el-input v-model.trim="formInline.search" maxlength="60"  clearable placeholder="分类名称" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <!--                <el-form-item label="创建时间：">-->
                 <!--                    <el-date-picker-->
@@ -17,23 +17,27 @@
                 <!--                            end-placeholder="结束日期">-->
                 <!--                    </el-date-picker>-->
                 <!--                </el-form-item>-->
-
-                 <!--代理商有此权限 v-show="isShowBtn('applyQuotaAgent','代理商申请额度','Create')"-->
-                <el-form-item label=""><el-button size="small" @click="addModule" type="primary" v-show="isShowBtn('goodsType','商品分类','Create')">新增</el-button></el-form-item>
-                <el-form-item label=""><el-button size="small" @click="handleDelete" type="danger" :disabled="multiple" v-show="isShowBtn('goodsType','商品分类','Delete')">删除</el-button></el-form-item>
+                <el-form-item label=""><el-button @click="search" type="primary" icon="Search" v-show="isShowBtn('goodsType','商品分类','Search')">查询</el-button></el-form-item>
+                <el-form-item label=""><el-button @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
+                <el-form-item label=""><el-button @click="addModule" type="primary" v-show="isShowBtn('goodsType','商品分类','Create')">新增</el-button></el-form-item>
+                <el-form-item label=""><el-button @click="handleDelete" type="danger" :disabled="multiple" v-show="isShowBtn('goodsType','商品分类','Delete')">删除</el-button></el-form-item>
             </el-form>
         </div>
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%"
+            <el-table :height="tableHeight" border :data="tableData" v-loading="loadingPage" style="width: 100%" ref="tableref"
                       @selection-change="handleSelectionChange" row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
 <!--                <el-table-column type="selection" width="55"></el-table-column>-->
                 <el-table-column type="selection" width="60" align="center"></el-table-column>
-                <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
+                <el-table-column type="index" width="60" align="center" label="序号">
+                    <template #default="scope">
+                        <span v-text="getIndex(scope.$index)"></span>
+                    </template>
+                </el-table-column>
                 <el-table-column min-width="100" prop="name" label="分类名称"></el-table-column>
                 <el-table-column min-width="60" sortable prop="sort" label="排序"></el-table-column>
                 <el-table-column min-width="80" prop="default_image" label="图标">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <el-image  :src="scope.row.default_image" style="width: 30px;height:30px" :preview-src-list="[scope.row.default_image]" v-if="scope.row.default_image"></el-image>
                     </template>
                 </el-table-column>
@@ -45,7 +49,17 @@
 <!--                </el-table-column>-->
                 <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
                 <el-table-column label="操作"  width="180">
-                    <template slot-scope="scope">
+                    <template #header>
+                        <div style="display: flex;justify-content: space-between;align-items: center;">
+                            <div>操作</div>
+                            <div @click="setFull">
+                                <el-tooltip content="全屏" placement="bottom">
+                                    <el-icon ><full-screen /></el-icon>
+                                </el-tooltip>
+                            </div>
+                        </div>
+                    </template>
+                    <template #default="scope">
 <!--                        <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('viptypeManage','会员卡管理','Retrieve')">详情</span>-->
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('goodsType','商品分类','Update')">编辑</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('goodsType','商品分类','Delete')">删除</span>
@@ -63,7 +77,9 @@
     import {mallGoodstype,mallGoodstypeDelete} from '@/api/api'
     import XEUtils from "xe-utils";
     import AddModuleGoodsType from "./components/addModuleGoodsType";
+    import { lyMixins } from "@/mixins/mixins"
     export default {
+        mixins: [lyMixins],
         components:{
             AddModuleGoodsType,
             Pagination,
@@ -71,6 +87,7 @@
         name:'goodsType',
         data() {
             return {
+                isFull:false,
                 loadingPage:false,
                 // 选项框选中数组
                 ids: [],
@@ -98,6 +115,14 @@
             }
         },
         methods:{
+            setFull(){
+                this.isFull=!this.isFull
+            },
+            // 表格序列号
+            getIndex($index) {
+                // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
+                return (this.pageparm.page-1)*this.pageparm.limit + $index +1
+            },
             //多选项框被选中数据
             handleSelectionChange(selection) {
                 this.ids = selection.map(item => item.id);
@@ -133,10 +158,10 @@
                 if(flag=='detail') {
                     this.$refs.addModuleFlag.addModuleFn(row,'详情')
                 }
-                if(flag=='edit') {
+                else if(flag=='edit') {
                     this.$refs.addModuleFlag.addModuleFn(row,'编辑')
                 }
-                if(flag=='delete') {
+                else if(flag=='delete') {
                     let vm = this
                     vm.$confirm('您确定要删除选中的数据吗？',{
                         closeOnClickModal:false
@@ -152,6 +177,18 @@
                     }).catch(()=>{
 
                     })
+                }
+                else if(flag=="reset"){
+                    this.formInline = {
+                        page:1,
+                        limit: 10
+                    }
+                    this.pageparm={
+                        page: 1,
+                        limit: 10,
+                        total: 0
+                    }
+                    this.getData()
                 }
             },
 

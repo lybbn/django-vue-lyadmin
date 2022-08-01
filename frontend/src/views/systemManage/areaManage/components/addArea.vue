@@ -1,57 +1,54 @@
 <template>
-    <el-dialog
-            :title="dialogTitle"
-            :visible.sync="dialogVisible"
-            width="640px"
-            center
-            v-dialogDrag
-            :close-on-click-modal="false"
-            :before-close="handleClose">
-        <el-form :inline="true" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px" class="form-store">
-            <el-form-item label="ID：" prop="id" v-if="dialogTitle=='详情'">
-                <el-input v-model.trim="formData.id" disabled style="width: 380px"></el-input>
-            </el-form-item>
-            <el-form-item label="父级地区：" prop="parent">
-                <el-cascader
-                        style="width: 380px"
-                        :key="isResourceShow"
-                        :show-all-levels="false"
-                        :options="options"
-                        ref="myCascader"
-                        v-model="formData.parent"
-                        @change="handleChange"
-                        :props="{ checkStrictly: true ,label:'name',value:'id'}"
-                        clearable></el-cascader>
-            </el-form-item>
-            <el-form-item label="地区名称：" prop="name">
-                <el-input v-model.trim="formData.name" style="width: 380px"></el-input>
-            </el-form-item>
-            <el-form-item label="地区编码：" prop="id">
-                <el-input v-model.trim="formData.id" style="width: 380px"></el-input>
-            </el-form-item>
-            <el-form-item label="状态：" prop="status">
-                <el-radio-group v-model="formData.status" style="width: 380px">
-                    <el-radio :label="formData.status==true">启用</el-radio>
-                    <el-radio :label="formData.status==false">禁用</el-radio>
-                </el-radio-group>
-            </el-form-item>
-<!--            <el-form-item label="排序：" prop="sort">-->
-<!--                <el-input-number v-model="formData.sort" :min="1" :max="999999"></el-input-number>-->
-<!--            </el-form-item>-->
+    <div>
+        <ly-dialog v-model="dialogVisible" :title="dialogTitle" width="640px" :before-close="handleClose">
+            <el-form :inline="true" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px" class="form-store">
+                <el-form-item label="ID：" prop="id" v-if="dialogTitle=='详情'">
+                    <el-input v-model.trim="formData.id" disabled style="width: 380px"></el-input>
+                </el-form-item>
+                <el-form-item label="父级地区：" prop="parent">
+                    <el-cascader
+                            style="width: 380px"
+                            :key="isResourceShow"
+                            :show-all-levels="false"
+                            :options="options"
+                            ref="myCascader"
+                            v-model="formData.parent"
+                            @change="handleChange"
+                            :props="{ checkStrictly: true ,label:'name',value:'id'}"
+                            clearable></el-cascader>
+                </el-form-item>
+                <el-form-item label="地区名称：" prop="name">
+                    <el-input v-model.trim="formData.name" style="width: 380px"></el-input>
+                </el-form-item>
+                <el-form-item label="地区编码：" prop="id">
+                    <el-input v-model.trim="formData.id" style="width: 380px"></el-input>
+                </el-form-item>
+                <el-form-item label="状态：" prop="status">
+                    <el-radio-group v-model="formData.status" style="width: 380px">
+                        <el-radio :label="formData.status==true">启用</el-radio>
+                        <el-radio :label="formData.status==false">禁用</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+    <!--            <el-form-item label="排序：" prop="sort">-->
+    <!--                <el-input-number v-model="formData.sort" :min="1" :max="999999"></el-input-number>-->
+    <!--            </el-form-item>-->
 
-        </el-form>
-        <span slot="footer">
-            <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
-            <el-button type="primary" @click="submitData" :loading="loadingSave" v-if="dialogTitle!='详情'">确定</el-button>
-        </span>
-    </el-dialog>
+            </el-form>
+            <template #footer>
+                <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
+                <el-button type="primary" @click="submitData" :loading="loadingSave" v-if="dialogTitle!='详情'">确定</el-button>
+            </template>
+        </ly-dialog>
+    </div>
 </template>
 
 <script>
     import utils from '@/utils/util'
     import {addressAreaAdd,addressArea,addressAreaEdit} from '@/api/api'
+    import LyDialog from "../../../../components/dialog/dialog";
     export default {
         name: "addArea",
+        components: {LyDialog},
         data() {
             return {
                 dialogVisible:false,
@@ -109,12 +106,8 @@
                 //解决Cannot read property ‘level‘ of null问题
                 this.options=[]
                 this.isResourceShow=0
-
-                this.formData=item ? item : {
-                    id:'',
-                    parent:'',
-                    name:'',
-                    status:1,
+                if(item){
+                    this.formData=item
                 }
                 this.getapiSystemDept()
             },

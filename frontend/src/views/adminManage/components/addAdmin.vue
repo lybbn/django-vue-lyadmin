@@ -1,57 +1,55 @@
 <template>
-    <el-dialog
-            :title="loadingTitle"
-            :visible.sync="dialogVisible"
-            width="560px"
-            center
-            v-dialogDrag
-            :close-on-click-modal="false"
-            :before-close="handleClose">
-        <el-form :inline="true" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
-            <!--<el-form-item label="管理员编号：" prop="id">-->
-                <!--<el-input v-model.trim="formData.id" style="width: 300px"></el-input>-->
-            <!--</el-form-item>-->
-            <el-form-item label="管理员名称：" prop="name">
-                <el-input v-model="formData.name" style="width: 300px"></el-input>
-            </el-form-item>
-            <!--<el-form-item label="权限字符：" prop="name">
-                <el-input v-model.trim="formData.name" style="width: 300px"></el-input>
-            </el-form-item>-->
-            <el-form-item label="登陆账号：" prop="username">
-                <el-input v-model.trim="formData.username" style="width: 300px"></el-input>
-            </el-form-item>
-            <el-form-item label="登录密码：" prop="password">
-                <el-input v-model.trim="formData.password" style="width: 300px"></el-input>
-            </el-form-item>
-            <!--<el-form-item label="排序：" prop="sort">-->
-                <!--<el-input-number v-model="formData.sort" :min="1" :max="999999"></el-input-number>-->
-            <!--</el-form-item>-->
-            <el-form-item label="角色：" prop="role">
-                <el-radio-group v-model="formData.role">
-                    <el-radio :label="item.id" v-for="(item,index) in rolelist" :key="index">{{item.name}}</el-radio>
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item label="部门：" prop="dept" >
-                <el-cascader style="width: 300px" :show-all-levels="false" v-model="formData.dept" :props="{checkStrictly: true ,label:'name',value:'id'}" :options="options"></el-cascader>
-            </el-form-item>
-            <el-form-item label="状态：" prop="is_active">
-                <el-switch
-                    v-model="formData.is_active"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949">
-                </el-switch>
-            </el-form-item>
-        </el-form>
-        <span slot="footer">
-            <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
-            <el-button type="primary" @click="submitData" :loading="loadingSave">确定</el-button>
-        </span>
-    </el-dialog>
+    <div>
+        <ly-dialog v-model="dialogVisible" :title="loadingTitle" width="640px" :before-close="handleClose">
+            <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto">
+                <!--<el-form-item label="管理员编号：" prop="id">-->
+                    <!--<el-input v-model.trim="formData.id" style="width: 300px"></el-input>-->
+                <!--</el-form-item>-->
+                <el-form-item label="管理员名称：" prop="name">
+                    <el-input v-model="formData.name"></el-input>
+                </el-form-item>
+                <!--<el-form-item label="权限字符：" prop="name">
+                    <el-input v-model.trim="formData.name" style="width: 300px"></el-input>
+                </el-form-item>-->
+                <el-form-item label="登陆账号：" prop="username">
+                    <el-input v-model.trim="formData.username"></el-input>
+                </el-form-item>
+                <el-form-item label="登录密码：" prop="password">
+                    <el-input v-model.trim="formData.password"></el-input>
+                </el-form-item>
+                <!--<el-form-item label="排序：" prop="sort">-->
+                    <!--<el-input-number v-model="formData.sort" :min="1" :max="999999"></el-input-number>-->
+                <!--</el-form-item>-->
+                <el-form-item label="角色：" prop="role">
+                    <el-checkbox-group v-model="formData.role">
+                        <el-checkbox :label="item.id" v-for="(item,index) in rolelist" :key="index">{{item.name}}</el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+                <el-form-item label="部门：" prop="dept">
+                    <el-cascader :show-all-levels="false" style="width: 100%" v-model="formData.dept" :props="{checkStrictly: true ,label:'name',value:'id'}" :options="options" clearable></el-cascader>
+                </el-form-item>
+                <el-form-item label="状态：" prop="is_active">
+                    <el-switch
+                        v-model="formData.is_active"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
+                <el-button type="primary" @click="submitData" :loading="loadingSave">确定</el-button>
+            </template>
+        </ly-dialog>
+    </div>
 </template>
 
 <script>
     import {apiSystemUserAdd,apiSystemUserEdit,apiSystemRole,apiSystemDept} from "@/api/api";
+    import LyDialog from "../../../components/dialog/dialog";
     export default {
+        components: {LyDialog},
+        emits: ['refreshData'],
         name: "addAdmin",
         data() {
             return {
@@ -63,7 +61,7 @@
                     username:'',
                     password:'123456',
                     dept:'',
-                    role:'',
+                    role:[],
                     is_active:true
                 },
                 rules:{
@@ -88,7 +86,6 @@
             }
         },
         methods:{
-
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
@@ -100,19 +97,19 @@
                 this.loadingTitle=flag
                 this.dialogVisible=true
                 // console.log(item,'item----')
-                if(item && item.dept) {
-                    item.dept = item.dept.split(" ")
-                }
+                // if(item && item.dept) {
+                //     item.dept = item.dept.split(" ")
+                // }
                 this.formData=item ? item : {
                     name:'',
                     username:'',
                     password:'123456',
                     dept:'',
-                    role:'',
+                    role:[],
                     is_active:true
                 }
 
-                this.formData.role = item?item.role.join(" "):[]
+                this.formData.role = item?item.role:[]
             },
             submitData() {
                 this.$refs['rulesForm'].validate(obj=>{
@@ -121,10 +118,23 @@
                         let param = {
                             ...this.formData
                         }
-                        param.role = param.role?param.role.split(" "):[]
-                        if(typeof  param.dept == 'object') {
-                            param.dept=param.dept[param.dept.length-1]
+                        if(param.role){
+                            let rolearr = []
+                            for(var r in param.role){
+                                rolearr.push(param.role[r])
+                            }
+                            param.role = rolearr
+                        }else{
+                            param.role = []
                         }
+                        if(param.dept){
+                            if(typeof  param.dept == 'object') {
+                                param.dept=param.dept[param.dept.length-1]
+                            }
+                        }else{
+                            param.dept = ''
+                        }
+
                         if(this.formData.nickname=="" || this.formData.nickname== undefined || this.formData.nickname.length<=0 || this.formData.nickname=='""'){
                             param.nickname = this.formData.name
                         }

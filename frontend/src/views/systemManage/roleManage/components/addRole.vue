@@ -1,45 +1,43 @@
 <template>
-    <el-dialog
-            :title="dialogTitle"
-            :visible.sync="dialogVisible"
-            width="600px"
-            center
-            v-dialogDrag
-            :close-on-click-modal="false"
-            :before-close="handleClose">
-        <el-form :inline="true" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
-            <el-form-item label="角色名称：" prop="name">
-                <el-input v-model.trim="formData.name" style="width: 300px"></el-input>
-            </el-form-item>
-            <el-form-item label="权限字符：" prop="key">
-                <el-input v-model.trim="formData.key" style="width: 300px"></el-input>
-            </el-form-item>
-            <el-form-item label="是否管理员：" prop="admin">
-                <el-radio-group v-model="formData.admin" style="width: 300px">
-                    <el-radio :label="1">是</el-radio>
-                    <el-radio :label="0">否</el-radio>
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item label="状态：" prop="status">
-                <el-radio-group v-model="formData.status" style="width: 300px">
-                    <el-radio :label="1">启用</el-radio>
-                    <el-radio :label="0">禁用</el-radio>
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item label="排序：" prop="sort">
-                <el-input-number v-model="formData.sort"  :min="1" :max="9999"></el-input-number>
-            </el-form-item>
-        </el-form>
-        <span slot="footer">
-            <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
-            <el-button type="primary" @click="submitData" :loading="loadingSave">确定</el-button>
-        </span>
-    </el-dialog>
+    <div>
+        <ly-dialog v-model="dialogVisible" :title="dialogTitle" width="660px" :before-close="handleClose">
+            <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto">
+                <el-form-item label="角色名称：" prop="name">
+                    <el-input v-model.trim="formData.name" style="width: 100%"></el-input>
+                </el-form-item>
+                <el-form-item label="权限字符：" prop="key">
+                    <el-input v-model.trim="formData.key" style="width: 100%"></el-input>
+                </el-form-item>
+                <el-form-item label="是否管理员：" prop="admin">
+                    <el-radio-group v-model="formData.admin" style="width: 300px">
+                        <el-radio :label="1">是</el-radio>
+                        <el-radio :label="0">否</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="状态：" prop="status">
+                    <el-radio-group v-model="formData.status" style="width: 300px">
+                        <el-radio :label="1">启用</el-radio>
+                        <el-radio :label="0">禁用</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="排序：" prop="sort">
+                    <el-input-number v-model="formData.sort"  :min="0" :max="9999"></el-input-number>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
+                <el-button type="primary" @click="submitData" :loading="loadingSave">确定</el-button>
+            </template>
+        </ly-dialog>
+    </div>
 </template>
 
 <script>
     import {apiSystemRoleEdit,apiSystemRoleAdd} from '@/api/api'
+    import LyDialog from "../../../../components/dialog/dialog";
     export default {
+        components: {LyDialog},
+        emits: ['refreshData'],
         name: "addRole",
         data() {
             return {
@@ -47,12 +45,11 @@
                 loadingSave:false,
                 dialogTitle:'',
                 formData:{
-                    admin:'',
+                    admin:1,
                     key:'',
                     name:'',
                     status:1,
-                    sort:'',
-                    id:null
+                    sort:0,
                 },
                 rules:{
                     name: [
@@ -78,17 +75,21 @@
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
+                this.formData={
+                    admin:1,
+                    key:'',
+                    name:'',
+                    status:1,
+                    sort:0,
+                }
             },
 
             addRoleFn(item,flag) {
                 this.dialogVisible=true
                 this.dialogTitle=flag
-                this.formData=item?item:{
-                    admin:'',
-                    key:'',
-                    name:'',
-                    status:1,
-                    sort:''}
+                if(item){
+                    this.formData=item
+                }
             },
             submitData() {
                 this.$refs['rulesForm'].validate(obj=>{

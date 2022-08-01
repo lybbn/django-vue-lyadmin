@@ -1,15 +1,12 @@
 <template>
-    <div>
-        <div class="tableSelect">
+    <div :class="{'ly-is-full':isFull}">
+        <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
                 <el-form-item label="关键词：">
-                    <el-input size="small" v-model.trim="formInline.search" maxlength="60" placeholder="关键词" @change="search" style="width:200px"></el-input>
-                </el-form-item>
-                <el-form-item label="角色名称：">
-                    <el-input size="small" v-model.trim="formInline.name" maxlength="60" placeholder="角色名称" @change="search" style="width:200px"></el-input>
+                    <el-input size="default" v-model.trim="formInline.search" maxlength="60" placeholder="关键词" clearable @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="状态：">
-                    <el-select v-model="formInline.status" placeholder="请选择" size="small">
+                    <el-select v-model="formInline.status" placeholder="请选择" size="default" clearable @change="search">
                         <el-option
                                 v-for="item in statusList"
                                 :key="item.id"
@@ -19,31 +16,47 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="">
-                    <el-button size="small" type="primary" @click="addRole(null,'新增')" v-show="isShowBtn('roleManage','角色管理','Create')">新增</el-button>
+                    <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('roleManage','角色管理','Search')">查询</el-button></el-form-item>
+                    <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
+                    <el-button size="default" type="primary" @click="addRole(null,'新增')" icon="Plus" v-show="isShowBtn('roleManage','角色管理','Create')">新增</el-button>
                 </el-form-item>
             </el-form>
         </div>
 
         <div class="table">
-            <el-table size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
-                <el-table-column width="80" type="index" align="center" label="序号"></el-table-column>
+            <el-table  :height="'calc('+(tableHeight)+'px)'" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
+                <el-table-column width="80" type="index" align="center" label="序号">
+                    <template #default="scope">
+                        <span v-text="getIndex(scope.$index)"></span>
+                    </template>
+                </el-table-column>
                 <el-table-column min-width="120" prop="name" label="角色名称"></el-table-column>
                 <el-table-column min-width="120" prop="key" label="权限字符"></el-table-column>
                 <el-table-column min-width="120" label="是否管理员">
-                    <template slot-scope="scope">
-                        <el-tag v-if="scope.row.admin==1" type="primary">是</el-tag>
+                    <template #default="scope">
+                        <el-tag v-if="scope.row.admin==1" type="">是</el-tag>
                         <el-tag v-else type="danger">否</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column min-width="120" label="状态">
-                    <template slot-scope="scope">
-                        <el-tag v-if="scope.row.status==1" type="primary">启用</el-tag>
+                    <template #default="scope">
+                        <el-tag v-if="scope.row.status==1" type="">启用</el-tag>
                         <el-tag v-else>禁用</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column min-width="120" prop="sort" label="排序"></el-table-column>
-                <el-table-column label="操作" width="280">
-                    <template slot-scope="scope">
+                <el-table-column label="操作" fixed="right" width="280">
+                    <template #header>
+                        <div style="display: flex;justify-content: space-between;align-items: center;">
+                            <div>操作</div>
+                            <div @click="setFull">
+                                <el-tooltip content="全屏" placement="bottom">
+                                    <el-icon ><full-screen /></el-icon>
+                                </el-tooltip>
+                            </div>
+                        </div>
+                    </template>
+                    <template #default="scope">
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('roleManage','角色管理','Update')">编辑</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('roleManage','角色管理','Retrieve')">详情</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('roleManage','角色管理','Delete')">删除</span>
@@ -59,7 +72,7 @@
 <script>
     import addRole from "./components/addRole";
     import Pagination from "@/components/Pagination";
-    import {dateFormats} from "@/utils/util";
+    import {dateFormats,getTableHeight} from "@/utils/util";
     import {apiSystemRole,apiSystemRoleDelete} from '@/api/api'
 
     export default {
@@ -70,6 +83,8 @@
         name:'roleManage',
         data() {
             return {
+                isFull:false,
+                tableHeight:500,
                 loadingPage:false,
                 formInline:{
                     page: 1,
@@ -91,6 +106,14 @@
             }
         },
         methods:{
+            // 表格序列号
+            getIndex($index) {
+                // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
+                return (this.pageparm.page-1)*this.pageparm.limit + $index +1
+            },
+            setFull(){
+                this.isFull=!this.isFull
+            },
             addRole() {
                 this.$refs.addRoleFlag.addRoleFn(null,'新增')
             },
@@ -98,13 +121,13 @@
                 if(flag=='edit') {
                     this.$refs.addRoleFlag.addRoleFn(row,'编辑')
                 }
-                if(flag == 'detail') {
+                else if(flag == 'detail') {
                     this.$refs.addRoleFlag.addRoleFn(row,'详情')
                 }
-                if(flag == 'authority') {
+                else if(flag == 'authority') {
                     this.$router.push({name:'authorityManage',params:{id:row.id}})
                 }
-                if(flag=='delete') {
+                else if(flag=='delete') {
                     let vm = this
                     vm.$confirm('您确定要删除选中的角色？',{
                         closeOnClickModal:false
@@ -120,6 +143,18 @@
                     }).catch(()=>{
 
                     })
+                }
+                else if(flag=="reset"){
+                    this.formInline = {
+                        page:1,
+                        limit: 10
+                    }
+                    this.pageparm={
+                        page: 1,
+                        limit: 10,
+                        total: 0
+                    }
+                    this.getData()
                 }
             },
 
@@ -146,9 +181,29 @@
                      }
                  })
             },
+            // 计算搜索栏的高度
+            listenResize() {
+				this.$nextTick(() => {
+				    this.getTheTableHeight()
+				})
+			},
+            getTheTableHeight(){
+               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+            }
         },
         created() {
             this.getData()
+        },
+        mounted() {
+            // 监听页面宽度变化搜索框的高度
+            window.addEventListener('resize', this.listenResize);
+            this.$nextTick(() => {
+              this.getTheTableHeight()
+            })
+        },
+        unmounted() {
+              // 页面销毁，去掉监听事件
+            window.removeEventListener("resize", this.listenResize);
         },
     }
 </script>

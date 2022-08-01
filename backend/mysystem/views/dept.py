@@ -14,7 +14,6 @@ class DeptSerializer(CustomModelSerializer):
     """
     部门-序列化器
     """
-    parent_name = serializers.CharField(read_only=True, source='parent.name')
 
     class Meta:
         model = Dept
@@ -26,12 +25,6 @@ class DeptCreateUpdateSerializer(CustomModelSerializer):
     """
     部门管理 创建/更新时的列化器
     """
-
-    def create(self, validated_data):
-        instance = super().create(validated_data)
-        instance.dept_belong_id = instance.id#默认部门的权限归属自己部门
-        instance.save()
-        return instance
 
     class Meta:
         model = Dept
@@ -65,8 +58,7 @@ class DeptViewSet(CustomModelViewSet):
     queryset = Dept.objects.all()
     serializer_class = DeptSerializer
     filterset_fields = ['status']
-    create_serializer_class = DeptCreateUpdateSerializer
-    update_serializer_class = DeptCreateUpdateSerializer
+    search_fields = ['name', 'owner','phone','email']
 
     def dept_tree(self, request):
         queryset = Dept.objects.exclude(status=0).filter(parent=None)

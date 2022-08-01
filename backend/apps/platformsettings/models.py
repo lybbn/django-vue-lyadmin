@@ -7,7 +7,11 @@ from mysystem.models import Users
 # ================================================= #
 # ************** 轮播图设置 model************** #
 # ================================================= #
+
 class LunbotuManage(CoreModel):
+    """
+    轮播图
+    """
     LUNBOTU_CHOICES = (
         (1, "首页轮播图"),
         (2, "分类首页轮播图"),
@@ -22,8 +26,9 @@ class LunbotuManage(CoreModel):
     status = models.BooleanField(default=True,verbose_name="状态")
     sort = models.IntegerField(default=1, verbose_name="排序", help_text="显示顺序")
     image = models.CharField(max_length=255, verbose_name="图片", default="")
-    link = models.TextField(verbose_name="链接/富文本内容", default="",null=True,blank=True)
-    link_type = models.IntegerField(choices=LINK_TYPE_CHOICES, verbose_name="跳转类型",default=0)
+    link = models.TextField(verbose_name="链接/富文本内容", default="", null=True, blank=True)
+    link_type = models.IntegerField(choices=LINK_TYPE_CHOICES, verbose_name="跳转类型", default=0)
+
 
     class Meta:
         db_table = 'tb_lunbo_manage'
@@ -41,7 +46,7 @@ class OtherManage(CoreModel):
         (3, "图片"),
     )
     status = models.BooleanField(default=True,verbose_name="状态")
-    type = models.IntegerField(choices=TYPE_CHOICES,default=1,verbose_name="类型")
+    type = models.IntegerField(choices=TYPE_CHOICES, default=1, verbose_name="类型")
     name = models.CharField(max_length=50, verbose_name="名称", default="")
     key = models.CharField(max_length=50,verbose_name="键名",default="")
     value = models.TextField(verbose_name="键值", default="")
@@ -51,6 +56,7 @@ class OtherManage(CoreModel):
         db_table = 'tb_other_manage'
         verbose_name = "平台其他设置"
         verbose_name_plural = verbose_name
+
 
 # ================================================= #
 # ************** 意见反馈 model************** #

@@ -1,50 +1,48 @@
 <template>
-    <el-dialog
-            :title="dialogTitle"
-            :visible.sync="dialogVisible"
-            width="560px"
-            center
-            v-dialogDrag
-            :close-on-click-modal="false"
-            :before-close="handleClose">
-        <el-form :inline="true" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
-            <el-form-item label="名称：" prop="value">
-            <el-select v-model="formData.value" filterable placeholder="请选择" style="width: 300px"
-                       @change="getName">
-                <el-option
-                    v-for="item in buttonList"
-                    :key="item.value"
-                    :label="item.name"
-                    :value="item.value">
-                </el-option>
-            </el-select>
-            <el-button type="primary" icon="el-icon-plus" circle style="margin-left: 10px;" @click="onLinkBtn"></el-button>
-            </el-form-item>
-
-            <el-form-item label="请求方式：" prop="method">
-                <el-select v-model="formData.method" filterable placeholder="请选择" style="width: 300px">
+    <div>
+        <ly-dialog v-model="dialogVisible" :title="loadingTitle" width="560px"  :before-close="handleClose">
+            <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto">
+                <el-form-item label="名称：" prop="value">
+                <el-select v-model="formData.value" filterable placeholder="请选择" style="width: 300px"
+                           @change="getName">
                     <el-option
-                        v-for="item in methodsList"
-                        :key="item.id"
+                        v-for="item in buttonList"
+                        :key="item.value"
                         :label="item.name"
-                        :value="item.id">
+                        :value="item.value">
                     </el-option>
                 </el-select>
-            </el-form-item>
-            <el-form-item label="接口地址：" prop="api">
-                <el-input  v-model.trim="formData.api" style="width: 300px"></el-input>
-            </el-form-item>
-        </el-form>
-        <span slot="footer">
-            <el-button @click="handleClose" :loading="loadingSave">关闭</el-button>
-            <el-button type="primary" @click="submitData"  :loading="loadingSave">保存</el-button>
-        </span>
-    </el-dialog>
+                 <el-button type="primary" circle style="margin-left: 20px"  @click="onLinkBtn"><el-icon><circle-plus /></el-icon></el-button>
+                </el-form-item>
+                <el-form-item label="请求方式：" prop="method">
+                    <el-select v-model="formData.method" filterable placeholder="请选择" style="width: 300px">
+                        <el-option
+                            v-for="item in methodsList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="接口地址：" prop="api">
+                    <el-input  v-model.trim="formData.api" style="width: 300px"></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="handleClose" :loading="loadingSave">关闭</el-button>
+                <el-button type="primary" @click="submitData"  :loading="loadingSave">保存</el-button>
+            </template>
+        </ly-dialog>
+    </div>
 </template>
 
 <script>
     import {systemMenuButtonAdd,systemMenuButtonEdit,systemButton} from '@/api/api'
+    import LyDialog from "../../../../components/dialog/dialog";
+
     export default {
+        components: {LyDialog},
+        emits: ['refreshData'],
         name: "addButton",
         data() {
             return {
@@ -75,7 +73,9 @@
                     {id:0,name:'GET'},
                     {id:1,name:'POST'},
                     {id:2,name:'PUT'},
-                    {id:3,name:'DELETE'}
+                    {id:3,name:'DELETE'},
+                    {id:4,name:'OPTIONS'},
+                    {id:5,name:'WS'},
                 ]
             }
         },
@@ -104,7 +104,6 @@
                 }
             },
             submitData() {
-                // console.log(this.formData,'this.formData------')
                 let param = {
                     ...this.formData
                 }

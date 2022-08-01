@@ -1,12 +1,12 @@
 <template>
-    <div>
-        <div class="tableSelect">
+    <div :class="{'ly-is-full':isFull}">
+        <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
                 <el-form-item label="订单编号：">
-                    <el-input size="small" v-model.trim="formInline.order_id" maxlength="60"  clearable placeholder="订单编号" @change="search" style="width:200px"></el-input>
+                    <el-input v-model.trim="formInline.order_id" maxlength="60"  clearable placeholder="订单编号" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="购买人：">
-                    <el-input size="small" v-model.trim="formInline.buyer" maxlength="60"  clearable placeholder="购买人" @change="search" style="width:200px"></el-input>
+                    <el-input v-model.trim="formInline.buyer" maxlength="60"  clearable placeholder="购买人" @change="search" style="width:200px"></el-input>
                 </el-form-item>
 <!--                <el-form-item label="商品名称：">-->
 <!--                    <el-input size="small" v-model.trim="formInline.goodsname" maxlength="60"  clearable placeholder="商品名称" @change="search" style="width:200px"></el-input>-->
@@ -15,7 +15,7 @@
 <!--                    <el-input size="small" v-model.trim="formInline.mobile" maxlength="60"  clearable placeholder="手机号" @change="search" style="width:200px"></el-input>-->
 <!--                </el-form-item>-->
                 <el-form-item label="状态：">
-                    <el-select size="small" v-model="formInline.status" placeholder="请选择" clearable @change="search" style="width:130px">
+                    <el-select v-model="formInline.status" placeholder="请选择" clearable @change="search" style="width:130px">
                         <el-option
                                 v-for="item in statusList"
                                 :key="item.id"
@@ -28,7 +28,6 @@
                     <el-date-picker
                             style="width:100% !important;"
                             v-model="timers"
-                            size="small"
                             type="datetimerange"
                             @change="timeChange"
                             range-separator="至"
@@ -36,29 +35,36 @@
                             end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label=""><el-button size="small" @click="handleDelete" type="danger" :disabled="multiple" v-show="isShowBtn('mallOrderManage','商城订单','Delete')">删除</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('mallOrderManage','商城订单','Search')">查询</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="handleDelete" type="danger" :disabled="multiple" v-show="isShowBtn('mallOrderManage','商城订单','Delete')">删除</el-button></el-form-item>
             </el-form>
         </div>
-        <ul class="order-static">
+        <ul class="order-static" ref="orderStatic">
             <li>订单量：{{orderstatics.totalcount}} 单</li>
             <li>订单金额：￥{{orderstatics.totalmoney}}</li>
         </ul>
-        <el-table size="small" height="calc(100vh - 320px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table :height="tableHeight" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55"></el-table-column>
+            <el-table-column type="index" width="60" align="center" label="序号">
+                <template #default="scope">
+                    <span v-text="getIndex(scope.$index)"></span>
+                </template>
+            </el-table-column>
             <el-table-column min-width="160" prop="order_id" label="订单编号"></el-table-column>
             <el-table-column min-width="70" prop="avatar" label="用户头像">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <img  :src="scope.row.userinfo.avatar ? scope.row.userinfo.avatar : defaultImg" style="width: 30px;height: 30px" :onerror="defaultImg">
                     </template>
             </el-table-column>
             <el-table-column min-width="130"  label="购买人">
-                <template slot-scope="scope">
+                <template #default="scope">
                     <div>{{scope.row.userinfo.nickname}}</div>
                     <div>{{scope.row.userinfo.mobile}}</div>
                 </template>
             </el-table-column>
             <el-table-column min-width="150"  label="商品信息" show-overflow-tooltip>
-                <template slot-scope="scope">
+                <template #default="scope">
                     <div style="display: flex;align-items: center;margin: 5px 0" v-for="(item,index) in scope.row.goodsinfo">
                         <img :src="item.sku_default_image" alt="" style="width: 50px;height:50px;margin-right: 5px">
                         <span style="width:90px" class="ellipsis">{{item.sku_spec}}</span>
@@ -68,26 +74,36 @@
             </el-table-column>
             <el-table-column min-width="100" prop="total_amount"  label="实付金额"></el-table-column>
             <el-table-column min-width="120"  label="下单时间/支付时间">
-                <template slot-scope="scope">
+                <template #default="scope">
                     <div>{{scope.row.create_datetime}}</div>
                     <div>{{scope.row.pay_time}}</div>
                 </template>
             </el-table-column>
             <el-table-column min-width="160"  label="收货地址">
-                <template slot-scope="scope">
+                <template #default="scope">
                     <div>{{scope.row.address.receiver+" "+scope.row.address.mobile}}</div>
                     <div>{{scope.row.address.areas}}</div>
                 </template>
             </el-table-column>
             <el-table-column min-width="80" prop="pay_method_name" label="支付方式"></el-table-column>
             <el-table-column min-width="80" label="状态">
-                <template slot-scope="scope">
+                <template #default="scope">
                     <span>{{statusList.filter(item=>item.id==scope.row.status)[0].name}}</span>
                 </template>
             </el-table-column>
 <!--            <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>-->
             <el-table-column label="操作" fixed="right" width="130">
-                <template slot-scope="scope">
+                <template #header>
+                    <div style="display: flex;justify-content: space-between;align-items: center;">
+                        <div>操作</div>
+                        <div @click="setFull">
+                            <el-tooltip content="全屏" placement="bottom">
+                                <el-icon ><full-screen /></el-icon>
+                            </el-tooltip>
+                        </div>
+                    </div>
+                </template>
+                <template #default="scope">
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('mallOrderManage','商城订单','Retrieve')">详情</span>
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'deliver')" v-if="scope.row.status==2" v-show="isShowBtn('mallOrderManage','商城订单','Deliver')">发货</span>
 <!--                    <span class="table-operate-btn" @click="handleEdit(scope.row,'closeorder')" v-if="scope.row.status==2" v-show="isShowBtn('mallOrderManage','商城订单','closeorder')">关闭订单</span>-->
@@ -106,7 +122,9 @@
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
     import {mallGoodsOrder,mallGoodsOrderDelete,mallGoodsOrderstatistics} from '@/api/api'
+    import { lyMixins } from "@/mixins/mixins"
     export default {
+        mixins: [lyMixins],
         components:{
             Pagination,
             shoppingMallOrderDetail,
@@ -115,6 +133,7 @@
         name:'mallOrderManage',
         data() {
             return {
+                isFull:false,
                 loadingPage:false,
                 defaultImg:"this.src='"+require('../../assets/img/avatar.jpg')+"'",
                 // 选项框选中数组
@@ -151,6 +170,14 @@
             }
         },
         methods:{
+            setFull(){
+                this.isFull=!this.isFull
+            },
+            // 表格序列号
+            getIndex($index) {
+                // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
+                return (this.pageparm.page-1)*this.pageparm.limit + $index +1
+            },
             //多选项框被选中数据
             handleSelectionChange(selection) {
                 this.ids = selection.map(item => item.id);
@@ -177,14 +204,14 @@
                 })
             },
             handleEdit(row,flag) {
+                let vm = this
                 if(flag=='detail') {
                     this.$refs.shoppingMallOrderDetailFlag.orderDetailFn(row)
                 }
-                if(flag=='deliver') {
+                else if(flag=='deliver') {
                     this.$refs.deliverGoodsModuleFlag.deliverGoodsModuleFn(row)
                 }
-                if(flag=='delete') {
-                    let vm = this
+                else if(flag=='delete') {
                     vm.$confirm('确定删除该订单？删除后无法恢复？',{
                         closeOnClickModal:false
                     }).then(res=>{
@@ -199,6 +226,18 @@
                     }).catch(()=>{
 
                     })
+                }
+                else if(flag=="reset"){
+                    this.formInline = {
+                        page:1,
+                        limit: 10
+                    }
+                    this.pageparm={
+                        page: 1,
+                        limit: 10,
+                        total: 0
+                    }
+                    this.search()
                 }
             },
 

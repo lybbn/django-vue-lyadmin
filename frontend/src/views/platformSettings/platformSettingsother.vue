@@ -1,64 +1,81 @@
 <template>
-    <div>
-        <div class="tableSelect">
+    <div :class="{'ly-is-full':isFull}">
+        <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
                 <el-form-item label="">
-                    <el-button size="small" type="primary" @click="addModule" v-show="isShowBtn('platformSettingsother','其他设置','Create')">新增</el-button>
+                    <el-button type="primary" @click="addModule"  icon="Plus" v-show="isShowBtn('platformSettingsother','其他设置','Create')">新增</el-button>
                 </el-form-item>
                 <el-form-item label="">
-                    <el-button size="small" @click="handleDelete" type="danger" :disabled="multiple" v-show="isShowBtn('platformSettingsother','其他设置','Delete')">删除</el-button>
+                    <el-button @click="handleDelete" type="danger" :disabled="multiple" icon="Delete" v-show="isShowBtn('platformSettingsother','其他设置','Delete')">删除</el-button>
                 </el-form-item>
                 <el-form-item label="">
                     <el-switch v-model="is_allow_fronted" active-color="#13ce66" inactive-color="#ff4949" active-text="前端访问已开启" inactive-text="前端访问已关闭"  @change="handleSuperOperate"></el-switch>
                 </el-form-item>
             </el-form>
         </div>
-        <div class="table">
-            <el-table size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
-<!--                <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>-->
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-form class="table">
+            <el-table  :height="'calc('+(tableHeight)+'px)'" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="55" align="center" disabled='false'></el-table-column>
+                <el-table-column type="index" width="60" align="center" label="序号">
+                    <template #default="scope">
+                        <span v-text="getIndex(scope.$index)"></span>
+                    </template>
+                </el-table-column>
                 <!--<el-table-column min-width="120" prop="name" label="图片">-->
-                    <!--<template slot-scope="scope">-->
+                    <!--<template #default="scope">-->
                         <!--<el-image  fit="fill" :src="scope.row.image" style="width: 60px;height: 60px" :preview-src-list="[scope.row.image]" v-if="scope.row.image"></el-image>-->
                     <!--</template>-->
                 <!--</el-table-column>-->
                 <el-table-column min-width="120" prop="name" label="名称"></el-table-column>
-                <el-table-column min-width="140" prop="key" label="键名"></el-table-column>
                 <el-table-column min-width="180" prop="value" label="键值" show-overflow-tooltip></el-table-column>
+                <el-table-column min-width="140" prop="key" label="键名"></el-table-column>
                 <el-table-column min-width="60" prop="sort" label="排序"></el-table-column>
                 <el-table-column min-width="80" label="状态">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                          <el-tag v-if="scope.row.status">正常</el-tag>
                          <el-tag v-else type="danger">禁用</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-                <el-table-column label="操作" width="180">
-                    <template slot-scope="scope">
+                <el-table-column label="操作" fixed="right" width="180">
+                    <template #header>
+                        <div style="display: flex;justify-content: space-between;align-items: center;">
+                            <div>操作</div>
+                            <div @click="setFull">
+                                <el-tooltip content="全屏" placement="bottom">
+                                    <el-icon ><full-screen /></el-icon>
+                                </el-tooltip>
+                            </div>
+                        </div>
+                    </template>
+                    <template #default="scope">
                         <!--                        v-show="isShowBtn('recyclCategoryParent','一级分类','Update')"-->
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('platformSettingsother','其他设置','Update')">编辑</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('platformSettingsother','其他设置','Delete')">删除</span>
                     </template>
                 </el-table-column>
             </el-table>
-        </div>
-        <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
-        <add-module ref="addModuleFlag" @refreshData="search"></add-module>
+        </el-form>
+        <pagination-module v-bind:child-msg="pageparm" @callFather="callFather"></pagination-module>
+
+        <add-module-other ref="AddModuleFlag" @refreshData="search"></add-module-other>
     </div>
 </template>
 <script>
-    import addModule from "./components/addModuleOther";
-    import Pagination from "@/components/Pagination";
-    import {dateFormats} from "@/utils/util";
+    import PaginationModule from "@/components/Pagination";
+    import {dateFormats,getTableHeight} from "@/utils/util";
     import {platformsettingsOther,platformsettingsOtherDelete,superOerateGet,superOerateSet} from '@/api/api'
+    import AddModuleOther from "./components/addModuleOther";
     export default {
         components:{
-            Pagination,
-            addModule,
+            AddModuleOther,
+            PaginationModule,
         },
-        name:'platformSettingsother',
+        name:'PlatformSettingsother',
         data() {
             return {
+                isFull:false,
+                tableHeight:500,
                 loadingPage:false,
                 // 选项框选中数组
                 ids: [],
@@ -87,6 +104,14 @@
             }
         },
         methods:{
+            // 表格序列号
+            getIndex($index) {
+                // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
+                return (this.pageparm.page-1)*this.pageparm.limit + $index +1
+            },
+            setFull(){
+                this.isFull=!this.isFull
+            },
             //多选项框被选中数据
             handleSelectionChange(selection) {
                 this.ids = selection.map(item => item.id);
@@ -116,13 +141,13 @@
                 // console.log(row,'row----')
             },
             addModule() {
-                this.$refs.addModuleFlag.addModuleFn(null,'新增')
+                this.$refs.AddModuleFlag.addModuleFn(null,'新增')
             },
             handleEdit(row,flag) {
                 if(flag=='edit') {
-                    this.$refs.addModuleFlag.addModuleFn(row,'编辑')
+                    this.$refs.AddModuleFlag.addModuleFn(row,'编辑')
                 }
-                if(flag=='delete') {
+                else if(flag=='delete') {
                     let vm = this
                     vm.$confirm('确定删除该数据吗？',{
                         closeOnClickModal:false
@@ -179,7 +204,6 @@
                     })
             },
             //关闭前端方法结束----------------
-
             callFather(parm) {
                 this.formInline.page = parm.page
                 this.formInline.limit = parm.limit
@@ -214,6 +238,15 @@
                 }
                 this.search()
             },
+            // 计算搜索栏的高度
+            listenResize() {
+				this.$nextTick(() => {
+				    this.getTheTableHeight()
+				})
+			},
+            getTheTableHeight(){
+               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+            }
         },
         created() {
             this.getData()
@@ -228,6 +261,17 @@
                 this.formInline.endAt = ''
             }
             this.getData()
+        },
+        mounted() {
+            // 监听页面宽度变化搜索框的高度
+            window.addEventListener('resize', this.listenResize);
+            this.$nextTick(() => {
+              this.getTheTableHeight()
+            })
+        },
+        unmounted() {
+              // 页面销毁，去掉监听事件
+			window.removeEventListener("resize", this.listenResize);
         },
     }
 </script>

@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from utils.jsonResponse import SuccessResponse,ErrorResponse
+from utils.jsonResponse import SuccessResponse,ErrorResponse,DetailResponse
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -49,8 +49,8 @@ class OtherManageSerializer(CustomModelSerializer):
 
     class Meta:
         model = OtherManage
-        fields = "__all__"
-        # exclude=['dept_belong_id','modifier','creator','description']
+        # fields = "__all__"
+        exclude=['dept_belong_id','modifier','creator','description']
         read_only_fields = ["id"]
 
 class OtherManageViewSet(CustomModelViewSet):
@@ -126,6 +126,7 @@ class PlatformImagesUploadView(APIView):
 # ================================================= #
 # ************** 前端用户获取平台配置信息 view  ************** #
 # ================================================= #
+
 class GetOtherManageDetailView(APIView):
     """
     前端用户获取平台其他设置接口
@@ -133,8 +134,8 @@ class GetOtherManageDetailView(APIView):
     前端用户获取平台其他设置接口
     【参数】type标签类型: 为获取对应平台设置的key的键值
     """
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = []
+    authentication_classes = []
     serializer_class = OtherManageSerializer
 
     def get(self, request):
@@ -152,8 +153,8 @@ class GetLunboManageListView(APIView):
     前端用户获取平台轮播图设置接口
     【参数】type轮播图类型: 1为首页轮播图，2为分类页轮播图
     """
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
+    permission_classes = []
+    authentication_classes = []
     serializer_class = LunbotuManageSerializer
 
     def get(self, request):

@@ -1,51 +1,48 @@
 <template>
-    <el-dialog
-            :title="loadingTitle"
-            :visible.sync="dialogVisible"
-            width="560px"
-            center
-            v-dialogDrag
-            :destroy-on-close="true"
-            :close-on-click-modal="false"
-            :before-close="handleClose">
-        <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
-            <el-form-item label="分类名称：" prop="name">
-                <el-input v-model.trim="formData.name" style="width: 300px"  :disabled="loadingTitle=='详情'"></el-input>
-            </el-form-item>
-            <el-form-item label="排序：" prop="sort">
-                <el-input-number v-model="formData.sort" :min="0" :max="999999"></el-input-number>
-            </el-form-item>
-            <el-form-item label="分类图标：" prop="default_image">
-                <el-upload
-                        class="avatar-uploader"
-                        action=""
-                        :show-file-list="false"
-                        :http-request="imgUploadRequest"
-                        :on-success="imgUploadSuccess"
-                        :before-upload="imgBeforeUpload">
-                    <img v-if="formData.default_image" :src="formData.default_image" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-<!--            <el-form-item label="状态：" prop="status" :disabled="loadingTitle=='详情'" >-->
-<!--                <el-switch-->
-<!--                    v-model="formData.status"-->
-<!--                    active-color="#13ce66"-->
-<!--                    inactive-color="#ff4949">-->
-<!--                </el-switch>-->
-<!--            </el-form-item>-->
-        </el-form>
-        <span slot="footer">
-            <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
-            <el-button type="primary" @click="submitData" :loading="loadingSave" :disabled="loadingTitle=='详情'">确定</el-button>
-        </span>
-    </el-dialog>
+    <div>
+        <ly-dialog v-model="dialogVisible" :title="loadingTitle" width="560px" :before-close="handleClose">
+            <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
+                <el-form-item label="分类名称：" prop="name">
+                    <el-input v-model.trim="formData.name" style="width: 300px"  :disabled="loadingTitle=='详情'"></el-input>
+                </el-form-item>
+                <el-form-item label="排序：" prop="sort">
+                    <el-input-number v-model="formData.sort" :min="0" :max="999999"></el-input-number>
+                </el-form-item>
+                <el-form-item label="分类图标：" prop="default_image">
+                    <el-upload
+                            class="avatar-uploader"
+                            action=""
+                            :show-file-list="false"
+                            :http-request="imgUploadRequest"
+                            :on-success="imgUploadSuccess"
+                            :before-upload="imgBeforeUpload">
+                        <img v-if="formData.default_image" :src="formData.default_image" class="avatar">
+                        <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                    </el-upload>
+                </el-form-item>
+    <!--            <el-form-item label="状态：" prop="status" :disabled="loadingTitle=='详情'" >-->
+    <!--                <el-switch-->
+    <!--                    v-model="formData.status"-->
+    <!--                    active-color="#13ce66"-->
+    <!--                    inactive-color="#ff4949">-->
+    <!--                </el-switch>-->
+    <!--            </el-form-item>-->
+            </el-form>
+            <template #footer>
+                <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
+                <el-button type="primary" @click="submitData" :loading="loadingSave" :disabled="loadingTitle=='详情'">确定</el-button>
+            </template>
+        </ly-dialog>
+    </div>
 </template>
 
 <script>
     import {mallGoodstypeAdd,mallGoodstypeEdit,platformsettingsUploadPlatformImg} from "@/api/api";
+    import LyDialog from "../../../components/dialog/dialog";
     export default {
+        emits: ['refreshData'],
         name: "addModuleGoodsType",
+        components: {LyDialog},
         data() {
             return {
                 dialogVisible:false,
@@ -68,16 +65,19 @@
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
+                this.formData = {
+                    name:"",
+                    sort:0,
+                    parent:"",
+                    default_image:"",
+                }
                 this.$emit('refreshData')
             },
             addModuleFn(item,flag) {
                 this.loadingTitle=flag
                 this.dialogVisible=true
-                this.formData=item ? item : {
-                    name:"",
-                    parent:"",
-                    default_image:"",
-                    sort:0,
+                if(item){
+                    this.formData=item
                 }
             },
             submitData() {
@@ -145,4 +145,29 @@
         }
     }
 </script>
+<style scoped>
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 128px;
+      height: 128px;
+      line-height: 128px;
+      text-align: center;
+    }
+    .avatar {
+      width: 128px;
+      height: 128px;
+      display: block;
+    }
+</style>
 

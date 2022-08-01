@@ -1,270 +1,222 @@
 <template>
-    <el-dialog
-            :title="loadingTitle"
-            :visible.sync="dialogVisible"
-            width="1000px"
-            center
-            top="1%"
-            v-dialogDrag
-            :close-on-click-modal="false"
-            :before-close="handleClose">
-        <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="130px">
-            <el-tabs v-model="activeName">
-                <el-tab-pane label="基础信息" name="1">
-                    <div style="display: flex;align-items: center;">
-                        <el-form-item label="商品分类：" prop="category1" class="is-required">
-                        <el-select size="small" v-model="formData.category1" placeholder="请选择分类" clearable filterable  style="width: 300px">
-                            <el-option
-                                    v-for="item in category_list"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                            </el-option>
-                        </el-select>
+    <div>
+        <ly-dialog v-model="dialogVisible" :title="loadingTitle" width="70%" top="2%"  :before-close="handleClose" class="form-dialog">
+            <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto" class="form-data">
+                <div class="form-data-item">
+                <div class="form-title">基础信息</div>
+                        <div style="display: flex;align-items: center;">
+                            <el-form-item label="商品分类：" prop="category1">
+                            <el-select v-model="formData.category1" placeholder="请选择分类" clearable filterable  style="width: 300px">
+                                <el-option
+                                        v-for="item in category_list"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
+                            </el-form-item>
+                        </div>
+                        <el-form-item label="商品名称：" prop="name">
+                            <el-input v-model.trim="formData.name" placeholder="请输入商品名称" style="width: 300px"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品排序：" prop="sort">
+                            <el-input-number v-model="formData.sort"  :min="0" :max="9999"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="是否推荐：" prop="is_tuijian">
+                            <el-radio-group v-model="formData.is_tuijian" style="width: 380px">
+                                <el-radio :label="true">是</el-radio>
+                                <el-radio :label="false">否</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="商品状态：" prop="is_launched">
+                            <el-radio-group v-model="formData.is_launched" style="width: 380px">
+                                <el-radio :label="true">上架</el-radio>
+                                <el-radio :label="false">下架</el-radio>
+                            </el-radio-group>
                         </el-form-item>
                     </div>
-                    <el-form-item label="商品名称：" prop="name">
-                        <el-input size="small" v-model.trim="formData.name" placeholder="请输入商品名称" style="width: 300px"></el-input>
-                    </el-form-item>
-<!--                    <el-form-item label="商品单位：" prop="unit">-->
-<!--                        <el-input size="small" v-model.trim="formData.unit" placeholder="请输入商品单位" style="width: 300px"></el-input>-->
-<!--                    </el-form-item>-->
-                    <el-form-item label="商品排序：" prop="sort">
-                        <el-input-number v-model="formData.sort"  :min="0" :max="9999"></el-input-number>
-                    </el-form-item>
-                    <el-form-item label="是否推荐：" prop="is_tuijian">
-                        <el-radio-group v-model="formData.is_tuijian" style="width: 380px">
-                            <el-radio :label="true">是</el-radio>
-                            <el-radio :label="false">否</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="商品状态：" prop="is_launched">
-                        <el-radio-group v-model="formData.is_launched" style="width: 380px">
-                            <el-radio :label="true">上架</el-radio>
-                            <el-radio :label="false">下架</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                </el-tab-pane>
-                <!-- 商品图片-->
-                <el-tab-pane label="商品图片" name="2">
-                    <el-form-item label="商品缩略图：" prop="default_image">
-                        <el-upload
-                                ref="lyimagupload"
-                                class="avatar-uploader"
-                                :limit="1"
-                                action=""
-                                :show-file-list="false"
-                                :http-request="imgUploadRequest"
-                                :on-success="imgUploadSuccess"
-                                :before-upload="imgBeforeUpload">
-                            <img v-if="formData.default_image" :src="formData.default_image" class="avatar">
-                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
-                    </el-form-item>
-                    <el-form-item label="商品轮播图：" style="margin-bottom: 0" >
-                        <div class="uploadImg" style="display: block">
-                            <div style="width: 100%;display: flex">
-                                <div class="input-file input-fileup">
-                                    <span style="display: inline-block; width: 100%;">{{submitLoading || (newData.length > 0 && detailDataA.length !== newData.length) ? '' : '上传图片'}}</span>
-                                    <el-button style="width: 100%;height:36px" size="small" type="primary" v-if="submitLoading || (newData.length > 0 && detailDataA.length !== newData.length)"  :loading="submitLoading || (newData.length > 0 && detailDataA.length !== newData.length)">上传图片</el-button>
-                                    <input ref="file" title="请上传图片"  class="fileUploaderClass" type='file' multiple name="file" v-else @change.stop="changesData"/>
-                                </div>
-
-                                <div class="deleteBtn" v-if="pics.length > 0"><el-button size="mini" type="delete"  :loading="submitLoading || (newData.length > 0 && detailDataA.length !== newData.length)" @click="clearPhotoData">清空照片</el-button></div>
-                                <div class="elProgress" v-if="newData.length > 0 && detailDataA.length !== newData.length">
-                                    <el-progress class="progress" :text-inside="true" :stroke-width="20" :percentage="parseInt(detailDataA.length*100/newData.length)" status="success"></el-progress>
-                                    您还有 <span>（{{newData.length - detailDataA.length}}）</span>张照片等待上传
-                                </div>
-                            </div>
-                            <span style="color: #999999; display: block;font-size:12px">(最多可上传9张图，<!--宽750px，<em style="color:#ff0000;font-style: normal">保持图片高度一致，便于前端效果展示</em>，--> 2MB以内，支持PNG/JPG格式)</span>
-                        </div>
-                    </el-form-item>
-                    <el-form-item>
-                        <div class="pickAlbumPreListO" :style="isEqual ? 'border:1px solid #ff0000' : ''">
-                            <ul class="pickAlbumPreList" v-if="pics.length > 0">
-                                <li v-for="(item, index) in pics">
-                                    <el-image :src="item.pic" fit="contain" :preview-src-list="[item.pic]"></el-image>
-                                    <i class="el-icon-close" @click="deletePhoto(index)"></i>
-                                    <p>{{index+1}}页</p>
-                                    <div class="btnchang">
-                                        <el-button size="small" class="btnLf" @click="changeLf(index)" v-if="index != 0">左移</el-button>
-                                        <el-button size="small" class="btnRg" @click="changeRg(index)" v-if="index != pics.length-1">右移</el-button>
-                                    </div>
-                                    <div class="sizeImg" v-if="isEqual">750*{{item.height}}</div>
-                                </li>
-                            </ul>
-                            <ul class="pickAlbumPreList" v-else>
-                                <li>
-                                    <i class="el-icon-picture"></i>
-                                    <div class="btnchang">
-                                        <el-button size="small" class="btnRg">右移</el-button>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="tipsCon">（左移/右移，可以调整图片前端展示顺序）</div>
-                            <div class="tipsCon" style="color:#ff0000" v-if="isEqual">上传图片的高度，要求一致！</div>
-                        </div>
-                    </el-form-item>
-                </el-tab-pane>
-                <!-- 商品规格-->
-                <el-tab-pane label="规格配置" name="3">
-                    <el-form-item label="商品规格：" prop="spec_type">
-                        <el-radio-group v-model="formData.spec_type" style="width: 380px">
-                            <el-radio :label="0">单规格</el-radio>
-                            <el-radio :label="1">多规格</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <!-- 单规格-->
-                    <div v-if="formData.spec_type==0">
-                        <el-form-item size="small" label="商品价格：" prop="shop_price" class="is-required">
-                            <el-input v-model.trim="formData.shop_price" style="width: 300px" placeholder="请输入商品价格"></el-input>
+                 <div class="form-data-item">
+                    <div class="form-title">商品图片</div>
+                        <el-form-item label="商品缩略图：" prop="default_image" style="padding: 10px">
+                            <el-upload
+                                    ref="lyimagupload"
+                                    class="avatar-uploader"
+                                    :limit="1"
+                                    action=""
+                                    :show-file-list="false"
+                                    :http-request="imgUploadRequest"
+                                    :on-success="imgUploadSuccess"
+                                    :before-upload="imgBeforeUpload">
+                                <img v-if="formData.default_image" :src="formData.default_image" class="avatar">
+                                 <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                            </el-upload>
                         </el-form-item>
-                        <el-form-item size="small" label="库存：" prop="stock" class="is-required">
-                            <el-input v-model.trim="formData.stock" style="width: 300px" placeholder="请输入库存"></el-input>
-                        </el-form-item>
-                     </div>
-                    <!-- 多规格-->
-                    <div v-if="formData.spec_type==1">
-<!--                        <el-form-item size="small" label="选择规格："  >-->
-<!--                            <el-select size="small" v-model="formData.category1" placeholder="请选择规格模板" clearable filterable  style="width: 300px">-->
-<!--                                <el-option-->
-<!--                                        v-for="item in category_list"-->
-<!--                                        :key="item.id"-->
-<!--                                        :label="item.name"-->
-<!--                                        :value="item.id">-->
-<!--                                </el-option>-->
-<!--                            </el-select>-->
-<!--                        </el-form-item>-->
-                        <el-form-item size="small" label=""  class="is-required">
-                            <el-button size="small" type="primary" @click="addSpec()" v-if="createBnt">添加新规格</el-button>
-                            <el-button size="small" type="success" @click="generateSpec()"  v-if="generatenowBnt" style="margin-left:10px">立即生成</el-button>
-                        </el-form-item>
-                        <div style="display: flex;align-items: center;" v-if="isSpecBtn">
-                            <el-form-item size="small" label="规格名：" prop="specName" >
-                                <el-input v-model.trim="specName" style="width: 200px" placeholder="请输入规格名"></el-input>
-                            </el-form-item>
-                            <el-form-item size="small" label="规格值：" prop="specValue" >
-                                <el-input v-model.trim="specValue" style="width: 200px" placeholder="请输入规格值"></el-input>
-                            </el-form-item>
-                            <el-button size="small" type="primary" @click="createSpecName()" style="margin-bottom: 18px;margin-left: 10px;">确定</el-button>
-                            <el-button size="small"  @click="cancelAddSpec()" style="margin-bottom: 18px;margin-left: 10px;">取消</el-button>
-                        </div>
-                        <el-form-item size="small" label="" >
-                            <draggable group="guige"  :list="specList" :move="checkMove" @end="end" handle=".move-icon"  :no-transition-on-drag="true" animation="500">
-                                <div v-for="(item, index) in specList" :key="index" class="tag-item">
-                                    <div class="move-icon">
-                                      <span class="el-icon-s-grid"></span>
-                                    </div>
-                                    <div class="input-item" :class="moveIndex === index ? 'borderStyle' : ''">
-                                        <div>
-                                            <span >{{ item.value }}</span>
-                                            <i class="el-icon-error" @click="deleteSpec(index)"></i>
-                                        </div>
-                                        <div class="spec-item">
-                                            <draggable :list="item.detail" :no-transition-on-drag="true" animation="500">
-                                                <el-tag
-                                                type="warning"
-                                                closable
-                                                color="primary"
-                                                v-for="(j, indexn) in item.detail"
-                                                :key="indexn"
-                                                :name="j"
-                                                @close="handleRemove2(item.detail, indexn)"
-                                                >{{ j }}</el-tag>
-                                            </draggable>
-                                            <el-input placeholder="请输入属性名称" size="small" v-model="item.detail.attrsVal" style="width: 200px">
-                                                <el-button slot="append" style="color: #FFF;background-color: #409EFF;border-color: #409EFF;" @click="addSpecDetail(item.detail.attrsVal,index)" :disabled="!generatenowBnt">添加</el-button>
-                                            </el-input>
-                                      </div>
-                                </div>
-                                </div>
-                            </draggable>
-                            <!-- 多规格表格展示设置-->
-                            <!-- 批量设置-->
-                            <div class="table" v-if="tableColumnList.tableHeaderList.length>0">
-                                <span>批量设置：</span>
-                                <el-table :data="manySpecBatchData" border size="mini" style="width: 100%">
-                                    <el-table-column prop="price" label="售价" min-width="150">
-                                        <template slot-scope="scope">
-                                            <el-input-number v-model="scope.row.price" v-limit-positive-number-fixed2 :precision="2" controls-position="right" :min="0" :max="9999999" label="售价" style="width: 100%"></el-input-number>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column prop="stock" label="库存" min-width="150">
-                                        <template slot-scope="scope">
-                                            <el-input-number v-model="scope.row.stock" v-limit-positive-number :precision="0" controls-position="right" :min="0" :max="9999999" label="库存" style="width: 100%"></el-input-number>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="操作" min-width="100">
-                                      <template slot-scope="scope">
-                                          <span class="table-operate-btn" @click="batchAdd">批量添加</span>
-                                          <span class="table-operate-btn" @click="batchDel">清空</span>
-                                      </template>
-                                    </el-table-column>
-                                </el-table>
-                            </div>
-                            <!-- 多规格表格-->
-                            <div class="table" v-if="tableColumnList.tableBodyList.length>0">
-                                <span>商品规格：</span>
-                                <el-table :data="tableColumnList.tableBodyList" border size="mini" style="width: 100%">
-                                    <el-table-column show-overflow-tooltip :label="item.propName" :property="item.prop" v-for="item in tableColumnList.tableHeaderList" :key="item.prop" min-width="150">
-                                        <template slot-scope="scope">
-                                          <span>{{ scope.row[scope.column.property] }}</span>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column prop="default_image" label="图片" min-width="80">
-                                        <template slot-scope="scope">
-                                            <el-upload
-                                                    class="avatar-uploader"
-                                                    action=""
-                                                    :show-file-list="false"
-                                                    :http-request="imgUploadRequest_sku"
-                                                    :on-success="(response, file, fileList)=>imgUploadSuccess_sku(response, file, fileList,scope.$index)"
-                                                    :before-upload="imgBeforeUpload_sku">
-                                                <img v-if="scope.row.default_image" :src="scope.row.default_image" class="avatar" style="width: 60px;height: 60px;line-height: 60px;">
-                                                <i v-else class="el-icon-plus avatar-uploader-icon" style="width: 60px;height: 60px;line-height: 60px;"></i>
-                                            </el-upload>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column prop="price" label="售价" min-width="150">
-                                        <template slot-scope="scope">
-                                            <el-input-number v-model="scope.row.price" v-limit-positive-number-fixed2 :precision="2" controls-position="right" :min="0" :max="9999999" label="售价" style="width: 100%"></el-input-number>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column prop="stock" label="库存" min-width="150">
-                                        <template slot-scope="scope">
-                                            <el-input-number v-model="scope.row.stock" v-limit-positive-number :precision="0" controls-position="right" :min="0" :max="9999999" label="库存" style="width: 100%"></el-input-number>
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column label="操作" min-width="100">
-                                      <template slot-scope="scope">
-                                          <span class="table-operate-btn" @click="singleSpecDel(scope.$index)" v-if="generatenowBnt">删除</span>
-                                          <span class="table-operate-btn" @click="handleEdit(scope.row)" v-if="!generatenowBnt">保存修改</span>
-                                      </template>
-                                    </el-table-column>
-                                </el-table>
-                            </div>
+                        <el-form-item label="商品轮播图：" style="padding: 10px">
+                            <ly-upload-goods v-model="pics"></ly-upload-goods>
                         </el-form-item>
                     </div>
+                <div class="form-data-item">
+                    <div class="form-title">规格配置</div>
+                        <el-form-item label="商品规格：" prop="spec_type">
+                            <el-radio-group v-model="formData.spec_type" style="width: 380px">
+                                <el-radio :label="0">单规格</el-radio>
+                                <el-radio :label="1">多规格</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <!-- 单规格-->
+                        <div v-if="formData.spec_type==0">
+                            <el-form-item label="商品价格：" prop="price" class="is-required">
+                                <el-input-number v-model="formData.price" :precision="2" style="width: 300px" placeholder="请输入商品价格"></el-input-number>
+                            </el-form-item>
+                            <el-form-item label="库存：" prop="stock" class="is-required">
+                                <el-input-number v-model="formData.stock" style="width: 300px" placeholder="请输入库存"></el-input-number>
+                            </el-form-item>
+                         </div>
+                        <!-- 多规格-->
+                        <div v-if="formData.spec_type==1">
+    <!--                        <el-form-item  label="选择规格："  >-->
+    <!--                            <el-select  v-model="formData.category1" placeholder="请选择规格模板" clearable filterable  style="width: 300px">-->
+    <!--                                <el-option-->
+    <!--                                        v-for="item in category_list"-->
+    <!--                                        :key="item.id"-->
+    <!--                                        :label="item.name"-->
+    <!--                                        :value="item.id">-->
+    <!--                                </el-option>-->
+    <!--                            </el-select>-->
+    <!--                        </el-form-item>-->
+                            <el-form-item  label=""  class="is-required">
+                                <el-button  type="primary" @click="addSpec()" v-if="createBnt">添加新规格</el-button>
+                                <el-button  type="success" @click="generateSpec()"  v-if="generatenowBnt" style="margin-left:10px">立即生成</el-button>
+                            </el-form-item>
+                            <div style="display: flex;align-items: center;" v-if="isSpecBtn">
+                                <el-form-item  label="规格名：" prop="specName" >
+                                    <el-input v-model.trim="specName" style="width: 200px" placeholder="请输入规格名"></el-input>
+                                </el-form-item>
+                                <el-form-item label="规格值：" prop="specValue" >
+                                    <el-input v-model.trim="specValue" style="width: 200px" placeholder="请输入规格值"></el-input>
+                                </el-form-item>
+                                <el-button type="primary" @click="createSpecName()" style="margin-bottom: 18px;margin-left: 10px;">确定</el-button>
+                                <el-button   @click="cancelAddSpec()" style="margin-bottom: 18px;margin-left: 10px;">取消</el-button>
+                            </div>
+                            <el-form-item  label="" style="padding-right: 10px">
+                                <div style="width: 100%">
+                                    <draggable group="guige" :list="specList" :move="checkMove" @end="end" handle=".move-icon"  animation="500" item-key="value">
+                                        <template #item="{ element,index}">
+                                            <div class="tag-item">
+                                                <div class="move-icon">
+                                                  <span class="el-icon-s-grid"><el-icon><Grid /></el-icon></span>
+                                                </div>
+                                                <div class="input-item" :class="moveIndex === index ? 'borderStyle' : ''">
+                                                    <div>
+                                                        <span >{{ element.value }}</span>
+                                                        <i class="el-icon-error" @click="deleteSpec(index)"><el-icon><CircleCloseFilled /></el-icon></i>
 
-                </el-tab-pane>
-                <!-- 商品详情-->
-                <el-tab-pane label="商品详情" name="4">
-                    <el-form-item label="商品详情：" class="is-required">
-                        <div >
+                                                    </div>
+                                                    <div class="spec-item">
+                                                        <el-tag
+                                                        type="warning"
+                                                        size="large"
+                                                        closable
+                                                        color="primary"
+                                                        v-for="(j, indexn) in element.detail"
+                                                        :key="indexn"
+                                                        :name="j"
+                                                        @close="handleRemove2(element.detail, indexn)"
+                                                        >{{ j }}</el-tag>
+                                                        <el-input placeholder="请输入属性名称"  v-model="element.detail.attrsVal" style="width: 200px">
+                                                            <template #append>
+                                                                <el-button style="color: #FFF;background-color: #409EFF;border-color: #409EFF;" @click="addSpecDetail(element.detail.attrsVal,index)" :disabled="!generatenowBnt">添加</el-button>
+                                                            </template>
+                                                        </el-input>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </draggable>
+                                </div>
+                                <!-- 多规格表格展示设置-->
+                                <!-- 批量设置-->
+                                <div style="width: 100%">
+                                    <div class="table" v-if="tableColumnList.tableHeaderList.length>0">
+                                        <span>批量设置：</span>
+                                        <el-table :data="manySpecBatchData" border style="width: 100%">
+                                            <el-table-column prop="price" label="售价" min-width="140">
+                                                <template #default="scope">
+                                                    <el-input-number v-model="scope.row.price" v-limit-positive-number-fixed2 :precision="2" controls-position="right" :min="0" :max="9999999" label="售价" style="width: 100%"></el-input-number>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column prop="stock" label="库存" min-width="140">
+                                                <template #default="scope">
+                                                    <el-input-number v-model="scope.row.stock" v-limit-positive-number :precision="0" controls-position="right" :min="0" :max="9999999" label="库存" style="width: 100%"></el-input-number>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column label="操作" min-width="160">
+                                              <template #default="scope">
+                                                  <span class="table-operate-btn" @click="batchAdd">批量添加</span>
+                                                  <span class="table-operate-btn" @click="batchDel">清空</span>
+                                              </template>
+                                            </el-table-column>
+                                        </el-table>
+                                    </div>
+                                    <!-- 多规格表格-->
+                                    <div class="table" v-if="tableColumnList.tableBodyList.length>0">
+                                        <span>商品规格：</span>
+                                        <el-table :data="tableColumnList.tableBodyList" border  style="width: 100%">
+                                            <el-table-column show-overflow-tooltip :label="item.propName" :property="item.prop" v-for="item in tableColumnList.tableHeaderList" :key="item.prop" min-width="150">
+                                                <template #default="scope">
+                                                  <span>{{ scope.row[scope.column.property] }}</span>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column prop="default_image" label="图片" min-width="80">
+                                                <template #default="scope">
+                                                    <el-upload
+                                                            class="avatar-uploader"
+                                                            action=""
+                                                            :show-file-list="false"
+                                                            :http-request="imgUploadRequest_sku"
+                                                            :on-success="(response, file, fileList)=>imgUploadSuccess_sku(response, file, fileList,scope.$index)"
+                                                            :before-upload="imgBeforeUpload_sku">
+                                                        <img v-if="scope.row.default_image" :src="scope.row.default_image" class="avatar" style="width: 60px;height: 60px;line-height: 60px;">
+                                                        <i v-else class="el-icon-plus avatar-uploader-icon" style="width: 60px;height: 60px;line-height: 60px;"><el-icon><Plus /></el-icon></i>
+                                                    </el-upload>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column prop="price" label="售价" min-width="150">
+                                                <template #default="scope">
+                                                    <el-input-number v-model="scope.row.price" :precision="2" controls-position="right" :min="0" :max="9999999" label="售价" style="width: 100%"></el-input-number>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column prop="stock" label="库存" min-width="150">
+                                                <template #default="scope">
+                                                    <el-input-number v-model="scope.row.stock" :precision="0" controls-position="right" :min="0" :max="9999999" label="库存" style="width: 100%"></el-input-number>
+                                                </template>
+                                            </el-table-column>
+                                            <el-table-column label="操作" min-width="100">
+                                              <template #default="scope">
+                                                  <span class="table-operate-btn" @click="singleSpecDel(scope.$index)" v-if="generatenowBnt">删除</span>
+                                                  <span class="table-operate-btn" @click="handleEdit(scope.row)" v-if="!generatenowBnt">保存修改</span>
+                                              </template>
+                                            </el-table-column>
+                                        </el-table>
+                                    </div>
+                                </div>
+                            </el-form-item>
+                        </div>
+                    </div>
+                    <div class="form-data-item">
+                        <div class="form-title">商品详情</div>
+                        <el-form-item label="商品详情：" class="is-required" style="padding-right: 10px">
                             <TEditor v-model="formData.desc_detail"  v-if="dialogVisible" :lyheight=550></TEditor>
-                        </div>
-                </el-form-item>
-                </el-tab-pane>
-            </el-tabs>
+                        </el-form-item>
+                    </div>
 
-        </el-form>
-        <span slot="footer">
-            <el-button @click="handleClose" :loading="loadingSave" size="medium">取消</el-button>
-            <el-button @click="handleStep('back')" v-if="activeName!='1'" size="medium">上一步</el-button>
-            <el-button type="primary" @click="handleStep('next')" v-if="activeName!='4'" size="medium">下一步</el-button>
-            <el-button type="primary" @click="submitData" :loading="loadingSave" size="medium">确定</el-button>
-        </span>
-    </el-dialog>
+            </el-form>
+            <template #footer>
+                <el-button @click="handleClose" :loading="loadingSave">取消</el-button>
+                <el-button type="primary" @click="submitData" :loading="loadingSave">确定</el-button>
+            </template>
+        </ly-dialog>
+    </div>
 </template>
 
 <script>
@@ -278,24 +230,20 @@
         mallGoodsspueEditskups,
         platformsettingsUploadPlatformImg
     } from "@/api/api";
-    import {sortName} from '@/utils/util'
-    import {url} from '@/api/url'
+    import LyDialog from "../../../components/dialog/dialog";
+    import LyUploadGoods from "../../../components/upload/goods";
     export default {
+        emits: ['refreshData'],
         name: "addModuleGoodsManage",
         components: {
+            LyUploadGoods,
+            LyDialog,
             TEditor,
             draggable: vuedraggable,
         },
         data() {
             return {
-                //轮播图
-                newData:[],
-                newDataAll:[],
-                detailDataA:[],
-                submitLoading:false,
-                isEqual:false,
                 pics:[],
-                //轮播图结束
                 //自定义规格开始
                 specList:[],//规格
                 specName:'',//要添加的规格名
@@ -321,15 +269,12 @@
                     name: '',
                     sub_name: '',
                     category1: '',
-                    shop_price:0,
-                    cost_price:0,
-                    market_price:0,
                     price:0,
                     stock: 0,
                     sort:0,
                     default_image:'',
                     is_launched:true,
-                    goods_imagelist:[],//轮播图
+                    image_list:[],//轮播图
                     skus:[],//sku/规格
                     spu_specs:[],//spu规格信息
                     spec_type:0,
@@ -338,37 +283,47 @@
                 },
                 activeName:'1',
                 rules:{
+                    category1: [
+                        {required: true, message: '请选择商品分类',trigger: 'blur'}
+                    ],
                     name: [
                         {required: true, message: '请输入商品名称',trigger: 'blur'}
                     ],
                     default_image: [
                         {required: true, message: '请上传商品默认图片',trigger: 'blur'}
                     ],
+
                 },
                 category_list:[],
             }
         },
+        mounted() {
+            window.addEventListener("focusin", this.onFocusIn,true);
+        },
+        unmounted() {
+            window.removeEventListener("focusin", this.onFocusIn);
+        },
         methods:{
-            addModuleFn(item,flag) {
-                // console.log(item,'item----')
+            onFocusIn(e){
+                e.stopImmediatePropagation()//阻止当前和后面的一系列事件
+            },
+            addModuleFn(item,flag,categoryList) {
                 this.loadingTitle=flag
                 this.dialogVisible=true
-                this.getMallGoodscategoryList()
-
-                //轮播图开始
-                this.pics=[]
-                if(item && item.goods_imagelist&&item.goods_imagelist.length >0) {
-                    item.goods_imagelist.forEach(items=>{
-                        this.pics.push({
-                            pic:items.image
-                        })
-                    })
-                }
-                //轮播图结束
-
+                // this.getMallGoodscategoryList()
+                this.category_list = categoryList
                 if(item){
-                    this.formData=item
-
+                    this.formData = item
+                    //轮播图开始
+                    this.pics=[]
+                    if(item && item.image_list&&item.image_list.length >0) {
+                        item.image_list.forEach(items=>{
+                            this.pics.push({
+                                pic:items
+                            })
+                        })
+                    }
+                    //轮播图结束
                     //多规格编辑打开时需要前端数据转换
                     if(item.spec_type){
                         //禁用立即生成和添加规格的按钮
@@ -434,31 +389,6 @@
                     })
                 })
             },
-            //el-tab上一步下一步
-            handleStep(flag){
-                if(flag=='next'){
-                    if(this.activeName=='1'){
-                        this.activeName='2'
-                    }
-                    else if(this.activeName=='2'){
-                        this.activeName='3'
-                    }
-                    else if(this.activeName=='3'){
-                        this.activeName='4'
-                    }
-                }
-                if(flag=='back'){
-                    if(this.activeName=='2'){
-                        this.activeName='1'
-                    }
-                    else if(this.activeName=='3'){
-                        this.activeName='2'
-                    }
-                    else if(this.activeName=='4'){
-                        this.activeName='3'
-                    }
-                }
-            },
             /*
             * 规格方法自定义开始
             * */
@@ -506,18 +436,29 @@
             },
             // 添加规格名称
             createSpecName() {
+               let isSame = false
               if (this.specName && this.specValue) {
                 let data = {
                   value: this.specName,
                   detail: [this.specValue],
                 };
+                for(var i=0;i<this.specList.length;i++){
+                    if(this.specList[i].value == this.specName){
+                        isSame = true
+                        break
+                    }
+                }
+                if(isSame){
+                    this.$message.warning("已存在该规格请添加其他规格！");
+                    return
+                }
                 this.specList.push(data);
                 var hash = {};
-                this.specList = this.specList.reduce(function (item, next) {
-                  /* eslint-disable */
-                  hash[next.value] ? "" : (hash[next.value] = true && item.push(next));
-                  return item;
-                }, []);
+                // this.specList = this.specList.reduce(function (item, next) {
+                //   /* eslint-disable */
+                //   hash[next.value] ? "" : (hash[next.value] = true && item.push(next));
+                //   return item;
+                // }, []);
                 this.clearAttr()
                 this.isSpecBtn = false;
                 this.createBnt = true;
@@ -563,7 +504,7 @@
                 let attrValue = [] //规格值数组[['x','s'],['黑色','白色']]
                 for (let key in clonespecList) {
                     attrName.push(clonespecList[key].value)
-                    this.$delete(clonespecList[key].detail,'attrsVal')
+                    delete(clonespecList[key].detail,'attrsVal')
                     attrValue.push(clonespecList[key].detail)
                 }
                 // 表格内容数据（笛卡尔积算法）
@@ -605,8 +546,6 @@
                   }
                 })
                 this.tableColumnList.tableHeaderList = tableObj.tableHeaderList // 表头
-                // console.log(this.tableColumnList)
-                // console.log(this.specList)
             },
             //批量设置-清空
             batchDel() {
@@ -667,7 +606,7 @@
             },
             imgUploadSuccess_sku(response,file,fileList,index) {
                 // 设置（更新）对应行文件图片
-                this.$set(this.tableColumnList.tableBodyList[index],"default_image",this.upload_sku_default_image_res)
+                this.tableColumnList.tableBodyList[index].default_image = this.upload_sku_default_image_res
             },
             /*
             * 规格方法自定义结束
@@ -680,20 +619,17 @@
                     name: '',
                     sub_name: '',
                     category1: '',
-                    shop_price:0,
-                    cost_price:0,
-                    market_price:0,
+                    price:0,
                     stock: 0,
                     default_image:'',
                     is_launched:true,
-                    goods_imagelist:[],
+                    image_list:[],
                     spec_type:0,
                     sort:0,
                     is_tuijian:false,
                     desc_detail:'',
                 },
                 this.activeName='1'
-                this.category_list=[]
                 this.specList=[]
                 this.manySpecBatchData=[{
                     price:0,
@@ -715,26 +651,21 @@
                             ...this.formData
                         }
                         param.is_launched==param.is_launched?1:0
-
-                        //轮播图开始
+                         //轮播图开始
                         if(this.pics.length <1) {
                             this.$message.warning('请先上传商品轮播图~')
                             return
                         }
                         let picList = []
                         this.pics.forEach(item=>{
-                            let res = {}
-                            res = {
-                                image:item.pic,
-                            }
-                            picList.push(res)
+                            picList.push(item.pic)
                         })
-                        param.goods_imagelist=picList
+                        param.image_list=picList
                         //轮播图结束
 
                         param.sub_name = param.name
                         delete(param.category1_name)
-
+                        // param.image_list= JSON.stringify(param.image_list)
                         this.loadingSave=true
                         if(this.formData.id){
                             mallGoodsspuEdit(param).then(res=>{
@@ -749,7 +680,7 @@
                             })
                         }else{
                             if(this.formData.spec_type===0){
-                                if(this.formData.shop_price<=0){
+                                if(this.formData.price<=0){
                                     this.$message.warning("商品规格价格要大于0")
                                     this.loadingSave=false
                                     return
@@ -762,41 +693,41 @@
                                 //单规格
                                 let skus = []
                                 skus.push({
-                                    price:this.formData.shop_price,
+                                    price:this.formData.price,
                                     stock:this.formData.stock,
                                     default_image:this.formData.default_image,
                                 })
                                 param.skus = skus
-                                param.price = this.formData.shop_price
+                                param.price = this.formData.price
                             }else{
                                 //多规格
                                 //规格sku数据处理
                                 let skus = []
                                 let spu_specs = []
                                 let minprice=0
-                                this.tableColumnList.tableBodyList.map((item) => {
-                                    if(item.price<minprice){
-                                        minprice = item.price
-                                    }
+                                let errormsg = "";
+                                let that = this;
+                                let thetemptabledata = that.tableColumnList.tableBodyList
+                                for(var s=0;s< thetemptabledata.length;s++){
+                                    let item = thetemptabledata[s]
                                     let sepcs = []
                                     if(item.price<=0){
-                                        this.$message.warning("商品规格价格要大于0")
-                                        this.loadingSave=false
-                                        return
+                                        errormsg="商品规格价格要大于0"
+                                        that.loadingSave=false
+                                        break
                                     }
-                                    if(item.stock<=0){
-                                        this.$message.warning("商品规格库存要大于0")
-                                        this.loadingSave=false
-                                        return
-                                    }
-                                    if(!item.default_image){
-                                        this.$message.warning("SKU商品图片未上传")
-                                        this.loadingSave=false
-                                        return
+                                    // if(item.stock<=0){
+                                    //     errormsg="商品规格库存要大于0"
+                                    //     this.loadingSave=false
+                                    //     return
+                                    // }
+                                    if(item.default_image==""){
+                                        errormsg="SKU商品图片未上传"
+                                        that.loadingSave=false
+                                        break
                                     }
                                     let tempsku = {
                                         price:item.price,
-                                        shop_price:item.price,
                                         stock:item.stock,
                                         default_image:item.default_image,
                                     }
@@ -810,21 +741,29 @@
                                     }
                                     tempsku.specs = sepcs
                                     skus.push(tempsku)
-                                })
-                                this.specList.map((item) => {
-                                    this.$delete(item.detail,'attrsVal')
-                                    let options = []
-                                    item.detail.map((item2) =>{
-                                            options.push({
-                                                value:item2
-                                            })
-                                        }
-                                    )
-                                    spu_specs.push({
-                                        name:item.value,
-                                        options:options,
+                                }
+                                if(errormsg !=""){
+                                    this.loadingSave=false
+                                    this.$message.warning(errormsg)
+                                    return;
+                                };
+                                (async function() {
+                                    that.specList.map((item) => {
+                                        delete(item.detail,'attrsVal')
+                                        let options = []
+                                        item.detail.map((item2) =>{
+                                                options.push({
+                                                    value:item2
+                                                })
+                                            }
+                                        )
+                                        spu_specs.push({
+                                            name:item.value,
+                                            options:options,
+                                        })
                                     })
-                                })
+                                })();
+
                                 if(skus.length<1){
                                     this.loadingSave=false
                                     this.$message.warning("请点击立即生成")
@@ -883,230 +822,14 @@
                     }
                 })
             },
-            // 上传轮播图片
-            async changesData () {
-                let vm = this
-                vm.detailDataA = []
-                let aList = vm.$refs.file.files
-                let _aList = []
-                for (let i in aList) {
-                    _aList.push(aList[i]);
-                }
-                let filterList=[]
-                let flag = 0
-                _aList=_aList.filter(item=> typeof item == 'object')
-                _aList.forEach((item,index)=>{
-                    if( typeof item == 'object') {
-                        var reader = new FileReader();
-                        reader.readAsDataURL(item);
-                        reader.onload = function (e) { //让页面中的img标签的src指向读取的路径
-                            var img = new Image()
-                            img.crossOrigin = 'anonymous'
-                            img.src= e.target.result
-                            img.onload=function () {
-                                var height = img.naturalHeight;
-                                var width = img.naturalWidth;
-                                let name = item.name.substring(0,item.name.lastIndexOf("."))
-                                /*if(width != 750) {
-                                    vm.$message.warning(`${name}的宽度不是750`)
-                                    return false
-                                } else {*/
-                                filterList.push(item)
-                                // }
-                                flag=index
-                                if(flag==_aList.length-1) {
-                                    vm.uploadImg(filterList)
-                                }
-                            }
-                        }
-                    }
-                })
-            },
-            uploadImg(filterList) {
-                let vm = this
-                if(filterList.length >0) {
-                    // vm.pics=[]
-                    // vm.newData = _aList && _aList.filter(item => (item.type== 'image/jpeg' || item.type =='image/png'))
-                    vm.newData = filterList && filterList.filter(item => (item.type == 'image/jpeg' || item.type == 'image/png'))
-                    /*console.log(vm.newData, 'vm.newData------')
-                    console.log(vm.$refs.file, 'vm.$refs.file-----mmmm')*/
-                    if (vm.$refs.file) {
-                        vm.$refs.file.value = null; // 避免连续点击相同文件上传的bug
-                    }
-                    let _length = 9 - vm.pics.length
-                    if (vm.newData.length > _length) {
-                        vm.$confirm(`最多只能再上传${_length}张照片，是否确定提交`, `提示`, {
-                            confirmButtonText: '是',
-                            cancelButtonText: '否',
-                            type: 'warning'
-                        }).then(() => {
-                            vm.newData = vm.newData.slice(0, _length)
-                            if (vm.newData.length > 9) {
-                                vm.$message.warning('最大可上传9张图片')
-                                return false
-                            }
-                            if (vm.newData.length > 0) {
-                                vm.uploadImgLoadingFlag = true
-                                vm.submitLoading = true
-                                vm.getImgList(vm.newData)
-                            }
-                        }).catch(() => {
-                            vm.newData = []
-                            vm.detailDataA = []
-                            vm.submitLoading = false
-                            return false
-                        })
-
-
-                    } else {
-                        if (vm.newData.length > 9) {
-                            vm.$message.warning('最大可上传9张图片')
-                            return false
-                        }
-                        if (vm.newData.length > 0) {
-                            vm.uploadImgLoadingFlag = true
-                            vm.submitLoading = true
-                            vm.getImgList(vm.newData)
-                        }
-                    }
-                }
-            },
-
-            getImgList(param) {
-                let vm = this
-                for (let i =0 ; i< param.length; i++) {
-                    vm.topImageUploadRequest(param[i], i)
-                }
-            },
-            topImageUploadRequest(option, index) {
-                let vm = this
-                //console.log(option,'option-----')
-
-                option = {
-                    action: "https://jsonplaceholder.typicode.com/posts/",
-                    path: '/',    // 上传图片时指定的地址路径，类似form变淡的action属性
-                    onSuccess: function (res) {    // 上传成功后执行的方法，res是接收的ajax响应内容
-                        // console.log(res);
-                    },
-                    onFailure: function (res) {    // 上传失败后执行的方法，res是接收的ajax响应内容
-                        // console.log(res);
-                    },
-                    file: option
-                }
-                platformsettingsUploadPlatformImg(option).then(obj=>{
-                    let res={}
-                    res = {
-                        url:obj.data.data[0],
-                        name:obj.data.data[0].split("/")[obj.data.data[0].split("/").length-1]
-                    }
-
-                    let img = new Image()
-                    img.crossOrigin = 'anonymous'
-                    img.src = res.url;
-                    img.onload = function () {
-                        var height = img.naturalHeight;
-                        var width = img.naturalWidth;
-                        let type = res.name.substr(res.name.lastIndexOf("."))
-                        res.name = res.name.substr(0, res.name.indexOf(type))
-                        let img1 = {
-                            pic: res.url,
-                            name: res.name,
-                            index: vm.pics.length,
-                            height: height
-                        }
-                        vm.pics.push(img1)
-                        vm.pics.sort(vm.compare("index"))
-                        vm.detailDataA.push({
-                            pic: res.url,
-                            name: res.name,
-                        })
-                        vm.pics.sort((a1, a2) => {
-                            return sortName(a1.name, a2.name)
-                        });
-                        // vm.compareImg()
-                        vm.detailDataA.sort((a1, a2) => {
-                            return sortName(a1.name, a2.name)
-                        });
-                        vm.newData = []
-                        vm.detailDataA = []
-                        vm.submitLoading = false
-                        vm.uploadImgLoadingFlag = false
-                    }
-                })
-                if(index === vm.newData.length-1) {
-                    vm.uploadImgLoadingFlag = false
-                    vm.submitLoading = false
-                }
-            },
-
-            compareImg() {
-                let vm = this
-                if(vm.pics.length > 1) {
-                    let isEqual = vm.pics.filter(item=>item.height!=vm.pics[0].height)
-                    vm.isEqual = isEqual.length >0
-                }else {
-                    vm.isEqual  = false
-                }
-            },
-            compare(property) {
-                return function(a,b) {
-                    var value1 = a[property];
-                    var value2 = b[property];
-                    return value1 - value2
-                }
-            },
-            changeLf: function(e) {
-                this.pics.splice(e, 1, ...this.pics.splice(e - 1, 1, this.pics[e]));
-            },
-            changeRg: function(e) {
-                this.pics.splice(e + 1, 1, ...this.pics.splice(e, 1, this.pics[e + 1]));
-            },
-            // 删除图片
-            deletePhoto(index) {
-                this.$confirm('确定要删除该照片', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    })
-                    this.pics = this.pics.slice(0, index).concat(this.pics.slice(index + 1, this.pics.length))
-                    this.detailDataA = []
-                    this.newData = []
-                    // this.compareImg(true)
-                }).catch(() => {
-                });
-            },
-
-            // 清空图片
-            clearPhotoData(id) {
-                let _vm = this
-                _vm.$confirm('确定要清空该组照片', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    _vm.detailDataA = []
-                    _vm.newData = []
-                    _vm.pics=[]
-                    _vm.editForm.detail=[]
-                    _vm.$message({
-                        type: 'success',
-                        message: '清空成功!'
-                    });
-                }).catch(() => {
-                });
-            },
-            // 上传轮播图片结束
 
         },
-        mounted(){
-        }
     }
 </script>
 <style lang="scss" scoped>
+    /*::v-deep(.el-dialog__body) {*/
+    /*    padding: 0 30px !important;*/
+    /*}*/
     .add-specs-inner{
         padding: 10px;
         background: #fffcfc;
@@ -1253,7 +976,7 @@
             flex-direction: column;
             column-gap: 10px;
             .el-icon-error{
-                font-size: 16px;
+                font-size: 14px;
                 color: #000000;
                 cursor: pointer;
             }
@@ -1265,6 +988,40 @@
                 column-gap: 10px;
 
             }
+        }
+    }
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 128px;
+      height: 128px;
+      line-height: 128px;
+      text-align: center;
+    }
+    .avatar {
+      width: 128px;
+      height: 128px;
+      display: block;
+    }
+    .form-data {
+        height: calc(100vh - 200px);
+        overflow-y: auto;
+        border: 1px solid  #b3d8ff;
+        .form-title{
+            color: #409eff;
+            background: #ecf5ff;
+            padding: 10px;
+            margin-bottom: 20px;
         }
     }
 </style>

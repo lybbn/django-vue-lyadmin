@@ -4,44 +4,52 @@
 <template>
 <!--  background-color="#304156"-->
 <!--    active-background-color="#304156"-->
-  <el-menu
-    :default-active="$route.meta.index"
-    :collapse="collapsed"
-    collapse-transition
-    router
-    unique-opened
-    class="el-menu-vertical-demo"
-    background-color="#3C444D"
-    active-background-color="#3C444D"
-    text-color="#ffffff"
-    active-text-color="#247af3">
-    <div v-if="menuTitle" class="menu-nav-title">
-      {{menuTitle}}
-    </div>
-    <div v-for="menu in allmenu">
-      <el-submenu v-if="menu.hasChildren" :index="menu.text" :key="menu.id">
-        <template slot="title" >
-          <i class="iconfont" :class="menu.attributes.icon?menu.attributes.icon:'el-icon-menu'"></i>
-          <span slot="title">{{menu.text}}</span>
-        </template>
-        <el-menu-item-group  v-if="menu.hasChildren">
-          <el-menu-item
-            v-for="chmenu in menu.children"
-            :index="'/'+chmenu.attributes.url"
-            :key="chmenu.id"
-            @click="handleOpen2(chmenu)"
-          >
-            <i class="iconfont" :class="chmenu.attributes.icon?chmenu.attributes.icon:'el-icon-menu'"></i>
-            <span slot="title">{{chmenu.text}}</span>
-          </el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-      <el-menu-item  v-else :index="'/'+menu.attributes.url" :key="menu.id" @click="handleOpen2(menu)">
-        <i class="iconfont" :class="menu.attributes.icon?menu.attributes.icon:'el-icon-menu'"></i>
-        <span slot="title">{{menu.text}}</span>
-      </el-menu-item>
-    </div>
-  </el-menu>
+  <div>
+    <el-menu
+      :default-active="$route.meta.index"
+      :collapse="collapsed"
+      collapse-transition
+      router
+      unique-opened
+      class="el-menu-vertical-demo"
+      background-color="var(--l-header-bg)"
+      active-background-color="var(--l-header-bg)"
+      text-color="#ffffff"
+      active-text-color="#247af3">
+      <div v-if="menuTitle" class="menu-nav-title">
+        {{menuTitle}}
+      </div>
+      <div v-for="menu in allmenu" :key="menu.id">
+        <el-sub-menu v-if="menu.hasChildren" :index="menu.text" :key="menu.id">
+          <template #title >
+            <el-icon v-if="menu.attributes.icon!=''">
+                <component :is="menu.attributes.icon" />
+            </el-icon>
+            <span>{{menu.text}}</span>
+          </template>
+          <el-menu-item-group  v-if="menu.hasChildren">
+            <el-menu-item
+              v-for="chmenu in menu.children"
+              :index="'/'+chmenu.attributes.url"
+              :key="chmenu.id"
+              @click="handleOpen2(chmenu)">
+              <el-icon>
+                <component :is="chmenu.attributes.icon?chmenu.attributes.icon:'Menu'" />
+              </el-icon>
+  <!--            <span v-else style="height: 1em;width: 1em;"></span>-->
+              <span>{{chmenu.text}}</span>
+            </el-menu-item>
+          </el-menu-item-group>
+        </el-sub-menu>
+        <el-menu-item  v-else :index="'/'+menu.attributes.url" :key="menu.id" @click="handleOpen2(menu)">
+          <el-icon v-if="menu.attributes.icon!=''">
+            <component :is="menu.attributes.icon" />
+          </el-icon>
+          <span>{{menu.text}}</span>
+        </el-menu-item>
+      </div>
+    </el-menu>
+  </div>
 </template>
 <script>
 import {systemTree} from "@/utils/menuTree.js"
@@ -50,6 +58,7 @@ import { uniqueId } from 'lodash'
 import {apiSystemWebRouter} from '@/api/api'
 import XEUtils from 'xe-utils'
 import { mapActions } from "vuex";
+import store from "../store";
 export default {
   name: "leftnav",
   data() {
@@ -61,19 +70,19 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if(sessionStorage.getItem('logintoken')) {
-        this.$forceUpdate()
+      if(store.getters.getLogintoken) {
+        // this.$forceUpdate()
         this.getMenu()
       }
     }
   },
   created() {
-    let userId = sessionStorage.getItem("userId")
+    let userId = store.getters.getUserId
     let params = {
       userId: userId
     };
     this.getMenu()
-    this.$root.Bus.$on("toggle", value => {
+    this.$Bus.on("toggle", value => {
       this.collapsed = !value;
     });
   },
@@ -82,63 +91,16 @@ export default {
       this.menuTitle=''
       this.allmenu=[]
 
-      // apiSystemWebRouter().then(res=>{
-      //   if(res.code == 2000) {
-      //     let menuTree = []
-      //     if(res.data.data.length > 0) {
-      //       let childrenList = res.data.data.filter(item=> item.parent)
-      //       let parentList = res.data.data.filter(item=> !item.parent)
-      //       if(parentList.length >0) {
-      //         parentList.forEach(item=>{
-      //           let menuTreeChildren=[]
-      //           let children = childrenList.filter(itema=>itema.parent == item.id)
-      //           children.forEach(itemb=>{
-      //             menuTreeChildren.push(({
-      //               text:itemb.name,
-      //               id:itemb.id,
-      //               attributes:{
-      //                 url:itemb.web_path,
-      //                 icon:itemb.icon
-      //               },
-      //               hasChildren: false,
-      //               hasParent:true
-      //             }))
-      //           })
-      //           menuTree.push({
-      //             text:item.name,
-      //             id:item.id,
-      //             attributes:{
-      //               url:item.web_path,
-      //               icon:item.icon
-      //             },
-      //             hasChildren: children.length >0,
-      //             hasParent:false,
-      //             children:menuTreeChildren,
-      //           })
-      //           item.children=[...children]
-      //         })
-      //       }
-      //     }
-      //     this.allmenu =  menuTree
-      //     // this.allmenu =  systemTree
-      //     //console.log(this.allmenu,'this.allmenu')
-      //     sessionStorage.setItem('allmenu', JSON.stringify(this.allmenu))
-      //     this.$forceUpdate()
-      //   } else {
-      //     this.$message.warning(res.msg)
-      //   }
-      // })
-
       //动态加载菜单
-      this.allmenu = JSON.parse(sessionStorage.getItem('allmenu'))
+      this.allmenu = JSON.parse(localStorage.getItem('allmenu'))
       //加载menutree文件的静态菜单，启用动态后这一段要注释掉
       //this.allmenu = systemTree
-      this.$forceUpdate()
+      // this.$forceUpdate()
     },
     supplementPath (menu) {
       return menu.map(e => ({
         ...e,
-        path: e.path || uniqueId('d2-menu-empty-'),
+        path: e.path || uniqueId('ly-menu-empty-'),
         ...e.children ? {
           children: this.supplementPath(e.children)
         } : {}
@@ -151,7 +113,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .el-menu.el-menu--horizontal{
     border-bottom: 0;
   }
@@ -181,13 +143,11 @@ export default {
   text-align: left;
 }
 
-.el-menu-item-group__title {
-  padding: 0px;
+::v-deep(.el-menu-item-group__title) {
+  padding: 0px !important;
 }
 .el-menu-item.is-active {
-  /*background: #3C444D !important;*/
   position: relative;
-  border-left: 2px solid rgb(36, 122, 243);
   background-color: rgb(48, 54, 62) !important;
   &:before{
     width: 2px;
@@ -195,7 +155,7 @@ export default {
     position: absolute;
     left: 0;
     top: 0;
-    background: #247af3;
+    background: var(--l-main-sidebar-menu-hover-bg);
     display: block;
   }
 }
@@ -219,15 +179,15 @@ export default {
 }
 
 .logoimg {
-  height: 40px;
+  /*height: 40px;*/
 }
 .router-link-active{
   color: #ffd04b;
 }
-.aside .el-submenu__icon-arrow,.aside span{
+.aside .el-sub-menu__icon-arrow,.aside span{
   display: none;
 }
-.el-submenu{
+.el-sub-menu{
   /*width: 180px;*/
   width:100%
 }

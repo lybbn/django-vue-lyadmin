@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="tableSelect">
+        <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
                 <el-form-item label="标题：">
-                    <el-input size="small" v-model.trim="formInline.title" maxlength="60"  clearable placeholder="消息标题" @change="search" style="width:200px"></el-input>
+                    <el-input size="default" v-model.trim="formInline.title" maxlength="60"  clearable placeholder="消息标题" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <!--                <el-form-item label="创建时间：">-->
                 <!--                    <el-date-picker-->
@@ -18,29 +18,29 @@
                 <!--                    </el-date-picker>-->
                 <!--                </el-form-item>-->
                 <!--                v-show="isShowBtn('withdrawalStatisticsUser','分销设置','Create')"-->
-                <el-form-item label=""><el-button size="small" @click="addModule" type="primary">新增</el-button></el-form-item>
+                <el-form-item label=""><el-button size="default" @click="addModule" type="primary">新增</el-button></el-form-item>
             </el-form>
         </div>
-        <el-table size="small" height="calc(100vh - 280px)" border :data="tableData" v-loading="loadingPage" style="width: 100%">
+        <el-table  :height="'calc('+(tableHeight)+'px)'" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
             <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
             <el-table-column min-width="90" prop="code" label="模板code"></el-table-column>
             <el-table-column min-width="120" prop="title" label="模板title"></el-table-column>
 <!--            <el-table-column min-width="120" prop="image" label="封面图">-->
-<!--                <template slot-scope="scope">-->
+<!--                <template #default="scope">-->
 <!--                    <el-image  :src=scope.row.image :preview-src-list="[scope.row.image]" style="width: 60px;height: 60px"></el-image>-->
 <!--                </template>-->
 <!--            </el-table-column>-->
             <el-table-column min-width="180" prop="content" show-overflow-tooltip label="内容"></el-table-column>
 <!--            <el-table-column min-width="80" prop="sort" label="排序"></el-table-column>-->
 <!--            <el-table-column min-width="90" label="状态">-->
-<!--                <template slot-scope="scope">-->
+<!--                <template #default="scope">-->
 <!--                    <el-tag v-if="scope.row.status">正常</el-tag>-->
 <!--                    <el-tag v-else type="danger">禁用</el-tag>-->
 <!--                </template>-->
 <!--            </el-table-column>-->
             <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
-            <el-table-column label="操作" width="180">
-                <template slot-scope="scope">
+            <el-table-column label="操作" fixed="right" width="180">
+                <template #default="scope">
                     <!--                        v-show="isShowBtn('dynamicsInfo','资讯动态','Update')"-->
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('messagTemplate','消息模板','Update')">编辑</span>
                     <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('messagTemplate','消息模板','Delete')">删除</span>
@@ -54,7 +54,7 @@
 <script>
     import addModule from "./components/addModuleTemplate";
     import Pagination from "@/components/Pagination";
-    import {dateFormats} from "@/utils/util";
+    import {dateFormats,getTableHeight} from "@/utils/util";
     import {messagesMessagetemplate,messagesMessagetemplateDelete} from '@/api/api'
     export default {
         components:{
@@ -64,6 +64,7 @@
         name:'messagTemplate',
         data() {
             return {
+                tableHeight:500,
                 loadingPage:false,
                 formInline:{
                     page: 1,
@@ -86,7 +87,7 @@
                 this.$refs.addModuleFlag.addModuleFn(null,'新增')
             },
             changeStatus(row) {
-                console.log(row,'row----')
+                // console.log(row,'row----')
             },
             handleEdit(row,flag) {
                 let vm = this
@@ -134,9 +135,39 @@
                      }
                  })
             },
+            //解决table 表格缩放错位问题
+            handleResize() {
+                this.$nextTick(()=> {
+                    this.$refs.tableref.doLayout();
+                });
+            },
+            // 计算搜索栏的高度
+            listenResize() {
+				this.$nextTick(() => {
+				    this.getTheTableHeight()
+				})
+			},
+            getTheTableHeight(){
+               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+            }
         },
         created() {
             this.getData()
+        },
+        mounted() {
+            //解决table 表格缩放错位问题
+            window.addEventListener('resize', this.handleResize);
+            // 监听页面宽度变化搜索框的高度
+            window.addEventListener('resize', this.listenResize);
+            this.$nextTick(() => {
+              this.getTheTableHeight()
+            })
+        },
+        unmounted() {
+            //解决table 表格缩放错位问题
+             window.removeEventListener("resize", this.handleResize);
+              // 页面销毁，去掉监听事件
+            window.removeEventListener("resize", this.listenResize);
         },
     }
 </script>

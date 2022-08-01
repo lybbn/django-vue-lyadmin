@@ -1,93 +1,63 @@
-import Vue from 'vue'
-
-//只能输入正数(包含小数)和0
-Vue.directive('limitPositiveNumber', {
-	bind: function(el, binding, vNode) {
-		el.oninput=(e)=>{
-			let value=e.target.value;
-			//先把非数字的都替换掉，除了数字和.
-			value = value.replace(/[^\d\.]/g, '');
-			//保证只有出现一个.而没有多个
-			value = value.replace(/\.{2,}/g, '.');
-			//保证.只出现一次，而不能出现两次以上
-			value = value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
-			//必须保证第一个为数字而不是.
-			value = value.replace(/^\./g, '');
-			e.target.value=value;
-			//手动触发input事件使v-model绑定的值更新
-			e.target.dispatchEvent(new Event("input"));
+//自定义指令插件：用法前面加上v-
+export default {
+  install:(app,options)=>{
+	//只能输入正数(包含小数)和0
+	app.directive('limitPositiveNumber', {
+		mounted(el, binding) {
+			el.oninput=(e)=>{
+				let value=e.target.value;
+				//先把非数字的都替换掉，除了数字和.
+				value = value.replace(/[^\d\.]/g, '');
+				//保证只有出现一个.而没有多个
+				value = value.replace(/\.{2,}/g, '.');
+				//保证.只出现一次，而不能出现两次以上
+				value = value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
+				//必须保证第一个为数字而不是.
+				value = value.replace(/^\./g, '');
+				e.target.value=value;
+				//手动触发input事件使v-model绑定的值更新
+				e.target.dispatchEvent(new Event("input"));
+			}
 		}
-	}
-})
-
-//只能输入正整数和0
-Vue.directive('limitPositiveInt', {
-	bind: function(el, binding, vNode) {
-		el.oninput=(e)=>{
-			let value=e.target.value;
-			value = value.replace(/\D/g, '');
-			e.target.value=value;
-			//手动触发input事件使v-model绑定的值更新
-			e.target.dispatchEvent(new Event("input"));
+	})
+	//只能输入正整数和0
+	app.directive('limitPositiveInt', {
+		mounted(el, binding) {
+			el.oninput=(e)=>{
+				let value=e.target.value;
+				value = value.replace(/\D/g, '');
+				e.target.value=value;
+				//手动触发input事件使v-model绑定的值更新
+				e.target.dispatchEvent(new Event("input"));
+			}
 		}
-	}
-})
-
-//只能输入正整数并且不能大于9
-Vue.directive('limitPositiveInt2', {
-	bind: function(el, binding, vNode) {
-		el.oninput=(e)=>{
-			let value=e.target.value;
-			value = value.replace(/\D/g, '');
-			if(value > 9){value = 9}
-			e.target.value=value;
-			//手动触发input事件使v-model绑定的值更新
-			e.target.dispatchEvent(new Event("input"));
+	})
+	//只能输入正数(最多两位小数)和0
+	app.directive('limitPositiveNumberFixed2', {
+		mounted(el, binding) {
+			el.oninput=(e)=>{
+				let value=e.target.value;
+				var t = value.charAt(0);
+				//先把非数字的都替换掉，除了数字和.
+				value = value.replace(/[^\d\.]/g, '');
+				//保证只有出现一个.而没有多个
+				value = value.replace(/\.{2,}/g, '.');
+				//保证.只出现一次，而不能出现两次以上
+				value = value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
+				//必须保证第一个为数字而不是.
+				value = value.replace(/^\./g, '');
+				value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+				e.target.value=value;
+				//手动触发input事件使v-model绑定的值更新
+				e.target.dispatchEvent(new Event("input"));
+			}
 		}
-	}
-})
-
-Vue.directive('limitPositiveInt3', {
-	bind: function(el, binding, vNode) {
-		el.oninput=(e)=>{
-			let value=e.target.value;
-			value = value.replace(/\D/g, '');
-			if(value > 10){value = 15}
-			e.target.value=value;
-			//手动触发input事件使v-model绑定的值更新
-			e.target.dispatchEvent(new Event("input"));
-		}
-	}
-})
-
-//只能输入正数(最多两位小数)和0
-Vue.directive('limitPositiveNumberFixed2', {
-	bind: function(el, binding, vNode) {
-		el.oninput=(e)=>{
-			let value=e.target.value;
-			var t = value.charAt(0);
-			//先把非数字的都替换掉，除了数字和.
-			value = value.replace(/[^\d\.]/g, '');
-			//保证只有出现一个.而没有多个
-			value = value.replace(/\.{2,}/g, '.');
-			//保证.只出现一次，而不能出现两次以上
-			value = value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
-			//必须保证第一个为数字而不是.
-			value = value.replace(/^\./g, '');
-			value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
-			e.target.value=value;
-			//手动触发input事件使v-model绑定的值更新
-			e.target.dispatchEvent(new Event("input"));
-		}
-	}
-})
-
-// v-dialogDrag: 弹窗拖拽和双击放大属性 （重点！！！ 给模态框添加这个属性模态框就能拖拽了）
-// :destroy-on-close="true" 会导致关闭打开后拖拽事件失效
-Vue.directive('dialogDrag', {
-
-  bind: function(el, binding, vNode) {
-    //弹框可拉伸最小宽高
+	})
+    // v-dialogDrag: 弹窗拖拽和双击放大属性 （重点！！！ 给模态框添加这个属性模态框就能拖拽了）
+    // :destroy-on-close="true" 会导致关闭打开后拖拽事件失效
+	app.directive('dialogDrag', {
+	  updated(el,binding) {
+      //弹框可拉伸最小宽高
       let minWidth = 400
       let minHeight = 300
       //初始非全屏
@@ -101,8 +71,10 @@ Vue.directive('dialogDrag', {
       const dialogHeaderEl = el.querySelector('.el-dialog__header')
       //弹窗
       const dragDom = el.querySelector('.el-dialog')
-      // console.log(dragDom.style)
-      // dragBody.style.height = dragDom.clientHeight - 102 + 'px'
+      // console.log(dragDom,'xxxxxxx')
+      // console.log(dialogHeaderEl,'yyyyyyyy')
+      if(dialogHeaderEl && dragDom){
+          // dragBody.style.height = dragDom.clientHeight - 102 + 'px'
       //给弹窗加上overflow auto；不然缩小时框内的标签可能超出dialog；
       dragDom.style.overflow = 'auto'
       //清除选择头部文字效果
@@ -153,7 +125,7 @@ Vue.directive('dialogDrag', {
       dialogHeaderEl.ondblclick = () => {
         let elOverlay = el.querySelector('.el-overlay')
         let dialogBody = el.querySelector('.el-dialog__body')
-        if (isFullScreen === false) {
+        if (isFullScreen == false) {
             nowHight = dragDom.clientHeight
             nowWidth = dragDom.clientWidth
             nowMarginTop = dragDom.style.marginTop
@@ -165,15 +137,15 @@ Vue.directive('dialogDrag', {
             isFullScreen = true
             dialogHeaderEl.style.cursor = 'initial'
             dialogHeaderEl.onmousedown = null
-      } else {
-            dragDom.style.height = nowHight + 'px'
+        } else {
+          dragDom.style.height = nowHight + 'px'
             dragDom.style.margin = 'auto'
             dragDom.style.width = nowWidth + 'px'
             dragDom.style.marginTop = nowMarginTop
             isFullScreen = false
             dialogHeaderEl.style.cursor = 'move'
             dialogHeaderEl.onmousedown = moveDown
-      }
+        }
       }
 
       //拉伸(右下方)
@@ -339,6 +311,10 @@ Vue.directive('dialogDrag', {
           document.onmouseup = null
         }
       }
+      }
+    },
+
+	})
   }
 
-})
+}

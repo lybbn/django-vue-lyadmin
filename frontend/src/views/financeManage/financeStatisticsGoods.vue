@@ -1,21 +1,20 @@
 <template>
-    <div>
-        <div class="tableSelect">
+    <div :class="{'ly-is-full':isFull}">
+        <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
                 <el-form-item label="订单编号：">
-                    <el-input size="small" v-model.trim="formInline.order_id" maxlength="60"  clearable placeholder="订单编号" @change="search" style="width:200px"></el-input>
+                    <el-input v-model.trim="formInline.order_id" maxlength="60"  clearable placeholder="订单编号" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="昵称：">
-                    <el-input size="small" v-model.trim="formInline.nickname" maxlength="60"  clearable placeholder="昵称" @change="search" style="width:200px"></el-input>
+                    <el-input v-model.trim="formInline.nickname" maxlength="60"  clearable placeholder="昵称" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="商品名称：">
-                    <el-input size="small" v-model.trim="formInline.gname" maxlength="60"  clearable placeholder="商品名称" @change="search" style="width:200px"></el-input>
+                    <el-input v-model.trim="formInline.gname" maxlength="60"  clearable placeholder="商品名称" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="付款时间：">
                     <el-date-picker
                             style="width:100% !important;"
                             v-model="timers"
-                            size="small"
                             type="datetimerange"
                             @change="timeChange"
                             range-separator="至"
@@ -23,18 +22,23 @@
                             end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
-                <!--                v-show="isShowBtn('financeStatisticsAgent','分销设置','Create')"-->
 <!--                <el-form-item label=""><el-button size="small" @click="addModule" type="primary">新增</el-button></el-form-item>&lt;!&ndash;超管有此权限&ndash;&gt;-->
 <!--                <el-form-item label=""><el-button size="small" @click="exportData" type="primary">导出</el-button></el-form-item>&lt;!&ndash;超管有此权限&ndash;&gt;-->
+                <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('financeStatisticsGoods','商品财务流水','Search')">查询</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
             </el-form>
         </div>
-        <ul class="order-static">
+        <ul class="order-static" ref="orderStatic">
             <li>收益总金额：￥{{orderstatics.totalmoney}}</li>
         </ul>
-        <el-table size="small" height="calc(100vh - 320px)" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
-            <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
+        <el-table :height="tableHeight" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
+            <el-table-column type="index" width="60" align="center" label="序号">
+                <template #default="scope">
+                    <span v-text="getIndex(scope.$index)"></span>
+                </template>
+            </el-table-column>
             <el-table-column min-width="70" prop="avatar" label="用户头像">
-                    <template slot-scope="scope">
+                    <template #default="scope">
                         <img  :src="scope.row.userinfo.avatar ? scope.row.userinfo.avatar : defaultImg" style="width: 30px;height: 30px" :onerror="defaultImg">
                     </template>
             </el-table-column>
@@ -65,13 +69,16 @@
     import Pagination from "@/components/Pagination";
     import {dateFormats} from "@/utils/util";
     import {mallGoodsforderinfo,mallGoodsforderinfoOrderstatistics} from '@/api/api'
+    import { lyMixins } from "@/mixins/mixins"
     export default {
+        mixins: [lyMixins],
         components:{
             Pagination,
         },
         name:'financeStatisticsGoods',
         data() {
             return {
+                isFull:false,
                 loadingPage:false,
                 formInline:{
                     name:'',
@@ -93,6 +100,14 @@
             }
         },
         methods:{
+            setFull(){
+                this.isFull=!this.isFull
+            },
+            // 表格序列号
+            getIndex($index) {
+                // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
+                return (this.pageparm.page-1)*this.pageparm.limit + $index +1
+            },
             addModule() {
                 this.$refs.addModuleFlag.addModuleFn(null,'新增','1')
             },
@@ -100,6 +115,18 @@
                 let vm = this
                 if(flag=='detail') {
                     vm.$refs.addModuleFlag.addModuleFn(row,'详情','1')
+                }
+                else if(flag=="reset"){
+                    this.formInline = {
+                        page:1,
+                        limit: 10
+                    }
+                    this.pageparm={
+                        page: 1,
+                        limit: 10,
+                        total: 0
+                    }
+                    this.search()
                 }
             },
 

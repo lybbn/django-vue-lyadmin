@@ -1,6 +1,8 @@
 
 ## lyadmin后端
 
+注意：本后端python版本请选择3.9及以上
+
 ~~~bash
 1. 进入项目目录
 2. 在 config.py 中配置数据库信息
@@ -38,4 +40,4 @@ from django.core.management import utils
 utils.get_random_secret_key()
 获取生成的新SECRET_KEY替换原来的老KEY
 ~~~
-2、本项目可使用最新的python版本开发、注意最新django版本安全问题，请及时更新安全稳定版本
+2、本项目可使用最新的python版本开发（python3.10及以上暂时不支持）、注意最新django版本安全问题，请及时更新安全稳定版本
