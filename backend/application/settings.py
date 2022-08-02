@@ -17,7 +17,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
-sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
+sys.path.insert(1, os.path.join(BASE_DIR, 'extra_apps'))
 
 # ================================================= #
 # ******************** 动态配置 ******************** #
@@ -57,15 +57,15 @@ INSTALLED_APPS = [
     #myown app
     'mysystem',
     #custom app
-    'lymessages',
-    'address',
-    'oauth',
-    'logins',
-    'lyusers',
-    'platformsettings',
-    'mall',
-    'lymonitor',
-    'lywebsocket',
+    'apps.lymessages',
+    'apps.address',
+    'apps.oauth',
+    'apps.logins',
+    'apps.lyusers',
+    'apps.platformsettings',
+    'apps.mall',
+    'apps.lymonitor',
+    'apps.lywebsocket',
 ]
 
 MIDDLEWARE = [
