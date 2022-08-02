@@ -109,7 +109,7 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 	python manage.py init
 7. 启动项目
 	python manage.py runserver 127.0.0.1:8000
-    或使用 daphne :
+    或使用 daphne (使用【终端服务】的需要使用此asgi方式部署来支持websocket):
     daphne -b 0.0.0.0 -p 8000 --proxy-headers application.asgi:application
 初始账号：superadmin 密码：123456
 

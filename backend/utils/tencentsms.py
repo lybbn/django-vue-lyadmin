@@ -1,6 +1,18 @@
-# -*- coding: utf-8 -*-
+#!/bin/python
+#coding: utf-8
+# +-------------------------------------------------------------------
+# | system: django-vue-lyadmin
+# +-------------------------------------------------------------------
+# | Author: lybbn
+# +-------------------------------------------------------------------
+# | QQ: 1042594286
+# +-------------------------------------------------------------------
 
-#腾讯云短信
+# ------------------------------
+# 腾讯云短信
+# ------------------------------
+# 官网文档地址：https://cloud.tencent.com/document/product/382/3773
+# ------------------------------
 
 from config import TENCENT_SMS_SECRETID,TENCENT_SMS_SECRETKEY,TENCENT_SMS_SIGN,TENCENT_SMS_TEMPLATE_ID,TENCENT_SMS_APPID
 from tencentcloud.common import credential

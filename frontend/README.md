@@ -1,4 +1,4 @@
-# django-vue3-lyadmin  frontend 前端框架
+# django-vue-lyadmin  frontend 前端框架
 
 #### slogon
 

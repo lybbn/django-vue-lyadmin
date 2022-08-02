@@ -1,6 +1,18 @@
-# -*- coding: utf-8 -*-
+#!/bin/python
+#coding: utf-8
+# +-------------------------------------------------------------------
+# | system: django-vue-lyadmin
+# +-------------------------------------------------------------------
+# | Author: lybbn
+# +-------------------------------------------------------------------
+# | QQ: 1042594286
+# +-------------------------------------------------------------------
 
-#微信第三方app支付v3(需要APIV3 的apikey)（直连方式-普通商户）
+# ------------------------------
+# 微信支付v3(需要APIV3 的apikey)（直连方式-普通商户）
+# ------------------------------
+# 支付官网文档地址：https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml
+# ------------------------------
 
 from config import WXPAY_CLIENT_CERT_PATH,WXPAY_CLIENT_KEY_PATH,WXPAY_APPID,WXPAY_MCHID,WXPAY_APIKEY,WXPAY_SERIAL_NO,WXPAY_CERT_DIR,WXPAY_CERT_DIR_RESPONSE,WXPAY_APPID_APP
 import requests

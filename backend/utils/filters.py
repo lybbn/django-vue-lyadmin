@@ -23,9 +23,6 @@ from apps.platformsettings.models import UserLeavingMessage
 from apps.mall.models import OrderInfo
 
 
-
-
-
 def get_dept(dept_id, dept_all_list=None, dept_list=None):
     """
     递归获取部门的所有下级部门
