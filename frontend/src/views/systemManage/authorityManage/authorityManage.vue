@@ -3,7 +3,7 @@
         <el-form>
         <div class="auth-outer">
             <div>
-                <div class="auth-item" style="width: 400px;height: 300px">
+                <div class="auth-item" style="width: 320px;height: 300px">
                     <div class="auth-item-header">
                         <el-tag size="large" style="font-size: 13px">当前选择:{{ roleObj.name ? roleObj.name : "无" }}</el-tag>
                         <el-button type="primary"  @click="submitPermisson" size="default">保存</el-button>
