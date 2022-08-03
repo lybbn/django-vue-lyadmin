@@ -6,13 +6,13 @@
 
 <script>
     import LyXterm from "@/components/terminal/xterm";
-    import {domain} from '@/api/url'
+    import {domain,url} from '@/api/url'
     export default {
         name: "lyterminal",
         components: {LyXterm},
         data(){
             return{
-                wsuri:"wss://"+domain+"/ws/webssh/",
+                wsuri:(window.location.protocol === 'http:' ? 'ws://' : 'wss://') + domain+"/ws/webssh/",
             }
         },
         created() {

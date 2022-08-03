@@ -121,7 +121,7 @@
                     this.$refs.addModuleTerminalFlag.addUserFn(row,'编辑')
                 }
                 else if(flag=='openterminal') {
-                    let baseurl = "https://"+domain
+                    let baseurl = window.location.protocol+"//"+window.location.host
                     window.open(baseurl+"/#/lyterminal?id="+row.id+"&host="+row.host,'_blank');
                 }
                 else if(flag=='delete') {
