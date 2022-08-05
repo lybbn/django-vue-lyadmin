@@ -26,11 +26,10 @@ class Users(AbstractUser, CoreModel):
     gender = models.SmallIntegerField(choices=GENDER_CHOICES, verbose_name="性别", null=True, blank=True, help_text="性别")
     post = models.ManyToManyField(to='Post', verbose_name='关联岗位', db_constraint=False, help_text="关联岗位")
     role = models.ManyToManyField(to='Role', verbose_name='关联角色', db_constraint=False, help_text="关联角色")#这个就是保留跨表查询的便利(双下划线跨表查询```),但是不用约束字段了,一般公司都用false,这样就省的报错,因为没有了约束(Field字段对象,既约束,又建立表与表之间的关系
-    dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True,
-                             blank=True, help_text="关联部门")
+    dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True,blank=True, help_text="关联部门")
 
     # 自定义
-    identity = models.SmallIntegerField(choices=IDENTITY_CHOICES, verbose_name="身份标识", null=True, blank=True, default=1,help_text="身份标识")
+    identity = models.SmallIntegerField(choices=IDENTITY_CHOICES, verbose_name="身份标识", null=True, blank=True, default=2,help_text="身份标识")
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='钱包余额')  # 钱包余额
     # vipid = models.CharField(max_length=100, unique=True, help_text="会员id", verbose_name="会员id", null=True, blank=True)
     is_delete = models.BooleanField(default=False, verbose_name="是否逻辑删除", help_text="是否逻辑删除")

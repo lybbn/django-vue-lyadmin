@@ -14,6 +14,7 @@ from utils.validator import CustomUniqueValidator
 from utils.viewset import CustomModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
+from utils.filters import UsersManageTimeFilter
 
 class UserSerializer(CustomModelSerializer):
     """
@@ -38,8 +39,7 @@ class UserCreateSerializer(CustomModelSerializer):
     """
     管理员用户新增-序列化器
     """
-    username = serializers.CharField(max_length=50,
-                                     validators=[CustomUniqueValidator(queryset=Users.objects.all(), message="账号必须唯一")])
+    username = serializers.CharField(max_length=50,validators=[CustomUniqueValidator(queryset=Users.objects.all(), message="账号必须唯一")])
     password = serializers.CharField(required=False, default=make_password("123456"))
 
     is_staff = serializers.BooleanField(required=False,default=True)#是否允许登录后台
@@ -48,6 +48,7 @@ class UserCreateSerializer(CustomModelSerializer):
         if "password" in validated_data.keys():
             if validated_data['password']:
                 validated_data['password'] = make_password(validated_data['password'])
+        validated_data['identity'] = 1
         return super().create(validated_data)
 
     def save(self, **kwargs):
@@ -95,12 +96,12 @@ class UserViewSet(CustomModelViewSet):
     """
     后台管理员用户接口:
     """
-    queryset = Users.objects.exclude(is_superuser=1).filter(is_staff=True).order_by('-create_datetime')#排除超级管理员和前端用户
+    queryset = Users.objects.filter(identity=1,is_delete=False).order_by('-create_datetime')
     serializer_class = UserSerializer
     create_serializer_class = UserCreateSerializer
     update_serializer_class = UserUpdateSerializer
-    filterset_fields = ('name','is_active','username')
-    # permission_classes=[IsAuthenticated]
+    # filterset_fields = ('name','is_active','username')
+    filterset_class = UsersManageTimeFilter
 
     def user_info(self,request):
         """获取当前用户信息"""

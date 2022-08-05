@@ -213,12 +213,14 @@ class UsersManageTimeFilter(django_filters.rest_framework.FilterSet):
     # 模糊搜索
     nickname = django_filters.CharFilter(field_name='nickname', lookup_expr='icontains')  # icontains表示该字段模糊搜索
     # 模糊搜索
+    name = django_filters.CharFilter(field_name='name', lookup_expr='icontains')  # icontains表示该字段模糊搜索
+    # 模糊搜索
     mobile = django_filters.CharFilter(field_name='mobile', lookup_expr='icontains')  # icontains表示该字段模糊搜索
     is_active = django_filters.CharFilter(field_name='is_active')  # icontains表示该字段模糊搜索
 
     class Meta:
         model = Users
-        fields = ['beginAt', 'endAt','username','mobile','is_active','nickname']
+        fields = ['beginAt', 'endAt','username','mobile','is_active','nickname','name']
 
 
 class OperationLogTimeFilter(django_filters.rest_framework.FilterSet):
