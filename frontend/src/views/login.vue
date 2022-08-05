@@ -156,7 +156,12 @@
                 this.$router.replace({path: `/${this.allmenu[0].attributes.url}`})
               })
             } else {
-              this.$message.warning('暂无授权任何菜单权限~')
+               this.$store.commit('logout', 'false')
+               this.$router.push({path: '/login'})
+               sessionStorage.clear()
+               localStorage.clear()
+               this.loadingLg=false
+               this.$message.warning('暂无授权任何菜单权限~')
             }
 
             localStorage.setItem('allmenu', JSON.stringify(this.allmenu))
