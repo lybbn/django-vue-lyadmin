@@ -120,6 +120,27 @@ function limitPriceType(value){
   value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
   return value
 }
+//通过a标签转换url为blob下载文件
+function downloadFileURLByA(url) {
+    let a = document.createElement('a')
+    // 这里是将url转成blob地址，
+    fetch(url).then(res => res.blob()).then(blob => { // 将链接地址字符内容转变成blob地址
+        a.href = URL.createObjectURL(blob)
+        console.log(a.href)
+        a.download = '' // 下载文件的名字
+        // a.download = url.split('/')[url.split('/').length -1] //  // 下载文件的名字
+        document.body.appendChild(a)
+        a.click()
+    })
+}
+//通过iframe标签下载文件
+function downloadFileURLByIframe(url) {
+    var iframe =document.createElement("iframe")
+    iframe.style.display ="none";
+    iframe.src = url;
+    document.body.appendChild(iframe);
+}
+
 
 function formatUnitSize (bytes, is_unit, fixed, end_unit) //字节转换，到指定单位结束 is_unit：是否显示单位  fixed：小数点位置 end_unit：结束单位
 {
@@ -296,5 +317,7 @@ export{
     hasPermission,
     getTableHeight,
     sortName,
-    formatUnitSize
+    formatUnitSize,
+    downloadFileURLByA,
+    downloadFileURLByIframe
 }
