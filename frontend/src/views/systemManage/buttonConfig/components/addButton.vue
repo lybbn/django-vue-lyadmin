@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ly-dialog v-model="dialogVisible" :title="loadingTitle" width="560px"  :before-close="handleClose">
+        <ly-dialog v-model="dialogVisible" :title="dialogTitle" width="560px"  :before-close="handleClose">
             <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto">
                 <el-form-item label="名称：" prop="value">
                 <el-select v-model="formData.value" filterable placeholder="请选择" style="width: 300px"
