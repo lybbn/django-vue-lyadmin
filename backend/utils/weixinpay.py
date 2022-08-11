@@ -180,7 +180,7 @@ class WxAppPay:
         authorization = 'WECHATPAY2-SHA256-RSA2048 ' + f'mchid="{self.mchid}",nonce_str="{random_str}",signature="{sign}",timestamp="{time_stamps}",serial_no="{self.serial_no}"'
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': authorization}
         response = requests.post(self.url2, data=data, headers=headers)
-        logger.info("微信app支付下单返回消息,订单号：%s,金额：%s,微信返回信息：%s" % (order_no, total / 100, response.text))
+        logger.info("微信jsapi支付下单返回消息,订单号：%s,金额：%s,微信返回信息：%s" % (order_no, total / 100, response.text))
         """
         正常返回
         {
@@ -189,6 +189,8 @@ class WxAppPay:
         预支付交易会话标识。用于后续接口调用中使用，该值有效期为2小时(直接返回给app端，支付时需要)
         """
         res = json.loads(response.content)
+        if 'code' in res and 'message' in res:#如果获取失败返回失败信息
+            raise ValueError(res['message'])
         random_str_app = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(32))
         time_stamps_app = str(int(time.time()))
         package = "prepay_id="+res['prepay_id']
