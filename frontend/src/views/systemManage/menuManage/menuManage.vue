@@ -55,26 +55,26 @@
                     </el-icon>
                 </template>
             </el-table-column>
-            <el-table-column min-width="100" prop="sort" label="排序"></el-table-column>
-            <el-table-column min-width="180" prop="web_path" label="路由地址" show-overflow-tooltip=""></el-table-column>
-            <el-table-column min-width="200" label="权限">
+            <el-table-column min-width="80" prop="sort" label="排序"></el-table-column>
+            <el-table-column min-width="160" prop="web_path" label="路由地址" show-overflow-tooltip=""></el-table-column>
+            <el-table-column min-width="300" label="权限">
                 <template #default="scope">
                     <span v-for="(item,index) in scope.row.menuPermission" :key="index">{{item + (index < scope.row.menuPermission.length ? '/' : '')}}</span>
                 </template>
             </el-table-column>
-            <el-table-column min-width="120" label="侧边可见">
+            <el-table-column min-width="100" label="侧边可见">
                 <template #default="scope">
                     <el-tag v-if="scope.row.visible==1">是</el-tag>
                     <el-tag v-else type="danger">否</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column min-width="120" label="状态">
+            <el-table-column min-width="100" label="状态">
                 <template #default="scope">
                     <el-tag v-if="scope.row.status==1" type="">启用</el-tag>
                     <el-tag v-else type="danger">禁用</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="220">
+            <el-table-column label="操作" fixed="right" width="200">
                 <template #header>
                     <div style="display: flex;justify-content: space-between;align-items: center;">
                         <div>操作</div>
