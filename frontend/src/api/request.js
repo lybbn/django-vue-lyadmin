@@ -74,8 +74,7 @@ function ajax(opt,method){
                   resolve(res.data)
               }
           }).catch(res=>{
-              ElMessage.$message.error("请求失败");
-              // Vue.$message.error(JSON.stringify(res));
+              ElMessage.error("请求失败");
               reject(res)
           })
       })
@@ -115,8 +114,7 @@ function ajax(opt,method){
                   resolve(res.data)
               }
           }).catch(res=>{
-              ElMessage.$message.error("请求失败");
-              // Vue.$message.error(JSON.stringify(res));
+              ElMessage.error("请求失败");
               reject(res)
           })
       })
@@ -143,8 +141,7 @@ function ajax(opt,method){
                   resolve(res.data)
               }
           }).catch(res=>{
-              ElMessage.$message.error("请求失败");
-              // Vue.$message.error(JSON.stringify(res));
+              ElMessage.error("请求失败");
               reject(res)
           })
       })
