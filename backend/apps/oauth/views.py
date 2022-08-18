@@ -1,11 +1,11 @@
 from rest_framework.views import APIView
 from mysystem.models import Users
 from apps.oauth.models import OAuthWXUser
-from utils.jsonResponse import SuccessResponse,ErrorResponse
+from utils.jsonResponse import SuccessResponse,ErrorResponse,DetailResponse
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from utils.common import get_parameter_dic,REGEX_MOBILE
-from config import WX_XCX_APPID,WX_XCX_APPSECRET,WX_GZH_APPID,WX_GZH_APPSECRET,WX_GZH_TOKEN,WX_GZPT_APPSECRET,WX_GZPT_APPID,TT_XCX_APPID,TT_XCX_APPSECRET
+from config import WX_XCX_APPID,WX_XCX_APPSECRET,WX_GZH_APPID,WX_GZH_APPSECRET,WX_GZH_TOKEN,WX_GZPT_APPSECRET,WX_GZPT_APPID,TT_XCX_APPID,TT_XCX_APPSECRET,DOMAIN_HOST
 import requests
 import base64
 import json
@@ -24,10 +24,11 @@ import base64
 import os
 import datetime
 from  django.conf import settings
-from config import DOMAIN_HOST
 from utils.common import renameuploadimg
 import hashlib
 from django.http import HttpResponse
+from utils.weixinpay import WxAppPay
+from django.shortcuts import redirect
 
 logger = logging.getLogger(__name__)
 # Create your views here.
@@ -598,6 +599,23 @@ def get_wechat_access_token_h5_url(code):
     r = requests.get(get_url)
     return r
 
+#公众号获取js sdk调用需要的临时签名信息
+class GetWeChatGZHH5JSSDKTempSignAPIView(APIView):
+    """
+    公众号获取js sdk调用需要的临时签名信息
+    get:
+    公众号获取js sdk调用需要的临时签名信息
+    """
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        url = get_parameter_dic(request)['url']#参与临时签名需要前端传递自己当前页面的url地址
+        temp_sign_data = WxAppPay().get_gzh_h5_js_sign(url)
+        if not temp_sign_data:
+            return ErrorResponse(msg="获取失败，请稍后再试")
+        return DetailResponse(data=temp_sign_data)
+
 #接口配置：校验微信发送的验证信息
 class CheckWeChatGZHH5APIView(APIView):
     """
@@ -637,8 +655,12 @@ class WeChatGZHH5LoginAPIView(APIView):
     post:
     微信公众号网页授权登录接口
     微信公众号code获取openid和access_token，新用户获取用户信息（昵称头像等）：
-    引导用户访问如下授权链接：
+    引导用户访问例如如下授权链接：
     https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9747c4bf89d5ce34&redirect_uri=http%3A%2F%2Fdvlyadmin.lybbn.cn%2Fapi%2Fxcx%2Fwxh5login%2F&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+    也可以使用拼接
+    redirect_uri = parse.quote("%s/api/h5/wxh5login/"%config.DOMAIN_HOST)
+    #snsapi_base\snsapi_userinfo
+    link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=%s#wechat_redirect"%(WX_GZH_APPID,redirect_uri,code)
     """
     permission_classes = []
     authentication_classes = []

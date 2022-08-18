@@ -29,7 +29,7 @@ from mysystem.views.login import LoginView,CaptchaView
 from utils.swagger import CustomOpenAPISchemaGenerator
 
 #前端接口view
-from apps.oauth.views import WeChatXCXLoginAPIView,XCXWeChatUserInfoUpdateAPIView,WeChatXCXMobileLoginAPIView,WeChatGZHLoginAPIView,WeChatGZHBindAPIView,GetXCXShareQrcodeView,TTXCXLoginAPIView,WeChatGZHH5LoginAPIView,CheckWeChatGZHH5APIView
+from apps.oauth.views import WeChatXCXLoginAPIView,XCXWeChatUserInfoUpdateAPIView,WeChatXCXMobileLoginAPIView,WeChatGZHLoginAPIView,WeChatGZHBindAPIView,GetXCXShareQrcodeView,TTXCXLoginAPIView,WeChatGZHH5LoginAPIView,CheckWeChatGZHH5APIView,GetWeChatGZHH5JSSDKTempSignAPIView
 from apps.address.views import *
 from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobileSMSLoginView,ForgetPasswdResetView,RegisterView
 from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView,uploadImagesView
@@ -92,9 +92,10 @@ urlpatterns = [
     # ========================================================================================= #
     #登录
     path('api/app/register/', RegisterView.as_view(), name='app端手机号注册'),
-    path('api/xcx/ttlogin/', TTXCXLoginAPIView.as_view(), name='字节跳动小程序登录认证'),
-    path('api/xcx/wxh5logincheck/', CheckWeChatGZHH5APIView.as_view(), name='微信服务器校验服务器'),
-    path('api/xcx/wxh5login/', WeChatGZHH5LoginAPIView.as_view(), name='微信公众号H5网页授权登录'),
+    path('api/h5/ttlogin/', TTXCXLoginAPIView.as_view(), name='字节跳动小程序登录认证'),
+    path('api/h5/wxh5logincheck/', CheckWeChatGZHH5APIView.as_view(), name='微信服务器校验服务器'),
+    path('api/h5/wxh5login/', WeChatGZHH5LoginAPIView.as_view(), name='微信公众号H5网页授权登录'),
+    path('api/h5/wxh5sign/', GetWeChatGZHH5JSSDKTempSignAPIView.as_view(), name='微信公众号H5网页获取js sdk的临时签名信息'),
     path('api/app/login/', APPMobilePasswordLoginView.as_view(), name='app端手机号密码登录认证'),
     path('api/app/wxlogin/', WeChatGZHLoginAPIView.as_view(), name='app端手机号微信登录认证'),
     path('api/app/wxbindlogin/', WeChatGZHBindAPIView.as_view(), name='app端手机号微信登录认证绑定微信'),

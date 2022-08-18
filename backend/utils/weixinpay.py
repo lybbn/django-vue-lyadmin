@@ -14,7 +14,7 @@
 # 支付官网文档地址：https://pay.weixin.qq.com/wiki/doc/apiv3/index.shtml
 # ------------------------------
 
-from config import WXPAY_CLIENT_CERT_PATH,WXPAY_CLIENT_KEY_PATH,WXPAY_APPID,WXPAY_MCHID,WXPAY_APIKEY,WXPAY_SERIAL_NO,WXPAY_CERT_DIR,WXPAY_CERT_DIR_RESPONSE,WXPAY_APPID_APP
+from config import WXPAY_CLIENT_CERT_PATH,WXPAY_CLIENT_KEY_PATH,WXPAY_APPID,WXPAY_MCHID,WXPAY_APIKEY,WXPAY_SERIAL_NO,WXPAY_CERT_DIR,WXPAY_CERT_DIR_RESPONSE,WXPAY_APPID_APP,WX_GZH_APPID,WX_GZH_APPSECRET
 import requests
 import json
 import time
@@ -34,6 +34,7 @@ from cryptography.x509 import load_pem_x509_certificate
 from cryptography.hazmat.backends import default_backend
 from cryptography.exceptions import InvalidSignature, InvalidTag
 import hashlib
+from django.core.cache import cache
 import logging
 logger = logging.getLogger(__name__)
 
@@ -71,7 +72,11 @@ def get_sign_md5(sign_str):
     # 将小写字母切换成大写
     return sig.upper()
 
-
+def get_sign_sha1(sign_str):
+    sha1 = hashlib.sha1()
+    sha1.update(sign_str.encode("utf-8"))
+    sig = sha1.hexdigest()
+    return sig
 
 class WxAppPay:
     """
@@ -354,6 +359,66 @@ class WxAppPay:
         path = newurl.split(self.gate_way)[1]
         return self.request(path)
 
+    # 获取公众号全局access_token
+    # access_token是公众号的全局唯一接口调用凭据,access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效
+    def get_gzh_access_token(self):
+        key = "lybbn_gzh_access_token"
+        access_token = cache.get(key)
+        if access_token:
+            return access_token
+        api_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}"
+        get_url = api_url.format(WX_GZH_APPID, WX_GZH_APPSECRET)
+        r = requests.get(get_url)
+        json_data = json.loads(r.content)
+        if 'errcode' in json_data and json_data['errcode'] != 0:  # 如果获取失败返回失败信息
+            logger.error("获取公众号access_token错误，微信返回错误信息：%s" % (json_data))
+            return None
+        access_token = json_data['access_token']
+        cache.set(key, access_token, 7100)
+        return access_token
+
+    # 获取公众号jsapi_ticket
+    # jsapi_ticket是公众号用于调用微信 JS 接口的临时票据,正常情况下，jsapi_ticket的有效期为7200秒，通过access_token来获取。由于获取jsapi_ticket的 api 调用次数非常有限，频繁刷新jsapi_ticket会导致 api 调用受限，影响自身业务，开发者必须在自己的服务全局缓存jsapi_ticket
+    def get_gzh_jsapi_ticket(self):
+        key = "lybbn_gzh_jsapi_ticket"
+        jsapi_ticket = cache.get(key)
+        if jsapi_ticket:
+            return jsapi_ticket
+        access_token = self.get_gzh_access_token()
+        if not access_token:
+            return None
+        api_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={0}&type=jsapi"
+        get_url = api_url.format(access_token)
+        r = requests.get(get_url)
+        json_data = json.loads(r.content)
+        if 'errcode' in json_data and json_data['errcode'] != 0:  # 如果获取失败返回失败信息
+            logger.error("获取公众号jsapi_ticket错误，微信返回错误信息：%s" % (json_data))
+            return None
+        jsapi_ticket = json_data['ticket']
+        cache.set(key, jsapi_ticket, 7100)
+        return jsapi_ticket
+
+    # 微信公众号生成临时的签名（公众号网页h5分享时前端需要调用）
+    def get_gzh_h5_js_sign(self, url):
+        key = "lybbn_gzh_jsapi_ticket"
+        jsapi_ticket = cache.get(key)
+        if not jsapi_ticket:
+            jsapi_ticket = self.get_gzh_jsapi_ticket()
+            if not jsapi_ticket:
+                return None
+        appId = WX_GZH_APPID
+        timestamp = int(time.time())
+        nonceStr = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(15))
+        data = {
+            'nonceStr': nonceStr,
+            'jsapi_ticket': jsapi_ticket,
+            'timestamp': timestamp,
+            'url': url,
+        }
+        signatureStr = '&'.join(['%s=%s' % (key.lower(), data[key]) for key in sorted(data)])
+        data['signature'] = get_sign_sha1(signatureStr)
+        data['appId'] = appId
+        return data
 
     def load_local_certificates(self):
         if self.cert_dir and os.path.exists(self.cert_dir):
