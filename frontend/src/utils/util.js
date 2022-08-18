@@ -23,10 +23,14 @@ const timestampToTime = (timestamp) => {
 
 /**
  * 时间日期格式化
+ * @param dateObj 如果为字符串 则原样返回，如果为date时间对象则返回格式化后的结果
  * @param format
  * @returns {*}
  */
 const dateFormats = (dateObj, format) => {
+  if(typeof(dateObj) =='string'){
+      return dateObj
+  }
   let date = {
     'M+': dateObj.getMonth() + 1,
     'd+': dateObj.getDate(),
