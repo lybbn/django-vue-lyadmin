@@ -89,12 +89,12 @@ class WebRouterSerializer(CustomModelSerializer):
     def get_menuPermission(self, instance):
         # 判断是否是超级管理员
         if self.request.user.is_superuser:
-            return Button.objects.values_list('value', flat=True)
+            return instance.menuPermission.values_list('value', flat=True)
         else:
             # 根据当前角色获取权限按钮id集合
             permissionIds = list(self.request.user.role.values_list('permission', flat=True))
             #获取当前菜单的按钮权限vlaue
-            queryset = MenuButton.objects.filter(id__in=permissionIds).filter(menu_id=instance.id).values_list('value', flat=True)
+            queryset = instance.menuPermission.filter(id__in=permissionIds, menu=instance.id).values_list('value', flat=True)
             if queryset:
                 return queryset
             else:
@@ -132,12 +132,9 @@ class MenuViewSet(CustomModelViewSet):
     def web_router(self, request):
         """用于前端获取当前角色的路由"""
         user = request.user
-        # queryset = self.queryset.filter(status=1,visible=1)
         queryset = self.queryset.filter(status=1)
         if not user.is_superuser:
             menuIds = user.role.values_list('menu__id', flat=True)
-            # queryset = Menu.objects.filter(id__in=menuIds,status=1,visible=1)
-            queryset = Menu.objects.filter(id__in=menuIds,status=1)
-
+            queryset = Menu.objects.filter(id__in=menuIds, status=1)
         serializer = WebRouterSerializer(queryset, many=True, request=request)
         return SuccessResponse(data=serializer.data, msg="获取成功")
