@@ -123,7 +123,8 @@ class UserViewSet(CustomModelViewSet):
 
     def change_password(self,request,*args, **kwargs):
         """密码修改"""
-        instance = Users.objects.filter(id=kwargs.get('pk')).first()
+        user = request.user
+        instance = Users.objects.filter(id=user.id,identity__in=[0,1]).first()
         data = request.data
         old_pwd = data.get('oldPassword')
         new_pwd = data.get('newPassword')
