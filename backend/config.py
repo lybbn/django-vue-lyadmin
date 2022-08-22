@@ -76,6 +76,7 @@ WX_GZPT_APPSECRET = "XXXXXXXXXXXXXXXXXXXXXXXX"
 # ================================================= #
 # ************** 微信公众号（服务号） 配置  ************** #
 # ================================================= #
+#微信官网测试公众号申请：http://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login
 #微信公众号appid
 WX_GZH_APPID = "xxxxxxxxxxxxxxxxx"
 #微信公众号秘钥
