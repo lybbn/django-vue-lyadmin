@@ -27,9 +27,9 @@ DATABASE_CONN_MAX_AGE = 0 #推荐120（2分钟），使用 None 则是无限的�
 # ================================================= #
 
 IS_DEMO = False #是否演示模式（演示模式只能查看无法保存、编辑、删除、新增）
-ALLOW_FRONTEND = True#是否关闭前端API访问
 IS_SINGLE_TOKEN = False #是否只允许单用户单一地点登录(只有一个人在线上)(默认多地点登录),只针对后台用户生效
-FRONTEND_API_LIST = ['/api/app/','/api/xcx/']
+ALLOW_FRONTEND = True#是否关闭前端API访问
+FRONTEND_API_LIST = ['/api/app/','/api/xcx/','/api/h5/']#微服务前端接口前缀
 DOMAIN_HOST = "http://127.0.0.1:8000"
 EXEC_LOG_PATH =  os.path.join(BASE_DIR, 'logs','lybbnexec.log')
 TEMP_EXEC_PATH =  os.path.join(BASE_DIR, 'logs')
