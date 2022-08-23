@@ -13,7 +13,7 @@
                     <span style="color: red;font-size: 10px;margin-left: 8px">提示：该项添加后不能修改</span>
                 </el-form-item>
                 <el-form-item label="类型：">
-                    <el-radio-group v-model="type">
+                    <el-radio-group v-model="type" :disabled="loadingTitle=='编辑'">
                         <el-radio label="1">正常值</el-radio>
                         <el-radio label="2">富文本</el-radio>
                         <el-radio label="3">图片</el-radio>

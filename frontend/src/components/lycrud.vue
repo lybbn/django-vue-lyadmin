@@ -445,6 +445,7 @@
                         page:1,
                         limit: this.pageparm.limit
                     }
+                    this.timers = []
                     this.getData()
                 }
             },
@@ -634,16 +635,6 @@
              window.removeEventListener("resize", this.handleResize);
              // 页面销毁，去掉监听事件
 			window.removeEventListener("resize", this.listenResize);
-        },
-        timers(val){
-            if (val) {
-                this.formInline.beginAt=dateFormats(val[0],'yyyy-MM-dd hh:mm:ss');
-                this.formInline.endAt=dateFormats(val[1],'yyyy-MM-dd hh:mm:ss');
-            } else {
-                this.formInline.beginAt = ''
-                this.formInline.endAt = ''
-            }
-            this.getData()
         },
     }
 </script>
