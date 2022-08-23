@@ -2,7 +2,10 @@
     <div>
         <ly-crud ref="lycrud"  v-bind="crudConfig" >
             <template v-slot:customHandle="slotProps">
-                <span class="table-operate-btn" @click="handleClick(slotProps.row,'disable')" v-show="hasPermission('userManageCrud','Disable')">禁用</span>
+                <span class="table-operate-btn" @click="handleClick(slotProps.row,'disable')" v-show="hasPermission('userManageCrud','Disable')">
+                    <span v-if="slotProps.row.is_active">禁用</span>
+                    <span v-else>启用</span>
+                </span>
             </template>
         </ly-crud>
     </div>
