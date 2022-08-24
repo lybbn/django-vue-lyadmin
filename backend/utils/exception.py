@@ -31,7 +31,10 @@ def CustomExceptionHandler(ex, context):
     code = 4000
     if isinstance(ex, AuthenticationFailed):
         code = 4001
-        msg = ex.detail
+        if 'User is inactive' in str(ex.detail):
+            msg = "该账号已被禁用,请联系管理员"
+        else:
+            msg = ex.detail
     elif isinstance(ex, NotAuthenticated):
         code = 4001
         msg = ex.detail

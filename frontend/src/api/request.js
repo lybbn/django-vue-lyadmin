@@ -1,14 +1,13 @@
 import axios from 'axios';
-import { ElMessage } from 'element-plus'
+import { ElMessage,ElMessageBox } from 'element-plus'
 require("babel-polyfill");
 import { url } from './url';
-import router from '../router';
 import store from '../store'
+import router from "../router";
 
 var request = axios.create({
-    timeout: 60000,
+    timeout: 10000,
 });
-
 function ajax(opt,method){
   var token= store.getters.getLogintoken
   // var timestamp=new Date().getTime();
@@ -66,10 +65,16 @@ function ajax(opt,method){
                 data: params
               }).then(res=>{
               if(res.data.code==4001){
-                  localStorage.clear();
-                  sessionStorage.clear();
-                  router.replace("/login");
-                  reject(res.data)
+                  ElMessageBox.alert('登录信息失效,请重新登录！','登录失效',{
+                      confirmButtonText:'确定',
+                      type: 'warning',
+                      callback: action => {
+                          //跳转登录页   callback点击确定按钮后的回调函数
+                          localStorage.clear();
+                          sessionStorage.clear();
+                          window.location.href="/"
+                      }
+                  })
               }else{
                   resolve(res.data)
               }
@@ -106,10 +111,16 @@ function ajax(opt,method){
               data: params
           }).then(res=>{
               if(res.data.code==4001){
-                  localStorage.clear();
-                  router.replace("/login");
-                  sessionStorage.clear();
-                  reject(res.data)
+                  ElMessageBox.alert('登录信息失效,请重新登录！','登录失效',{
+                      confirmButtonText:'确定',
+                      type: 'warning',
+                      callback: action => {
+                          //跳转登录页   callback点击确定按钮后的回调函数
+                          localStorage.clear();
+                          sessionStorage.clear();
+                          window.location.href="/"
+                      }
+                  })
               }else{
                   resolve(res.data)
               }
@@ -133,10 +144,16 @@ function ajax(opt,method){
       return new Promise((resolve,reject)=>{
           request(config1).then(res=>{
               if(res.data.code==4001){
-                  localStorage.clear();
-                  router.replace("/login");
-                  sessionStorage.clear();
-                  reject(res.data)
+                  ElMessageBox.alert('登录信息失效,请重新登录！','登录失效',{
+                      confirmButtonText:'确定',
+                      type: 'warning',
+                      callback: action => {
+                          //跳转登录页   callback点击确定按钮后的回调函数
+                          localStorage.clear();
+                          sessionStorage.clear();
+                          window.location.href="/"
+                      }
+                  })
               }else{
                   resolve(res.data)
               }
