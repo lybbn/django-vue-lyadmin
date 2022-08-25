@@ -5,7 +5,7 @@
                 <div class="input-file input-fileup">
                     <span style="display: inline-block; width: 100%;cursor:pointer; ">{{submitLoading || (newData.length > 0 && detailDataA.length !== newData.length) ? '' : '上传图片'}}</span>
                     <el-button style="width: 100%;height:36px" type="primary" v-if="submitLoading || (newData.length > 0 && detailDataA.length !== newData.length)"  :loading="submitLoading || (newData.length > 0 && detailDataA.length !== newData.length)">上传图片</el-button>
-                    <input ref="file" title="请上传图片"  class="fileUploaderClass" type='file' multiple name="file" v-else @change.stop="changesData"/>
+                    <input ref="file" title="请上传图片"  class="fileUploaderClass" type='file' name="file" multiple :accept=accept v-else @change.stop="changesData"/>
                 </div>
 
                 <div class="deleteBtn" v-if="pics.length > 0"><el-button :loading="submitLoading || (newData.length > 0 && detailDataA.length !== newData.length)" @click="clearPhotoData">清空照片</el-button></div>
@@ -14,14 +14,14 @@
                     您还有 <span>（{{newData.length - detailDataA.length}}）</span>张照片等待上传
                 </div>
             </div>
-            <span style="color: #999999; display: block;font-size:12px">(最多可上传9张图，<!--宽750px，<em style="color:#ff0000;font-style: normal">保持图片高度一致，便于前端效果展示</em>，--> 2MB以内，支持PNG/JPG格式)</span>
+            <span style="color: #999999; display: block;font-size:12px">(最多可上传{{nums}}张图，<!--宽750px，<em style="color:#ff0000;font-style: normal">保持图片高度一致，便于前端效果展示</em>，--> 2MB以内，支持PNG/JPG格式)</span>
         </div>
         <div class="pickAlbumPreListO" :style="isEqual ? 'border:1px solid #ff0000' : ''">
             <ul class="pickAlbumPreList" v-if="pics.length > 0">
                 <li v-for="(item, index) in pics">
                     <el-image :src="item.pic" fit="contain" :preview-src-list="[item.pic]"></el-image>
                     <i class="el-icon-close" @click="deletePhoto(index)"><el-icon><Close /></el-icon></i>
-                    <p>{{index+1}}页</p>
+                    <p>第{{index+1}}张</p>
                     <div class="btnchang">
                         <el-button size="small" class="btnLf" @click="changeLf(index)" v-if="index != 0">左移</el-button>
                         <el-button size="small" class="btnRg" @click="changeRg(index)" v-if="index != pics.length-1">右移</el-button>
@@ -58,6 +58,7 @@
                 isEqual:false,
                 pics:[],
                 //轮播图结束
+                accept:"image/gif,image/jpeg,image/jpg,image/png"
             }
         },
         props: {
@@ -65,6 +66,11 @@
               type:Array,
               default: []
             },
+            //最大支持上传图片张数
+            nums:{
+                type:Number,
+                default:9,
+            }
 
         },
         mounted() {
@@ -90,6 +96,11 @@
                 for (let i in aList) {
                     _aList.push(aList[i]);
                 }
+                if(aList.length > vm.nums || aList.length+vm.pics.length >vm.nums){
+                    vm.$message.warning('最多可上传'+this.nums+'张图片')
+                    return false
+                }
+
                 let filterList=[]
                 let flag = 0
                 _aList=_aList.filter(item=> typeof item == 'object')
@@ -157,8 +168,8 @@
 
 
                     } else {
-                        if (vm.newData.length > 9) {
-                            vm.$message.warning('最大可上传9张图片')
+                        if (vm.newData.length > this.nums) {
+                            vm.$message.warning('最多可上传'+this.nums+'张图片')
                             return false
                         }
                         if (vm.newData.length > 0) {
