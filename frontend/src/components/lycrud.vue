@@ -131,12 +131,12 @@
                         <el-form-item :label="fitem.label+'：'" :prop="fitem.prop" v-if="(fitem.form.hidden!==undefined && dialogTitle!=='详情')?!fitem.form.hidden:true">
                             <el-input v-if="fitem.type=='input'" :show-password="fitem.form.showPassword?fitem.form.showPassword:false"  v-model="formData[fitem.prop]" clearable :placeholder="fitem.form.placeholder?fitem.form.placeholder:''" @change="fitem.form.valueChange"></el-input>
                             <el-input v-else-if="fitem.type=='textarea'"  type="textarea" v-model="formData[fitem.prop]" :placeholder="fitem.form.placeholder?fitem.form.placeholder:''" @change="fitem.form.valueChange"></el-input>
-                            <el-input-number v-else-if="fitem.type=='number'"  v-model="formData[fitem.prop]" :min="0" :max="9999" @change="fitem.form.valueChange"></el-input-number>
+                            <el-input-number v-else-if="fitem.type=='number'"  v-model="formData[fitem.prop]"  :min="0" :max="9999" @change="fitem.form.valueChange"></el-input-number>
                             <el-switch v-else-if="fitem.type=='switch'" v-model="formData[fitem.prop]" active-color="#13ce66" inactive-color="#ff4949" @change="fitem.form.valueChange"></el-switch>
-                            <el-select v-else-if="fitem.type === 'select'" v-model="formInline[fitem.prop]" :placeholder="fitem.placeholder" clearable filterable  @change="fitem.form.valueChange">
+                            <el-select v-else-if="fitem.type === 'select'" v-model="formData[fitem.prop]" :placeholder="fitem.placeholder" clearable filterable  @change="fitem.form.valueChange" style="width: 100%;">
                                 <el-option
-                                        v-if="fitem.options"
-                                        v-for="option in fitem.options"
+                                        v-if="fitem.form.options"
+                                        v-for="option in fitem.form.options"
                                         :key="option.value"
                                         :label="option.label"
                                         :value="option.value"
