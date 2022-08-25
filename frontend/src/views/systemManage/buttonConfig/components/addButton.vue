@@ -1,21 +1,20 @@
 <template>
     <div>
-        <ly-dialog v-model="dialogVisible" :title="dialogTitle" width="560px"  :before-close="handleClose">
+        <ly-dialog v-model="dialogVisible" :title="dialogTitle" width="700px"  :before-close="handleClose">
             <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto">
                 <el-form-item label="名称：" prop="value">
-                <el-select v-model="formData.value" filterable placeholder="请选择" style="width: 300px"
-                           @change="getName">
-                    <el-option
-                        v-for="item in buttonList"
-                        :key="item.value"
-                        :label="item.name"
-                        :value="item.value">
-                    </el-option>
-                </el-select>
-                 <el-button type="primary" circle style="margin-left: 20px"  @click="onLinkBtn"><el-icon><circle-plus /></el-icon></el-button>
+                    <el-select v-model="formData.value" allow-create filterable placeholder="请选择" :size="size" style="width: 360px" @change="getName">
+                        <el-option
+                            v-for="item in buttonList"
+                            :key="item.value"
+                            :label="item.name"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-button type="primary" circle style="margin-left: 20px" :size="size"  @click="onLinkBtn"><el-icon><circle-plus /></el-icon></el-button>
                 </el-form-item>
                 <el-form-item label="请求方式：" prop="method">
-                    <el-select v-model="formData.method" filterable placeholder="请选择" style="width: 300px">
+                    <el-select v-model="formData.method"  placeholder="请选择" :size="size" style="width: 360px">
                         <el-option
                             v-for="item in methodsList"
                             :key="item.id"
@@ -25,8 +24,10 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="接口地址：" prop="api">
-                    <el-input  v-model.trim="formData.api" style="width: 300px"></el-input>
+                    <el-input  v-model.trim="formData.api" :size="size" style="margin-bottom: 5px;"></el-input>
+                    <el-alert title="请正确填写，以免请求时被拦截。匹配编辑/单例/删除使用正则,如:/api/xxx/{id}/" type="info" show-icon/>
                 </el-form-item>
+
             </el-form>
             <template #footer>
                 <el-button @click="handleClose" :loading="loadingSave">关闭</el-button>
@@ -49,6 +50,7 @@
                 dialogVisible:false,
                 loadingSave:false,
                 dialogTitle:'',
+                size:'large',
                 formData:{
                     name: '',
                     api:'',
@@ -57,7 +59,7 @@
                     value: '',
                 },
                 rules:{
-                    name: [
+                    value: [
                         {required: true, message: '请选择名称',trigger: 'blur'}
                     ],
                     method: [
@@ -90,17 +92,20 @@
             },
             handleClose() {
                 this.dialogVisible=false
+                this.formData = {
+                    name: '',
+                    api:'',
+                    menu: '',
+                    method: '',
+                    value: '',
+                }
             },
             addButtonFn(item,flag,menu) {
                 this.dialogVisible=true
                 this.dialogTitle=flag
                 this.getSystemButton(item)
-                this.formData=item ? item : {
-                    api:'',
-                    menu: menu,
-                    method: '',
-                    name: '',
-                    value: '',
+                if(item){
+                    this.formData=item
                 }
             },
             submitData() {
