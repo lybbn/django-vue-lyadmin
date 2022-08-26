@@ -106,6 +106,8 @@
                 this.getSystemButton(item)
                 if(item){
                     this.formData=item
+                }else{
+                    this.formData.menu = menu
                 }
             },
             submitData() {
