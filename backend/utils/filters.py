@@ -79,7 +79,8 @@ class DataLevelPermissionsFilter(BaseFilterBackend):
             dataScope_list = []
             for ele in role_list:
                 # 3.1 判断用户是否为超级管理员角色/如果有1(所有数据) 则返回所有数据
-                if 3 == ele.get('data_range') or ele.get('admin') == True:
+                # if 3 == ele.get('data_range') or ele.get('admin') == True:
+                if 3 == ele.get('data_range'):
                     return queryset
                 dataScope_list.append(ele.get('data_range'))
             dataScope_list = list(set(dataScope_list))
@@ -97,6 +98,8 @@ class DataLevelPermissionsFilter(BaseFilterBackend):
                     dept_list.extend(get_dept(user_dept_id, ))
                 elif ele == 1:#"本部门数据权限"
                     dept_list.append(user_dept_id)
+            if queryset.model._meta.model_name == 'dept':
+                return queryset.filter(id__in=list(set(dept_list)))
             return queryset.filter(dept_belong_id__in=list(set(dept_list)))
         else:
             return queryset
