@@ -36,7 +36,8 @@ pyasn1-modules
 pycparser
 pycryptodome
 PyJWT
-PyMySQL
+#PyMySQL
+mysqlclient
 pyOpenSSL
 pyparsing
 pytz
@@ -65,3 +66,6 @@ psutil
 channels
 channels_redis
 paramiko
+django-celery-beat
+django-celery-results
+celery
