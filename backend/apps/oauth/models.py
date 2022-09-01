@@ -26,7 +26,7 @@ class OAuthWXUser(BaseModel):
     gzh_access_token = models.CharField(max_length=255, null=True, blank=True,verbose_name='公众号access_token')
     gzh_refresh_token = models.CharField(max_length=255, null=True, blank=True,verbose_name='公众号refresh_token')
     gzh_scope = models.CharField(max_length=255, null=True, blank=True,verbose_name='公众号scope')
-    mobilePhoneNumber = models.CharField(max_length=11, verbose_name="微信小程序绑定的手机号码", default="")
+    mobilePhoneNumber = models.CharField(max_length=30, verbose_name="微信小程序绑定的手机号码（国外手机号会有区号）", default="")
 
     class Meta:
         db_table = 'tb_oauth_wx'
