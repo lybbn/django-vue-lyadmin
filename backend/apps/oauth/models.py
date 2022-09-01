@@ -14,7 +14,6 @@ class OAuthWXUser(BaseModel):
     user = models.OneToOneField(Users, on_delete=models.CASCADE, verbose_name='用户')# 一对一
     xcx_openid = models.CharField(max_length=100, db_index=True,null=True,blank=True,verbose_name='小程序openid')
     gzh_openid = models.CharField(max_length=100, db_index=True, null=True, blank=True,verbose_name='公众号openid')
-    unionId = models.CharField(max_length=100, null=True, blank=True)
     avatarUrl = models.CharField(max_length=900, verbose_name='用户头像',null=True, blank=True)
     nick = models.CharField(max_length=40, verbose_name='用户昵称',null=True, blank=True)
     sex = models.CharField(max_length=100, null=True, blank=True)
