@@ -30,12 +30,7 @@ function ajax(opt,method){
   }else{
     params={}
   }
-  //axios会自动过滤值为undefined和null的参数，因此手动去掉这些参数，不让其参与签名，避免出现签名错误
-  for (let key in params){
-    if(params[key]==null || params[key] == 'undefined'){
-      delete params[key]
-    }
-  }
+
   if(method == 'PUT' || method == 'DELETE') {
       var config={
           url: url + opt.url + params.id+'/',

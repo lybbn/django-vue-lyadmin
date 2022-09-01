@@ -11,7 +11,7 @@ NProgress.configure({ easing: 'ease', speed: 500, showSpinner: true })
 const routes = [
   {
     path: '/',
-    name: '',
+    name: 'root',
     component: () => import('../views/login.vue'),
     hidden: true,
     meta: {
@@ -30,6 +30,16 @@ const routes = [
     }
   },
     {
+    path: '/404',
+    name: '404',
+    component: () => import('../views/error/404.vue'),
+    hidden: true,
+    meta: {
+      requireAuth: false,
+      index: '/404',
+    }
+  },
+    {
     path: '/lyterminal',
     name: 'lyterminal',
     component: () => import('../views/lyterminal.vue'),
@@ -41,7 +51,7 @@ const routes = [
   },
   {
     path: '/index',
-    name: '首页',
+    name: 'index',
     component: () => import('../views/index.vue'),
     iconCls: 'el-icon-tickets',
     meta: {
@@ -266,6 +276,35 @@ const router = createRouter({
   routes: routes
 })
 
+//判断访问路径路由name是否存在
+function isRouterNameExist(name){
+    let isExist = false
+    if(name == 'root' || name == "index" || name == "lyterminal"){
+        return true
+    }
+    for(var t=0;t<autoRouters.length;t++){
+        if(autoRouters[t].name == name){
+            isExist = true
+            break
+        }
+    }
+    return isExist
+}
+//判断访问路径路由path是否存在
+function isRouterPathExist(path){
+    let isExist = false
+    if(path == '/' || path == "/index" || path == "/lyterminal"){
+        return true
+    }
+    for(var t=0;t<autoRouters.length;t++){
+        if(autoRouters[t].path == path){
+            isExist = true
+            break
+        }
+    }
+    return isExist
+}
+
 /**
  * 路由拦截
  * 权限验证
@@ -279,7 +318,16 @@ router.beforeEach((to, from, next) => {
     if (userId) { // 通过vuex state获取当前的token是否存在
       let menuList = JSON.parse(localStorage.getItem('menuList'))
       if(menuList && (menuList.filter(item=>item.url == to.name).length > 0 || (to.name =='buttonConfig' &&  menuList.filter(item=>item.url=='menuManage').length >0) || (to.name =='lyterminal' &&  menuList.filter(item=>item.url=='menuManage').length >0) || (to.name =='buttonManage' &&  menuList.filter(item=>item.url=='menuManage').length >0))) {
-        next()
+          if(to.name){
+              next()
+          }else if(isRouterPathExist(to.path)){
+              next()
+          }
+          else{
+              next({
+                  path: '/404'
+              })
+          }
       } else {
         next({
           path: '/login'
@@ -295,10 +343,30 @@ router.beforeEach((to, from, next) => {
       if(userId){
         let tabsPage = JSON.parse(localStorage.getItem("tabsPage"))
         if (tabsPage) {
-          store.commit("switchtab",tabsPage[0].name)
+            if(isRouterNameExist(tabsPage[0].name)){
+              store.commit("switchtab",tabsPage[0].name)
+            }else{
+              next({
+                  path: '/404'
+              })
+            }
+
+        }else{
+            next({
+                path:'/404'
+            })
         }
       }else{
-        next()
+        if(to.name){
+            next()
+        }else if(isRouterPathExist(to.path)){
+            next()
+        }
+        else{
+            next({
+                path: '/404'
+            })
+        }
       }
     }else{
       next()
