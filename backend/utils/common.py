@@ -22,6 +22,7 @@ import datetime
 import ast
 import base64
 import hashlib
+import json
 
 
 #手机号验证正则
@@ -296,6 +297,20 @@ def ast_convert(str):
 
     return None
 
+#把数组对象转换成字符串转
+def ast_convert_str(arr):
+    if arr:
+        try:
+            if isinstance(arr, str):
+                return arr
+            if isinstance(arr, dict):
+                return json.dumps(arr)
+            if isinstance(arr, list):
+                return json.dumps(arr)
+        except Exception as e:
+            return arr
+
+    return None
 
 def bas64_encode_text(text):
     """
