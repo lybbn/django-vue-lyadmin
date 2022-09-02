@@ -28,18 +28,18 @@ def ImageUpload(request,dirs):
         for img in image:
             img_name = img.name
             # 图片类型content-type检查
-            if not img.content_type.startswith('image/'):
+            if not img.content_type.startswith('image/') and not img.content_type.startswith('video/') and not img.content_type.startswith('audio/'):
                 msg['code'] = 400
-                msg['msg'] = "请上传正确的图片格式"
+                msg['msg'] = "请上传正确的文件格式"
                 return msg
 
             if not img_name.endswith(
-                    ('.jpg', '.jpeg', '.png', 'gif', '.bmp', '.JPG', '.JPEG', '.PNG', 'GIF', '.BMP')):
+                    ('.jpg', '.jpeg', '.png', 'gif', '.bmp', '.JPG', '.JPEG', '.PNG', 'GIF', '.BMP', '.mp4','.flv')):
                 notimg_file.append(img_name)
 
-            if img.size > 1024 * 50000:
+            if img.size > 1024 * 500000:
                 msg['code'] = 400
-                msg['msg'] = "图片大小不能超过50M"
+                msg['msg'] = "图片大小不能超过500M"
                 return msg
 
             else:
@@ -61,7 +61,7 @@ def ImageUpload(request,dirs):
 
         if notimg_file:
             msg['code'] = 400
-            msg['msg'] = '请检查是否支持的图片，失败文件部分如下：{0}'.format(','.join(notimg_file[:10]))
+            msg['msg'] = '请检查是否支持的文件，失败文件部分如下：{0}'.format(','.join(notimg_file[:10]))
             return msg
 
         msg['code'] = 200
@@ -71,7 +71,7 @@ def ImageUpload(request,dirs):
 
     except Exception as e:
         msg['code'] = 400
-        msg['msg'] = '图片上传失败'
+        msg['msg'] = '上传失败'
         return msg
 
 def ImageUpload2(request,paramsname,dirs):

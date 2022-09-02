@@ -44,6 +44,7 @@ class OtherManage(CoreModel):
         (1, "正常值"),
         (2, "富文本"),
         (3, "图片"),
+        (4, "视频"),
     )
     status = models.BooleanField(default=True,verbose_name="状态")
     type = models.IntegerField(choices=TYPE_CHOICES, default=1, verbose_name="类型")

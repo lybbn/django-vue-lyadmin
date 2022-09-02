@@ -15,28 +15,30 @@
         </div>
         <el-form class="table">
             <el-table  :height="'calc('+(tableHeight)+'px)'" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55" align="center" disabled='false'></el-table-column>
+<!--                <el-table-column type="selection" width="55" align="center" disabled='false'></el-table-column>-->
                 <el-table-column type="index" width="60" align="center" label="序号">
                     <template #default="scope">
                         <span v-text="getIndex(scope.$index)"></span>
                     </template>
                 </el-table-column>
-                <!--<el-table-column min-width="120" prop="name" label="图片">-->
-                    <!--<template #default="scope">-->
-                        <!--<el-image  fit="fill" :src="scope.row.image" style="width: 60px;height: 60px" :preview-src-list="[scope.row.image]" v-if="scope.row.image"></el-image>-->
-                    <!--</template>-->
-                <!--</el-table-column>-->
                 <el-table-column min-width="120" prop="name" label="名称"></el-table-column>
-                <el-table-column min-width="180" prop="value" label="键值" show-overflow-tooltip></el-table-column>
+                <el-table-column min-width="180" prop="value" label="键值">
+                    <template #default="scope">
+                         <div v-if="scope.row.type==2" v-html="ellipsis(scope.row.value)" class="ellipsis"></div>
+                         <el-image v-else-if="scope.row.type==3" :src="scope.row.value" :preview-src-list="[scope.row.value]" :preview-teleported="true" style="width: 20px;height: 20px"></el-image>
+                         <el-icon v-else-if="scope.row.type==4" @click="showvideohandle(scope.row.value)" style="font-size: 20px;cursor: pointer"><VideoCameraFilled /></el-icon>
+                         <div v-else>{{scope.row.value}}</div>
+                    </template>
+                </el-table-column>
                 <el-table-column min-width="140" prop="key" label="键名"></el-table-column>
                 <el-table-column min-width="60" prop="sort" label="排序"></el-table-column>
-                <el-table-column min-width="80" label="状态">
+                <el-table-column min-width="80" label="状态" v-if="false">
                     <template #default="scope">
                          <el-tag v-if="scope.row.status">正常</el-tag>
                          <el-tag v-else type="danger">禁用</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
+                <el-table-column min-width="150" prop="create_datetime" label="创建时间" show-overflow-tooltip></el-table-column>
                 <el-table-column label="操作" fixed="right" width="180">
                     <template #header>
                         <div style="display: flex;justify-content: space-between;align-items: center;">
@@ -49,7 +51,6 @@
                         </div>
                     </template>
                     <template #default="scope">
-                        <!--                        v-show="isShowBtn('recyclCategoryParent','一级分类','Update')"-->
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('platformSettingsother','其他设置','Update')">编辑</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('platformSettingsother','其他设置','Delete')">删除</span>
                     </template>
@@ -84,8 +85,6 @@
                 // 非多个禁用
                 multiple: true,
                 formInline:{
-                    search:'',
-                    status:'',
                     page: 1,
                     limit: 10,
                 },
@@ -111,6 +110,29 @@
             },
             setFull(){
                 this.isFull=!this.isFull
+            },
+            showvideohandle(url) {
+              this.$alert(
+                `<video width="320" height="240" controls>
+                              <source src="${url}"  type="video/mp4">
+                              您的浏览器不支持 HTML5 video 标签。
+                            </video>`,
+                "视频预览",
+                {
+                  dangerouslyUseHTMLString: true
+                }
+              );
+            },
+            //当渲染的文字超出9字后显示省略号
+            ellipsis(value) {
+                // value = value.replace(/<.*?>/ig,"")       //把v-html的格式标签替换掉
+                if(!value) return ""
+                if (value.length > 10) {
+                    return value.slice(0, 10) + "..."
+                }else{
+                    return value
+                }
+                // return value
             },
             //多选项框被选中数据
             handleSelectionChange(selection) {
@@ -275,5 +297,3 @@
         },
     }
 </script>
-
-
