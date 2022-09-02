@@ -232,6 +232,9 @@ input, textarea {
     /* ----- 进度条 ----- */
     --l-nprogress-color: var(--el-color-primary);
 
+    /* ----- 订单 ----- */
+    --l-order-statics:var(--el-color-primary-light-8);
+
     /* ----- 暗黑模式 ----- */
     &.dark {
         /* ----- 应用 ----- */
@@ -262,6 +265,9 @@ input, textarea {
 
         /* ----- 进度条 ----- */
         --l-nprogress-color: var(--el-color-primary);
+
+        /* ----- 订单 ----- */
+        --l-order-statics:var(--el-color-primary-light-8);
     }
 }
 

@@ -221,7 +221,7 @@
     .order-static{
         display: flex;
         font-size: 14px;
-        background: #ecf5ff;
+        background: var(--l-order-statics);
         padding: 10px;
         li{
             margin-right: 30px;

@@ -297,23 +297,13 @@
             this.getData()
             this.getOrderstatistics()
         },
-        timers(val){
-            if (val) {
-                this.formInline.beginAt=dateFormats(val[0],'yyyy-MM-dd hh:mm:ss');
-                this.formInline.endAt=dateFormats(val[1],'yyyy-MM-dd hh:mm:ss');
-            } else {
-                this.formInline.beginAt = ''
-                this.formInline.endAt = ''
-            }
-            this.getData()
-        },
     }
 </script>
 <style lang="scss">
     .order-static{
         display: flex;
         font-size: 14px;
-        background: #ecf5ff;
+        background: var(--l-order-statics);
         padding: 10px;
         li{
             margin-right: 30px;
