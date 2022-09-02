@@ -15,7 +15,7 @@
         </div>
         <el-form class="table">
             <el-table  :height="'calc('+(tableHeight)+'px)'" border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%" tooltip-effect="dark" @selection-change="handleSelectionChange">
-<!--                <el-table-column type="selection" width="55" align="center" disabled='false'></el-table-column>-->
+                <el-table-column type="selection" width="55" align="center" disabled='false'></el-table-column>
                 <el-table-column type="index" width="60" align="center" label="序号">
                     <template #default="scope">
                         <span v-text="getIndex(scope.$index)"></span>
