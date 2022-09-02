@@ -279,28 +279,40 @@ const router = createRouter({
 //判断访问路径路由name是否存在
 function isRouterNameExist(name){
     let isExist = false
-    if(name == 'root' || name == "index" || name == "lyterminal"){
-        return true
-    }
-    for(var t=0;t<autoRouters.length;t++){
-        if(autoRouters[t].name == name){
-            isExist = true
-            break
+    if(name){
+        if(routes.some(item=> name == item.name)){
+            return true
         }
+        for(var t=0;t<routes.length;t++){
+            if(routes[t].children && routes[t].children.length>0){
+                if(routes[t].children.some(item=> name == item.name)){
+                    isExist = true
+                    break
+                }
+            }
+        }
+    }else{
+        return false
     }
     return isExist
 }
 //判断访问路径路由path是否存在
 function isRouterPathExist(path){
     let isExist = false
-    if(path == '/' || path == "/index" || path == "/lyterminal"){
-        return true
-    }
-    for(var t=0;t<autoRouters.length;t++){
-        if(autoRouters[t].path == path){
-            isExist = true
-            break
+    if(path){
+        if(routes.some(item=>path == item.path)){
+            return true
         }
+        for(var t=0;t<routes.length;t++){
+            if(routes[t].children && routes[t].children.length>0){
+                if(routes[t].children.some(item=> path == item.path)){
+                    isExist = true
+                    break
+                }
+            }
+        }
+    }else{
+        return false
     }
     return isExist
 }
@@ -311,19 +323,20 @@ function isRouterPathExist(path){
  */
 let to={},from={}
 router.beforeEach((to, from, next) => {
+   // 白名单
+  const whiteList = ['buttonConfig', 'menuManage', 'lyterminal', 'buttonManage', 'menuManage']
   // 进度条
   NProgress.start()
   let userId = store.getters.getUserId ? store.getters.getUserId : ''
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
     if (userId) { // 通过vuex state获取当前的token是否存在
       let menuList = JSON.parse(localStorage.getItem('menuList'))
-      if(menuList && (menuList.filter(item=>item.url == to.name).length > 0 || (to.name =='buttonConfig' &&  menuList.filter(item=>item.url=='menuManage').length >0) || (to.name =='lyterminal' &&  menuList.filter(item=>item.url=='menuManage').length >0) || (to.name =='buttonManage' &&  menuList.filter(item=>item.url=='menuManage').length >0))) {
+      if(menuList && (menuList.filter(item=>item.url == to.name).length > 0 || (whiteList.indexOf(to.name) !== -1))) {
           if(to.name){
               next()
           }else if(isRouterPathExist(to.path)){
               next()
-          }
-          else{
+          }else{
               next({
                   path: '/404'
               })
@@ -341,20 +354,31 @@ router.beforeEach((to, from, next) => {
   } else {
     if(to.path=="/login" ||to.path=="/"){
       if(userId){
-        let tabsPage = JSON.parse(localStorage.getItem("tabsPage"))
-        if (tabsPage) {
-            if(isRouterNameExist(tabsPage[0].name)){
-              store.commit("switchtab",tabsPage[0].name)
+        let tabsValue = localStorage.getItem("TabsValue")
+        if(tabsValue){
+            if(isRouterNameExist(tabsValue)){
+                  store.commit("switchtab",tabsValue)
             }else{
-              next({
-                  path: '/404'
-              })
+                  next({
+                      path: '/404'
+                  })
             }
-
         }else{
-            next({
-                path:'/404'
-            })
+            let tabsPage = JSON.parse(localStorage.getItem("tabsPage"))
+            if (tabsPage) {
+                if(isRouterNameExist(tabsPage[0].name)){
+                  store.commit("switchtab",tabsPage[0].name)
+                }else{
+                  next({
+                      path: '/404'
+                  })
+                }
+
+            }else{
+                next({
+                    path:'/404'
+                })
+            }
         }
       }else{
         if(to.name){
@@ -369,7 +393,15 @@ router.beforeEach((to, from, next) => {
         }
       }
     }else{
-      next()
+      if(to.name){
+          next()
+      }else if(isRouterPathExist(to.path)){
+          next()
+      }else{
+          next({
+              path: '/404'
+          })
+      }
     }
   }
 })

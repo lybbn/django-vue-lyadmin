@@ -2,7 +2,7 @@
     <div class="page">
     <p class="page_title">404 找不到页面</p>
         <div class="page_btn">
-            <el-button @click="$router.replace({ path: '/' })">
+            <el-button @click="backhome">
                 点击返回
             </el-button>
             <el-button @click="exit">
@@ -16,6 +16,9 @@
     export default {
         name: "404",
         methods:{
+            backhome(){
+                this.$router.replace('/')
+            },
             // 退出登录
             exit(e) {
                 this.$confirm('退出登录, 是否继续?', '提示', {
