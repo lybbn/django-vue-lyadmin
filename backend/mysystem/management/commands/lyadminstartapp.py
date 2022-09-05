@@ -50,7 +50,7 @@ class {name.capitalize()}Config(AppConfig):
                         f.write(app_init_content)
                     #创建models.py文件
                     model_init_content = f"""from django.db import models
-from utils.modles import CoreModel,BaseModel
+from utils.models import CoreModel,BaseModel
 """
                     with open(os.path.join(app_path, "models.py"), 'a', encoding='UTF-8') as f:
                         f.write(model_init_content)

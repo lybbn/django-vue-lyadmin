@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import utils.modles
+import utils.models
 
 
 class Migration(migrations.Migration):
@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='GoodsBrand',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='GoodsCategory',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OrderInfo',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -102,7 +102,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SKU',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -130,7 +130,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SPU',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -166,7 +166,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SPUSpecification',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -185,7 +185,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SPUSpecificationOption',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -204,7 +204,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SKUSpecification',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -224,7 +224,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SKUImage',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -250,7 +250,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OrderRefunds',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -273,7 +273,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OrderGoods',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -299,7 +299,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='GoodsSpecTemplate',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -318,7 +318,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='GoodsCoupon',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -365,7 +365,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CouponRecord',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),

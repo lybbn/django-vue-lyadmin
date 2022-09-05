@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from utils.modles import CoreModel, table_prefix
+from utils.models import CoreModel, table_prefix
 
 #自定义
 

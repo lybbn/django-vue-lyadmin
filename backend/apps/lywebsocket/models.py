@@ -1,5 +1,5 @@
 from django.db import models
-from utils.modles import CoreModel,BaseModel
+from utils.models import CoreModel,BaseModel
 # Create your models here.
 # ================================================= #
 # ************** 终端服务器信息 model************** #

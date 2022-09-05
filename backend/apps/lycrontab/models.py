@@ -1,5 +1,7 @@
 from django.db import models
-from utils.modles import CoreModel,BaseModel
+from utils.models import CoreModel,BaseModel
+from django_celery_beat.models import PeriodicTask
+
 # Create your models here.
 
 # ================================================= #
@@ -13,8 +15,8 @@ class CrontabManage(CoreModel):
     )
     TASK_TYPE_CHOICES = (
         (1, "Shell脚本"),
-        (2, "Celery任务"),
-        (5, "访问URL"),
+        (2, "Python脚本"),
+        (3, "Celery任务"),
     )
     TYPE_CHOICES = (
         (1, "每天"),
@@ -25,6 +27,7 @@ class CrontabManage(CoreModel):
         (6, "每周"),
         (7, "每月"),
     )
+    periodic_task = models.OneToOneField(PeriodicTask, on_delete=models.CASCADE,related_name="celeryperioidctask1", help_text="计划任务")
     name = models.CharField(max_length=100, verbose_name="任务名称")
     status = models.SmallIntegerField(choices=STATUS_CHOICES,default=1,verbose_name="任务状态")
     tasktype = models.SmallIntegerField(choices=TASK_TYPE_CHOICES,default=1,verbose_name="任务类型")

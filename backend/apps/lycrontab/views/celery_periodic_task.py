@@ -11,6 +11,7 @@
 # ------------------------------
 # django_celery_beat PeriodicTask view
 # ------------------------------
+from celery import current_app as celery
 
 from django_celery_beat.models import PeriodicTask
 from rest_framework import serializers
@@ -22,7 +23,9 @@ from apps.lycrontab.views.celery_crontab_schedule import CrontabScheduleSerializ
 from apps.lycrontab.views.celery_interval_schedule import IntervalScheduleSerializer
 
 
+
 class PeriodicTaskSerializer(CustomModelSerializer):
+
     interval_list = serializers.SerializerMethodField(read_only=True)
     crontab_list = serializers.SerializerMethodField(read_only=True)
 
@@ -34,6 +37,7 @@ class PeriodicTaskSerializer(CustomModelSerializer):
 
     class Meta:
         model = PeriodicTask
+        read_only_fields = ["id"]
         fields = '__all__'
 
 
@@ -57,8 +61,7 @@ class PeriodicTaskModelViewSet(CustomModelViewSet):
                 else:
                     get_data(item)
 
-        from celery import current_app
-        tasks = list(sorted(name for name in current_app.tasks if not name.startswith('celery.')))
+        tasks = list(sorted(name for name in celery.tasks if not name.startswith('celery.')))
         get_data((('', ''),) + tuple(zip(tasks, tasks)))
         return SuccessResponse(list(set(lis)))
 

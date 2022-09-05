@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import utils.modles
+import utils.models
 
 
 class Migration(migrations.Migration):
@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MyMessage',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MyMessageTemplate',
             fields=[
-                ('id', models.CharField(default=utils.modles.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
+                ('id', models.CharField(default=utils.models.make_uuid, help_text='Id', max_length=100, primary_key=True, serialize=False, verbose_name='Id')),
                 ('description', models.CharField(blank=True, help_text='描述', max_length=100, null=True, verbose_name='描述')),
                 ('modifier', models.CharField(blank=True, help_text='修改人', max_length=100, null=True, verbose_name='修改人')),
                 ('dept_belong_id', models.CharField(blank=True, help_text='数据归属部门', max_length=100, null=True, verbose_name='数据归属部门')),

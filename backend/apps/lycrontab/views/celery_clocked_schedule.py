@@ -9,32 +9,25 @@
 # +-------------------------------------------------------------------
 
 # ------------------------------
-# django_celery_beat IntervalSchedule view
+# django_celery_beat ClockedSchedule view
 # ------------------------------
 
-from django_celery_beat.models import IntervalSchedule
+from django_celery_beat.models import ClockedSchedule
 
 from utils.serializers import CustomModelSerializer
 from utils.viewset import CustomModelViewSet
 
-
-class IntervalScheduleSerializer(CustomModelSerializer):
+class ClockedScheduleSerializer(CustomModelSerializer):
 
     class Meta:
-        model = IntervalSchedule
+        model = ClockedSchedule
         read_only_fields = ["id"]
         fields = '__all__'
 
 
-class IntervalScheduleModelViewSet(CustomModelViewSet):
+class ClockedScheduleModelViewSet(CustomModelViewSet):
     """
-    以特定（固定间隔）时间间隔（例如每 5 秒）运行的计划(每 /月/日/时/分/秒/微秒)
-    DAYS = 'days'
-    HOURS = 'hours'
-    MINUTES = 'minutes'
-    SECONDS = 'seconds'
-    MICROSECONDS = 'microseconds'
+    时钟时间（DateTimeField）运行一次性任务
     """
-    queryset = IntervalSchedule.objects.all()
-    serializer_class = IntervalScheduleSerializer
-
+    queryset = ClockedSchedule.objects.all()
+    serializer_class = ClockedScheduleSerializer

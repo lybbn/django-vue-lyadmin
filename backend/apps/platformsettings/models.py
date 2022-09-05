@@ -1,5 +1,5 @@
 from django.db import models
-from utils.modles import CoreModel,BaseModel
+from utils.models import CoreModel,BaseModel
 from mysystem.models import Users
 
 # Create your models here.

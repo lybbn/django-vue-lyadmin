@@ -130,7 +130,7 @@ DATABASES = {
 }
 AUTH_USER_MODEL = 'mysystem.Users'
 USERNAME_FIELD = 'username'
-
+ALL_MODELS_OBJECTS = []  # 所有app models 对象
 
 # 配置redis缓存
 CACHES = {
