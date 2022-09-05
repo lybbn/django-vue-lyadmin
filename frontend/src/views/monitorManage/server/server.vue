@@ -10,7 +10,7 @@
                                 <span>{{monitorData.system}}</span>
                                 <span style="margin-left: 20px">已不间断运行: {{monitorData.time}}</span>
                                 <span style="margin-left: 20px">自动刷新(秒)：</span>
-                                <el-input-number v-model="refreshInterval" size="small" :min="5" @change="restartIntervalMonitor"/>
+                                <el-input-number v-model="refreshInterval" size="small" :min="3" @change="restartIntervalMonitor"/>
 <!--                                <span style="margin-left: 20px"><el-button type="primary" size="small" icon="Refresh" circle @click="getData" /></span>-->
                                 <el-button style="margin-left: 20px" type="primary" v-if="timer" :text="true" link @click="getData"><span style="font-size: 13px"  @click="clearIntervalMonitor">停止</span></el-button>
                                 <el-button style="margin-left: 20px" type="primary" v-if="timer==null" :text="true" link @click="getData"><span style="font-size: 13px"  @click="restartIntervalMonitor">开始</span></el-button>
@@ -58,7 +58,7 @@
                 this.isRunning = true
                 setTimeout(() => {
                     this.showloading = false
-                }, 2000)
+                }, 1000)
 
             }
             // 监听页面宽度变化搜索框的高度
@@ -109,7 +109,7 @@
                         }
                     }
                 },
-                refreshInterval:5,
+                refreshInterval:3,
                 iconClass:'',
                 timer:null,//定时器
             }
