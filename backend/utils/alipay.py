@@ -14,8 +14,9 @@
 # 支付官网文档地址：https://opendocs.alipay.com/open/00a0ut
 # ------------------------------
 
-from alipay import AliPay
+from extra_apps.python_alipay_sdk import AliPay
 from config import ALIPAY_APPID,ALIPAY_PRIVATE_KEY_PATH,ALIPAY_PUBLIC_KEY_PATH
+from utils.common import float2dot
 
 ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do?'
 
@@ -46,7 +47,7 @@ def alipay_trade_app(out_trade_no,total_amount,notify_url):
     order_string=alipay.api_alipay_trade_app_pay(
         subject=out_trade_no,
         out_trade_no=out_trade_no,
-        total_amount=str(total_amount),
+        total_amount=float2dot(total_amount),
         notify_url=notify_url# 可选, 不填则使用默认notify url
     )
 
@@ -64,7 +65,7 @@ def alipay_trade_refund(trade_no,refund_amount,notify_url):
     alipay = initalipay()
     order_string=alipay.api_alipay_trade_refund(
         trade_no=trade_no,
-        refund_amount=str(refund_amount),
+        refund_amount=float2dot(refund_amount),
         notify_url=notify_url# 可选, 不填则使用默认notify url
     )
 
