@@ -16,6 +16,7 @@ from django.contrib.auth.hashers import make_password, check_password
 import uuid
 from config import ALIYUN_SMS_SIGN,ALIYUM_SMS_TEMPLATE
 from utils.aliyunsms import send_sms
+from utils.tencentsms import tencentsms
 import json
 # ================================================= #
 # ************** 前端用户登录 view  ************** #

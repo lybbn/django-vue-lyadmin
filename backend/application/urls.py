@@ -32,7 +32,7 @@ from utils.swagger import CustomOpenAPISchemaGenerator
 from apps.oauth.views import WeChatXCXLoginAPIView,XCXWeChatUserInfoUpdateAPIView,WeChatXCXMobileLoginAPIView,WeChatGZHLoginAPIView,WeChatGZHBindAPIView,GetXCXShareQrcodeView,TTXCXLoginAPIView,WeChatGZHH5LoginAPIView,CheckWeChatGZHH5APIView,GetWeChatGZHH5JSSDKTempSignAPIView
 from apps.address.views import *
 from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobileSMSLoginView,ForgetPasswdResetView,RegisterView
-from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView,uploadImagesView
+from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView,uploadImagesView,DestroyUserView
 from apps.lymessages.views import UserMessagesView
 from apps.platformsettings.views import *
 from apps.mall.views import *
@@ -86,7 +86,6 @@ urlpatterns = [
     path('api/users/', include('apps.lyusers.urls')),
     path('api/mall/', include('apps.mall.urls')),
 
-
     # ========================================================================================= #
     # ********************************** 前端微服务API用户接口************************************ #
     # ========================================================================================= #
@@ -103,6 +102,7 @@ urlpatterns = [
     path('api/app/moilelogin/', APPMobileSMSLoginView.as_view(), name='app端手机号短信登录认证'),
     path('api/xcx/login/', WeChatXCXLoginAPIView.as_view(), name='微信小程序登录认证'),
     path('api/xcx/mobilelogin/', WeChatXCXMobileLoginAPIView.as_view(), name='微信小程序手机号授权绑定登录认证'),
+    path('api/app/destoryuser/', DestroyUserView.as_view(), name='app端用户注销账户'),
 
     #用户信息
     path('api/app/restpassword/', ForgetPasswdResetView.as_view(), name='app端手机号重置密码'),
