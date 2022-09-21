@@ -59,11 +59,11 @@
                         width: 180,//操作列宽度
                         fixed:"right",//固定操作列在右侧
                         permission:{//增删改查按钮权限控制（是否显示）
-                            add:this.hasPermission('userManageCrud','Create'),//bool型
-                            del:this.hasPermission('userManageCrud','Delete'),
-                            edit:this.hasPermission('userManageCrud','Update'),
-                            search:this.hasPermission('userManageCrud','Search'),
-                            detail:this.hasPermission('userManageCrud','Retrieve'),
+                            add:this.hasPermission(this.$options.name,'Create'),//bool型 this.$options.name获取当前组件的name本例为userManageCrud
+                            del:this.hasPermission(this.$options.name,'Delete'),
+                            edit:this.hasPermission(this.$options.name,'Update'),
+                            search:this.hasPermission(this.$options.name,'Search'),
+                            detail:this.hasPermission(this.$options.name,'Retrieve'),
                         }
                     },
                     //crud弹窗属性
