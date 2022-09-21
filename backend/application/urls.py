@@ -33,7 +33,7 @@ from apps.oauth.views import WeChatXCXLoginAPIView,XCXWeChatUserInfoUpdateAPIVie
 from apps.address.views import *
 from apps.logins.views import APPMobilePasswordLoginView,SendSmsCodeView,APPMobileSMSLoginView,ForgetPasswdResetView,RegisterView
 from apps.lyusers.views import SetUserNicknameView,ChangeAvatarView,uploadImagesView,DestroyUserView
-from apps.lymessages.views import UserMessagesView
+from apps.lymessages.views import UserMessagesView,UserMessagesNoticeView,GetUnreadMessageNumView
 from apps.platformsettings.views import *
 from apps.mall.views import *
 
@@ -111,7 +111,9 @@ urlpatterns = [
     path('api/app/uploadimage/', uploadImagesView.as_view(), name='app端上传图片'),
     path('api/xcx/getuserinfo/', XCXWeChatUserInfoUpdateAPIView.as_view(), name='微信小程序获取用户信息'),
     path('api/xcx/getshareqrcode/', GetXCXShareQrcodeView.as_view(), name='微信小程序用户获取推广小程序二维码'),
-    path('api/xcx/usermessages/', UserMessagesView.as_view(), name='微信小程序获取系统通知信息/修改为已读'),
+    path('api/app/usermessages/', UserMessagesView.as_view(), name='app端获取系统消息和平台公告通知（包含已读，未读）/操作修改为已读/删除'),
+    path('api/app/usermessagesnotice/', UserMessagesNoticeView.as_view(), name='app端获取平台公告列表'),
+    path('api/app/getunreadmessagenums/', GetUnreadMessageNumView.as_view(), name='app端获取未读消息的数量'),
     path('api/app/feeckback/', APPUserLeavingMessageView.as_view(), name='app端意见反馈'),
 
     #用户地址管理API
