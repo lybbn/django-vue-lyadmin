@@ -25,7 +25,7 @@
 
         <div class="table">
             <el-table height="calc(100vh - 210px)" border row-key="id" :data="tableData" v-loading="loadingPage" style="width: 100%" lazy :load="loadChild" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-                <el-table-column type="index" width="55" align="center" label="序号"></el-table-column>
+                <el-table-column type="index" width="70" align="center" label="序号"></el-table-column>
                 <el-table-column min-width="180" prop="name" label="地区名称"></el-table-column>
                 <el-table-column min-width="100" prop="id" label="地区编码"></el-table-column>
                 <el-table-column min-width="90"  label="状态">
@@ -190,10 +190,13 @@
         },
     }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .tableNav{
         overflow: hidden;
         margin-bottom: 20px;
+    }
+    ::v-deep(.el-table__placeholder){
+        display: unset;
     }
 </style>
 

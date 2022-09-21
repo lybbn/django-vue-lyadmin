@@ -42,7 +42,7 @@
                 v-loading="loadingPage"
                 style="width: 100%;"
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-            <el-table-column type="index" width="55" align="center" label="序号">
+            <el-table-column type="index" width="70" align="center" label="序号">
                 <template #default="scope">
                     <span v-text="getIndex(scope.$index)"></span>
                 </template>
@@ -55,7 +55,7 @@
                     </el-icon>
                 </template>
             </el-table-column>
-            <el-table-column min-width="80" prop="sort" label="排序"></el-table-column>
+            <el-table-column min-width="70" prop="sort" label="排序"></el-table-column>
             <el-table-column min-width="160" prop="web_path" label="路由地址" show-overflow-tooltip=""></el-table-column>
             <el-table-column min-width="300" label="权限">
                 <template #default="scope">
@@ -68,7 +68,7 @@
                     <el-tag v-else type="danger">否</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column min-width="100" label="状态">
+            <el-table-column min-width="90" label="状态">
                 <template #default="scope">
                     <el-tag v-if="scope.row.status==1" type="">启用</el-tag>
                     <el-tag v-else type="danger">禁用</el-tag>
@@ -243,10 +243,13 @@
         },
     }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .tableNav{
         overflow: hidden;
         margin-bottom: 20px;
+    }
+    ::v-deep(.el-table__placeholder){
+        display: unset;
     }
 </style>
 

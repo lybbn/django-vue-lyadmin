@@ -211,10 +211,13 @@
         },
     }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
     .tableNav{
         overflow: hidden;
         margin-bottom: 20px;
+    }
+    ::v-deep(.el-table__placeholder){
+        display: unset;
     }
 </style>
 
