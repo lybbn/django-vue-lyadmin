@@ -60,9 +60,11 @@ export default {
         nextTick(()=>{
             tinymce.init({})
         })
+         window.addEventListener("focusin", onFocusIn,true);
     })
       onUnmounted(()=>{
           tinymce.remove()
+          window.removeEventListener("focusin", onFocusIn);
       })
 
 
@@ -78,7 +80,9 @@ export default {
         state.contentValue = n
       }
     })
-
+    function  onFocusIn(e){
+        e.stopImmediatePropagation()//阻止当前和后面的一系列事件
+    }
     function debounce (fn, wait = 400)  {
       // console.log('进到了防抖', wait)
       if (state.timeout !== null) {

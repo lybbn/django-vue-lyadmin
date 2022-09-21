@@ -632,7 +632,7 @@
 
         unmounted() {
             //解决table 表格缩放错位问题
-             window.removeEventListener("resize", this.handleResize);
+            window.removeEventListener("resize", this.handleResize);
              // 页面销毁，去掉监听事件
 			window.removeEventListener("resize", this.listenResize);
         },
