@@ -42,7 +42,7 @@
                 v-loading="loadingPage"
                 style="width: 100%;"
                 :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-            <el-table-column type="index" width="70" align="center" label="序号">
+            <el-table-column type="index" width="70"  label="序号" style="display: unset;">
                 <template #default="scope">
                     <span v-text="getIndex(scope.$index)"></span>
                 </template>
@@ -248,9 +248,7 @@
         overflow: hidden;
         margin-bottom: 20px;
     }
-    ::v-deep(.el-table__placeholder){
-        display: unset;
-    }
+    /*::v-deep(.el-table__placeholder){*/
+    /*    display: unset;*/
+    /*}*/
 </style>
-
-
