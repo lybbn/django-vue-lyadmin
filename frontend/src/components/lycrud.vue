@@ -41,8 +41,9 @@
                     <div>
                         <el-button  @click="handleEdit('','add')" type="primary" icon="Plus" v-show="rowHandle.permission.add">新增</el-button>
                         <el-button  @click="handleMutiDelete" type="danger" icon="Delete" :disabled="multiple" v-if="showSelectable && rowHandle.permission.del">删除</el-button>
+                        <slot name="tablebar-l"></slot>
                     </div>
-                    <slot name="tablebar-l"></slot>
+
                 </div>
                 <div>
                     <slot name="tablebar-c"></slot>
