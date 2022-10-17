@@ -166,8 +166,15 @@
 
             localStorage.setItem('allmenu', JSON.stringify(this.allmenu))
             //优化首次登录第一个标签显示问题
-            let tabsPage = [{"title":menuTree[0].text,"name":menuTree[0].attributes.url}]
-            let TabsValue = menuTree[0].attributes.url
+            let tabsPage = ""
+            let TabsValue = ""
+            if(menuTree[0].hasChildren){
+                tabsPage = [{"title":menuTree[0].children[0].text,"name":menuTree[0].children[0].attributes.url}]
+                TabsValue = menuTree[0].children[0].attributes.url
+            }else{
+                tabsPage = [{"title":menuTree[0].text,"name":menuTree[0].attributes.url}]
+                TabsValue = menuTree[0].attributes.url
+            }
             this.$store.commit('firstTabs', [tabsPage,TabsValue])
             this.$forceUpdate()
           } else {
