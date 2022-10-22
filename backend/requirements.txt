@@ -48,8 +48,6 @@ ruamel.yaml.clib
 service-identity
 six
 sqlparse
-Twisted
-twisted-iocpsupport
 txaio
 typing-extensions
 ua-parser
