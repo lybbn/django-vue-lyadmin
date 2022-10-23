@@ -78,7 +78,7 @@
             </el-table>
         </div>
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
-        <add-user ref="addUserFlag" @refreshData="search"></add-user>
+        <add-user ref="addUserFlag" @refreshData="getData"></add-user>
         <user-detail ref="userDetailFlag"></user-detail>
     </div>
 </template>

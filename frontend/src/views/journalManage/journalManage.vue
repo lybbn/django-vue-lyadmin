@@ -39,13 +39,13 @@
                     <span v-text="getIndex(scope.$index)"></span>
                 </template>
             </el-table-column>
-            <el-table-column min-width="90" prop="request_modular" label="请求模块" show-overflow-tooltip></el-table-column>
+            <el-table-column min-width="100" prop="request_modular" label="请求模块" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="120" prop="request_path" label="请求地址" show-overflow-tooltip></el-table-column>
-            <el-table-column min-width="70" prop="request_method" label="请求方法" show-overflow-tooltip></el-table-column>
-            <el-table-column min-width="80" prop="request_ip" label="IP地址" show-overflow-tooltip></el-table-column>
+            <el-table-column min-width="100" prop="request_method" label="请求方法" show-overflow-tooltip></el-table-column>
+            <el-table-column min-width="90" prop="request_ip" label="IP地址" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="120" prop="request_browser" label="请求浏览器" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="200" prop="request_body" label="请求数据" show-overflow-tooltip></el-table-column>
-            <el-table-column min-width="60" prop="response_code" label="响应码" show-overflow-tooltip></el-table-column>
+            <el-table-column min-width="70" prop="response_code" label="响应码" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="200" prop="json_result" label="返回信息" show-overflow-tooltip></el-table-column>
             <el-table-column min-width="120" prop="creator_name" label="操作人"></el-table-column>
             <el-table-column min-width="150" prop="create_datetime" label="创建时间" show-overflow-tooltip></el-table-column>

@@ -59,7 +59,7 @@
         </el-form>
         <pagination-module v-bind:child-msg="pageparm" @callFather="callFather"></pagination-module>
 
-        <add-module-other ref="AddModuleFlag" @refreshData="search"></add-module-other>
+        <add-module-other ref="AddModuleFlag" @refreshData="getData"></add-module-other>
     </div>
 </template>
 <script>

@@ -85,6 +85,7 @@ urlpatterns = [
     path('api/messages/', include('apps.lymessages.urls')),
     path('api/users/', include('apps.lyusers.urls')),
     path('api/mall/', include('apps.mall.urls')),
+    path('api/crontab/', include('apps.lycrontab.urls')),
 
     # ========================================================================================= #
     # ********************************** 前端微服务API用户接口************************************ #

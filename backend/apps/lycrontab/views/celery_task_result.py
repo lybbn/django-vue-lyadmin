@@ -9,20 +9,31 @@
 # +-------------------------------------------------------------------
 
 # ------------------------------
-# 自定义计划任务 view
+# django_celery_results TaskResult view
 # ------------------------------
-from apps.lycrontab.models import CrontabManage
-from apps.lycrontab.views.celery_periodic_task import PeriodicTaskSerializer
-from rest_framework import serializers
 
-from utils.jsonResponse import SuccessResponse, ErrorResponse,DetailResponse
+from django_celery_results.models import TaskResult
+
 from utils.serializers import CustomModelSerializer
 from utils.viewset import CustomModelViewSet
 
-class CrontabManageSerializer(CustomModelSerializer):
-    periodic_task = PeriodicTaskSerializer()
+from apps.lycrontab.filters import CeleryTaskResultFilterSet
 
+
+
+class CeleryTaskResultSerializer(CustomModelSerializer):
+    """
+    定时任务结果 序列化器
+    """
     class Meta:
-        model = CrontabManage
-        read_only_fields = ["id"]
+        model = TaskResult
         fields = '__all__'
+
+
+class CeleryTaskResultViewSet(CustomModelViewSet):
+    """
+    定时任务 接口
+    """
+    queryset = TaskResult.objects.all()
+    serializer_class = CeleryTaskResultSerializer
+    filter_class = CeleryTaskResultFilterSet

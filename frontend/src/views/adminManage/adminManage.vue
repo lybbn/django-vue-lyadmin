@@ -84,7 +84,7 @@
             </el-table>
         </div>
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
-        <add-admin ref="addAdminFlag" @refreshData="search"></add-admin>
+        <add-admin ref="addAdminFlag" @refreshData="getData"></add-admin>
     </div>
 </template>
 <script>

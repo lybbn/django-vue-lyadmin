@@ -60,7 +60,7 @@
             </el-table>
         </div>
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
-        <add-module-terminal ref="addModuleTerminalFlag" @refreshData="search"></add-module-terminal>
+        <add-module-terminal ref="addModuleTerminalFlag" @refreshData="getData"></add-module-terminal>
 
 <!--        <div class="lycontainer" >-->
 <!--            <el-tabs type="card">-->

@@ -99,7 +99,7 @@
             </el-table>
         </div>
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
-        <add-module-goods-manage ref="addModuleFlag" @refreshData="search"></add-module-goods-manage>
+        <add-module-goods-manage ref="addModuleFlag" @refreshData="getData"></add-module-goods-manage>
 
     </div>
 </template>

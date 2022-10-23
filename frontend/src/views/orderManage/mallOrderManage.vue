@@ -113,7 +113,7 @@
         </el-table>
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
         <shopping-mall-order-detail ref="shoppingMallOrderDetailFlag"></shopping-mall-order-detail>
-        <deliver-goods-module ref="deliverGoodsModuleFlag" @refreshData="search"></deliver-goods-module>
+        <deliver-goods-module ref="deliverGoodsModuleFlag" @refreshData="getData"></deliver-goods-module>
     </div>
 </template>
 <script>

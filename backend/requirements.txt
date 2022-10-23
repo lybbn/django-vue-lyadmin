@@ -66,6 +66,6 @@ chardet
 channels
 channels_redis
 paramiko
+celery
 django-celery-beat
 django-celery-results
-celery

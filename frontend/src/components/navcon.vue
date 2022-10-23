@@ -9,6 +9,7 @@
           </p>
         <img class="showimg" :src="collapsed?imgsq:imgshow" @click="toggle(collapsed)">
       </el-menu-item>
+<!--      <span class="site-title">Django-Vue-Lyadmin后台管理系统</span>-->
 <!--      <el-row class="buttonimg" type="info">-->
 <!--      </el-row>-->
       <el-row  class="ly-header-right">
@@ -138,6 +139,10 @@
   }
 </script>
 <style lang="scss" scoped>
+    .site-title{
+        color: #ffffff;
+        font-size: 20px;
+    }
     .right-dropdown-center{
         color: #ffffff;
         display: flex;

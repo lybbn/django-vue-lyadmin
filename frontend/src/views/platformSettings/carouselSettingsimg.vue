@@ -34,7 +34,7 @@
             </el-table-column>
         </el-table>
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
-        <add-module ref="addModuleFlag" @refreshData="search"></add-module>
+        <add-module ref="addModuleFlag" @refreshData="getData"></add-module>
     </div>
 
 </template>

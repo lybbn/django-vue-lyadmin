@@ -68,7 +68,7 @@
             </el-table>
         </div>
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
-        <add-module-goods-type ref="addModuleFlag" @refreshData="search"></add-module-goods-type>
+        <add-module-goods-type ref="addModuleFlag" @refreshData="getData"></add-module-goods-type>
     </div>
 </template>
 <script>

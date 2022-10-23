@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       v-model="visible"
-      custom-class="ly-dialog"
+      class="ly-dialog"
       :close-on-click-modal="closeOnClickModal"
       :title="title"
       :width="width"

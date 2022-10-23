@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.7.26)
-# Date: 2022-08-02 14:06:15
+# Date: 2022-10-24 00:59:56
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -32,13 +32,220 @@ CREATE TABLE `captcha_captchastore` (
   `expiration` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `hashkey` (`hashkey`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COMMENT='captcha store';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COMMENT='captcha store';
 
 #
 # Data for table "captcha_captchastore"
 #
 
 REPLACE INTO `captcha_captchastore` VALUES (2,'1+9=','10','b30a8d21f0d1d95c53b69b994c154e8189cc7c80','2022-07-04 21:33:33.914140'),(6,'3-2=','1','f3dfa2a7cbf3bda32a53298be602874fffaf6c68','2022-07-09 12:12:33.322567'),(8,'8*9=','72','2c7d94480f0c98db4137380db0e194acc258e9a6','2022-07-16 15:01:48.225074'),(9,'5*5=','25','ffd0b6d67099501f4bcdf5240553a22f84669d30','2022-07-17 09:44:46.330850'),(11,'1*6=','6','8150b2d7af32cc9cf1ef2e7f32f47c18079e32ae','2022-07-17 23:58:02.858469'),(13,'5+7=','12','84015e072e7fe570ba8d34deb9f8fc120d115cc4','2022-07-18 09:10:43.608250'),(14,'7+9=','16','37a0cc3cc181ff52f1e993278e883be76b51d9d7','2022-07-18 09:11:06.525042'),(23,'5*2=','10','af73bce2f14be6416917dd639b2fe4690d7352df','2022-07-18 09:26:25.032743'),(24,'3+8=','11','a9d26b51f99fe104a65733bc3be041ed40008d6a','2022-08-02 09:08:52.197430');
+
+#
+# Structure for table "django_celery_beat_clockedschedule"
+#
+
+CREATE TABLE `django_celery_beat_clockedschedule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `clocked_time` datetime(6) NOT NULL COMMENT 'Run the task at clocked time',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='clocked';
+
+#
+# Data for table "django_celery_beat_clockedschedule"
+#
+
+
+#
+# Structure for table "django_celery_beat_crontabschedule"
+#
+
+CREATE TABLE `django_celery_beat_crontabschedule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `minute` varchar(240) NOT NULL COMMENT 'Cron Minutes to Run. Use "*" for "all". (Example: "0,30")',
+  `hour` varchar(96) NOT NULL COMMENT 'Cron Hours to Run. Use "*" for "all". (Example: "8,20")',
+  `day_of_week` varchar(64) NOT NULL COMMENT 'Cron Days Of The Week to Run. Use "*" for "all". (Example: "0,5")',
+  `day_of_month` varchar(124) NOT NULL COMMENT 'Cron Days Of The Month to Run. Use "*" for "all". (Example: "1,15")',
+  `month_of_year` varchar(64) NOT NULL COMMENT 'Cron Months Of The Year to Run. Use "*" for "all". (Example: "0,6")',
+  `timezone` varchar(63) NOT NULL COMMENT 'Timezone to Run the Cron Schedule on. Default is UTC.',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='crontab';
+
+#
+# Data for table "django_celery_beat_crontabschedule"
+#
+
+REPLACE INTO `django_celery_beat_crontabschedule` VALUES (6,'*','3','*','*','*','Asia/Shanghai');
+
+#
+# Structure for table "django_celery_beat_intervalschedule"
+#
+
+CREATE TABLE `django_celery_beat_intervalschedule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `every` int(11) NOT NULL COMMENT 'Number of interval periods to wait before running the task again',
+  `period` varchar(24) NOT NULL COMMENT 'The type of period between task runs (Example: days)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='interval';
+
+#
+# Data for table "django_celery_beat_intervalschedule"
+#
+
+
+#
+# Structure for table "django_celery_beat_periodictasks"
+#
+
+CREATE TABLE `django_celery_beat_periodictasks` (
+  `ident` smallint(6) NOT NULL,
+  `last_update` datetime(6) NOT NULL,
+  PRIMARY KEY (`ident`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='periodic tasks';
+
+#
+# Data for table "django_celery_beat_periodictasks"
+#
+
+REPLACE INTO `django_celery_beat_periodictasks` VALUES (1,'2022-10-24 00:58:51.527712');
+
+#
+# Structure for table "django_celery_beat_solarschedule"
+#
+
+CREATE TABLE `django_celery_beat_solarschedule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `event` varchar(24) NOT NULL COMMENT 'The type of solar event when the job should run',
+  `latitude` decimal(9,6) NOT NULL COMMENT 'Run the task when the event happens at this latitude',
+  `longitude` decimal(9,6) NOT NULL COMMENT 'Run the task when the event happens at this longitude',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `django_celery_beat_solar_event_latitude_longitude_ba64999a_uniq` (`event`,`latitude`,`longitude`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='solar event';
+
+#
+# Data for table "django_celery_beat_solarschedule"
+#
+
+
+#
+# Structure for table "django_celery_beat_periodictask"
+#
+
+CREATE TABLE `django_celery_beat_periodictask` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL COMMENT 'Short Description For This Task',
+  `task` varchar(200) NOT NULL COMMENT 'The Name of the Celery Task that Should be Run.  (Example: "proj.tasks.import_contacts")',
+  `args` longtext NOT NULL COMMENT 'JSON encoded positional arguments (Example: ["arg1", "arg2"])',
+  `kwargs` longtext NOT NULL COMMENT 'JSON encoded keyword arguments (Example: {"argument": "value"})',
+  `queue` varchar(200) DEFAULT NULL COMMENT 'Queue defined in CELERY_TASK_QUEUES. Leave None for default queuing.',
+  `exchange` varchar(200) DEFAULT NULL COMMENT 'Override Exchange for low-level AMQP routing',
+  `routing_key` varchar(200) DEFAULT NULL COMMENT 'Override Routing Key for low-level AMQP routing',
+  `expires` datetime(6) DEFAULT NULL COMMENT 'Datetime after which the schedule will no longer trigger the task to run',
+  `enabled` tinyint(1) NOT NULL COMMENT 'Set to False to disable the schedule',
+  `last_run_at` datetime(6) DEFAULT NULL COMMENT 'Datetime that the schedule last triggered the task to run. Reset to None if enabled is set to False.',
+  `total_run_count` int(10) unsigned NOT NULL COMMENT 'Running count of how many times the schedule has triggered the task',
+  `date_changed` datetime(6) NOT NULL COMMENT 'Datetime that this PeriodicTask was last modified',
+  `description` longtext NOT NULL COMMENT 'Detailed description about the details of this Periodic Task',
+  `crontab_id` int(11) DEFAULT NULL COMMENT 'Crontab Schedule to run the task on.  Set only one schedule type, leave the others null.',
+  `interval_id` int(11) DEFAULT NULL COMMENT 'Interval Schedule to run the task on.  Set only one schedule type, leave the others null.',
+  `solar_id` int(11) DEFAULT NULL COMMENT 'Solar Schedule to run the task on.  Set only one schedule type, leave the others null.',
+  `one_off` tinyint(1) NOT NULL COMMENT 'If True, the schedule will only run the task a single time',
+  `start_time` datetime(6) DEFAULT NULL COMMENT 'Datetime when the schedule should begin triggering the task to run',
+  `priority` int(10) unsigned DEFAULT NULL COMMENT 'Priority Number between 0 and 255. Supported by: RabbitMQ, Redis (priority reversed, 0 is highest).',
+  `headers` longtext NOT NULL COMMENT 'JSON encoded message headers for the AMQP message.',
+  `clocked_id` int(11) DEFAULT NULL COMMENT 'Clocked Schedule to run the task on.  Set only one schedule type, leave the others null.',
+  `expire_seconds` int(10) unsigned DEFAULT NULL COMMENT 'Timedelta with seconds which the schedule will no longer trigger the task to run',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `django_celery_beat_p_crontab_id_d3cba168_fk_django_ce` (`crontab_id`),
+  KEY `django_celery_beat_p_interval_id_a8ca27da_fk_django_ce` (`interval_id`),
+  KEY `django_celery_beat_p_solar_id_a87ce72c_fk_django_ce` (`solar_id`),
+  KEY `django_celery_beat_p_clocked_id_47a69f82_fk_django_ce` (`clocked_id`),
+  CONSTRAINT `django_celery_beat_p_clocked_id_47a69f82_fk_django_ce` FOREIGN KEY (`clocked_id`) REFERENCES `django_celery_beat_clockedschedule` (`id`),
+  CONSTRAINT `django_celery_beat_p_crontab_id_d3cba168_fk_django_ce` FOREIGN KEY (`crontab_id`) REFERENCES `django_celery_beat_crontabschedule` (`id`),
+  CONSTRAINT `django_celery_beat_p_interval_id_a8ca27da_fk_django_ce` FOREIGN KEY (`interval_id`) REFERENCES `django_celery_beat_intervalschedule` (`id`),
+  CONSTRAINT `django_celery_beat_p_solar_id_a87ce72c_fk_django_ce` FOREIGN KEY (`solar_id`) REFERENCES `django_celery_beat_solarschedule` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='periodic task';
+
+#
+# Data for table "django_celery_beat_periodictask"
+#
+
+REPLACE INTO `django_celery_beat_periodictask` VALUES (1,'测试任务','apps.lycrontab.tasks.lytask_test','[]','{}',NULL,NULL,NULL,NULL,0,NULL,0,'2022-10-24 00:58:51.537708','测试任务',6,NULL,NULL,0,NULL,NULL,'{}',NULL,NULL);
+
+#
+# Structure for table "django_celery_results_chordcounter"
+#
+
+CREATE TABLE `django_celery_results_chordcounter` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` varchar(255) NOT NULL COMMENT 'Celery ID for the Chord header group',
+  `sub_tasks` longtext NOT NULL COMMENT 'JSON serialized list of task result tuples. use .group_result() to decode',
+  `count` int(10) unsigned NOT NULL COMMENT 'Starts at len(chord header) and decrements after each task is finished',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `group_id` (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='chord counter';
+
+#
+# Data for table "django_celery_results_chordcounter"
+#
+
+
+#
+# Structure for table "django_celery_results_groupresult"
+#
+
+CREATE TABLE `django_celery_results_groupresult` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` varchar(255) NOT NULL COMMENT 'Celery ID for the Group that was run',
+  `date_created` datetime(6) NOT NULL COMMENT 'Datetime field when the group result was created in UTC',
+  `date_done` datetime(6) NOT NULL COMMENT 'Datetime field when the group was completed in UTC',
+  `content_type` varchar(128) NOT NULL COMMENT 'Content type of the result data',
+  `content_encoding` varchar(64) NOT NULL COMMENT 'The encoding used to save the task result data',
+  `result` longtext COMMENT 'The data returned by the task.  Use content_encoding and content_type fields to read.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `group_id` (`group_id`),
+  KEY `django_cele_date_cr_bd6c1d_idx` (`date_created`),
+  KEY `django_cele_date_do_caae0e_idx` (`date_done`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='group result';
+
+#
+# Data for table "django_celery_results_groupresult"
+#
+
+
+#
+# Structure for table "django_celery_results_taskresult"
+#
+
+CREATE TABLE `django_celery_results_taskresult` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` varchar(255) NOT NULL COMMENT 'Celery ID for the Task that was run',
+  `status` varchar(50) NOT NULL COMMENT 'Current state of the task being run',
+  `content_type` varchar(128) NOT NULL COMMENT 'Content type of the result data',
+  `content_encoding` varchar(64) NOT NULL COMMENT 'The encoding used to save the task result data',
+  `result` longtext COMMENT 'The data returned by the task.  Use content_encoding and content_type fields to read.',
+  `date_done` datetime(6) NOT NULL COMMENT 'Datetime field when the task was completed in UTC',
+  `traceback` longtext COMMENT 'Text of the traceback if the task generated one',
+  `meta` longtext COMMENT 'JSON meta information about the task, such as information on child tasks',
+  `task_args` longtext COMMENT 'JSON representation of the positional arguments used with the task',
+  `task_kwargs` longtext COMMENT 'JSON representation of the named arguments used with the task',
+  `task_name` varchar(255) DEFAULT NULL COMMENT 'Name of the Task which was run',
+  `worker` varchar(100) DEFAULT NULL COMMENT 'Worker that executes the task',
+  `date_created` datetime(6) NOT NULL COMMENT 'Datetime field when the task result was created in UTC',
+  `periodic_task_name` varchar(255) DEFAULT NULL COMMENT 'Name of the Periodic Task which was run',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `task_id` (`task_id`),
+  KEY `django_cele_task_na_08aec9_idx` (`task_name`),
+  KEY `django_cele_status_9b6201_idx` (`status`),
+  KEY `django_cele_worker_d54dd8_idx` (`worker`),
+  KEY `django_cele_date_cr_f04a50_idx` (`date_created`),
+  KEY `django_cele_date_do_f59aad_idx` (`date_done`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='task result';
+
+#
+# Data for table "django_celery_results_taskresult"
+#
+
 
 #
 # Structure for table "django_content_type"
@@ -50,13 +257,13 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COMMENT='content type';
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COMMENT='content type';
 
 #
 # Data for table "django_content_type"
 #
 
-REPLACE INTO `django_content_type` VALUES (1,'admin','logentry'),(2,'auth','permission'),(3,'auth','group'),(4,'contenttypes','contenttype'),(5,'sessions','session'),(6,'captcha','captchastore'),(7,'mysystem','users'),(8,'mysystem','dept'),(9,'mysystem','dictionary'),(10,'mysystem','menu'),(11,'mysystem','menubutton'),(12,'mysystem','sysdictionarylist'),(13,'mysystem','role'),(14,'mysystem','post'),(15,'mysystem','operationlog'),(16,'mysystem','loginlog'),(17,'mysystem','button'),(18,'lymessages','mymessage'),(19,'lymessages','mymessagetemplate'),(20,'lymessages','mymessageuser'),(21,'address','area'),(22,'oauth','oauthwxuser'),(23,'platformsettings','othermanage'),(24,'platformsettings','lunbotumanage'),(25,'lymonitor','monitormanage'),(26,'lywebsocket','terminalserver'),(27,'address','address'),(28,'platformsettings','userleavingmessage'),(29,'mall','orderinfo'),(30,'mall','goodsspectemplate'),(31,'mall','goodscategory'),(32,'mall','spuspecification'),(33,'mall','goodsbrand'),(34,'mall','ordergoods'),(35,'mall','skuspecification'),(36,'mall','sku'),(37,'mall','couponrecord'),(38,'mall','skuimage'),(39,'mall','spuspecificationoption'),(40,'mall','spu'),(41,'mall','orderrefunds'),(42,'mall','goodscoupon');
+REPLACE INTO `django_content_type` VALUES (1,'admin','logentry'),(2,'auth','permission'),(3,'auth','group'),(4,'contenttypes','contenttype'),(5,'sessions','session'),(6,'captcha','captchastore'),(7,'mysystem','users'),(8,'mysystem','dept'),(9,'mysystem','dictionary'),(10,'mysystem','menu'),(11,'mysystem','menubutton'),(12,'mysystem','sysdictionarylist'),(13,'mysystem','role'),(14,'mysystem','post'),(15,'mysystem','operationlog'),(16,'mysystem','loginlog'),(17,'mysystem','button'),(18,'lymessages','mymessage'),(19,'lymessages','mymessagetemplate'),(20,'lymessages','mymessageuser'),(21,'address','area'),(22,'oauth','oauthwxuser'),(23,'platformsettings','othermanage'),(24,'platformsettings','lunbotumanage'),(25,'lymonitor','monitormanage'),(26,'lywebsocket','terminalserver'),(27,'address','address'),(28,'platformsettings','userleavingmessage'),(29,'mall','orderinfo'),(30,'mall','goodsspectemplate'),(31,'mall','goodscategory'),(32,'mall','spuspecification'),(33,'mall','goodsbrand'),(34,'mall','ordergoods'),(35,'mall','skuspecification'),(36,'mall','sku'),(37,'mall','couponrecord'),(38,'mall','skuimage'),(39,'mall','spuspecificationoption'),(40,'mall','spu'),(41,'mall','orderrefunds'),(42,'mall','goodscoupon'),(43,'django_celery_results','taskresult'),(44,'django_celery_results','chordcounter'),(45,'django_celery_results','groupresult'),(46,'django_celery_beat','crontabschedule'),(47,'django_celery_beat','intervalschedule'),(48,'django_celery_beat','periodictask'),(49,'django_celery_beat','periodictasks'),(50,'django_celery_beat','solarschedule'),(51,'django_celery_beat','clockedschedule');
 
 #
 # Structure for table "auth_permission"
@@ -70,13 +277,13 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=utf8mb4 COMMENT='permission';
+) ENGINE=InnoDB AUTO_INCREMENT=205 DEFAULT CHARSET=utf8mb4 COMMENT='permission';
 
 #
 # Data for table "auth_permission"
 #
 
-REPLACE INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can view log entry',1,'view_logentry'),(5,'Can add permission',2,'add_permission'),(6,'Can change permission',2,'change_permission'),(7,'Can delete permission',2,'delete_permission'),(8,'Can view permission',2,'view_permission'),(9,'Can add group',3,'add_group'),(10,'Can change group',3,'change_group'),(11,'Can delete group',3,'delete_group'),(12,'Can view group',3,'view_group'),(13,'Can add content type',4,'add_contenttype'),(14,'Can change content type',4,'change_contenttype'),(15,'Can delete content type',4,'delete_contenttype'),(16,'Can view content type',4,'view_contenttype'),(17,'Can add session',5,'add_session'),(18,'Can change session',5,'change_session'),(19,'Can delete session',5,'delete_session'),(20,'Can view session',5,'view_session'),(21,'Can add captcha store',6,'add_captchastore'),(22,'Can change captcha store',6,'change_captchastore'),(23,'Can delete captcha store',6,'delete_captchastore'),(24,'Can view captcha store',6,'view_captchastore'),(25,'Can add 用户表',7,'add_users'),(26,'Can change 用户表',7,'change_users'),(27,'Can delete 用户表',7,'delete_users'),(28,'Can view 用户表',7,'view_users'),(29,'Can add 部门表',8,'add_dept'),(30,'Can change 部门表',8,'change_dept'),(31,'Can delete 部门表',8,'delete_dept'),(32,'Can view 部门表',8,'view_dept'),(33,'Can add 字典表',9,'add_dictionary'),(34,'Can change 字典表',9,'change_dictionary'),(35,'Can delete 字典表',9,'delete_dictionary'),(36,'Can view 字典表',9,'view_dictionary'),(37,'Can add 菜单表',10,'add_menu'),(38,'Can change 菜单表',10,'change_menu'),(39,'Can delete 菜单表',10,'delete_menu'),(40,'Can view 菜单表',10,'view_menu'),(41,'Can add 菜单权限表',11,'add_menubutton'),(42,'Can change 菜单权限表',11,'change_menubutton'),(43,'Can delete 菜单权限表',11,'delete_menubutton'),(44,'Can view 菜单权限表',11,'view_menubutton'),(45,'Can add 字典详细表',12,'add_sysdictionarylist'),(46,'Can change 字典详细表',12,'change_sysdictionarylist'),(47,'Can delete 字典详细表',12,'delete_sysdictionarylist'),(48,'Can view 字典详细表',12,'view_sysdictionarylist'),(49,'Can add 角色表',13,'add_role'),(50,'Can change 角色表',13,'change_role'),(51,'Can delete 角色表',13,'delete_role'),(52,'Can view 角色表',13,'view_role'),(53,'Can add 岗位表',14,'add_post'),(54,'Can change 岗位表',14,'change_post'),(55,'Can delete 岗位表',14,'delete_post'),(56,'Can view 岗位表',14,'view_post'),(57,'Can add 操作日志',15,'add_operationlog'),(58,'Can change 操作日志',15,'change_operationlog'),(59,'Can delete 操作日志',15,'delete_operationlog'),(60,'Can view 操作日志',15,'view_operationlog'),(61,'Can add 登录日志',16,'add_loginlog'),(62,'Can change 登录日志',16,'change_loginlog'),(63,'Can delete 登录日志',16,'delete_loginlog'),(64,'Can view 登录日志',16,'view_loginlog'),(65,'Can add 权限标识表',17,'add_button'),(66,'Can change 权限标识表',17,'change_button'),(67,'Can delete 权限标识表',17,'delete_button'),(68,'Can view 权限标识表',17,'view_button'),(69,'Can add 消息中心',18,'add_mymessage'),(70,'Can change 消息中心',18,'change_mymessage'),(71,'Can delete 消息中心',18,'delete_mymessage'),(72,'Can view 消息中心',18,'view_mymessage'),(73,'Can add 消息模板',19,'add_mymessagetemplate'),(74,'Can change 消息模板',19,'change_mymessagetemplate'),(75,'Can delete 消息模板',19,'delete_mymessagetemplate'),(76,'Can view 消息模板',19,'view_mymessagetemplate'),(77,'Can add 用户消息',20,'add_mymessageuser'),(78,'Can change 用户消息',20,'change_mymessageuser'),(79,'Can delete 用户消息',20,'delete_mymessageuser'),(80,'Can view 用户消息',20,'view_mymessageuser'),(81,'Can add 省市区',21,'add_area'),(82,'Can change 省市区',21,'change_area'),(83,'Can delete 省市区',21,'delete_area'),(84,'Can view 省市区',21,'view_area'),(85,'Can add 微信登录用户数据',22,'add_oauthwxuser'),(86,'Can change 微信登录用户数据',22,'change_oauthwxuser'),(87,'Can delete 微信登录用户数据',22,'delete_oauthwxuser'),(88,'Can view 微信登录用户数据',22,'view_oauthwxuser'),(89,'Can add 平台其他设置',23,'add_othermanage'),(90,'Can change 平台其他设置',23,'change_othermanage'),(91,'Can delete 平台其他设置',23,'delete_othermanage'),(92,'Can view 平台其他设置',23,'view_othermanage'),(93,'Can add 轮播图设置',24,'add_lunbotumanage'),(94,'Can change 轮播图设置',24,'change_lunbotumanage'),(95,'Can delete 轮播图设置',24,'delete_lunbotumanage'),(96,'Can view 轮播图设置',24,'view_lunbotumanage'),(97,'Can add 服务监控',25,'add_monitormanage'),(98,'Can change 服务监控',25,'change_monitormanage'),(99,'Can delete 服务监控',25,'delete_monitormanage'),(100,'Can view 服务监控',25,'view_monitormanage'),(101,'Can add 终端服务器列表',26,'add_terminalserver'),(102,'Can change 终端服务器列表',26,'change_terminalserver'),(103,'Can delete 终端服务器列表',26,'delete_terminalserver'),(104,'Can view 终端服务器列表',26,'view_terminalserver'),(105,'Can add 用户地址',27,'add_address'),(106,'Can change 用户地址',27,'change_address'),(107,'Can delete 用户地址',27,'delete_address'),(108,'Can view 用户地址',27,'view_address'),(109,'Can add 用户反馈',28,'add_userleavingmessage'),(110,'Can change 用户反馈',28,'change_userleavingmessage'),(111,'Can delete 用户反馈',28,'delete_userleavingmessage'),(112,'Can view 用户反馈',28,'view_userleavingmessage'),(113,'Can add 订单基本信息',29,'add_orderinfo'),(114,'Can change 订单基本信息',29,'change_orderinfo'),(115,'Can delete 订单基本信息',29,'delete_orderinfo'),(116,'Can view 订单基本信息',29,'view_orderinfo'),(117,'Can add 商品规格模板',30,'add_goodsspectemplate'),(118,'Can change 商品规格模板',30,'change_goodsspectemplate'),(119,'Can delete 商品规格模板',30,'delete_goodsspectemplate'),(120,'Can view 商品规格模板',30,'view_goodsspectemplate'),(121,'Can add 商品类别',31,'add_goodscategory'),(122,'Can change 商品类别',31,'change_goodscategory'),(123,'Can delete 商品类别',31,'delete_goodscategory'),(124,'Can view 商品类别',31,'view_goodscategory'),(125,'Can add 商品SPU规格',32,'add_spuspecification'),(126,'Can change 商品SPU规格',32,'change_spuspecification'),(127,'Can delete 商品SPU规格',32,'delete_spuspecification'),(128,'Can view 商品SPU规格',32,'view_spuspecification'),(129,'Can add 商品品牌',33,'add_goodsbrand'),(130,'Can change 商品品牌',33,'change_goodsbrand'),(131,'Can delete 商品品牌',33,'delete_goodsbrand'),(132,'Can view 商品品牌',33,'view_goodsbrand'),(133,'Can add 订单商品',34,'add_ordergoods'),(134,'Can change 订单商品',34,'change_ordergoods'),(135,'Can delete 订单商品',34,'delete_ordergoods'),(136,'Can view 订单商品',34,'view_ordergoods'),(137,'Can add SKU规格',35,'add_skuspecification'),(138,'Can change SKU规格',35,'change_skuspecification'),(139,'Can delete SKU规格',35,'delete_skuspecification'),(140,'Can view SKU规格',35,'view_skuspecification'),(141,'Can add 商品SKU',36,'add_sku'),(142,'Can change 商品SKU',36,'change_sku'),(143,'Can delete 商品SKU',36,'delete_sku'),(144,'Can view 商品SKU',36,'view_sku'),(145,'Can add 用户持券表',37,'add_couponrecord'),(146,'Can change 用户持券表',37,'change_couponrecord'),(147,'Can delete 用户持券表',37,'delete_couponrecord'),(148,'Can view 用户持券表',37,'view_couponrecord'),(149,'Can add SKU图片',38,'add_skuimage'),(150,'Can change SKU图片',38,'change_skuimage'),(151,'Can delete SKU图片',38,'delete_skuimage'),(152,'Can view SKU图片',38,'view_skuimage'),(153,'Can add 规格选项',39,'add_spuspecificationoption'),(154,'Can change 规格选项',39,'change_spuspecificationoption'),(155,'Can delete 规格选项',39,'delete_spuspecificationoption'),(156,'Can view 规格选项',39,'view_spuspecificationoption'),(157,'Can add 商品SPU',40,'add_spu'),(158,'Can change 商品SPU',40,'change_spu'),(159,'Can delete 商品SPU',40,'delete_spu'),(160,'Can view 商品SPU',40,'view_spu'),(161,'Can add 商城订单退款',41,'add_orderrefunds'),(162,'Can change 商城订单退款',41,'change_orderrefunds'),(163,'Can delete 商城订单退款',41,'delete_orderrefunds'),(164,'Can view 商城订单退款',41,'view_orderrefunds'),(165,'Can add 商品优惠券',42,'add_goodscoupon'),(166,'Can change 商品优惠券',42,'change_goodscoupon'),(167,'Can delete 商品优惠券',42,'delete_goodscoupon'),(168,'Can view 商品优惠券',42,'view_goodscoupon');
+REPLACE INTO `auth_permission` VALUES (1,'Can add log entry',1,'add_logentry'),(2,'Can change log entry',1,'change_logentry'),(3,'Can delete log entry',1,'delete_logentry'),(4,'Can view log entry',1,'view_logentry'),(5,'Can add permission',2,'add_permission'),(6,'Can change permission',2,'change_permission'),(7,'Can delete permission',2,'delete_permission'),(8,'Can view permission',2,'view_permission'),(9,'Can add group',3,'add_group'),(10,'Can change group',3,'change_group'),(11,'Can delete group',3,'delete_group'),(12,'Can view group',3,'view_group'),(13,'Can add content type',4,'add_contenttype'),(14,'Can change content type',4,'change_contenttype'),(15,'Can delete content type',4,'delete_contenttype'),(16,'Can view content type',4,'view_contenttype'),(17,'Can add session',5,'add_session'),(18,'Can change session',5,'change_session'),(19,'Can delete session',5,'delete_session'),(20,'Can view session',5,'view_session'),(21,'Can add captcha store',6,'add_captchastore'),(22,'Can change captcha store',6,'change_captchastore'),(23,'Can delete captcha store',6,'delete_captchastore'),(24,'Can view captcha store',6,'view_captchastore'),(25,'Can add 用户表',7,'add_users'),(26,'Can change 用户表',7,'change_users'),(27,'Can delete 用户表',7,'delete_users'),(28,'Can view 用户表',7,'view_users'),(29,'Can add 部门表',8,'add_dept'),(30,'Can change 部门表',8,'change_dept'),(31,'Can delete 部门表',8,'delete_dept'),(32,'Can view 部门表',8,'view_dept'),(33,'Can add 字典表',9,'add_dictionary'),(34,'Can change 字典表',9,'change_dictionary'),(35,'Can delete 字典表',9,'delete_dictionary'),(36,'Can view 字典表',9,'view_dictionary'),(37,'Can add 菜单表',10,'add_menu'),(38,'Can change 菜单表',10,'change_menu'),(39,'Can delete 菜单表',10,'delete_menu'),(40,'Can view 菜单表',10,'view_menu'),(41,'Can add 菜单权限表',11,'add_menubutton'),(42,'Can change 菜单权限表',11,'change_menubutton'),(43,'Can delete 菜单权限表',11,'delete_menubutton'),(44,'Can view 菜单权限表',11,'view_menubutton'),(45,'Can add 字典详细表',12,'add_sysdictionarylist'),(46,'Can change 字典详细表',12,'change_sysdictionarylist'),(47,'Can delete 字典详细表',12,'delete_sysdictionarylist'),(48,'Can view 字典详细表',12,'view_sysdictionarylist'),(49,'Can add 角色表',13,'add_role'),(50,'Can change 角色表',13,'change_role'),(51,'Can delete 角色表',13,'delete_role'),(52,'Can view 角色表',13,'view_role'),(53,'Can add 岗位表',14,'add_post'),(54,'Can change 岗位表',14,'change_post'),(55,'Can delete 岗位表',14,'delete_post'),(56,'Can view 岗位表',14,'view_post'),(57,'Can add 操作日志',15,'add_operationlog'),(58,'Can change 操作日志',15,'change_operationlog'),(59,'Can delete 操作日志',15,'delete_operationlog'),(60,'Can view 操作日志',15,'view_operationlog'),(61,'Can add 登录日志',16,'add_loginlog'),(62,'Can change 登录日志',16,'change_loginlog'),(63,'Can delete 登录日志',16,'delete_loginlog'),(64,'Can view 登录日志',16,'view_loginlog'),(65,'Can add 权限标识表',17,'add_button'),(66,'Can change 权限标识表',17,'change_button'),(67,'Can delete 权限标识表',17,'delete_button'),(68,'Can view 权限标识表',17,'view_button'),(69,'Can add 消息中心',18,'add_mymessage'),(70,'Can change 消息中心',18,'change_mymessage'),(71,'Can delete 消息中心',18,'delete_mymessage'),(72,'Can view 消息中心',18,'view_mymessage'),(73,'Can add 消息模板',19,'add_mymessagetemplate'),(74,'Can change 消息模板',19,'change_mymessagetemplate'),(75,'Can delete 消息模板',19,'delete_mymessagetemplate'),(76,'Can view 消息模板',19,'view_mymessagetemplate'),(77,'Can add 用户消息',20,'add_mymessageuser'),(78,'Can change 用户消息',20,'change_mymessageuser'),(79,'Can delete 用户消息',20,'delete_mymessageuser'),(80,'Can view 用户消息',20,'view_mymessageuser'),(81,'Can add 省市区',21,'add_area'),(82,'Can change 省市区',21,'change_area'),(83,'Can delete 省市区',21,'delete_area'),(84,'Can view 省市区',21,'view_area'),(85,'Can add 微信登录用户数据',22,'add_oauthwxuser'),(86,'Can change 微信登录用户数据',22,'change_oauthwxuser'),(87,'Can delete 微信登录用户数据',22,'delete_oauthwxuser'),(88,'Can view 微信登录用户数据',22,'view_oauthwxuser'),(89,'Can add 平台其他设置',23,'add_othermanage'),(90,'Can change 平台其他设置',23,'change_othermanage'),(91,'Can delete 平台其他设置',23,'delete_othermanage'),(92,'Can view 平台其他设置',23,'view_othermanage'),(93,'Can add 轮播图设置',24,'add_lunbotumanage'),(94,'Can change 轮播图设置',24,'change_lunbotumanage'),(95,'Can delete 轮播图设置',24,'delete_lunbotumanage'),(96,'Can view 轮播图设置',24,'view_lunbotumanage'),(97,'Can add 服务监控',25,'add_monitormanage'),(98,'Can change 服务监控',25,'change_monitormanage'),(99,'Can delete 服务监控',25,'delete_monitormanage'),(100,'Can view 服务监控',25,'view_monitormanage'),(101,'Can add 终端服务器列表',26,'add_terminalserver'),(102,'Can change 终端服务器列表',26,'change_terminalserver'),(103,'Can delete 终端服务器列表',26,'delete_terminalserver'),(104,'Can view 终端服务器列表',26,'view_terminalserver'),(105,'Can add 用户地址',27,'add_address'),(106,'Can change 用户地址',27,'change_address'),(107,'Can delete 用户地址',27,'delete_address'),(108,'Can view 用户地址',27,'view_address'),(109,'Can add 用户反馈',28,'add_userleavingmessage'),(110,'Can change 用户反馈',28,'change_userleavingmessage'),(111,'Can delete 用户反馈',28,'delete_userleavingmessage'),(112,'Can view 用户反馈',28,'view_userleavingmessage'),(113,'Can add 订单基本信息',29,'add_orderinfo'),(114,'Can change 订单基本信息',29,'change_orderinfo'),(115,'Can delete 订单基本信息',29,'delete_orderinfo'),(116,'Can view 订单基本信息',29,'view_orderinfo'),(117,'Can add 商品规格模板',30,'add_goodsspectemplate'),(118,'Can change 商品规格模板',30,'change_goodsspectemplate'),(119,'Can delete 商品规格模板',30,'delete_goodsspectemplate'),(120,'Can view 商品规格模板',30,'view_goodsspectemplate'),(121,'Can add 商品类别',31,'add_goodscategory'),(122,'Can change 商品类别',31,'change_goodscategory'),(123,'Can delete 商品类别',31,'delete_goodscategory'),(124,'Can view 商品类别',31,'view_goodscategory'),(125,'Can add 商品SPU规格',32,'add_spuspecification'),(126,'Can change 商品SPU规格',32,'change_spuspecification'),(127,'Can delete 商品SPU规格',32,'delete_spuspecification'),(128,'Can view 商品SPU规格',32,'view_spuspecification'),(129,'Can add 商品品牌',33,'add_goodsbrand'),(130,'Can change 商品品牌',33,'change_goodsbrand'),(131,'Can delete 商品品牌',33,'delete_goodsbrand'),(132,'Can view 商品品牌',33,'view_goodsbrand'),(133,'Can add 订单商品',34,'add_ordergoods'),(134,'Can change 订单商品',34,'change_ordergoods'),(135,'Can delete 订单商品',34,'delete_ordergoods'),(136,'Can view 订单商品',34,'view_ordergoods'),(137,'Can add SKU规格',35,'add_skuspecification'),(138,'Can change SKU规格',35,'change_skuspecification'),(139,'Can delete SKU规格',35,'delete_skuspecification'),(140,'Can view SKU规格',35,'view_skuspecification'),(141,'Can add 商品SKU',36,'add_sku'),(142,'Can change 商品SKU',36,'change_sku'),(143,'Can delete 商品SKU',36,'delete_sku'),(144,'Can view 商品SKU',36,'view_sku'),(145,'Can add 用户持券表',37,'add_couponrecord'),(146,'Can change 用户持券表',37,'change_couponrecord'),(147,'Can delete 用户持券表',37,'delete_couponrecord'),(148,'Can view 用户持券表',37,'view_couponrecord'),(149,'Can add SKU图片',38,'add_skuimage'),(150,'Can change SKU图片',38,'change_skuimage'),(151,'Can delete SKU图片',38,'delete_skuimage'),(152,'Can view SKU图片',38,'view_skuimage'),(153,'Can add 规格选项',39,'add_spuspecificationoption'),(154,'Can change 规格选项',39,'change_spuspecificationoption'),(155,'Can delete 规格选项',39,'delete_spuspecificationoption'),(156,'Can view 规格选项',39,'view_spuspecificationoption'),(157,'Can add 商品SPU',40,'add_spu'),(158,'Can change 商品SPU',40,'change_spu'),(159,'Can delete 商品SPU',40,'delete_spu'),(160,'Can view 商品SPU',40,'view_spu'),(161,'Can add 商城订单退款',41,'add_orderrefunds'),(162,'Can change 商城订单退款',41,'change_orderrefunds'),(163,'Can delete 商城订单退款',41,'delete_orderrefunds'),(164,'Can view 商城订单退款',41,'view_orderrefunds'),(165,'Can add 商品优惠券',42,'add_goodscoupon'),(166,'Can change 商品优惠券',42,'change_goodscoupon'),(167,'Can delete 商品优惠券',42,'delete_goodscoupon'),(168,'Can view 商品优惠券',42,'view_goodscoupon'),(169,'Can add task result',43,'add_taskresult'),(170,'Can change task result',43,'change_taskresult'),(171,'Can delete task result',43,'delete_taskresult'),(172,'Can view task result',43,'view_taskresult'),(173,'Can add chord counter',44,'add_chordcounter'),(174,'Can change chord counter',44,'change_chordcounter'),(175,'Can delete chord counter',44,'delete_chordcounter'),(176,'Can view chord counter',44,'view_chordcounter'),(177,'Can add group result',45,'add_groupresult'),(178,'Can change group result',45,'change_groupresult'),(179,'Can delete group result',45,'delete_groupresult'),(180,'Can view group result',45,'view_groupresult'),(181,'Can add crontab',46,'add_crontabschedule'),(182,'Can change crontab',46,'change_crontabschedule'),(183,'Can delete crontab',46,'delete_crontabschedule'),(184,'Can view crontab',46,'view_crontabschedule'),(185,'Can add interval',47,'add_intervalschedule'),(186,'Can change interval',47,'change_intervalschedule'),(187,'Can delete interval',47,'delete_intervalschedule'),(188,'Can view interval',47,'view_intervalschedule'),(189,'Can add periodic task',48,'add_periodictask'),(190,'Can change periodic task',48,'change_periodictask'),(191,'Can delete periodic task',48,'delete_periodictask'),(192,'Can view periodic task',48,'view_periodictask'),(193,'Can add periodic tasks',49,'add_periodictasks'),(194,'Can change periodic tasks',49,'change_periodictasks'),(195,'Can delete periodic tasks',49,'delete_periodictasks'),(196,'Can view periodic tasks',49,'view_periodictasks'),(197,'Can add solar event',50,'add_solarschedule'),(198,'Can change solar event',50,'change_solarschedule'),(199,'Can delete solar event',50,'delete_solarschedule'),(200,'Can view solar event',50,'view_solarschedule'),(201,'Can add clocked',51,'add_clockedschedule'),(202,'Can change clocked',51,'change_clockedschedule'),(203,'Can delete clocked',51,'delete_clockedschedule'),(204,'Can view clocked',51,'view_clockedschedule');
 
 #
 # Structure for table "auth_group_permissions"
@@ -108,13 +315,13 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4;
 
 #
 # Data for table "django_migrations"
 #
 
-REPLACE INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2022-06-27 13:55:53.748972'),(2,'contenttypes','0002_remove_content_type_name','2022-06-27 13:55:53.787329'),(3,'auth','0001_initial','2022-06-27 13:55:53.890403'),(4,'auth','0002_alter_permission_name_max_length','2022-06-27 13:55:53.913113'),(5,'auth','0003_alter_user_email_max_length','2022-06-27 13:55:53.918102'),(6,'auth','0004_alter_user_username_opts','2022-06-27 13:55:53.922090'),(7,'auth','0005_alter_user_last_login_null','2022-06-27 13:55:53.928074'),(8,'auth','0006_require_contenttypes_0002','2022-06-27 13:55:53.929641'),(9,'auth','0007_alter_validators_add_error_messages','2022-06-27 13:55:53.934220'),(10,'auth','0008_alter_user_username_max_length','2022-06-27 13:55:53.938209'),(11,'auth','0009_alter_user_last_name_max_length','2022-06-27 13:55:53.942192'),(12,'auth','0010_alter_group_name_max_length','2022-06-27 13:55:53.953329'),(13,'auth','0011_update_proxy_permissions','2022-06-27 13:55:53.958316'),(14,'auth','0012_alter_user_first_name_max_length','2022-06-27 13:55:53.963303'),(15,'mysystem','0001_initial','2022-06-27 13:55:54.513606'),(16,'address','0001_initial','2022-06-27 13:55:54.526244'),(17,'address','0002_initial','2022-06-27 13:55:54.593635'),(18,'admin','0001_initial','2022-06-27 13:55:54.654455'),(19,'admin','0002_logentry_remove_auto_add','2022-06-27 13:55:54.673376'),(20,'admin','0003_logentry_add_action_flag_choices','2022-06-27 13:55:54.725238'),(21,'captcha','0001_initial','2022-06-27 13:55:54.737297'),(22,'captcha','0002_alter_captchastore_id','2022-06-27 13:55:54.741287'),(23,'lymessages','0001_initial','2022-06-27 13:55:54.790558'),(24,'lymessages','0002_initial','2022-06-27 13:55:54.966977'),(25,'oauth','0001_initial','2022-06-27 13:55:55.027418'),(26,'platformsettings','0001_initial','2022-06-27 13:55:55.094296'),(27,'sessions','0001_initial','2022-06-27 13:55:55.113233'),(28,'lymonitor','0001_initial','2022-07-09 12:09:04.885260'),(29,'lywebsocket','0001_initial','2022-07-17 17:05:46.479597'),(30,'lywebsocket','0002_terminalserver_port','2022-07-17 17:47:03.222975'),(31,'address','0003_address','2022-07-28 23:11:24.792968'),(32,'platformsettings','0002_lunbotumanage_link_type_alter_lunbotumanage_link_and_more','2022-07-28 23:11:27.979944'),(33,'mall','0001_initial','2022-07-28 23:18:16.290271'),(34,'mall','0002_alter_sku_options_alter_skuspecification_options_and_more','2022-07-31 22:47:25.341862');
+REPLACE INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2022-06-27 13:55:53.748972'),(2,'contenttypes','0002_remove_content_type_name','2022-06-27 13:55:53.787329'),(3,'auth','0001_initial','2022-06-27 13:55:53.890403'),(4,'auth','0002_alter_permission_name_max_length','2022-06-27 13:55:53.913113'),(5,'auth','0003_alter_user_email_max_length','2022-06-27 13:55:53.918102'),(6,'auth','0004_alter_user_username_opts','2022-06-27 13:55:53.922090'),(7,'auth','0005_alter_user_last_login_null','2022-06-27 13:55:53.928074'),(8,'auth','0006_require_contenttypes_0002','2022-06-27 13:55:53.929641'),(9,'auth','0007_alter_validators_add_error_messages','2022-06-27 13:55:53.934220'),(10,'auth','0008_alter_user_username_max_length','2022-06-27 13:55:53.938209'),(11,'auth','0009_alter_user_last_name_max_length','2022-06-27 13:55:53.942192'),(12,'auth','0010_alter_group_name_max_length','2022-06-27 13:55:53.953329'),(13,'auth','0011_update_proxy_permissions','2022-06-27 13:55:53.958316'),(14,'auth','0012_alter_user_first_name_max_length','2022-06-27 13:55:53.963303'),(15,'mysystem','0001_initial','2022-06-27 13:55:54.513606'),(16,'address','0001_initial','2022-06-27 13:55:54.526244'),(17,'address','0002_initial','2022-06-27 13:55:54.593635'),(18,'admin','0001_initial','2022-06-27 13:55:54.654455'),(19,'admin','0002_logentry_remove_auto_add','2022-06-27 13:55:54.673376'),(20,'admin','0003_logentry_add_action_flag_choices','2022-06-27 13:55:54.725238'),(21,'captcha','0001_initial','2022-06-27 13:55:54.737297'),(22,'captcha','0002_alter_captchastore_id','2022-06-27 13:55:54.741287'),(23,'lymessages','0001_initial','2022-06-27 13:55:54.790558'),(24,'lymessages','0002_initial','2022-06-27 13:55:54.966977'),(25,'oauth','0001_initial','2022-06-27 13:55:55.027418'),(26,'platformsettings','0001_initial','2022-06-27 13:55:55.094296'),(27,'sessions','0001_initial','2022-06-27 13:55:55.113233'),(28,'lymonitor','0001_initial','2022-07-09 12:09:04.885260'),(29,'lywebsocket','0001_initial','2022-07-17 17:05:46.479597'),(30,'lywebsocket','0002_terminalserver_port','2022-07-17 17:47:03.222975'),(31,'address','0003_address','2022-07-28 23:11:24.792968'),(32,'platformsettings','0002_lunbotumanage_link_type_alter_lunbotumanage_link_and_more','2022-07-28 23:11:27.979944'),(33,'mall','0001_initial','2022-07-28 23:18:16.290271'),(34,'mall','0002_alter_sku_options_alter_skuspecification_options_and_more','2022-07-31 22:47:25.341862'),(35,'django_celery_beat','0001_initial','2022-10-23 09:55:18.293036'),(36,'django_celery_beat','0002_auto_20161118_0346','2022-10-23 09:55:18.402212'),(37,'django_celery_beat','0003_auto_20161209_0049','2022-10-23 09:55:18.433176'),(38,'django_celery_beat','0004_auto_20170221_0000','2022-10-23 09:55:18.441921'),(39,'django_celery_beat','0005_add_solarschedule_events_choices','2022-10-23 09:55:18.450929'),(40,'django_celery_beat','0006_auto_20180322_0932','2022-10-23 09:55:18.535599'),(41,'django_celery_beat','0007_auto_20180521_0826','2022-10-23 09:55:18.652596'),(42,'django_celery_beat','0008_auto_20180914_1922','2022-10-23 09:55:18.670194'),(43,'django_celery_beat','0006_auto_20180210_1226','2022-10-23 09:55:18.683140'),(44,'django_celery_beat','0006_periodictask_priority','2022-10-23 09:55:18.746533'),(45,'django_celery_beat','0009_periodictask_headers','2022-10-23 09:55:18.803436'),(46,'django_celery_beat','0010_auto_20190429_0326','2022-10-23 09:55:18.883826'),(47,'django_celery_beat','0011_auto_20190508_0153','2022-10-23 09:55:18.988147'),(48,'django_celery_beat','0012_periodictask_expire_seconds','2022-10-23 09:55:19.049062'),(49,'django_celery_beat','0013_auto_20200609_0727','2022-10-23 09:55:19.058651'),(50,'django_celery_beat','0014_remove_clockedschedule_enabled','2022-10-23 09:55:19.105641'),(51,'django_celery_beat','0015_edit_solarschedule_events_choices','2022-10-23 09:55:19.115018'),(52,'django_celery_beat','0016_alter_crontabschedule_timezone','2022-10-23 09:55:19.124035'),(53,'django_celery_results','0001_initial','2022-10-23 09:55:19.178461'),(54,'django_celery_results','0002_add_task_name_args_kwargs','2022-10-23 09:55:19.336008'),(55,'django_celery_results','0003_auto_20181106_1101','2022-10-23 09:55:19.349672'),(56,'django_celery_results','0004_auto_20190516_0412','2022-10-23 09:55:19.440410'),(57,'django_celery_results','0005_taskresult_worker','2022-10-23 09:55:19.533985'),(58,'django_celery_results','0006_taskresult_date_created','2022-10-23 09:55:19.647751'),(59,'django_celery_results','0007_remove_taskresult_hidden','2022-10-23 09:55:19.714334'),(60,'django_celery_results','0008_chordcounter','2022-10-23 09:55:19.744689'),(61,'django_celery_results','0009_groupresult','2022-10-23 09:55:20.581146'),(62,'django_celery_results','0010_remove_duplicate_indices','2022-10-23 09:55:20.594296'),(63,'django_celery_results','0011_taskresult_periodic_task_name','2022-10-23 09:55:20.660684'),(64,'mysystem','0002_alter_users_identity_alter_users_mobile','2022-10-23 09:55:20.718751'),(65,'oauth','0002_alter_oauthwxuser_mobilephonenumber','2022-10-23 09:55:20.797735'),(66,'platformsettings','0003_alter_othermanage_type','2022-10-23 09:55:20.826744');
 
 #
 # Structure for table "django_session"
@@ -270,6 +477,7 @@ CREATE TABLE `lyadmin_login_log` (
 # Data for table "lyadmin_login_log"
 #
 
+REPLACE INTO `lyadmin_login_log` VALUES ('277174d7a6a145a5b2bac1b111cba012',NULL,NULL,'d2c03bd9-dad0-4262-88ca-c3681d224fc3','2022-10-22 20:41:58.336842','2022-10-22 20:41:58.336842','superadmin','127.0.0.1','PC / Windows 10 / Chrome 106.0.0','Chrome 106.0.0','Windows 10',1,'456b688c-8ad5-46de-bc2e-d41d8047bd42'),('634ed476fe6847cca27c53039c9f8262',NULL,NULL,'d2c03bd9-dad0-4262-88ca-c3681d224fc3','2022-10-23 10:58:12.433010','2022-10-23 10:58:12.433010','superadmin','127.0.0.1','PC / Windows 10 / Chrome 106.0.0','Chrome 106.0.0','Windows 10',1,'456b688c-8ad5-46de-bc2e-d41d8047bd42');
 
 #
 # Structure for table "lyadmin_menu"
@@ -365,7 +573,7 @@ CREATE TABLE `lyadmin_operation_log` (
 # Data for table "lyadmin_operation_log"
 #
 
-REPLACE INTO `lyadmin_operation_log` VALUES ('31727353035c4cd282e0010ca11f6133',NULL,NULL,'d2c03bd9-dad0-4262-88ca-c3681d224fc3','2022-08-02 11:39:09.351388','2022-08-02 11:39:09.351388','操作日志','/api/system/operation_log/deletealllogs/','{}','DELETE',NULL,'127.0.0.1','Chrome 101.0.0','2000','Windows 10','{\'code\': 2000, \'msg\': \'清空成功\'}',1,'456b688c-8ad5-46de-bc2e-d41d8047bd42');
+REPLACE INTO `lyadmin_operation_log` VALUES ('d857ee1cd5d04d90acdc6410b29360dd',NULL,NULL,'d2c03bd9-dad0-4262-88ca-c3681d224fc3','2022-10-24 00:59:06.351189','2022-10-24 00:59:06.351189','操作日志','/api/system/operation_log/deletealllogs/','{}','DELETE',NULL,'127.0.0.1','Chrome 106.0.0','2000','Windows 10','{\'code\': 2000, \'msg\': \'清空成功\'}',1,'456b688c-8ad5-46de-bc2e-d41d8047bd42');
 
 #
 # Structure for table "lyadmin_post"
@@ -502,7 +710,7 @@ CREATE TABLE `lyadmin_users` (
   `create_datetime` datetime(6) DEFAULT NULL COMMENT '创建时间',
   `username` varchar(50) NOT NULL COMMENT '用户账号',
   `email` varchar(60) DEFAULT NULL COMMENT '邮箱',
-  `mobile` varchar(11) DEFAULT NULL COMMENT '电话',
+  `mobile` varchar(30) DEFAULT NULL COMMENT '电话',
   `avatar` varchar(200) DEFAULT NULL COMMENT '头像',
   `name` varchar(40) NOT NULL COMMENT '姓名',
   `nickname` varchar(100) NOT NULL COMMENT '用户昵称',
@@ -1308,7 +1516,7 @@ CREATE TABLE `tb_oauth_wx` (
   `gzh_access_token` varchar(255) DEFAULT NULL,
   `gzh_refresh_token` varchar(255) DEFAULT NULL,
   `gzh_scope` varchar(255) DEFAULT NULL,
-  `mobilePhoneNumber` varchar(11) NOT NULL,
+  `mobilePhoneNumber` varchar(30) NOT NULL,
   `user_id` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),

@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'corsheaders',#允许跨域
     'drf_yasg',#在线接口文档
     'captcha',#验证码
+    'django_celery_results',
+    'django_celery_beat',#计划任务
     #myown app
     'mysystem',
     #custom app
@@ -66,6 +68,7 @@ INSTALLED_APPS = [
     'apps.mall',
     'apps.lymonitor',
     'apps.lywebsocket',
+    'apps.lycrontab',
 ]
 
 MIDDLEWARE = [

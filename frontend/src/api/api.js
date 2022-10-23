@@ -10,6 +10,25 @@ export const getCaptcha = params => ajaxGet({url: `captcha/`,params})
 export const apiSystemWebRouter = params => ajaxGet({url: `system/menu/web_router/`,params})
 //系统监控
 export const monitorGetSystemInfo = params => ajaxGet({url: `monitor/getsysteminfo/`,params})
+
+/**
+*计划任务
+ * */
+
+// 计划任务
+export const crontabPeriodictask = params => ajaxGet({url: `crontab/periodictask/`,params})
+// 计划任务 -- 新增
+export const crontabPeriodictaskAdd = params => ajaxPost({url: `crontab/periodictask/`,params})
+// 计划任务 -- 编辑
+export const crontabPeriodictaskEdit = params => ajaxPut({url: `crontab/periodictask/`,params})
+// 计划任务 -- 删除
+export const crontabPeriodictaskDelete = params => ajaxDelete({url: `crontab/periodictask/`,params})
+// 计划任务 -- 开始/暂停
+export const crontabPeriodictaskEnabled = params => ajaxPut({url: `crontab/periodictask/enabled/`,params})
+// 计划任务 获取本地所有tasks文件中的task任务方法
+export const crontabPeriodictaskMethodlist = params => ajaxGet({url: `crontab/periodictask/tasklist/`,params})
+
+
 /**
 *终端服务
  * */
