@@ -34,7 +34,11 @@ export default {
         nearestWeekday:['Nearest weekday (Monday to Friday) to the','of the month'],
         someWeekday:['On the','of the month'],
     },
-    Week:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+    Week:{
+        name:'week',
+        every:'every week',
+        week:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+    },
     Month:{
         name:'Month',
         every:'Every month',

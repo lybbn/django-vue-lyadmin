@@ -22,9 +22,9 @@
                     <el-input
                         v-model="formData.crontab"
                         placeholder="* * * * *"
-                    ><template #append><el-button type="primary" @click="togglePopover(true)" >点击辅助输入</el-button></template>
+                    ><template #append><el-button type="primary" @click="togglePopover(true)" >生成表达式<el-icon><Clock /></el-icon></el-button></template>
                     </el-input>
-                    <el-drawer v-model="cronPopover" title="cron表达式辅助工具" size="40%">
+                    <el-drawer v-model="cronPopover" title="cron表达式辅助工具" size="40%" :show-close="false">
                         <cron-expression
                             @change="changeCron"
                             @close="togglePopover(false)"

@@ -12,7 +12,7 @@
 # django_celery_beat PeriodicTask view
 # ------------------------------
 
-from django_celery_beat.models import PeriodicTask,CrontabSchedule, cronexp
+from django_celery_beat.models import PeriodicTask,CrontabSchedule, cronexp,PeriodicTasks
 from rest_framework import serializers
 
 from utils.jsonResponse import SuccessResponse, ErrorResponse,DetailResponse
@@ -103,7 +103,7 @@ class PeriodicTaskModelViewSet(CustomModelViewSet):
     """
     任务数据模型
     """
-    queryset = PeriodicTask.objects.all()
+    queryset = PeriodicTask.objects.exclude(name="celery.backend_cleanup")
     serializer_class = PeriodicTaskSerializer
     create_serializer_class = PeriodicTaskCreateUpdateSerializer
     update_serializer_class = PeriodicTaskCreateUpdateSerializer
@@ -182,11 +182,17 @@ class PeriodicTaskModelViewSet(CustomModelViewSet):
             if cron.strip() == oldcron:
                 body_data['crontab'] = cron_id
             else:
+                # cond_instance.minute = minute
+                # cond_instance.hour = hour
+                # cond_instance.day_of_month = day
+                # cond_instance.month_of_year = month
+                # cond_instance.day_of_week = week
+                # body_data['crontab'] = cond_instance.id
                 cron_data['id'] = cron_id
                 serializer = CrontabScheduleSerializer(cond_instance, data=cron_data, request=request)
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
-                body_data['crontab'] = serializer.data.get('id')
+                body_data['crontab'] = cond_instance.id
             partial = kwargs.pop('partial', False)
             instance = self.get_object()
             serializer1 = self.get_serializer(instance, data=body_data, request=request, partial=partial)
@@ -197,7 +203,8 @@ class PeriodicTaskModelViewSet(CustomModelViewSet):
                 # If 'prefetch_related' has been applied to a queryset, we need to
                 # forcibly invalidate the prefetch cache on the instance.
                 instance._prefetched_objects_cache = {}
-            return DetailResponse(data=serializer.data, msg="更新成功")
+            # PeriodicTasks.changed()
+            return DetailResponse(data=serializer1.data, msg="更新成功")
         else:
             return ErrorResponse(msg="没有该任务方法，请先添加", data=None)
 

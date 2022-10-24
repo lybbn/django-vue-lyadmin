@@ -16,4 +16,4 @@ from application.celery import app
 
 @app.task
 def lytask_test():
-    print("django-vue-lyadmin lycrontab running")
+    return "django-vue-lyadmin lycrontab running"

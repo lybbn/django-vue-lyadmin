@@ -28,6 +28,9 @@ export const crontabPeriodictaskEnabled = params => ajaxPut({url: `crontab/perio
 // 计划任务 获取本地所有tasks文件中的task任务方法
 export const crontabPeriodictaskMethodlist = params => ajaxGet({url: `crontab/periodictask/tasklist/`,params})
 
+// 计划任务 获取任务执行结果
+export const crontabTaskresult = params => ajaxGet({url: `crontab/taskresult/`,params})
+
 
 /**
 *终端服务
