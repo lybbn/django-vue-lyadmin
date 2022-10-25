@@ -37,5 +37,5 @@ class CeleryTaskResultFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = TaskResult
-        fields = ['id', 'status', 'date_done', 'date_created', 'result', 'task_name']
+        fields = ['id','task_id', 'status', 'date_done', 'date_created', 'result', 'task_name','periodic_task_name']
 

@@ -18,12 +18,17 @@
                 <el-form-item label="任务名称：" prop="name">
                     <el-input v-model="formData.name"></el-input>
                 </el-form-item>
-                <el-form-item label="cron表达式：" prop="crontab">
+                <el-form-item label="执行时间：" prop="crontab">
                     <el-input
                         v-model="formData.crontab"
                         placeholder="* * * * *"
                     ><template #append><el-button type="primary" @click="togglePopover(true)" >生成表达式<el-icon><Clock /></el-icon></el-button></template>
                     </el-input>
+                    <el-alert type="info">
+                        <template #default>
+                            <img src="@/assets/img/cronexpress.png" style="width: 100%;">
+                        </template>
+                    </el-alert>
                     <el-drawer v-model="cronPopover" title="cron表达式辅助工具" size="40%" :show-close="false">
                         <cron-expression
                             @change="changeCron"
@@ -33,8 +38,8 @@
                         ></cron-expression>
                     </el-drawer>
                 </el-form-item>
-                <el-form-item label="celery任务：" prop="task">
-                    <el-select size="default" v-model="formData.task" placeholder="请输入或选择" allow-create filterable clearable style="width: 100%">
+                <el-form-item label="执行方法：" prop="task">
+                    <el-select  v-model="formData.task" placeholder="请输入或选择" allow-create filterable clearable style="width: 100%">
                         <el-option
                                 v-for="item in taskList"
                                 :key="item.label"
@@ -44,7 +49,15 @@
                     </el-select>
                     <el-alert title="Celery任务调用示例：apps.lycrontab.tasks.lytask_test" type="info" show-icon/>
                 </el-form-item>
-
+                <el-form-item label="一次性任务：" prop="enabled">
+                    <el-switch
+                        v-model="formData.one_off"
+                        active-text="是"
+                        inactive-text="否"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949">
+                    </el-switch>
+                </el-form-item>
                 <el-form-item label="状态：" prop="enabled">
                     <el-switch
                         v-model="formData.enabled"
@@ -83,6 +96,7 @@
                     name:'',
                     crontab:'',
                     task:'',
+                    one_off:false,
                     enabled:false,
                     description:'',
                 },
@@ -112,6 +126,7 @@
                     name:'',
                     crontab:'',
                     task:'',
+                    one_off:false,
                     enabled:false,
                     description:'',
                 }

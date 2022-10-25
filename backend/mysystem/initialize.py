@@ -78,6 +78,8 @@ if object.{key}:
             {"id": "f3f365e9bfab44f587cbd91e3691ef0f", "name": "终端", "value": "Terminal", },
             {"id": "c66a0ab23a6044189ae0beb530ac68cf", "name": "发货", "value": "Deliver", },
             {"id": "43d89c33967545a387a3ac27c02460b6", "name": "统计", "value": "Statistics", },
+            {"id": "09134d7643504804a6c7cc3d16e06684", "name": "日志", "value": "Logs", },
+            {"id": "5bf695439e9d4c4d9601bf4fb558b3a2", "name": "任务列表", "value": "Tasklist", },
 
         ]
         self.save(Button, self.button_data, "权限表标识")
@@ -108,6 +110,7 @@ if object.{key}:
             {'id': 'c236fb6b-ddaa-4deb-b79b-16e42d9f347f', 'name': '日志管理', 'sort': 999,'web_path': 'journalManage', 'icon': 'info-filled', 'parent_id': None,'component': None, 'component_name': None, 'visible': 1,'isautopm':0},
             {'id': '77edf447326b4e0dbc6f9719c1de8a12', 'name': '系统监控', 'sort': 888, 'web_path': '','icon': 'TrendCharts', 'parent_id': None, 'component': None,'component_name': None, 'visible': 1, 'isautopm': 0},
             {'id': 'bcbeeee5c91a4e2ea2c2a31237e33616', 'name': '服务监控', 'sort': 10, 'web_path': 'server','icon': '', 'parent_id': '77edf447326b4e0dbc6f9719c1de8a12', 'component': None, 'component_name': None, 'visible': 1,'isautopm': 0},
+            {'id': '09a42810d4dd4b2eb939f8eb0b01d9d1', 'name': '计划任务', 'sort': 20, 'web_path': 'crontab', 'icon': '','parent_id': '77edf447326b4e0dbc6f9719c1de8a12', 'component': None, 'component_name': None, 'visible': 1,'isautopm': 0},
             {'id': '718daec1b94b456c96d773889648173e', 'name': '终端服务', 'sort': 30, 'web_path': 'terminal', 'icon': '','parent_id': '77edf447326b4e0dbc6f9719c1de8a12', 'component': None, 'component_name': None, 'visible': 1,'isautopm': 0},
             {'id': 'a28f8ca682d04c8fb2953fdeb3d9e2e6', 'name': '商城管理', 'sort': 188, 'web_path': '', 'icon': 'GoodsFilled','parent_id': None, 'component': None, 'component_name': None, 'visible': 1,'isautopm': 0},
             {'id': 'd470ab18859a4472b525e605ae96c325', 'name': '商品管理', 'sort': 1, 'web_path': 'goodsManage', 'icon': '','parent_id': 'a28f8ca682d04c8fb2953fdeb3d9e2e6', 'component': None, 'component_name': None, 'visible': 1,'isautopm': 0},
@@ -167,6 +170,7 @@ if object.{key}:
             {'id': 'f5818e4cd46947daabe046c511dfbd63', 'menu_id': '2e07b715d5e24e2ca45997527430e9d3','name': '查询', 'value': 'Search', 'api': '/api/mall/goodsorder/', 'method': 0},
             {'id': '6a21329f0dcd4781a64fc4f62324e4c0', 'menu_id': 'dc8c173b425048e7a8c9b59513596c7f','name': '查询', 'value': 'Search', 'api': '/api/mall/goodsforderinfo/', 'method': 0},
             {'id': '05932c39ad444ac5aaf880d281620611', 'menu_id': '3c13161f70f1469a913d539e7616c577','name': '查询', 'value': 'Search', 'api': '/api/platformsettings/userfeeckback/', 'method': 0},
+            {'id': '4450d80871eb44a1aaa4fbb5429885f0', 'menu_id': '09a42810d4dd4b2eb939f8eb0b01d9d1','name': '查询','value': 'Search', 'api': '/api/crontab/periodictask/', 'method': 0},
             {'id': '7aef1da4647844e3944a2745cef1bc6d', 'menu_id': 'ae5629946df4497cbec10419e8375dd9','name': '新增', 'value': 'Create', 'api': '/api/platformsettings/lunboimg/', 'method': 1},
             {'id': '77096cd56a6441699345e6e4f22d0ec3', 'menu_id': '80a340eae92b430abe17635468c2df1d','name': '新增', 'value': 'Create', 'api': '/api/platformsettings/other/', 'method': 1},
             {'id': '0d931efc-2f80-418f-b4a0-5251f0a88f69', 'menu_id': '4ba07859-8b73-4524-a1a6-bbff36d98337','name': '新增', 'value': 'Create', 'api': '/api/system/operation_log/', 'method': 1},
@@ -183,6 +187,7 @@ if object.{key}:
             {'id': '8228955d67bc4dc89638b523f58108ee', 'menu_id': '02c24003527546359b5a77ae07adc7d5','name': '新增', 'value': 'Create', 'api': '/api/address/area/', 'method': 1},
             {'id': '220fa39fd56e47e1ab9558c6bd10106e', 'menu_id': 'd470ab18859a4472b525e605ae96c325','name': '新增', 'value': 'Create', 'api': '/api/mall/goodsspu/', 'method': 1},
             {'id': '676e32850165441cad01782e453de925', 'menu_id': 'b999c50996864465b851575e378c5aea','name': '新增', 'value': 'Create', 'api': '/api/mall/goodstype/', 'method': 1},
+            {'id': '19d01a929bc9414cac1a8defd48597c9', 'menu_id': '09a42810d4dd4b2eb939f8eb0b01d9d1', 'name': '新增','value': 'Create', 'api': '/api/crontab/periodictask/', 'method': 1},
             {'id': 'a3088120763d49ad93498eb515c7c244', 'menu_id': 'ae5629946df4497cbec10419e8375dd9','name': '单例', 'value': 'Retrieve', 'api': '/api/platformsettings/lunboimg/{id}/', 'method': 0},
             {'id': '1d4441fdc418499f856c23aa4e1be2c0', 'menu_id': '80a340eae92b430abe17635468c2df1d','name': '单例', 'value': 'Retrieve', 'api': '/api/platformsettings/other/{id}/', 'method': 0},
             {'id': '14e7088f-a39b-47ae-bd67-b9bbcabae96b', 'menu_id': '244b28685cd14a39a383189981510d4a','name': '单例', 'value': 'Retrieve', 'api': '/api/users/users/{id}/', 'method': 0},
@@ -204,6 +209,7 @@ if object.{key}:
             {'id': '3737d4afa1e2437b93e8cdcd7116180a', 'menu_id': '2e07b715d5e24e2ca45997527430e9d3','name': '单例', 'value': 'Retrieve', 'api': '/api/mall/goodsorder/{id}/', 'method': 0},
             {'id': '6e9d454742f74437928959c02be42456', 'menu_id': 'dc8c173b425048e7a8c9b59513596c7f','name': '单例', 'value': 'Retrieve', 'api': '/api/mall/goodsforderinfo/{id}/', 'method': 0},
             {'id': '11d334fcadf1490e85e6a045126dea78', 'menu_id': '3c13161f70f1469a913d539e7616c577','name': '单例', 'value': 'Retrieve', 'api': '/api/platformsettings/userfeeckback/{id}/', 'method': 0},
+            {'id': '6e27757847c64e228934b60ae81baedf', 'menu_id': '09a42810d4dd4b2eb939f8eb0b01d9d1', 'name': '单例','value': 'Retrieve', 'api': '/api/crontab/periodictask/{id}/', 'method': 0},
             {'id': '0088e172566f4ee388092ec2be3584ee', 'menu_id': 'ae5629946df4497cbec10419e8375dd9','name': '删除', 'value': 'Delete', 'api': '/api/platformsettings/lunboimg/{id}/', 'method': 3},
             {'id': '264cc3d69f7a46d5a117997e9c78506c', 'menu_id': '80a340eae92b430abe17635468c2df1d','name': '删除', 'value': 'Delete', 'api': '/api/platformsettings/other/{id}/', 'method': 3},
             {'id': '2c53efc8-e6a4-4192-8688-03baed0874a4', 'menu_id': '2e3438c8-3ddc-43ff-b8d8-cca328e4856e','name': '删除', 'value': 'Delete', 'api': '/api/system/user/{id}/', 'method': 3},
@@ -223,14 +229,18 @@ if object.{key}:
             {'id': '3cadf44d739b45d4a94ad23939e19716', 'menu_id': '2e07b715d5e24e2ca45997527430e9d3','name': '删除', 'value': 'Delete', 'api': '/api/mall/goodsorder/{id}/', 'method': 3},
             {'id': 'c2cac9993f9142cca5f531565a14f840', 'menu_id': 'dc8c173b425048e7a8c9b59513596c7f','name': '删除', 'value': 'Delete', 'api': '/api/mall/goodsforderinfo/{id}/', 'method': 3},
             {'id': '989ad685ce654dd1b367f41dedfdd0b9', 'menu_id': '3c13161f70f1469a913d539e7616c577','name': '删除', 'value': 'Delete', 'api': '/api/platformsettings/userfeeckback/{id}/', 'method': 3},
+            {'id': '576008b6046f4afcb88d8139ff34e228', 'menu_id': '09a42810d4dd4b2eb939f8eb0b01d9d1', 'name': '删除','value': 'Delete', 'api': '/api/crontab/periodictask/{id}/', 'method': 3},
             {'id': '1a0c96cf-09a6-43b4-b08a-0c5b6e2f7bb8', 'menu_id': 'a607e820-36e5-45c0-aabf-85a8e4e2c7ac','name': '保存', 'value': 'Retrieve', 'api': '/api/system/permission/{id}/', 'method': 2},
             {'id': '353595a28cb1463b830cfbf79fea60b5', 'menu_id': '244b28685cd14a39a383189981510d4a','name': '禁用', 'value': 'Disable', 'api': '/api/users/users/disableuser/{id}/', 'method': 2},
             {'id': '80c8eb6939a245e9890dede241b5d1d6', 'menu_id': 'd73f73a399af48cea6a8490ac508d7a0','name': '禁用', 'value': 'Disable', 'api': '/api/users/users/disableuser/{id}/', 'method': 2},
             {'id': 'a45559c4cc6f48e2b7194c2dc577af3a', 'menu_id': 'd470ab18859a4472b525e605ae96c325','name': '禁用', 'value': 'Disable', 'api': '/api/mall/goodsspu/islaunched/{id}/', 'method': 2},
+            {'id': '0ce04d99cbd249a9af88fe1496591a89', 'menu_id': '09a42810d4dd4b2eb939f8eb0b01d9d1', 'name': '禁用','value': 'Disable', 'api': '/api/crontab/periodictask/enabled/{id}/', 'method': 2},
             {'id': '6af0929440a345238c28ee9b1fe341ba', 'menu_id': '718daec1b94b456c96d773889648173e','name': '终端', 'value': 'Terminal', 'api': '/ws/webssh/', 'method': 5},
             {'id': 'bec59f93068a4d7aaaf5b4ccfbc12265', 'menu_id': '2e07b715d5e24e2ca45997527430e9d3','name': '统计', 'value': 'Statistics', 'api': '/api/mall/goodsorder/orderstatistics/', 'method': 0},
             {'id': '53e6d5a4192c4f0f8bdd7f5647124147', 'menu_id': 'dc8c173b425048e7a8c9b59513596c7f','name': '统计', 'value': 'Statistics', 'api': '/api/mall/goodsforderinfo/orderstatistics/', 'method': 0},
             {'id': 'c28461a142d7464f8865752c969d82de', 'menu_id': '2e07b715d5e24e2ca45997527430e9d3','name': '发货', 'value': 'Deliver', 'api': '/api/mall/goodsorder/sendoutgoods/', 'method': 1},
+            {'id': '0b5bf0f1caac45beabf54fb5d930187b', 'menu_id': '09a42810d4dd4b2eb939f8eb0b01d9d1','name': '日志', 'value': 'Search', 'api': '/api/crontab/taskresult/', 'method': 0},
+            {'id': 'fa8d945124b74379aba32bcf34ea5383', 'menu_id': '09a42810d4dd4b2eb939f8eb0b01d9d1','name': '任务列表', 'value': 'Search', 'api': '/api/crontab/periodictask/tasklist/', 'method': 0},
 
         ]
         self.save(MenuButton, self.menu_button_data, "菜单权限表")

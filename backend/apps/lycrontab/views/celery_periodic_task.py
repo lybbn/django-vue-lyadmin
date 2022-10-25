@@ -12,6 +12,7 @@
 # django_celery_beat PeriodicTask view
 # ------------------------------
 
+import json
 from django_celery_beat.models import PeriodicTask,CrontabSchedule, cronexp,PeriodicTasks
 from rest_framework import serializers
 
@@ -95,7 +96,7 @@ class PeriodicTaskCreateUpdateSerializer(CustomModelSerializer):
 
     class Meta:
         model = PeriodicTask
-        read_only_fields = ["id"]
+        read_only_fields = ["id","total_run_count"]
         fields = '__all__'
 
 
@@ -139,12 +140,18 @@ class PeriodicTaskModelViewSet(CustomModelViewSet):
             # 添加任务
             body_data['crontab'] = serializer.data.get('id')
             body_data['enabled'] = False
+            header = {}
+            header['periodic_task_name'] = body_data['name']
+            header['task_name'] = body_data['task']
+            body_data['headers'] = json.dumps(header)
             serializer = self.get_serializer(data=body_data, request=request)
             res = serializer.is_valid()
             if not res:
                 raise APIException({"msg": f"添加失败，已经有一个名为 {body_data['name']} 的任务了"}, code=4000)
             self.perform_create(serializer)
             result = serializer.data
+            task_obj = PeriodicTask.objects.get(id=result.get('id'))
+            PeriodicTasks.changed(task_obj)
             return DetailResponse(msg="添加成功", data=result)
         else:
             return ErrorResponse(msg="没有该任务方法，请先添加", data=None)
@@ -193,6 +200,10 @@ class PeriodicTaskModelViewSet(CustomModelViewSet):
                 serializer.is_valid(raise_exception=True)
                 self.perform_update(serializer)
                 body_data['crontab'] = cond_instance.id
+            header = {}
+            header['periodic_task_name'] = body_data['name']
+            header['task_name'] = body_data['task']
+            body_data['headers'] = json.dumps(header)
             partial = kwargs.pop('partial', False)
             instance = self.get_object()
             serializer1 = self.get_serializer(instance, data=body_data, request=request, partial=partial)
@@ -203,11 +214,18 @@ class PeriodicTaskModelViewSet(CustomModelViewSet):
                 # If 'prefetch_related' has been applied to a queryset, we need to
                 # forcibly invalidate the prefetch cache on the instance.
                 instance._prefetched_objects_cache = {}
-            # PeriodicTasks.changed()
+            task_obj = PeriodicTask.objects.get(id=instance.id)
+            PeriodicTasks.changed(task_obj)
             return DetailResponse(data=serializer1.data, msg="更新成功")
         else:
             return ErrorResponse(msg="没有该任务方法，请先添加", data=None)
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object_list()
+        for i in instance:
+            i.crontab.delete()
+        self.perform_destroy(instance)
+        return DetailResponse(data=[], msg="删除成功")
 
 
     def tasklist(self, request, *args, **kwargs):
@@ -221,4 +239,5 @@ class PeriodicTaskModelViewSet(CustomModelViewSet):
         instance = self.get_object()
         instance.enabled = get_parameter_dic(request).get('enabled',False)
         instance.save()
+        PeriodicTasks.changed(instance)
         return DetailResponse(msg="修改成功")

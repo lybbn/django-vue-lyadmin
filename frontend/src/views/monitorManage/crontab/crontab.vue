@@ -8,6 +8,7 @@
                 <el-form-item label="" v-show="hasPermission(this.$options.name,'Search')"><el-button  @click="search" type="primary" icon="Search">查询</el-button></el-form-item>
                 <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
                 <el-form-item label="" v-show="hasPermission(this.$options.name,'Create')"><el-button type="primary" icon="Plus" @click="addAdmin">新增</el-button></el-form-item>
+                <el-form-item v-show="hasPermission(this.$options.name,'Logs')"><el-link type="primary" @click="handleEdit('','allogs')">查看日志<el-icon><ArrowRight /></el-icon></el-link></el-form-item>
             </el-form>
         </div>
         <div class="table">
@@ -23,15 +24,22 @@
 <!--                    </template>-->
 <!--                </el-table-column>-->
                 <el-table-column min-width="160" prop="name" label="任务名称" show-overflow-tooltip></el-table-column>
-                <el-table-column min-width="160" prop="task" label="celery任务" show-overflow-tooltip></el-table-column>
-                <el-table-column min-width="110" prop="crontab" label="cron表达式"></el-table-column>
-                <el-table-column min-width="130" prop="description" label="备注" show-overflow-tooltip></el-table-column>
+                <el-table-column min-width="160" prop="task" label="执行方法" show-overflow-tooltip></el-table-column>
+                <el-table-column min-width="110" prop="crontab" label="执行时间"></el-table-column>
+                <el-table-column min-width="110" prop="total_run_count" label="已运行次数"></el-table-column>
+                <el-table-column min-width="100" label="一次性任务">
+                    <template #default="scope">
+                        <el-tag v-if="scope.row.one_off" type="success">是</el-tag>
+                        <el-tag v-else type="info">否</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column min-width="100" label="状态">
                     <template #default="scope">
                         <el-tag v-if="scope.row.enabled">正常</el-tag>
                         <el-tag v-else type="danger">暂停</el-tag>
                     </template>
                 </el-table-column>
+                <el-table-column min-width="130" prop="description" label="备注" show-overflow-tooltip></el-table-column>
                 <el-table-column min-width="150" prop="date_changed" label="创建时间"></el-table-column>
                 <el-table-column label="操作" fixed="right" width="180">
                     <template #header>
@@ -51,12 +59,14 @@
                         </span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="hasPermission(this.$options.name,'Update')">编辑</span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="hasPermission(this.$options.name,'Delete')">删除</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'logs')" v-show="hasPermission(this.$options.name,'Logs')">日志</span>
                     </template>
                 </el-table-column>
             </el-table>
         </div>
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
         <crontab-module  ref="moduleCrontabFlag" @refreshData="getData"></crontab-module>
+        <cronlogs ref="crontablogsFlag"></cronlogs>
     </div>
 </template>
 
@@ -64,11 +74,11 @@
     import Pagination from "@/components/Pagination";
     import {dateFormats,getTableHeight,hasPermission} from "@/utils/util";
     import {crontabPeriodictask,crontabPeriodictaskDelete,crontabPeriodictaskEnabled} from '@/api/api'
-    import {} from '@/utils/util';
     import CrontabModule from "./components/crontabModule";
+    import Cronlogs from "./components/cronlogs";
     export default {
         name: "crontab",
-        components: {CrontabModule, Pagination},
+        components: {Cronlogs, CrontabModule, Pagination},
         data(){
             return{
                 isFull:false,
@@ -105,6 +115,12 @@
             handleEdit(row,flag) {
                 if(flag=='edit') {
                     this.$refs.moduleCrontabFlag.addModuleFn(row,'编辑')
+                }
+                else if(flag=='allogs'){
+                    this.$refs.crontablogsFlag.addModuleFn("",'任务日志')
+                }
+                else if(flag=='logs'){
+                    this.$refs.crontablogsFlag.addModuleFn(row.name,'任务日志')
                 }
                 else if(flag=='disable'){
                     let params = {

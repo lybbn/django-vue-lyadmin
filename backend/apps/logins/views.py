@@ -48,7 +48,7 @@ class AppMoliePasswordLoginSerializer(TokenObtainPairSerializer):
             return result
         password = attrs['password']
         user = Users.objects.filter(username=mobile + "app", mobile=mobile, identity__contains="1").first()
-        if not user.is_active:
+        if user and not user.is_active:
             result = {
                 "code": 4000,
                 "msg": "该账号已被禁用,请联系管理员",
