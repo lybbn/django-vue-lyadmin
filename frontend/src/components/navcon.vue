@@ -13,13 +13,22 @@
 <!--      <el-row class="buttonimg" type="info">-->
 <!--      </el-row>-->
       <el-row  class="ly-header-right">
-            <span style="margin-right: 20px;" @click="fullScreen">
+            <span style="margin-right: 20px;" @click="fullScreen" v-if="!isFullscreen">
                 <el-tooltip
                     class="box-item"
                     effect="dark"
                     content="全屏"
                     placement="bottom">
                     <el-icon style="font-size: 16px;color: white;"><full-screen /></el-icon>
+                </el-tooltip>
+            </span>
+            <span style="margin-right: 20px;" @click="fullScreen" v-if="isFullscreen">
+                <el-tooltip
+                    class="box-item"
+                    effect="dark"
+                    content="退出全屏"
+                    placement="bottom">
+                    <el-icon style="font-size: 16px;color: white;"><Minus /></el-icon>
                 </el-tooltip>
             </span>
             <span style="margin-right: 20px;"  @click="setSiteTheme">
@@ -46,7 +55,10 @@
                 </span>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item @click="exit">退出登录</el-dropdown-item>
+                      <div v-show="hasPermission('personalCenter','Search')">
+                          <el-dropdown-item @click="jumpto" >个人中心</el-dropdown-item>
+                      </div>
+                      <el-dropdown-item @click="exit">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -67,6 +79,8 @@
         imgsq: require('../assets/img/sq.png'),
         userName: '',
         mobileWidth:992,
+        isFullscreen:false,
+
       }
     },
     // 创建完毕状态(里面是操作)
@@ -76,12 +90,21 @@
     mounted() {
         window.addEventListener('resize', this.handleResize);
         this.handleResize()
+        this.init()
     },
 
     unmounted() {
          window.removeEventListener("resize", this.handleResize);
+         // 最后注销监听事件
+        if (screenfull.isEnabled) {
+            screenfull.off('change', this.change);
+        }
     },
     methods: {
+        //路由跳转
+        jumpto(){
+            this.$store.commit("switchtab",'personalCenter')
+        },
         // 退出登录
         exit(e) {
             this.$confirm('退出登录, 是否继续?', '提示', {
@@ -103,6 +126,15 @@
         toggle(showtype) {
             this.collapsed = !showtype
             this.$Bus.emit('toggle', !showtype)
+        },
+        init() {
+            if(screenfull.isEnabled) { // 判断是否支持全屏
+                screenfull.on('change', this.change); // 开启监听change事件
+            }
+        },
+        // 更改当前屏幕的状态
+        change() {
+            this.isFullscreen = screenfull.isFullscreen; // 更新全屏状态
         },
         //全屏显示
         fullScreen () {

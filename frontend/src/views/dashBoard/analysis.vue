@@ -62,7 +62,7 @@
         created() {
             setTimeout(() => {
                 this.showloading = false
-            }, 1000)
+            }, 600)
         },
     }
 </script>

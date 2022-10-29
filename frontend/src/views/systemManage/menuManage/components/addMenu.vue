@@ -31,24 +31,25 @@
                 </el-form-item>
                 <el-form-item label="图标：" prop="icon">
 <!--                    <el-input v-model.trim="formData.icon" ></el-input>-->
-                    <el-autocomplete
-                            v-model.trim="formData.icon"
-                            :fetch-suggestions="querySearch"
-                            :trigger-on-focus="false"
-                            clearable
-                            style="width: 100%"
-                            @select="handleSelect"
-                            popper-append-to-body
-                            placeholder="请输入icon">
-                        <template #default="{ item }">
-                            <div style="display: flex;align-items: center">
-                                <el-icon :size="16">
-                                    <component :is="item.value"></component>
-                                </el-icon>
-                                <div style="margin-left: 5px;">{{ item.value }}</div>
-                            </div>
-                        </template>
-                    </el-autocomplete>
+                    <l-y-choose-icons v-model="formData.icon"></l-y-choose-icons>
+<!--                    <el-autocomplete-->
+<!--                            v-model.trim="formData.icon"-->
+<!--                            :fetch-suggestions="querySearch"-->
+<!--                            :trigger-on-focus="false"-->
+<!--                            clearable-->
+<!--                            style="width: 100%"-->
+<!--                            @select="handleSelect"-->
+<!--                            popper-append-to-body-->
+<!--                            placeholder="请输入icon">-->
+<!--                        <template #default="{ item }">-->
+<!--                            <div style="display: flex;align-items: center">-->
+<!--                                <el-icon :size="16">-->
+<!--                                    <component :is="item.value"></component>-->
+<!--                                </el-icon>-->
+<!--                                <div style="margin-left: 5px;">{{ item.value }}</div>-->
+<!--                            </div>-->
+<!--                        </template>-->
+<!--                    </el-autocomplete>-->
                 </el-form-item>
                 <el-form-item label="排序：" prop="sort">
                     <el-input-number v-model="formData.sort" :min="0" :max="9999"></el-input-number>
@@ -77,8 +78,9 @@
     import XEUtils from "xe-utils";
     import {menuicons} from "@/utils/menuTree.js"
     import LyDialog from "../../../../components/dialog/dialog";
+    import LYChooseIcons from "../../../../components/icons/chooseIcons";
     export default {
-        components: {LyDialog},
+        components: {LYChooseIcons, LyDialog},
         emits: ['refreshData'],
         name: "addMenu",
         data() {

@@ -1,6 +1,6 @@
 <template>
     <el-row :gutter="20">
-        <el-col :span="6" :xs="{span: 24}" :sm="{span: 24}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 6}" v-if="!dataList.is_windows">
+        <el-col :span="6" :xs="{span: 24}" :sm="{span: 24}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" v-if="!dataList.is_windows">
             <div :style="{height:height}" class="space-inner">
                 <div class="lycard">
                     <div class="space-header">
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </el-col>
-        <el-col :span="6" :xs="{span: 24}" :sm="{span: 24}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 6}">
+        <el-col :span="6" :xs="{span: 24}" :sm="{span: 24}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}">
             <div :style="{height:height}" class="space-inner">
                 <div class="lycard">
                     <div class="space-header">
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </el-col>
-        <el-col :span="6" :xs="{span: 24}" :sm="{span: 24}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 6}" >
+        <el-col :span="6" :xs="{span: 24}" :sm="{span: 24}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" >
             <div :style="{height:height}" class="space-inner">
                 <div class="lycard">
                     <div class="space-header">
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </el-col>
-        <el-col :span="6" :xs="{span: 24}" :sm="{span: 24}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 6}" v-for="(item,index) in dataList.disk">
+        <el-col :span="6" :xs="{span: 24}" :sm="{span: 24}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" v-for="(item,index) in dataList.disk">
             <div :style="{height:height}" class="space-inner">
                 <div class="lycard">
                     <div class="space-header">
