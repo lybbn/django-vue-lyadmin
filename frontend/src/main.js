@@ -55,7 +55,7 @@ Object.keys(Icons).forEach((key) => {
 import directivePlugin from '@/utils/directive.js'
 
 app.use(ElementPlus,{
-  size: 'default',  // 默认控件尺寸default
+  size: 'default',  // 默认控件尺寸default(其他large、small)
   zIndex: 3000,  // 弹出组件的zIndex
   locale: zhCn,
 })

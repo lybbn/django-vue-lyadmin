@@ -46,7 +46,7 @@
 <!--                <el-menu-item @click="exit">退出</el-menu-item>-->
 <!--            </el-sub-menu>-->
           <span>
-              <el-dropdown trigger="click" class="right-dropdown-center">
+              <el-dropdown trigger="hover" class="right-dropdown-center">
                 <span class="el-dropdown-link">
                   你好,{{userName}}
                   <el-icon class="el-icon--right">
@@ -56,9 +56,9 @@
                 <template #dropdown>
                   <el-dropdown-menu>
                       <div v-show="hasPermission('personalCenter','Search')">
-                          <el-dropdown-item @click="jumpto" >个人中心</el-dropdown-item>
+                          <el-dropdown-item @click="jumpto" ><el-icon><User /></el-icon>个人中心</el-dropdown-item>
                       </div>
-                      <el-dropdown-item @click="exit">退出登录</el-dropdown-item>
+                      <el-dropdown-item @click="exit"><el-icon><Close /></el-icon>退出登录</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>

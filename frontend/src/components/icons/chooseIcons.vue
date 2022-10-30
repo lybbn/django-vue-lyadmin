@@ -2,7 +2,10 @@
     <div>
         <el-button :icon="iconText" @click="handleClick">{{iconText?iconText:"请选择图标"}}</el-button>
         <ly-dialog  v-model="dialogVisible" :title="dialogTitle"  width="50%" @close="handleClose">
-            <el-input v-model="searchIconText" @input="handleChange" clearable class="searchinput" placeholder="搜索如：avatar"></el-input>
+            <div style="display: flex">
+                <el-input  size="large" v-model="searchIconText" @input="handleChange" clearable class="searchinput" placeholder="搜索如：avatar" prefix-icon="Search"></el-input>
+                <el-button size="large" icon="Delete" @click="deleteAll" type="danger">清除</el-button>
+            </div>
             <el-scrollbar height="600px">
                 <div class="icons-container">
                     <div v-for="(v, i) in icons" :key="i" class="lyicon" @click="chooseIcon(v)">
@@ -48,7 +51,7 @@
             },
             iconText: function(nval) {
                 this.$emit('update:modelValue', nval); // visible改变时同步父组件modelValue的值
-            }
+            },
         },
         methods:{
             handleClick(){
@@ -68,6 +71,11 @@
                     this.icons = this.oldIcons.filter(item=>item.toLowerCase().indexOf(this.searchIconText.toLowerCase()) === 0)
                 }
 
+            },
+            deleteAll(){
+                this.iconText=''
+                this.searchIconText = ""
+                this.icons = this.oldIcons
             },
 
         },
