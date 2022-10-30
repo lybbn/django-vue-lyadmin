@@ -10,7 +10,7 @@
                 </el-form-item>
                 <el-form-item label="创建时间：">
                     <el-date-picker
-                            style="width:100% !important;"
+                            style="width:350px"
                             v-model="timers"
                             type="datetimerange"
                             @change="timeChange"

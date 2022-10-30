@@ -3,7 +3,7 @@
         <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
                 <el-form-item label="关键词：">
-                    <el-input size="default" v-model.trim="formInline.search" maxlength="60" style="width:200px;" clearable placeholder="关键词" @change="search"></el-input>
+                    <el-input size="default" v-model.trim="formInline.search" maxlength="60" style="width:160px;" clearable placeholder="关键词" @change="search"></el-input>
                 </el-form-item>
                 <el-form-item label="请求模块：">
                     <el-input size="default" v-model.trim="formInline.request_modular" maxlength="60" style="width:100px;" clearable placeholder="请求模块" @change="search"></el-input>
@@ -15,11 +15,11 @@
                     <el-input size="default" v-model.trim="formInline.request_method" maxlength="30" style="width:100px;" clearable placeholder="请求方法" @change="search"></el-input>
                 </el-form-item>
                 <el-form-item label="IP地址：">
-                    <el-input size="default" v-model.trim="formInline.request_ip" maxlength="60" style="width:180px;" clearable placeholder="IP地址" @change="search"></el-input>
+                    <el-input size="default" v-model.trim="formInline.request_ip" maxlength="60" style="width:150px;" clearable placeholder="IP地址" @change="search"></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间：">
                     <el-date-picker
-                            style="width:100% !important;"
+                            style="width:350px"
                             v-model="timers"
                             type="datetimerange"
                             @change="timeChange"

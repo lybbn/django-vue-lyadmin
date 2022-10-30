@@ -16,7 +16,7 @@
                     </el-select>
                     <el-date-picker
                             v-else-if="sitem.type === 'datepicker-datetimerange'"
-                            style="width:100% !important;"
+                            style="width:350px"
                             v-model="timers"
                             type="datetimerange"
                             @change="timeChange"

@@ -36,7 +36,7 @@ class LunbotuManage(CoreModel):
         verbose_name_plural = verbose_name
 
 # ================================================= #
-# ************** 其他设置 model************** #
+# ************** 参数设置 model************** #
 # ================================================= #
 
 class OtherManage(CoreModel):
@@ -55,7 +55,7 @@ class OtherManage(CoreModel):
 
     class Meta:
         db_table = 'tb_other_manage'
-        verbose_name = "平台其他设置"
+        verbose_name = "参数设置"
         verbose_name_plural = verbose_name
 
 

@@ -6,14 +6,14 @@
                     <el-input v-model.trim="formInline.order_id" maxlength="60"  clearable placeholder="订单编号" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="昵称：">
-                    <el-input v-model.trim="formInline.nickname" maxlength="60"  clearable placeholder="昵称" @change="search" style="width:200px"></el-input>
+                    <el-input v-model.trim="formInline.nickname" maxlength="60"  clearable placeholder="昵称" @change="search" style="width:150px"></el-input>
                 </el-form-item>
                 <el-form-item label="商品名称：">
                     <el-input v-model.trim="formInline.gname" maxlength="60"  clearable placeholder="商品名称" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="付款时间：">
                     <el-date-picker
-                            style="width:100% !important;"
+                            style="width:350px"
                             v-model="timers"
                             type="datetimerange"
                             @change="timeChange"

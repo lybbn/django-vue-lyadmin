@@ -96,7 +96,7 @@ if object.{key}:
             {'id': 'd4e2fe169a8b40f3846421ac04e4fccb', 'name': '平台设置', 'sort': 9, 'web_path': '','icon': 'platform', 'parent_id': None, 'component': None, 'component_name': None, 'visible': 1,'isautopm': 0},
             {'id': 'ae5629946df4497cbec10419e8375dd9', 'name': '轮播图设置', 'sort': 1, 'web_path': 'carouselSettingsimg','icon': '', 'parent_id': 'd4e2fe169a8b40f3846421ac04e4fccb', 'component': None,'component_name': None, 'visible': 1, 'isautopm': 0},
             {'id': '3171db16eda048ae92b16536fc1241b6', 'name': '平台公告', 'sort': 5, 'web_path': 'messagNotice','icon': '', 'parent_id': 'd4e2fe169a8b40f3846421ac04e4fccb', 'component': None, 'component_name': None,'visible': 1, 'isautopm': 0},
-            {'id': '80a340eae92b430abe17635468c2df1d', 'name': '其他设置', 'sort': 12, 'web_path': 'platformSettingsother','icon': '', 'parent_id': 'd4e2fe169a8b40f3846421ac04e4fccb', 'component': None, 'component_name': None,'visible': 1, 'isautopm': 0},
+            {'id': '80a340eae92b430abe17635468c2df1d', 'name': '参数设置', 'sort': 12, 'web_path': 'platformSettingsother','icon': '', 'parent_id': 'd4e2fe169a8b40f3846421ac04e4fccb', 'component': None, 'component_name': None,'visible': 1, 'isautopm': 0},
             {'id': '4236eb70-1558-43a0-9cf2-037230c547f9', 'name': '部门管理', 'sort': 1, 'web_path': 'departmentManage','icon': '', 'parent_id': '54f769b0-3dff-416c-8102-e55ec44827cc', 'component': 'system/dept', 'component_name': 'dept', 'visible': 1,'isautopm':0},
             {'id': '4ba07859-8b73-4524-a1a6-bbff36d98337', 'name': '操作日志', 'sort': 1, 'web_path': 'journalManage','icon': '', 'parent_id': 'c236fb6b-ddaa-4deb-b79b-16e42d9f347f', 'component': 'system/log/operationLog', 'component_name': 'operationLog', 'visible': 1,'isautopm':0},
             {'id': '56c3f341-4f46-4b04-9cfc-c8a14701707e', 'name': '菜单管理', 'sort': 2, 'web_path': 'menuManage','icon': '', 'parent_id': '54f769b0-3dff-416c-8102-e55ec44827cc', 'component': 'system/menu','component_name': 'menu', 'visible': 1,'isautopm':0},
@@ -330,7 +330,7 @@ if object.{key}:
 
     def init_platformsettings_other(self):
         """
-        初始化其他设置
+        初始化参数设置
         """
         data = [
             {"id": "34799dd05d094458bd2b200d3f211eda",
@@ -357,7 +357,7 @@ if object.{key}:
              },
 
         ]
-        self.save(OtherManage, data, "其他设置")
+        self.save(OtherManage, data, "参数设置")
 
     def run(self):
         self.init_dept()

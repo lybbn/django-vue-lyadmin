@@ -2,11 +2,11 @@
     <div :class="{'ly-is-full':isFull}">
         <div class="tableSelect" ref="tableSelect">
             <el-form :inline="true" :model="formInline" label-position="left">
-                <el-form-item label="">
-                    <el-button type="primary" @click="addModule"  icon="Plus" v-show="isShowBtn('platformSettingsother','其他设置','Create')">新增</el-button>
+                <el-form-item label="" v-show="hasPermission(this.$route.name,'Create')">
+                    <el-button type="primary" @click="addModule"  icon="Plus" >新增</el-button>
                 </el-form-item>
-                <el-form-item label="">
-                    <el-button @click="handleDelete" type="danger" :disabled="multiple" icon="Delete" v-show="isShowBtn('platformSettingsother','其他设置','Delete')">删除</el-button>
+                <el-form-item label="" v-show="hasPermission(this.$route.name,'Delete')">
+                    <el-button @click="handleDelete" type="danger" :disabled="multiple" icon="Delete" >删除</el-button>
                 </el-form-item>
                 <el-form-item label="">
                     <el-switch v-model="is_allow_fronted" active-color="#13ce66" inactive-color="#ff4949" active-text="前端访问已开启" inactive-text="前端访问已关闭"  @change="handleSuperOperate"></el-switch>
@@ -51,8 +51,8 @@
                         </div>
                     </template>
                     <template #default="scope">
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('platformSettingsother','其他设置','Update')">编辑</span>
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('platformSettingsother','其他设置','Delete')">删除</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="hasPermission(this.$route.name,'Update')">编辑</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="hasPermission(this.$route.name,'Delete')">删除</span>
                     </template>
                 </el-table-column>
             </el-table>

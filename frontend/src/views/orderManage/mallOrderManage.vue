@@ -6,7 +6,7 @@
                     <el-input v-model.trim="formInline.order_id" maxlength="60"  clearable placeholder="订单编号" @change="search" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="购买人：">
-                    <el-input v-model.trim="formInline.buyer" maxlength="60"  clearable placeholder="购买人" @change="search" style="width:200px"></el-input>
+                    <el-input v-model.trim="formInline.buyer" maxlength="60"  clearable placeholder="购买人" @change="search" style="width:150px"></el-input>
                 </el-form-item>
 <!--                <el-form-item label="商品名称：">-->
 <!--                    <el-input size="small" v-model.trim="formInline.goodsname" maxlength="60"  clearable placeholder="商品名称" @change="search" style="width:200px"></el-input>-->
@@ -26,7 +26,7 @@
                 </el-form-item>
                 <el-form-item label="下单时间：">
                     <el-date-picker
-                            style="width:100% !important;"
+                            style="width:350px"
                             v-model="timers"
                             type="datetimerange"
                             @change="timeChange"
