@@ -324,7 +324,7 @@ function isRouterPathExist(path){
 let to={},from={}
 router.beforeEach((to, from, next) => {
    // 白名单
-  const whiteList = ['buttonConfig', 'menuManage', 'lyterminal', 'buttonManage', 'menuManage']
+  const whiteList = ['buttonConfig', 'menuManage', 'lyterminal', 'buttonManage']
   // 进度条
   NProgress.start()
   let userId = store.getters.getUserId ? store.getters.getUserId : ''

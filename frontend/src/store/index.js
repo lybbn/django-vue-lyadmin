@@ -110,18 +110,23 @@ export default createStore({
             router.push({ name: obj.attributes.url })
           }
         },
-        //切换tab菜单(没有标签则重新创建)
+         //切换tab菜单(没有标签则重新创建)
         switchtab(state,curContextTabName){
             state.TabsValue = curContextTabName
             localStorage.setItem('TabsValue', curContextTabName)
-            if(!state.tabsPage.some(item => item.name === curContextTabName)){
+            var arr = state.tabsPage
+            if (Object.prototype.toString.call(arr) === '[object String]') {
+                // 字符串需要转换
+                arr = JSON.parse(arr);
+            }
+            if(!arr.some(item => item.name === curContextTabName)){
                 var menuList = JSON.parse(localStorage.getItem('menuList'))
                 var curContextTabObj = menuList.filter(item=>item.url === curContextTabName)
                 // 将tabs所需参数push进arr数组
-                var arr = Array.from(state.tabsPage)
                 arr.push({ title: curContextTabObj[0].moduleName, name: curContextTabName })
                 // 赋值给tabsPage参数
                 state.tabsPage = arr
+                // 存储localStorage -- 解决刷新消失
                 localStorage.setItem('tabsPage', JSON.stringify(arr))
             }
             router.push({ name: curContextTabName });

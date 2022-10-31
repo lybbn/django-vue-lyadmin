@@ -60,7 +60,7 @@ export default {
         //刷新加载localStorage存着地址
         let lytabsPage = localStorage.getItem("tabsPage")
         if (lytabsPage) {
-            this.$store.state.tabsPage = JSON.parse(lytabsPage).reverse();//反转数据，不然刷新后菜单顺序是反的
+            this.$store.state.tabsPage = JSON.parse(lytabsPage);
             var TabsValue = localStorage.getItem("TabsValue");
             this.$store.state.TabsValue = TabsValue;
             if (localStorage.getItem("tabsPage") === "[]"||localStorage.getItem("tabsPage")==""||localStorage.getItem("tabsPage")==null) {
