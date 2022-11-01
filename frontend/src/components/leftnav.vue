@@ -93,6 +93,7 @@ export default {
         // this.$forceUpdate()
         this.getMenu()
       }
+      this.$store.commit('switchtabNoRoute',to.name)
     }
   },
   created() {
