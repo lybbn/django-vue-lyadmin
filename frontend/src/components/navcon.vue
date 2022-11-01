@@ -3,12 +3,12 @@
 */
 <template>
   <el-menu class="el-menu-demo" mode="horizontal"  background-color="var(--l-header-bg)"  text-color="#ffffff" active-text-color="#ffffff" :ellipsis="false">
-      <el-menu-item  :style="collapsed ? 'width:210px' : 'width:90px;margin-left:0'" class="logo-outer">
-          <p class="login-inner"  @click.stop="">
+      <div  :style="collapsed ? 'width:210px' : 'width:90px;margin-left:0'" class="divleft">
+          <p class="login-inner" @click.stop="" style="text-align: center;" :style="collapsed ? 'width:200px' : 'width:90px'">
              <img class="logoimg" src="../assets/logo.png" alt=""  :style="collapsed ? 'width:40px' : 'width:24px;height:24px;margin-left:0'">
           </p>
         <img class="showimg" :src="collapsed?imgsq:imgshow" @click.stop="toggle(collapsed)">
-      </el-menu-item>
+      </div>
 <!--      <span class="site-title">Django-Vue-Lyadmin后台管理系统</span>-->
 <!--      <el-row class="buttonimg" type="info">-->
 <!--      </el-row>-->
@@ -171,6 +171,10 @@
   }
 </script>
 <style lang="scss" scoped>
+    .divleft{
+        display: flex;
+        align-items: center;
+    }
     .site-title{
         color: #ffffff;
         font-size: 20px;
@@ -200,9 +204,6 @@
     .ly-header-right:hover{
         background: var(--l-header-bg) !important;
     }
-    ::v-deep(.el-sub-menu__title){
-        height: 100%;
-    }
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     border: none;
   }
@@ -224,6 +225,7 @@
   .showimg {
     width: 26px;
     height: 26px;
+    cursor: pointer;
     /*position: absolute;*/
     /*top: 17px;*/
     /*left: 0;*/
@@ -247,6 +249,7 @@
   }
   .logoimg {
     height: 40px;
+    cursor: pointer;
   }
   .el-menu-demo{
       height: 60px;
@@ -256,7 +259,6 @@
       .el-menu-item.is-active {
           position: relative;
           background-color:var(--l-header-bg) !important;
-
         }
       li{
           height: 100%;
