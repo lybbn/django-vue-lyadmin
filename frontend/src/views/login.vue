@@ -110,7 +110,30 @@
                 parentList.forEach(item=>{
                   let menuTreeChildren=[]
                   let children = childrenList.filter(itema=>itema.parent == item.id)
+                  let children2 = childrenList.filter((item)=>{
+                    return children.every((item1)=>{
+                        return item.path != item1.path;
+                    })
+                  })
                   children.forEach(itemb=>{
+                    let cmenuTreeChildren=[]
+                    let cchildren = children2.filter(itemc=>itemc.parent == itemb.id)
+                    cchildren.forEach(itemd=>{
+                        cmenuTreeChildren.push(({
+                          text:itemd.name,
+                          id:itemd.id,
+                          attributes:{
+                            url:itemd.web_path,
+                            icon:itemd.icon
+                          },
+                          hasChildren: false,
+                          hasParent:true
+                        }))
+                    })
+                    let chasChildren = false
+                    if(cmenuTreeChildren.length>0){
+                        chasChildren = true
+                    }
                     menuTreeChildren.push(({
                       text:itemb.name,
                       id:itemb.id,
@@ -118,8 +141,9 @@
                         url:itemb.web_path,
                         icon:itemb.icon
                       },
-                      hasChildren: false,
-                      hasParent:true
+                      children:cmenuTreeChildren,
+                      hasChildren: chasChildren,
+                      hasParent:true,
                     }))
                   })
                   menuTree.push({

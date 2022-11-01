@@ -4,10 +4,10 @@
 <template>
   <el-menu class="el-menu-demo" mode="horizontal"  background-color="var(--l-header-bg)"  text-color="#ffffff" active-text-color="#ffffff" :ellipsis="false">
       <el-menu-item  :style="collapsed ? 'width:210px' : 'width:90px;margin-left:0'" class="logo-outer">
-          <p class="login-inner">
+          <p class="login-inner"  @click.stop="">
              <img class="logoimg" src="../assets/logo.png" alt=""  :style="collapsed ? 'width:40px' : 'width:24px;height:24px;margin-left:0'">
           </p>
-        <img class="showimg" :src="collapsed?imgsq:imgshow" @click="toggle(collapsed)">
+        <img class="showimg" :src="collapsed?imgsq:imgshow" @click.stop="toggle(collapsed)">
       </el-menu-item>
 <!--      <span class="site-title">Django-Vue-Lyadmin后台管理系统</span>-->
 <!--      <el-row class="buttonimg" type="info">-->
@@ -280,44 +280,4 @@
     .el-menu.el-menu--horizontal{
         border-bottom: 0;
   }
-</style>
-<style>
-  .submenu .el-submenu__title{
-       border-bottom: 0 !important;
-       border-bottom-color: transparent !important;
-    }
-
-
-  /*菜单关闭*/
-  .submenu>.el-sub-menu__title .el-sub-menu__icon-arrow{
-      position: unset;
-  }
-  /*菜单展开*/
-  .submenu.is-opened>.el-sub-menu__title .el-sub-menu__icon-arrow{
-      position: unset;
-  }
-.el-menu-demo.el-menu--horizontal>.el-menu-item.is-active{
-    border-bottom: none !important;
-}
- .el-menu--horizontal>.submenu.el-sub-menu .el-sub-menu__title{
-    border-bottom: 0 !important;
-    border-bottom-color: transparent !important;
-    display: flex;
-    height: 100%;
-
-}
-.el-menu-demo.el-menu--horizontal>.submenu.el-sub-menu:hover{
-    background-color: #ff0000 !important;
-  }
-.el-menu-demo.el-menu--horizontal>.el-sub-menu{
-    display: flex;
-    justify-content: flex-end;
-
-}
-.el-menu-demo.el-menu--horizontal>.el-sub-menu .el-sub-menu__title{
-    border-bottom: 0 !important;
-    border-bottom-color: transparent !important;
-    height: 100% !important;
-
-}
 </style>
