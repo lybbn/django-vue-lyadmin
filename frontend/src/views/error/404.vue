@@ -3,7 +3,7 @@
     <p class="page_title">404 找不到页面</p>
         <div class="page_btn">
             <el-button @click="backhome">
-                点击返回
+                返回首页
             </el-button>
             <el-button @click="exit">
                 退出登录
@@ -17,7 +17,15 @@
         name: "404",
         methods:{
             backhome(){
-                this.$router.replace('/')
+                // this.$router.replace('/')
+                let allmenu = localStorage.getItem('allmenu')
+                if(allmenu){
+                    allmenu = JSON.parse(allmenu)
+                    if(allmenu.length>0){
+                        let tabsPage = allmenu[0].attributes.url
+                        this.$store.commit("switchtab",tabsPage)
+                    }
+                }
             },
             // 退出登录
             exit(e) {
