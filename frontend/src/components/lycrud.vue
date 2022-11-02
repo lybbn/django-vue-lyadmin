@@ -51,17 +51,40 @@
                 <div>
                     <slot name="tablebar-r"></slot>
                     <!-- 右侧表头筛选 -->
+<!--                    <div class="transfer">-->
+<!--                        <el-button icon="Refresh" circle @click="handleRefresh"></el-button>-->
+<!--                        <el-button icon="Search" circle type="primary" @click="showSearchBar=showSearchBar?false:true"></el-button>-->
+<!--                        <el-button icon="Filter" @click="drawer=true" circle type="success"></el-button>-->
+<!--                        <el-drawer v-model="drawer" direction="rtl" title="显示/隐藏列" size="20%">-->
+<!--                            <el-checkbox :indeterminate="drawerIndeterminate" @change="handleDrawerCheckAllChange">全选 {{ "("+drawerCheckedValue.length+"/"+tableColumns.length+")"}}</el-checkbox>-->
+<!--                            <el-checkbox-group v-model="drawerCheckedValue" @change="handleDrawerColumnsChange" style="overflow: auto;display: flex;flex-direction: column">-->
+<!--                                <el-checkbox  v-for="ckitem in tableColumns" :key="ckitem.prop" :label="ckitem.label" :checked="!ckitem.hidden"></el-checkbox>-->
+<!--                            </el-checkbox-group>-->
+
+<!--                        </el-drawer>-->
+<!--                    </div>-->
                     <div class="transfer">
-                        <el-button icon="Refresh" circle @click="handleRefresh"></el-button>
-                        <el-button icon="Search" circle type="primary" @click="showSearchBar=showSearchBar?false:true"></el-button>
-                        <el-button icon="Filter" @click="drawer=true" circle type="success"></el-button>
-                        <el-drawer v-model="drawer" direction="rtl" title="显示/隐藏列" size="20%">
+                        <el-button type="primary" link @click="handleRefresh">
+                            <el-icon size="20px"><Refresh/></el-icon>
+                        </el-button>
+                        <el-popover placement="bottom" trigger="click" :width="100">
                             <el-checkbox :indeterminate="drawerIndeterminate" @change="handleDrawerCheckAllChange">全选 {{ "("+drawerCheckedValue.length+"/"+tableColumns.length+")"}}</el-checkbox>
+                            <el-divider style="margin:  5px auto"></el-divider>
                             <el-checkbox-group v-model="drawerCheckedValue" @change="handleDrawerColumnsChange" style="overflow: auto;display: flex;flex-direction: column">
                                 <el-checkbox  v-for="ckitem in tableColumns" :key="ckitem.prop" :label="ckitem.label" :checked="!ckitem.hidden"></el-checkbox>
                             </el-checkbox-group>
-
-                        </el-drawer>
+                            <template #reference>
+                                <el-button link type="primary">
+                                    <el-icon size="20px"><Setting/></el-icon>
+                                </el-button>
+                            </template>
+                        </el-popover>
+                        <el-button link type="primary" @click="showSearchBar=!showSearchBar">
+                            <el-icon size="20px"><Search/></el-icon>
+                        </el-button>
+                        <el-button type="primary" link @click="setFull">
+                            <el-icon size="20px"><FullScreen/></el-icon>
+                        </el-button>
                     </div>
                 </div>
             </div>
@@ -101,11 +124,11 @@
                     <template #header>
                         <div style="display: flex;justify-content: space-between;align-items: center;">
                             <div>操作</div>
-                            <div @click="setFull">
-                                <el-tooltip content="全屏" placement="bottom">
-                                    <el-icon ><full-screen /></el-icon>
-                                </el-tooltip>
-                            </div>
+<!--                            <div @click="setFull">-->
+<!--                                <el-tooltip content="全屏" placement="bottom">-->
+<!--                                    <el-icon ><full-screen /></el-icon>-->
+<!--                                </el-tooltip>-->
+<!--                            </div>-->
                         </div>
                     </template>
                     <template #default="scope">
