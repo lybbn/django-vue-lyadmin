@@ -16,7 +16,7 @@
                     </el-select>
                     <el-date-picker
                             v-else-if="sitem.type === 'datepicker-datetimerange'"
-                            style="width:350px"
+                            style="width:100% !important;"
                             v-model="timers"
                             type="datetimerange"
                             @change="timeChange"
@@ -41,9 +41,8 @@
                     <div>
                         <el-button  @click="handleEdit('','add')" type="primary" icon="Plus" v-show="rowHandle.permission.add">新增</el-button>
                         <el-button  @click="handleMutiDelete" type="danger" icon="Delete" :disabled="multiple" v-if="showSelectable && rowHandle.permission.del">删除</el-button>
-                        <slot name="tablebar-l"></slot>
                     </div>
-
+                    <slot name="tablebar-l"></slot>
                 </div>
                 <div>
                     <slot name="tablebar-c"></slot>
@@ -52,16 +51,27 @@
                     <slot name="tablebar-r"></slot>
                     <!-- 右侧表头筛选 -->
                     <div class="transfer">
-                        <el-button icon="Refresh" circle @click="handleRefresh"></el-button>
-                        <el-button icon="Search" circle type="primary" @click="showSearchBar=showSearchBar?false:true"></el-button>
-                        <el-button icon="Filter" @click="drawer=true" circle type="success"></el-button>
-                        <el-drawer v-model="drawer" direction="rtl" title="显示/隐藏列" size="20%">
+                        <el-button type="primary" link @click="handleRefresh">
+                            <el-icon size="20px"><Refresh/></el-icon>
+                        </el-button>
+                        <el-popover placement="bottom" trigger="click" :width="100">
                             <el-checkbox :indeterminate="drawerIndeterminate" @change="handleDrawerCheckAllChange">全选 {{ "("+drawerCheckedValue.length+"/"+tableColumns.length+")"}}</el-checkbox>
+                            <el-divider style="margin:  5px auto"></el-divider>
                             <el-checkbox-group v-model="drawerCheckedValue" @change="handleDrawerColumnsChange" style="overflow: auto;display: flex;flex-direction: column">
                                 <el-checkbox  v-for="ckitem in tableColumns" :key="ckitem.prop" :label="ckitem.label" :checked="!ckitem.hidden"></el-checkbox>
                             </el-checkbox-group>
-
-                        </el-drawer>
+                            <template #reference>
+                                <el-button link type="primary">
+                                    <el-icon size="20px"><Setting/></el-icon>
+                                </el-button>
+                            </template>
+                        </el-popover>
+                        <el-button link type="primary" @click="showSearchBar=!showSearchBar">
+                            <el-icon size="20px"><Search/></el-icon>
+                        </el-button>
+                        <el-button type="primary" link @click="setFull">
+                            <el-icon size="20px"><FullScreen/></el-icon>
+                        </el-button>
                     </div>
                 </div>
             </div>
@@ -101,11 +111,6 @@
                     <template #header>
                         <div style="display: flex;justify-content: space-between;align-items: center;">
                             <div>操作</div>
-                            <div @click="setFull">
-                                <el-tooltip content="全屏" placement="bottom">
-                                    <el-icon ><full-screen /></el-icon>
-                                </el-tooltip>
-                            </div>
                         </div>
                     </template>
                     <template #default="scope">
@@ -132,8 +137,7 @@
                         <el-form-item :label="fitem.label+'：'" :prop="fitem.prop" v-if="(fitem.form.hidden!==undefined && dialogTitle!=='详情')?!fitem.form.hidden:true">
                             <el-input v-if="fitem.type=='input'" :show-password="fitem.form.showPassword?fitem.form.showPassword:false"  v-model="formData[fitem.prop]" clearable :placeholder="fitem.form.placeholder?fitem.form.placeholder:''" @change="fitem.form.valueChange"></el-input>
                             <el-input v-else-if="fitem.type=='textarea'"  type="textarea" v-model="formData[fitem.prop]" :placeholder="fitem.form.placeholder?fitem.form.placeholder:''" @change="fitem.form.valueChange"></el-input>
-                            <el-input-number v-else-if="fitem.type=='number'"  v-model="formData[fitem.prop]"  :min="0" :max="999999" @change="fitem.form.valueChange"></el-input-number>
-                            <el-input-number v-else-if="fitem.type=='price'"  v-model="formData[fitem.prop]" :precision="2" :step="0.1"    @change="fitem.form.valueChange"></el-input-number>
+                            <el-input-number v-else-if="fitem.type=='number'"  v-model="formData[fitem.prop]"  :min="0" :max="9999" @change="fitem.form.valueChange"></el-input-number>
                             <el-switch v-else-if="fitem.type=='switch'" v-model="formData[fitem.prop]" active-color="#13ce66" inactive-color="#ff4949" @change="fitem.form.valueChange"></el-switch>
                             <el-select v-else-if="fitem.type === 'select'" v-model="formData[fitem.prop]" :placeholder="fitem.placeholder" clearable filterable  @change="fitem.form.valueChange" style="width: 100%;">
                                 <el-option
@@ -352,7 +356,6 @@
                     this.getTheTableHeight()
                 })
             }
-
         },
         created() {
             this.showSearchBar = this.searchBar.showSearchBar
@@ -634,7 +637,7 @@
 
         unmounted() {
             //解决table 表格缩放错位问题
-            window.removeEventListener("resize", this.handleResize);
+             window.removeEventListener("resize", this.handleResize);
              // 页面销毁，去掉监听事件
 			window.removeEventListener("resize", this.listenResize);
         },
