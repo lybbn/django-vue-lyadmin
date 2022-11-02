@@ -18,7 +18,31 @@
                 <el-form-item label="任务名称：" prop="name">
                     <el-input v-model="formData.name"></el-input>
                 </el-form-item>
-                <el-form-item label="执行时间：" prop="crontab">
+                <el-form-item label="任务类型：" prop="type">
+                    <el-radio-group v-model="formData.type" :disabled="loadingTitle == '编辑'">
+                        <el-radio-button :label="0" >间隔任务</el-radio-button>
+                        <el-radio-button :label="1" >周期任务</el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="执行时间：" v-if="formData.type == 0" class="is-required">
+                    <el-row>
+                        每隔
+                        <el-input-number
+                        v-model="formData.interval.every"
+                        :min="0"
+                        style="margin: 0 5px 0 5px"
+                        ></el-input-number>
+                        <el-select  v-model="formData.interval.period" style="width: 150px">
+                            <el-option
+                              v-for="item in intervalList"
+                              :key= item.id
+                              :label=item.name
+                              :value=item.id
+                            ></el-option>
+                        </el-select>
+                    </el-row>
+                </el-form-item>
+                <el-form-item label="执行时间：" prop="crontab" v-if="formData.type == 1" class="is-required">
                     <el-input
                         v-model="formData.crontab"
                         placeholder="* * * * *"
@@ -62,7 +86,7 @@
                     <el-switch
                         v-model="formData.enabled"
                         active-text="正常"
-                        inactive-text="暂停"
+                        inactive-text="停止"
                         active-color="#13ce66"
                         inactive-color="#ff4949">
                     </el-switch>
@@ -93,9 +117,14 @@
                 loadingSave:false,
                 loadingTitle:'',
                 formData:{
+                    type:0,
                     name:'',
                     crontab:'',
                     task:'',
+                    interval:{
+                        every:null,
+                        period:null,
+                    },
                     one_off:false,
                     enabled:false,
                     description:'',
@@ -104,9 +133,9 @@
                     name: [
                         {required: true, message: '请输入任务名称',trigger: 'blur'}
                     ],
-                    crontab: [
-                        {required: true, message: '请输入cron表达式',trigger: 'blur'}
-                    ],
+                    // crontab: [
+                    //     {required: true, message: '请输入cron表达式',trigger: 'blur'}
+                    // ],
                     task: [
                         {required: true, message: '请输入celery任务方法',trigger: 'blur'}
                     ],
@@ -116,6 +145,13 @@
                 },
                 taskList:[],
                 cronPopover: false,
+                intervalList:[
+                    {id:'days',name:'天'},
+                    {id:'hours',name:'小时'},
+                    {id:'minutes',name:'分钟'},
+                    {id:'seconds',name:'秒'},
+                    {id:'microseconds',name:'微秒'},
+                ]
             }
         },
         methods:{
@@ -123,9 +159,14 @@
                 this.dialogVisible=false
                 this.loadingSave=false
                 this.formData = {
+                    type:0,
                     name:'',
                     crontab:'',
                     task:'',
+                    interval:{
+                        every:null,
+                        period:null,
+                    },
                     one_off:false,
                     enabled:false,
                     description:'',
@@ -169,10 +210,17 @@
                         //         return
                         //     }
                         // }
-                        if(param.type === '1'){
-                            if(param.pkey == ""){
+                        if(param.type === 1){
+                            if(param.crontab == ""){
                                 this.loadingSave=false
-                                this.$message.warning("秘钥不能为空")
+                                this.$message.warning("执行时间不能为空")
+                                return
+                            }
+                        }
+                        if(param.type === 0){
+                            if(param.interval.every ==null || param.interval.every =="" || param.interval.period ==null || param.interval.period ==""){
+                                this.loadingSave=false
+                                this.$message.warning("执行时间不能为空")
                                 return
                             }
                         }

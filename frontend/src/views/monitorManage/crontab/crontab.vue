@@ -25,7 +25,18 @@
 <!--                </el-table-column>-->
                 <el-table-column min-width="160" prop="name" label="任务名称" show-overflow-tooltip></el-table-column>
                 <el-table-column min-width="160" prop="task" label="执行方法" show-overflow-tooltip></el-table-column>
-                <el-table-column min-width="110" prop="crontab" label="执行时间"></el-table-column>
+                <el-table-column min-width="120" prop="task" label="任务类型" >
+                    <template #default="scope">
+                        <span v-if="scope.row.type">周期任务</span>
+                        <span v-else>间隔任务</span>
+                    </template>
+                </el-table-column>
+                <el-table-column min-width="110" label="执行时间">
+                    <template #default="scope">
+                        <span v-if="scope.row.type">{{scope.row.crontab}}</span>
+                        <span v-else>{{"间隔"+scope.row.interval.every+intervalList.filter(item=> scope.row.interval.period  === item.id)[0].name}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column min-width="110" prop="total_run_count" label="已运行次数"></el-table-column>
                 <el-table-column min-width="100" label="一次性任务">
                     <template #default="scope">
@@ -36,11 +47,11 @@
                 <el-table-column min-width="100" label="状态">
                     <template #default="scope">
                         <el-tag v-if="scope.row.enabled">正常</el-tag>
-                        <el-tag v-else type="danger">暂停</el-tag>
+                        <el-tag v-else type="danger">停止</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column min-width="130" prop="description" label="备注" show-overflow-tooltip></el-table-column>
-                <el-table-column min-width="150" prop="date_changed" label="创建时间"></el-table-column>
+                <el-table-column min-width="150" prop="date_changed" label="更新时间"></el-table-column>
                 <el-table-column label="操作" fixed="right" width="180">
                     <template #header>
                         <div style="display: flex;justify-content: space-between;align-items: center;">
@@ -54,7 +65,7 @@
                     </template>
                     <template #default="scope">
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'disable')" v-show="hasPermission(this.$options.name,'Disable')">
-                            <span v-if="scope.row.enabled">暂停</span>
+                            <span v-if="scope.row.enabled">停止</span>
                             <span v-else>开启</span>
                         </span>
                         <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="hasPermission(this.$options.name,'Update')">编辑</span>
@@ -95,6 +106,13 @@
                 },
                 timers:[],
                 tableData:[],
+                intervalList:[
+                    {id:'days',name:'天'},
+                    {id:'hours',name:'小时'},
+                    {id:'minutes',name:'分钟'},
+                    {id:'seconds',name:'秒'},
+                    {id:'microseconds',name:'微秒'},
+                ]
             }
         },
         methods:{
