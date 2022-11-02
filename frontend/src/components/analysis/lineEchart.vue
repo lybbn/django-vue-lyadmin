@@ -115,7 +115,9 @@
                 // // 绘制图表
                 // myChart.setOption(option);
                 window.onresize = function () {//自适应大小
-                    myChart.resize();
+                    if(myChart){
+                        myChart.resize();
+                    }
                 };
             });
             onBeforeUnmount(() => {
