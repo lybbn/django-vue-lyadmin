@@ -63,7 +63,7 @@ export default {
             this.$store.state.tabsPage = JSON.parse(lytabsPage);
             var TabsValue = localStorage.getItem("TabsValue");
             this.$store.state.TabsValue = TabsValue;
-            if (TabsValue === "[]"||TabsValue==""||TabsValue==null || TabsValue === 'login') {
+            if (lytabsPage === "[]"||lytabsPage==""||lytabsPage==null || TabsValue === 'login') {
                 this.relogin()//重新登录
             } else {
                 this.$router.push({ name: TabsValue });
