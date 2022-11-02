@@ -63,7 +63,7 @@ export default {
             this.$store.state.tabsPage = JSON.parse(lytabsPage);
             var TabsValue = localStorage.getItem("TabsValue");
             this.$store.state.TabsValue = TabsValue;
-            if (localStorage.getItem("tabsPage") === "[]"||localStorage.getItem("tabsPage")==""||localStorage.getItem("tabsPage")==null) {
+            if (TabsValue === "[]"||TabsValue==""||TabsValue==null || TabsValue === 'login') {
                 this.relogin()//重新登录
             } else {
                 this.$router.push({ name: TabsValue });
@@ -124,11 +124,12 @@ export default {
             this.editableTabsValue = activeName;
             this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
             this.$store.state.tabsPage = this.editableTabs;
-            window.localStorage.tabsPage = JSON.stringify(this.editableTabs);
+            window.localStorage.setItem(tabsPage,JSON.stringify(this.editableTabs));
             //解决刷新消失
             window.localStorage.setItem("TabsValue", activeName);
+            var thetabsPage = localStorage.getItem("tabsPage")
             // 删除时跳转不在停留被删除页
-            if (localStorage.getItem("tabsPage") === "[]"||localStorage.getItem("tabsPage")==""||localStorage.getItem("tabsPage")==null) {
+            if (thetabsPage === "[]"||thetabsPage==""||thetabsPage==null) {
                 this.$router.push({ name: "login"});
             } else {
                 this.$router.push({ name: activeName });

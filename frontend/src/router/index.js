@@ -323,87 +323,91 @@ function isRouterPathExist(path){
  */
 let to={},from={}
 router.beforeEach((to, from, next) => {
-   // 白名单
-  const whiteList = ['buttonConfig', 'menuManage', 'lyterminal', 'buttonManage']
-  // 进度条
-  NProgress.start()
-  let userId = store.getters.getUserId ? store.getters.getUserId : ''
-  if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-    if (userId) { // 通过vuex state获取当前的token是否存在
-      let menuList = JSON.parse(localStorage.getItem('menuList'))
-      if(menuList && (menuList.filter(item=>item.url == to.name).length > 0 || (whiteList.indexOf(to.name) !== -1))) {
-          if(to.name){
-              next()
-          }else if(isRouterPathExist(to.path)){
-              next()
-          }else{
-              next({
-                  path: '/404'
-              })
-          }
-      } else {
-        next({
-          path: '/login'
-        })
-      }
+    // 白名单
+    const whiteList = ['buttonConfig', 'menuManage', 'lyterminal', 'buttonManage']
+    // 进度条
+    NProgress.start()
+    let userId = store.getters.getUserId ? store.getters.getUserId : ''
+    if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
+        if (userId) { // 通过vuex state获取当前的token是否存在
+            let menuList = JSON.parse(localStorage.getItem('menuList'))
+            if(menuList && (menuList.filter(item=>item.url == to.name).length > 0 || (whiteList.indexOf(to.name) !== -1))) {
+                if(to.path){
+                    next()
+                }else if(isRouterPathExist(to.path)){
+                    next()
+                }else{
+                    next({
+                        path: '/404'
+                    })
+                }
+            } else {
+                next({
+                    path: '/login'
+                })
+            }
+        } else {
+            next({
+              path: '/login'
+            })
+        }
     } else {
-        next({
-          path: '/login'
-        })
-    }
-  } else {
-    if(to.path=="/login" ||to.path=="/"){
-      if(userId){
-        let tabsValue = localStorage.getItem("TabsValue")
-        if(tabsValue){
-            if(isRouterNameExist(tabsValue)){
-                  store.commit("switchtab",tabsValue)
+        if(to.path=="/login" ||to.path=="/"){
+            if(userId){
+                let tabsValue = localStorage.getItem("TabsValue")
+                if(tabsValue){
+                    if(isRouterNameExist(tabsValue)){
+                        if(tabsValue === 'login'){
+                            next({
+                                path: '/404'
+                            })
+                        }else{
+                            store.commit("switchtab",tabsValue)
+                        }
+                    }else{
+
+                    }
+                }else{
+                    let tabsPage = JSON.parse(localStorage.getItem("tabsPage"))
+                    if (tabsPage) {
+                        if(isRouterNameExist(tabsPage[0].name)){
+                          store.commit("switchtab",tabsPage[0].name)
+                        }else{
+                          next({
+                              path: '/404'
+                          })
+                        }
+
+                    }else{
+                        next({
+                            path:'/404'
+                        })
+                    }
+                }
             }else{
-                  next({
-                      path: '/404'
-                  })
+                if(to.name){
+                    next()
+                }else if(isRouterPathExist(to.path)){
+                    next()
+                }
+                else{
+                    next({
+                        path: '/404'
+                    })
+                }
             }
         }else{
-            let tabsPage = JSON.parse(localStorage.getItem("tabsPage"))
-            if (tabsPage) {
-                if(isRouterNameExist(tabsPage[0].name)){
-                  store.commit("switchtab",tabsPage[0].name)
-                }else{
-                  next({
-                      path: '/404'
-                  })
-                }
-
+            if(to.name){
+                next()
+            }else if(isRouterPathExist(to.path)){
+                next()
             }else{
                 next({
-                    path:'/404'
+                    path: '/404'
                 })
             }
         }
-      }else{
-        if(to.name){
-            next()
-        }else if(isRouterPathExist(to.path)){
-            next()
-        }
-        else{
-            next({
-                path: '/404'
-            })
-        }
-      }
-    }else{
-      if(to.name){
-          next()
-      }else if(isRouterPathExist(to.path)){
-          next()
-      }else{
-          next({
-              path: '/404'
-          })
-      }
     }
-  }
 })
 //在路由跳转后用NProgress.done()标记下结束
 router.afterEach(() => {
