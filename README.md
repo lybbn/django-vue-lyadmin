@@ -215,6 +215,8 @@ npm run build
 
 ## 演示图
 
+![image-task02](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/task02.png)
+
 ![image-task01](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/task01.png)
 
 ![image-188](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/188.png)
