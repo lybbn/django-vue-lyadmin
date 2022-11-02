@@ -124,7 +124,7 @@ export default {
             this.editableTabsValue = activeName;
             this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
             this.$store.state.tabsPage = this.editableTabs;
-            window.localStorage.setItem(tabsPage,JSON.stringify(this.editableTabs));
+            window.localStorage.setItem("tabsPage",JSON.stringify(this.editableTabs));
             //解决刷新消失
             window.localStorage.setItem("TabsValue", activeName);
             var thetabsPage = localStorage.getItem("tabsPage")
