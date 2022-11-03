@@ -1,0 +1,176 @@
+@charset "utf-8";
+
+/* 动画 */
+@keyframes debounce {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-2px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+.page {
+  height: 100%;
+}
+
+.page {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pattern {
+  width: 18%;
+  position: absolute;
+  top: 0;
+}
+.pattern img {
+  width: 100%;
+}
+.pattern.left {
+  left: 0;
+}
+.pattern.right {
+  right: 0;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.platform {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.platform .icon-env {
+  width: 22px;
+  height: 22px;
+  margin-right: 10px;
+  display: none;
+}
+.platform .icon-env.show {
+  display: block;
+}
+
+.platform .app-name {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 22px;
+  color: #505556;
+  letter-spacing: 1px;
+}
+
+.download-button {
+  width: 211px;
+  height: 40px;
+  background: #32b2a7;
+  margin-top: 17px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 22px;
+  color: #ffffff;
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+/* 已安装提示 */
+.open-tips {
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 21px;
+  color: #fb4545;
+  display: none;
+  cursor: pointer;
+}
+
+.open-tips.show {
+  display: block;
+}
+
+.browser-tips {
+  font-size: 12px;
+  margin-top: 20px;
+  color: #999999;
+  letter-spacing: 2px;
+  display: none;
+}
+.browser-tips.show {
+  display: block;
+}
+
+/* 微信环境提示 */
+
+.tips {
+  display: none;
+  width: 160px;
+  position: absolute;
+  right: 6px;
+  top: 0;
+}
+.tips.show {
+  display: block;
+}
+.tips.ani {
+  animation: debounce 1s;
+}
+
+/* 即将开放 */
+.dialog {
+  width: 100%;
+  height: 100%;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.dialog.show {
+  display: flex;
+}
+.dialog-content {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 4px 15px;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 12px;
+}

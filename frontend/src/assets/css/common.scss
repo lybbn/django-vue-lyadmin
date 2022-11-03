@@ -1,0 +1,274 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, menu, nav, output, ruby, section, summary, time, mark, audio, video, input {margin: 0;padding: 0;border: 0;font-size: 100%;vertical-align: baseline;}
+article, aside, details, figcaption, figure, footer, header, menu, nav, section {display: block;}
+body {line-height: 1;height: 100%;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after, q:before, q:after {content: none;}
+
+a {
+  color: #7e8c8d;
+  text-decoration: none;
+  -webkit-backface-visibility: hidden;
+}
+
+li {
+  list-style: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 15px;
+  background-color: rgba(125, 125, 125, 0.7);
+  -webkit-border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 15px;
+  background-color: rgba(125, 125, 125, 0.7);
+  -webkit-border-radius: 6px;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  //background: #f5f6fa;
+  background: var(--l-app-bg);
+}
+
+body {
+  -webkit-text-size-adjust: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  font-family: Lato, "PingFang SC", "Microsoft YaHei", sans-serif;
+  &.hidden {
+    overflow: hidden;
+  }
+}
+
+/*显示省略号*/
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.el-pagination .el-select .el-input .el-input__inner {
+  padding-right: 25px;
+  border-radius: 3px;
+  width: 100px;
+}
+
+input, textarea {
+  outline: none;
+  resize: none;
+}
+
+::-webkit-input-placeholder {
+  font-size: 10px;/* 使用webkit内核的浏览器 */
+}
+
+:-moz-placeholder {
+  font-size: 10px;
+}
+
+/* Firefox版本4-18 */
+::-moz-placeholder {
+  font-size: 10px;
+}
+
+/* Firefox版本19+ */
+:-ms-input-placeholder {
+  font-size: 10px;
+}
+.el-radio {
+  margin-right: 10px !important;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  font-size: 12px!important;
+
+}
+::-moz-placeholder { /* Firefox 19+ */
+  font-size: 12px!important;
+
+}
+:-ms-input-placeholder { /* IE 10+ */
+  font-size: 12px!important;
+
+}
+:-moz-placeholder {
+  font-size: 12px!important;
+
+}
+
+.submenu.el-menu--horizontal>.el-sub-menu .el-sub-menu__title{
+  text-align: center;
+}
+
+.textDecorationUnderL{
+  text-decoration: underline;
+  color: #409EFF;
+  cursor: pointer
+}
+.tableSelect{
+  background: var(--l-searchtoolbar-bg);
+  padding: 12px;
+  box-shadow: 0 0 5px #cccccc;
+  margin-bottom: 10px;
+  .el-form{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .el-form-item{
+    margin: 5px !important;
+  }
+}
+.table-operate-btn{
+  color: #409eff;
+  cursor: pointer;
+  margin-right: 10px;
+  //font-size: 14px;
+  &.color99{
+    color: #999999;
+    cursor: default;
+  }
+}
+.lynowrap{
+  white-space: nowrap;
+  display:-webkit-box;
+  text-overflow:ellipsis;
+  overflow:hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient:vertical;
+}
+.el-dialog-footer{
+  text-align: center;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 128px;
+  height: 128px;
+  line-height: 128px;
+  text-align: center;
+}
+.avatar {
+  width: 128px;
+  height: 128px;
+  display: block;
+}
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
+.ly-is-full{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99;
+    background:var(--el-bg-color) ;
+}
+
+/* ----- 暗黑主题 ----- */
+:root {
+    /* ----- 应用 ----- */
+    // 应用背景色
+    --l-app-bg: #f5f6fa;
+    // 主区域背景色
+    --l-main-bg: #f5f6fa;
+
+    /* ----- 顶部 ----- */
+    // 背景色
+    --l-header-bg: #3C444D;
+
+    /* ----- 主导航 ----- */
+    // 菜单鼠标悬浮背景色
+    --l-main-sidebar-menu-hover-bg: #247af3;
+
+    /* ----- 标签页 ----- */
+    --l-changetab-bg: #fff;
+    --l-changetab-border: #fff;
+    --l-changetab-right-menu: var(--el-bg-color);
+    --l-changetab-right-menu-hover-bg: var(--el-color-primary-light-9);
+
+    /* ----- 搜索条件栏目 ----- */
+    --l-searchtoolbar-bg: var(--el-bg-color);
+
+    /* ----- 标题栏目 ----- */
+    --l-headertitle-bg: #f1f1f1;
+
+    /* ----- 进度条 ----- */
+    --l-nprogress-color: var(--el-color-primary);
+
+    /* ----- 订单 ----- */
+    --l-order-statics:var(--el-color-primary-light-8);
+
+    /* ----- 暗黑模式 ----- */
+    &.dark {
+        /* ----- 应用 ----- */
+        // 应用背景色
+        --l-app-bg: var(--el-bg-color);
+        // 主区域背景色
+        --l-main-bg: var(--el-bg-color-page);
+
+        /* ----- 顶部 ----- */
+        // 背景色
+        --l-header-bg: var(--el-bg-color);
+
+        /* ----- 标签页 ----- */
+        --l-changetab-bg: var(--el-bg-color);
+        --l-changetab-border: var(--el-bg-color);
+        --l-changetab-right-menu: var(--el-bg-color);
+        --l-changetab-right-menu-hover-bg: var(--el-color-info-light-3);
+
+        /* ----- 主导航 ----- */
+        // 菜单鼠标悬浮背景色
+        --l-main-sidebar-menu-hover-bg: var(--el-color-primary-light-5);
+
+        /* ----- 搜索条件栏目 ----- */
+        --l-searchtoolbar-bg: var(--el-bg-color);
+
+        /* ----- 标题栏目 ----- */
+        --l-headertitle-bg: var(--el-border-color-light);
+
+        /* ----- 进度条 ----- */
+        --l-nprogress-color: var(--el-color-primary);
+
+        /* ----- 订单 ----- */
+        --l-order-statics:var(--el-color-primary-light-8);
+    }
+}
+
+

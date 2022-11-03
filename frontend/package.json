@@ -1,0 +1,79 @@
+{
+  "name": "django-vue-lyadmin",
+  "author": {
+    "name": "lybbn",
+    "email": "1042594286@qq.com",
+    "url": "https://gitee.com/lybbn"
+  },
+  "version": "3.1.4",
+  "private": true,
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^0.2.6",
+    "@tinymce/tinymce-vue": "^5.0.0",
+    "ali-oss": "^6.16.0",
+    "axios": "^0.25.0",
+    "babel-polyfill": "^6.26.0",
+    "core-js": "^3.6.5",
+    "crypto-js": "^4.1.1",
+    "echarts": "^5.3.3",
+    "element-plus": "^2.2.19",
+    "font-awesome": "^4.7.0",
+    "js-md5": "^0.7.3",
+    "mitt": "^3.0.0",
+    "nprogress": "^0.2.0",
+    "screenfull": "^5.1.0",
+    "tinymce": "^5.10.2",
+    "vue": "^3.2.36",
+    "vue-axios": "^3.4.0",
+    "vue-clipboard2": "^0.3.3",
+    "vue-router": "^4.0.14",
+    "vuedraggable": "^4.1.0",
+    "vuex": "^4.0.0-0",
+    "xe-utils": "^3.5.2",
+    "xterm": "^4.19.0",
+    "xterm-addon-attach": "^0.6.0",
+    "xterm-addon-fit": "^0.5.0"
+  },
+  "devDependencies": {
+    "@vue/babel-plugin-jsx": "^1.1.1",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "babel-eslint": "^10.1.0",
+    "chai": "^4.1.2",
+    "compression-webpack-plugin": "^5.0.0",
+    "sass": "~1.32.6",
+    "sass-loader": "^8.0.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-unused-vars": "warn",
+      "vue/comment-directive": "off"
+    },
+    "overrides": []
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
