@@ -17,28 +17,11 @@
                         <span v-text="getIndex(scope.$index)"></span>
                     </template>
                 </el-table-column>
-<!--                <el-table-column min-width="70" prop="avatar" label="用户头像">-->
-<!--                    <template #default="scope">-->
-<!--                        <img  :src="scope.row.avatar ? scope.row.avatar : defaultImg" style="width: 30px;height: 30px" :onerror="defaultImg" >-->
-<!--                    </template>-->
-<!--                </el-table-column>-->
                 <el-table-column min-width="110" prop="host" label="主机"></el-table-column>
                 <el-table-column min-width="110" prop="port" label="端口"></el-table-column>
                 <el-table-column min-width="110" prop="remark" label="备注"></el-table-column>
                 <el-table-column min-width="100" prop="typename" label="验证方式"></el-table-column>
                 <el-table-column min-width="100" prop="username" label="用户名"></el-table-column>
-<!--                <el-table-column min-width="100" label="状态">-->
-<!--                    <template #default="scope">-->
-<!--                        <el-tag v-if="scope.row.is_active">正常</el-tag>-->
-<!--                        <el-tag v-else type="danger">禁用</el-tag>-->
-<!--&lt;!&ndash;                        <el-switch&ndash;&gt;-->
-<!--&lt;!&ndash;                            v-model="scope.row.is_active"&ndash;&gt;-->
-<!--&lt;!&ndash;                            active-color="#13ce66"&ndash;&gt;-->
-<!--&lt;!&ndash;                            inactive-color="#ff4949"&ndash;&gt;-->
-<!--&lt;!&ndash;                            @change="changeStatus(scope.row)">&ndash;&gt;-->
-<!--&lt;!&ndash;                        </el-switch>&ndash;&gt;-->
-<!--                    </template>-->
-<!--                </el-table-column>-->
                 <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
                 <el-table-column label="操作" fixed="right" width="180">
                     <template #header>
@@ -62,14 +45,6 @@
         <Pagination v-bind:child-msg="pageparm" @callFather="callFather"></Pagination>
         <add-module-terminal ref="addModuleTerminalFlag" @refreshData="getData"></add-module-terminal>
 
-<!--        <div class="lycontainer" >-->
-<!--            <el-tabs type="card">-->
-<!--                <el-tab-pane label="本地服务器" name="first">-->
-<!--                    <ly-xterm :wsuri="wsuri"></ly-xterm>-->
-<!--                </el-tab-pane>-->
-<!--            </el-tabs>-->
-
-<!--        </div>-->
     </div>
 </template>
 
