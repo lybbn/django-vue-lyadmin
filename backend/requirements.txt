@@ -57,7 +57,6 @@ user-agents
 xlrd
 xlwt
 zope.interface
-hiredis
 pycryptodomex
 jpush
 tencentcloud-sdk-python

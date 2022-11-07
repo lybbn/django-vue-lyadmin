@@ -41,7 +41,6 @@ dnspython==2.2.1
 drf-yasg==1.21.4
 eventlet==0.33.1
 greenlet==1.1.3.post0
-hiredis==2.0.0
 hyperlink==21.0.0
 idna==3.4
 incremental==21.3.0
