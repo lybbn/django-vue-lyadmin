@@ -148,7 +148,9 @@
                 this.timer = null
             },
             handleResize() {
-                this.$refs.lyechartpic.handleResize();
+                if(this.$refs.lyechartpic){
+                    this.$refs.lyechartpic.handleResize();
+                }
             },
             // 计算搜索栏的高度
             listenResize() {
