@@ -58,6 +58,9 @@
                 }
             })
             function initEcharts() {
+                if(myChart == null){
+                    myChart = echarts.init(document.getElementById("lyechartmain"));
+                }
                 var obj = {};
                 obj.dataZoom = [];
                 obj.unit =  '单位:KB/s';
@@ -74,7 +77,7 @@
                 obj.list.push({ name: '上行', data: state.echartData.uData, circle: 'circle', itemStyle: { color: '#4c8ff1' }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(76, 143, 241)' }, { offset: 1, color: 'rgba(76, 143, 241)' }], false) }, lineStyle: { width: 1, color: '#aaa' } } );
                 obj.list.push({ name: '下行', data: state.echartData.dData, circle: 'circle', itemStyle: { color: '#1cd798' }, areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(28, 215, 152)' }, { offset: 1, color: 'rgba(28, 215, 152)' }], false) }, lineStyle: { width: 1, color: '#aaa' } });
                 option = format_option(obj)
-                if(option !==null || option !=="" || option !== undefined){
+                if(option !==null && option !=="" && option !== undefined){
                     myChart.setOption(option);
                 }
                 // myChart.setOption(option);
