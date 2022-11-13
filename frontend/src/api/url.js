@@ -1,7 +1,7 @@
 let _url;
 let _domain
 if (process.env.NODE_ENV == "development") {
-    _domain = "django-vue3-lyadmin.lybbn.cn"
+    _domain = "127.0.0.1:8000"
     //本地开发
     _url = "http://"+_domain+"/api/"; //测试地址/
 } else {
