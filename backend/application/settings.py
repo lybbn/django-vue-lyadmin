@@ -299,6 +299,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 CORS_ORIGIN_ALLOW_ALL = True
 # 允许cookie
 CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持对cookie的操作
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
 # ================================================= #
 # ********************* 日志配置 ******************* #
 # ================================================= #
