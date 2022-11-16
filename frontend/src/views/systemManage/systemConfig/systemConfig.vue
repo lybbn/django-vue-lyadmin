@@ -1,9 +1,9 @@
 <template>
     <div class="lycontainer">
-        <div class="tableSelect" ref="tableSelect" v-if="hasPermission(this.$route.name,'Create')">
+        <div class="tableSelect" ref="tableSelect" v-if="hasPermission(route.name,'Create')">
             <el-form :inline="true"  label-position="left">
-                <el-form-item label="" v-show="hasPermission(this.$route.name,'Create')"><el-button  @click="handleClick('addgroup')" type="warning" icon="FolderAdd" >新增分组</el-button></el-form-item>
-                <el-form-item label="" v-show="hasPermission(this.$route.name,'Create')"><el-button  @click="handleClick('addcontent')" type="primary" icon="Plus" >新增配置项</el-button></el-form-item>
+                <el-form-item label="" v-show="hasPermission(route.name,'Create')"><el-button  @click="handleClick('addgroup')" type="warning" icon="FolderAdd" >新增分组</el-button></el-form-item>
+                <el-form-item label="" v-show="hasPermission(route.name,'Create')"><el-button  @click="handleClick('addcontent')" type="primary" icon="Plus" >新增配置项</el-button></el-form-item>
             </el-form>
         </div>
         <div>

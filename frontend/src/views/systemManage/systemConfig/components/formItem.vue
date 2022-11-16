@@ -236,15 +236,6 @@
                         if (item.form_item_type_label !== 'array') {
                             item.value = values[mapIndex]
                         }
-                        // 必填项的验证
-                        if (['image', 'images'].indexOf(item.form_item_type_label) > -1) {
-                            for (const arr of item.rule) {
-                                if (arr.required && item.value === null) {
-                                    that.$message.error(item.title + '不能为空')
-                                    return
-                                }
-                            }
-                        }
                     }
                 })
           }
