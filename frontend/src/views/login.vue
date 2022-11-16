@@ -49,8 +49,14 @@
   import {login,apiSystemWebRouter,getCaptcha} from '../api/api'
   import {systemTree} from "@/utils/menuTree.js"
   import {delCookie, getCookie, setCookie} from '../utils/util'
+  import {useMutitabsStore} from "../store/mutitabs";
+
   export default {
     name: 'login',
+    setup(){
+        const mutitabsstore = useMutitabsStore()
+        return { mutitabsstore}
+    },
     data() {
       return {
         loadingLg:false,
@@ -318,7 +324,7 @@
                 this.$router.replace({path: `/${this.allmenu[0].attributes.url}`})
               })
             } else {
-               this.$store.commit('logout', 'false')
+               this.mutitabsstore.logout('false')
                this.$router.push({path: '/login'})
                sessionStorage.clear()
                localStorage.clear()
@@ -337,7 +343,7 @@
                 tabsPage = [{"title":menuTree[0].text,"name":menuTree[0].attributes.url}]
                 TabsValue = menuTree[0].attributes.url
             }
-            this.$store.commit('firstTabs', [tabsPage,TabsValue])
+            this.mutitabsstore.firstTabs([tabsPage,TabsValue])
             this.$forceUpdate()
           } else {
             this.$message.warning(res.msg)
@@ -387,14 +393,10 @@
                   await delCookie('username')
                   await delCookie('password')
                 }
-                // await sessionStorage.setItem('logintoken', res.data.access)
-                // await sessionStorage.setItem('userName', res.data.name)
-                // await sessionStorage.setItem('userId', res.data.userId)
-                // await sessionStorage.setItem('refresh', res.data.refresh)
-                this.$store.commit('setLogintoken', res.data.access)
-                this.$store.commit('setUserName', res.data.name)
-                this.$store.commit('setUserId', res.data.userId)
-                this.$store.commit('setRefresh', res.data.refresh)
+                this.mutitabsstore.setLogintoken(res.data.access)
+                this.mutitabsstore.setUserName(res.data.name)
+                this.mutitabsstore.setUserId(res.data.userId)
+                this.mutitabsstore.setRefresh(res.data.refresh)
                 this.getMenu()
               } else {
                 this.getCaptcha()

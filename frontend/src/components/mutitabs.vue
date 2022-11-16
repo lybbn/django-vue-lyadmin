@@ -36,158 +36,166 @@
 </template>
 
 <script>
-export default {
-    name: "mutitabs",
-    components: {},
-    data() {
-        return {
-            //右键自定义菜单
-            contextMenuVisible:false,
-            left:0,
-            top:0,
-            //刷新当前页
-            isRourterAlive:false,
-            excludes:"",
-        };
-    },
-    mounted() {
-        document.addEventListener("click", (e) => {
-          let that = this
-          if (e.target.className !="myeltas1") {
-            that.contextMenuVisible = false; //点击其他区域关闭右键菜单
-          }
-        });
-        //刷新加载localStorage存着地址
-        let lytabsPage = localStorage.getItem("tabsPage")
-        if (lytabsPage) {
-            this.$store.state.tabsPage = JSON.parse(lytabsPage);
-            var TabsValue = localStorage.getItem("TabsValue");
-            this.$store.state.TabsValue = TabsValue;
-            if (lytabsPage === "[]"||lytabsPage==""||lytabsPage==null || TabsValue === 'login') {
+    import {useKeepAliveStore} from "@/store/keepAlive";
+    import {useMutitabsStore} from "@/store/mutitabs";
+    import {useSiteThemeStore} from "@/store/siteTheme";
+
+    export default {
+        name: "mutitabs",
+        components: {},
+        setup() {
+            const keepAliveStore = useKeepAliveStore()
+            const mutitabsstore = useMutitabsStore()
+            const siteThemeStore = useSiteThemeStore()
+            return { keepAliveStore,mutitabsstore,siteThemeStore}
+        },
+        data() {
+            return {
+                //右键自定义菜单
+                contextMenuVisible:false,
+                left:0,
+                top:0,
+                //刷新当前页
+                isRourterAlive:false,
+                excludes:"",
+            };
+        },
+        mounted() {
+            document.addEventListener("click", (e) => {
+              let that = this
+              if (e.target.className !="myeltas1") {
+                that.contextMenuVisible = false; //点击其他区域关闭右键菜单
+              }
+            });
+            //刷新加载localStorage存着地址
+            let lytabsPage = localStorage.getItem("tabsPage")
+            if (lytabsPage) {
+                this.mutitabsstore.tabsPage = JSON.parse(lytabsPage);
+                var TabsValue = localStorage.getItem("TabsValue");
+                this.mutitabsstore.TabsValue = TabsValue;
+                if (lytabsPage === "[]"||lytabsPage==""||lytabsPage==null || TabsValue === 'login') {
+                    this.relogin()//重新登录
+                } else {
+                    this.$router.push({ name: TabsValue });
+                }
+            }else{
                 this.relogin()//重新登录
-            } else {
-                this.$router.push({ name: TabsValue });
             }
-        }else{
-            this.relogin()//重新登录
-        }
-    },
-    computed: {
-        // 监听vuex保存的数据
-        editableTabs: {
-            get() {
-                return this.$store.state.tabsPage;
-            },
-            set(val) {
-                this.$store.state.tabsPage = val;
-            },
         },
-        editableTabsValue: {
-            get() {
-                return this.$store.state.TabsValue;
+        computed: {
+            // 监听vuex保存的数据
+            editableTabs: {
+                get() {
+                    return this.mutitabsstore.tabsPage;
+                },
+                set(val) {
+                    this.mutitabsstore.tabsPage = val;
+                },
             },
-            set(val) {
-                this.$store.state.TabsValue = val;
+            editableTabsValue: {
+                get() {
+                    return this.mutitabsstore.TabsValue;
+                },
+                set(val) {
+                    this.mutitabsstore.TabsValue = val;
+                },
             },
-        },
-        keepAliveRoutes(){
-            return this.$store.state.keepAliveRoute
-        }
-    },
-    methods: {
-        relogin(){
-            this.$store.commit('logout', 'false')
-            this.$store.commit("setSiteTheme",'light')
-            sessionStorage.clear()
-            localStorage.clear()
-            this.$message.warning('请重新登录!')
-            this.$router.push({path: '/login'})
-        },
-        removeTab(targetName) {
-            let tabs = this.editableTabs;
-            let activeName = this.editableTabsValue;
-            //只有一个标签不允许关闭
-            if(tabs.length === 1){
-                return
+            keepAliveRoutes(){
+                return this.keepAliveStore.keepAliveRoute
             }
-            if (activeName === targetName) {
-                tabs.forEach((tab, index) => {
-                    if (tab.name === targetName) {
-                        let nextTab = tabs[index + 1] || tabs[index - 1];
-                        // console.log(nextTab);
-                        if (nextTab) {
-                            activeName = nextTab.name;
+        },
+        methods: {
+            relogin(){
+                this.mutitabsstore.logout('false')
+                this.siteThemeStore.setSiteTheme('light')
+                sessionStorage.clear()
+                localStorage.clear()
+                this.$message.warning('请重新登录!')
+                this.$router.push({path: '/login'})
+            },
+            removeTab(targetName) {
+                let tabs = this.editableTabs;
+                let activeName = this.editableTabsValue;
+                //只有一个标签不允许关闭
+                if(tabs.length === 1){
+                    return
+                }
+                if (activeName === targetName) {
+                    tabs.forEach((tab, index) => {
+                        if (tab.name === targetName) {
+                            let nextTab = tabs[index + 1] || tabs[index - 1];
+                            // console.log(nextTab);
+                            if (nextTab) {
+                                activeName = nextTab.name;
+                            }
+                        }
+                });
+                }
+                this.editableTabsValue = activeName;
+                this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
+                this.mutitabsstore.tabsPage = this.editableTabs;
+                window.localStorage.setItem("tabsPage",JSON.stringify(this.editableTabs));
+                //解决刷新消失
+                window.localStorage.setItem("TabsValue", activeName);
+                var thetabsPage = localStorage.getItem("tabsPage")
+                // 删除时跳转不在停留被删除页
+                if (thetabsPage === "[]"||thetabsPage==""||thetabsPage==null) {
+                    this.$router.push({ name: "login"});
+                } else {
+                    this.$router.push({ name: activeName });
+                }
+            },
+            tabClick(event) {
+                //关闭自定义菜单
+                this.closeContextMenu()
+                //写一个点击tabs跳转
+                this.mutitabsstore.switchtab(event.props.name)
+            },
+            //自定义菜单
+            openContextMenu(e) {
+                var obj =  e.srcElement ? e.srcElement : e.target;
+                if (obj.id) {
+                    let currentContextTabId = obj.id.split("-")[1];
+                    this.contextMenuVisible = true;
+                    this.mutitabsstore.saveCurContextTabId(currentContextTabId);
+                    this.left = e.clientX;
+                    this.top = e.clientY + 13;
+                }
+            },
+            reloadPage(){
+                this.contextMenuVisible = false
+                const currentRoute = this.$router.currentRoute.value;
+                currentRoute.matched.forEach((r)=> {
+                    if (r.path === currentRoute.fullPath) {
+                        //获取到当前页面的name
+                        const comName = r.components.default.name;
+                        if (comName != undefined) {
+                            this.excludes = comName
+                            this.isRourterAlive = true
                         }
                     }
-            });
-            }
-            this.editableTabsValue = activeName;
-            this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
-            this.$store.state.tabsPage = this.editableTabs;
-            window.localStorage.setItem("tabsPage",JSON.stringify(this.editableTabs));
-            //解决刷新消失
-            window.localStorage.setItem("TabsValue", activeName);
-            var thetabsPage = localStorage.getItem("tabsPage")
-            // 删除时跳转不在停留被删除页
-            if (thetabsPage === "[]"||thetabsPage==""||thetabsPage==null) {
-                this.$router.push({ name: "login"});
-            } else {
-                this.$router.push({ name: activeName });
-            }
+                })
+                this.$nextTick(() => {
+                    this.isRourterAlive = false
+                    this.excludes = ""
+                })
+            },
+            // 关闭所有标签页
+            closeAllTabs() {
+                this.mutitabsstore.closeAllTabs()
+                this.contextMenuVisible = false;
+            },
+            // 关闭其它标签页
+            closeOtherTabs(par) {
+                this.mutitabsstore.closeOtherTabs(par);
+                this.contextMenuVisible = false;
+            },
+            // 关闭contextMenu
+            closeContextMenu() {
+                this.contextMenuVisible = false;
+            },
         },
-        tabClick(event) {
-            //关闭自定义菜单
-            this.closeContextMenu()
-            //写一个点击tabs跳转
-            this.$store.commit("switchtab",event.props.name)
-        },
-        //自定义菜单
-        openContextMenu(e) {
-            var obj =  e.srcElement ? e.srcElement : e.target;
-            if (obj.id) {
-                let currentContextTabId = obj.id.split("-")[1];
-                this.contextMenuVisible = true;
-                this.$store.commit("saveCurContextTabId", currentContextTabId);
-                this.left = e.clientX;
-                this.top = e.clientY + 13;
-            }
-        },
-        reloadPage(){
-            this.contextMenuVisible = false
-            const currentRoute = this.$router.currentRoute.value;
-            currentRoute.matched.forEach((r)=> {
-                if (r.path === currentRoute.fullPath) {
-                    //获取到当前页面的name
-                    const comName = r.components.default.name;
-                    if (comName != undefined) {
-                        this.excludes = comName
-                        this.isRourterAlive = true
-                    }
-                }
-            })
-            // this.isRourterAlive = true
-            // this.contextMenuVisible = false
-            this.$nextTick(() => {
-                this.isRourterAlive = false
-                this.excludes = ""
-            })
-        },
-        // 关闭所有标签页
-        closeAllTabs() {
-            this.$store.commit("closeAllTabs");
-            this.contextMenuVisible = false;
-        },
-        // 关闭其它标签页
-        closeOtherTabs(par) {
-            this.$store.commit("closeOtherTabs", par);
-            this.contextMenuVisible = false;
-        },
-        // 关闭contextMenu
-        closeContextMenu() {
-            this.contextMenuVisible = false;
-        },
-    },
-};
+    };
 </script>
 <style>
     .myeltas2 .el-tabs__nav .el-tabs__item.is-active {

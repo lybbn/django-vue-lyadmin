@@ -70,68 +70,46 @@
     </el-menu>
   </div>
 </template>
-<script>
-import {systemTree} from "@/utils/menuTree.js"
-import {routerTree} from "@/router/index.js"
-import { uniqueId } from 'lodash'
-import {apiSystemWebRouter} from '@/api/api'
-import XEUtils from 'xe-utils'
-import { mapActions } from "vuex";
-import store from "../store";
-export default {
-  name: "leftnav",
-  data() {
-    return {
-      collapsed: false,
-      allmenu: [],
-      menuTitle:'',
-    };
-  },
-  watch: {
-    $route(to, from) {
-      if(store.getters.getLogintoken) {
-        // this.$forceUpdate()
-        this.getMenu()
-      }
-      this.$store.commit('switchtabNoRoute',to.name)
-    }
-  },
-  created() {
-    let userId = store.getters.getUserId
-    let params = {
-      userId: userId
-    };
-    this.getMenu()
-    this.$Bus.on("toggle", value => {
-      this.collapsed = !value;
-    });
-  },
-  methods: {
-    getMenu() {
-      this.menuTitle=''
-      this.allmenu=[]
+<script setup>
+    import {ref, onMounted,watch,getCurrentInstance} from 'vue'
+    import XEUtils from 'xe-utils'
+    import {useMutitabsStore} from "@/store/mutitabs";
+    import { useRouter,useRoute,onBeforeRouteUpdate } from 'vue-router';
 
-      //动态加载菜单
-      this.allmenu = JSON.parse(localStorage.getItem('allmenu'))
-      //加载menutree文件的静态菜单，启用动态后这一段要注释掉
-      //this.allmenu = systemTree
-      // this.$forceUpdate()
-    },
-    supplementPath (menu) {
-      return menu.map(e => ({
-        ...e,
-        path: e.path || uniqueId('ly-menu-empty-'),
-        ...e.children ? {
-          children: this.supplementPath(e.children)
-        } : {}
-      }))
-    },
-    // 调用 注册vuex内注册的editableTabs方法
-    ...mapActions({
-      handleOpen2: "editableTabs",
-    }),
-  }
-};
+    let bus = getCurrentInstance().appContext.config.globalProperties.$Bus; // 声明$Bus
+    const mutitabsStore = useMutitabsStore()
+    let collapsed = ref(false)
+    let allmenu = ref([])
+    let menuTitle = ref("")
+
+    function handleOpen2(obj){
+        mutitabsStore.editableTabs(obj)
+    }
+
+    function getMenu() {
+        menuTitle.value=''
+        allmenu.value=[]
+
+        //动态加载菜单
+        allmenu.value = JSON.parse(localStorage.getItem('allmenu'))
+    }
+
+    onMounted(()=>{
+        let userId = mutitabsStore.userId
+        let params = {
+            userId: userId
+        };
+        getMenu()
+        bus.on("toggle", value => {
+            collapsed.value = !value;
+        });
+    })
+    onBeforeRouteUpdate(to=>{
+        // if(mutitabsStore.logintoken) {
+        //     getMenu()
+        // }
+        mutitabsStore.switchtabNoRoute(to.name)
+    })
 </script>
 <style lang="scss" scoped>
 .el-menu.el-menu--horizontal{

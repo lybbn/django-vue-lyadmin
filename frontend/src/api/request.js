@@ -2,14 +2,13 @@ import axios from 'axios';
 import { ElMessage,ElMessageBox } from 'element-plus'
 require("babel-polyfill");
 import { url } from './url';
-import store from '../store'
 import router from "../router";
 
 var request = axios.create({
     timeout: 10000,
 });
 function ajax(opt,method){
-  var token= store.getters.getLogintoken
+  var token= localStorage.getItem('logintoken')
   // var timestamp=new Date().getTime();
   var params;
 

@@ -5,7 +5,7 @@
     "email": "1042594286@qq.com",
     "url": "https://gitee.com/lybbn"
   },
-  "version": "3.1.5",
+  "version": "3.1.7",
   "private": true,
   "scripts": {
     "start": "npm run dev",
@@ -27,6 +27,7 @@
     "js-md5": "^0.7.3",
     "mitt": "^3.0.0",
     "nprogress": "^0.2.0",
+    "pinia": "^2.0.23",
     "screenfull": "^5.1.0",
     "tinymce": "^5.10.2",
     "vue": "^3.2.36",
@@ -34,7 +35,6 @@
     "vue-clipboard2": "^0.3.3",
     "vue-router": "^4.0.14",
     "vuedraggable": "^4.1.0",
-    "vuex": "^4.0.0-0",
     "xe-utils": "^3.5.2",
     "xterm": "^4.19.0",
     "xterm-addon-attach": "^0.6.0",
