@@ -8,7 +8,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'application.settings')
 django.setup()
 
 from mysystem.models import Dept, Button, Menu, MenuButton, Role, Users
-from apps.platformsettings.models import LunbotuManage,OtherManage
+from apps.platformsettings.models import LunbotuManage,OtherManage,SystemConfig
 from apps.lymessages.models import MyMessage
 
 
@@ -415,7 +415,7 @@ if object.{key}:
              },
 
         ]
-        self.save(OtherManage, data, "参数设置")
+        self.save(SystemConfig, data, "系统配置")
 
     def run(self):
         self.init_dept()

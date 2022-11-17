@@ -489,7 +489,8 @@ CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge' # 加减乘除验证�
 # ******************** celery配置 ******************** #
 # ================================================= #
 CELERY_TIMEZONE  = 'Asia/Shanghai'  # celery 时区问题
-CELERY_BROKER_URL  = 'redis://127.0.0.1:6379/10' # Broker配置，使用Redis作为消息中间件
+CELERY_BROKER_URL  = 'redis://127.0.0.1:6379/10' # Broker配置，使用Redis作为消息中间件(无密码)
+#CELERY_BROKER_URL = 'redis://lybbn:{}@127.0.0.1:6379/10'.format('123456')  #lybbn 代表 账号（没有可省略）  {} 存放密码  127.0.0.1连接的 ip  6379端口  10 redis库
 # CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/11' # 把任务结果存在了Redis
 CELERY_RESULT_BACKEND = 'django-db'  # celery结果存储到数据库中django-db
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'  # Backend数据库
