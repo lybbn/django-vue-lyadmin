@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-    <p class="page_title">404 找不到页面</p>
+    <p class="page_title">404</p>
         <div class="page_btn">
             <el-button @click="backhome">
                 返回首页
@@ -63,7 +63,7 @@
     align-items: center;
     flex-direction: column;
     .page_title {
-        font-size: 20px;
+        font-size: 160px;
         color: #FFF;
         margin-bottom: 20px;
         .page_btn{

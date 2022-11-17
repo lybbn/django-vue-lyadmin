@@ -321,7 +321,6 @@ function isRouterPathExist(path){
  * 路由拦截
  * 权限验证
  */
-let to={},from={}
 router.beforeEach((to, from, next) => {
     const store = useMutitabsStore()
     // 白名单
@@ -366,7 +365,9 @@ router.beforeEach((to, from, next) => {
                             store.switchtab(tabsValue)
                         }
                     }else{
-
+                        next({
+                            path: '/404'
+                        })
                     }
                 }else{
                     let tabsPage = JSON.parse(localStorage.getItem("tabsPage"))

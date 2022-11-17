@@ -18,10 +18,10 @@
     
 4. 安装依赖环境
 	pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
-5. 执行迁移命令：
+5. 执行迁移命令：(使用sql脚本直接导入可忽略本步骤)
 	python manage.py makemigrations
 	python manage.py migrate
-6. 初始化数据
+6. 初始化数据：(使用sql脚本直接导入可忽略本步骤)
 	python manage.py init
 7. 启动项目（初始账号：superadmin 密码：123456）
 	python manage.py runserver 127.0.0.1:8000

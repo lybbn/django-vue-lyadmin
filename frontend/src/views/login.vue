@@ -144,14 +144,28 @@
             this.closeX = _x,
             this.closeY = _y,
             this.o = o;
+            return {
+                beginX :x,
+                beginY :y,
+                closeX:_x,
+                closeY:_y,
+                o :o
+            }
         },
         //点：圆心xy坐标，半径，每帧移动xy的距离
-        Circle (x, y, r, moveX, moveY) {
+         Circle (x, y, r, moveX, moveY) {
             this.x = x,
             this.y = y,
             this.r = r,
             this.moveX = moveX,
             this.moveY = moveY;
+            return{
+                x:x,
+                y: y,
+                r:r,
+                moveX:moveX,
+                moveY: moveY
+            }
         },
         //生成max和min之间的随机数
         num (max, _min) {
@@ -160,7 +174,7 @@
         },
         // 绘制原点
          drawCricle (cxt, x, y, r, moveX, moveY) {
-            var circle = new this.Circle(x, y, r, moveX, moveY)
+            var circle =this.Circle(x, y, r, moveX, moveY)
             cxt.beginPath()
             cxt.arc(circle.x, circle.y, circle.r, 0, 2*Math.PI)
             cxt.closePath()
@@ -169,7 +183,7 @@
         },
         //绘制线条
         drawLine (cxt, x, y, _x, _y, o) {
-            var line = new this.Line(x, y, _x, _y, o)
+            var line = this.Line(x, y, _x, _y, o)
             cxt.beginPath()
             cxt.strokeStyle = 'rgba(0,0,0,'+ o +')'
             cxt.moveTo(line.beginX, line.beginY)
