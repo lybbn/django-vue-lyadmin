@@ -343,10 +343,11 @@ router.beforeEach((to, from, next) => {
                 }
             } else {
                 next({
-                    path: '/login'
+                    path: '/404'
                 })
             }
         } else {
+            store.logout('false')
             next({
               path: '/login'
             })

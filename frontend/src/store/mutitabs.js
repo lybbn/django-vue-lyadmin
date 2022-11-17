@@ -73,7 +73,8 @@ export const useMutitabsStore = defineStore('mutitabs', {
             // state.TabsValue = 'adminManage'
             this.tabsPage=[]
             this.TabsValue = ""
-
+            localStorage.clear()
+            sessionStorage.clear()
         },
         //首次登录第一个标签页获取
         firstTabs(datas){

@@ -70,14 +70,20 @@
             //刷新加载localStorage存着地址
             let lytabsPage = localStorage.getItem("tabsPage")
             if (lytabsPage) {
-                this.mutitabsstore.tabsPage = JSON.parse(lytabsPage);
                 var TabsValue = localStorage.getItem("TabsValue");
-                this.mutitabsstore.TabsValue = TabsValue;
                 if (lytabsPage === "[]"||lytabsPage==""||lytabsPage==null || TabsValue === 'login') {
                     this.relogin()//重新登录
-                } else {
-                    this.$router.push({ name: TabsValue });
                 }
+                this.mutitabsstore.tabsPage = JSON.parse(lytabsPage);
+                const currentRouteName = this.$route.name
+                if(currentRouteName == 'login' || currentRouteName == 'root'){
+                    this.mutitabsstore.TabsValue = TabsValue;
+                    this.$router.push({ name: TabsValue })
+                }else{
+                    this.mutitabsstore.switchtabNoRoute(currentRouteName)
+                }
+
+
             }else{
                 this.relogin()//重新登录
             }
@@ -140,7 +146,7 @@
                 var thetabsPage = localStorage.getItem("tabsPage")
                 // 删除时跳转不在停留被删除页
                 if (thetabsPage === "[]"||thetabsPage==""||thetabsPage==null) {
-                    this.$router.push({ name: "login"});
+                    this.relogin()
                 } else {
                     this.$router.push({ name: activeName });
                 }
