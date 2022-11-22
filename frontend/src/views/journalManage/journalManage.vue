@@ -141,7 +141,7 @@
                         systemOperationlogDelete({id:row.id}).then(res=>{
                             if(res.code == 2000) {
                                 vm.$message.success(res.msg)
-                                vm.search()
+                                vm.getData()
                             } else {
                                 vm.$message.warning(res.msg)
                             }
