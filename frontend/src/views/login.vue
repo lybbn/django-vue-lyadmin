@@ -438,6 +438,7 @@
     }
     ::v-deep(.el-input-group__append){
         background-color: #ffffff !important;
+        width: 70px;
     }
     ::v-deep(.el-input-group__prepend){
         background-color: #ffffff !important;
