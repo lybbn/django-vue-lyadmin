@@ -7,26 +7,28 @@
             </el-form>
         </div>
         <div>
-             <el-tabs type="border-card" v-model="activeTab" :before-leave="onBeforeLeave">
-                 <el-tab-pane
-                     v-for="(item, index) in editableTabs"
-                    :key="index"
-                    :label="item.title"
-                    :name="item.key"
-                    >
-                     <FormItem :options="item" :editableTabsItem="item"></FormItem>
-                 </el-tab-pane>
-                 <el-tab-pane
-                    name="add_config"
-                    label="新增配置项"
-                    >
-                     <template #label>
-                        <span style="display: flex;align-items: center">
-                          <el-icon><Plus /></el-icon>
-                          <span>新增配置项</span>
-                        </span>
-                     </template>
-                 </el-tab-pane>
+            <el-tabs type="border-card" v-model="activeTab" :before-leave="onBeforeLeave">
+                <el-tab-pane
+                    v-for="(item, index) in editableTabs"
+                :key="index"
+                :label="item.title"
+                :name="item.key"
+                >
+                    <el-scrollbar :style="{height:scrowHight+'px'}">
+                        <FormItem :options="item" :editableTabsItem="item"></FormItem>
+                    </el-scrollbar>
+                </el-tab-pane>
+                <el-tab-pane
+                name="add_config"
+                label="新增配置项"
+                >
+                    <template #label>
+                    <span style="display: flex;align-items: center">
+                        <el-icon><Plus /></el-icon>
+                        <span>新增配置项</span>
+                    </span>
+                    </template>
+                </el-tab-pane>
             </el-tabs>
         </div>
         <AddModuleGroup ref="addGroupFlag" @refreshData="getGroups"></AddModuleGroup>
@@ -35,7 +37,7 @@
 </template>
 
 <script setup>
-    import {ref, onMounted} from 'vue'
+    import {ref, onMounted,onBeforeUnmount,nextTick,getCurrentInstance} from 'vue'
     import AddModuleGroup from "./components/addModuleGroup";
     import {platformsettingsSysconfig} from '@/api/api'
     import AddModuleContent from "./components/addModuleContent";
@@ -43,7 +45,11 @@
     import {hasPermission} from "@/utils/util";
     import { useRoute } from "vue-router";
 
+    const { proxy } = getCurrentInstance()
+
     const route = useRoute();
+
+    let scrowHight = ref(0)
 
     let activeTab = ref("base")
     let editableTabs = ref([])
@@ -74,8 +80,19 @@
             }
         })
     }
+    function handleResize(){
+        nextTick(() => {
+            scrowHight.value = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - proxy.$refs.tableSelect.offsetHeight - 200
+        })
+    }
+
     onMounted(() => {
         getGroups()
+        handleResize()
+        window.addEventListener('resize',handleResize)
+    })
+    onBeforeUnmount(()=>{
+        window.removeEventListener('resize',handleResize)
     })
 
 </script>

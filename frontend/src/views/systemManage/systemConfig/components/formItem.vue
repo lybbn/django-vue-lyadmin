@@ -109,7 +109,7 @@
                 </template>
             </el-table-column>
          </el-table>
-        <el-button type="primary" @click="onSubmit" style="margin-top: 20px;text-align: center" v-show="hasPermission(this.$route.name,'Save')">保存配置</el-button>
+        <el-button type="primary" @click="onSubmit" style="margin-top: 20px;margin-bottom:10px;text-align: center" v-show="hasPermission(this.$route.name,'Save')">保存配置</el-button>
     </div>
 </template>
 
