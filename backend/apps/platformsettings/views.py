@@ -9,14 +9,88 @@ from rest_framework.permissions import IsAuthenticated
 import os
 import datetime
 from django.conf import settings
-from apps.platformsettings.models import OtherManage,LunbotuManage,UserLeavingMessage
+from django.db.models import Q
+from apps.platformsettings.models import OtherManage,LunbotuManage,UserLeavingMessage,SystemConfig
 from utils.imageupload import ImageUpload
 from utils.common import get_parameter_dic,get_full_image_url,ast_convert
-from utils.filters import UserLeavingMessageTimeFilter
+from utils.filters import UserLeavingMessageTimeFilter,SystemConfigFilter
+
 # Create your views here.
 # ================================================= #
 # ************** 后台前端平台设置 view  ************** #
 # ================================================= #
+
+class SystemConfigSerializer(CustomModelSerializer):
+    """
+    系统配置-序列化器
+    """
+    form_item_type_label = serializers.CharField(source='get_form_item_type_display', read_only=True)
+
+    class Meta:
+        model = SystemConfig
+        fields = "__all__"
+        read_only_fields = ["id"]
+
+class SystemConfigCreateSerializer(CustomModelSerializer):
+    """
+    系统配置-新增时使用-序列化器
+    """
+    form_item_type_label = serializers.CharField(source='get_form_item_type_display', read_only=True)
+
+    class Meta:
+        model = SystemConfig
+        fields = "__all__"
+        read_only_fields = ["id"]
+
+    def validate_key(self, value):
+        """
+        验证key是否允许重复
+        parent为空时不允许重复,反之允许
+        """
+        instance = SystemConfig.objects.filter(key=value, parent__isnull=True).exists()
+        if instance:
+            raise ValueError('已存在相同变量名')
+        return value
+
+class SystemConfigChinldernSerializer(CustomModelSerializer):
+    """
+    系统配置子级-序列化器
+    """
+    chinldern = serializers.SerializerMethodField()
+    form_item_type_label = serializers.CharField(source='get_form_item_type_display', read_only=True)
+
+    def get_chinldern(self, instance):
+        queryset = SystemConfig.objects.filter(parent=instance)
+        serializer = SystemConfigSerializer(queryset, many=True)
+        return serializer.data
+
+    class Meta:
+        model = SystemConfig
+        fields = "__all__"
+        read_only_fields = ["id"]
+
+
+class SystemConfigViewSet(CustomModelViewSet):
+    """
+    系统配置接口
+    """
+    queryset = SystemConfig.objects.order_by('sort', 'create_datetime')
+    serializer_class = SystemConfigChinldernSerializer
+    create_serializer_class = SystemConfigCreateSerializer
+    filter_class = SystemConfigFilter
+
+    def save_content(self, request):
+        body = request.data
+        data_mapping = {item['id']: item for item in body}
+        for obj_id, data in data_mapping.items():
+            instance_obj = SystemConfig.objects.filter(id=obj_id).first()
+            if instance_obj is None:
+                serializer = SystemConfigCreateSerializer(data=data)
+            else:
+                serializer = SystemConfigCreateSerializer(instance_obj, data=data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+        return DetailResponse(msg="保存成功")
 
 class LunbotuManageSerializer(CustomModelSerializer):
     """
@@ -126,6 +200,27 @@ class PlatformImagesUploadView(APIView):
 # ================================================= #
 # ************** 前端用户获取平台配置信息 view  ************** #
 # ================================================= #
+
+class GetSystemConfigSettingsView(APIView):
+    """
+    get:
+    获取系统配置
+    参数：group 分组名称（key）
+    """
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request):
+        group = get_parameter_dic(request)['group']
+        if not all([group]):
+            return ErrorResponse(msg="params error")
+        # 不返回后端专用配置
+        queryset = SystemConfig.objects.filter(parent_id__isnull=False,).values('value','key','title')
+        data = {}
+        if queryset:
+            for m in queryset:
+                data[m['key']] = m['value']
+        return DetailResponse(data=data)
 
 class GetOtherManageDetailView(APIView):
     """

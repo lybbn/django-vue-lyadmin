@@ -198,9 +198,38 @@ input, textarea {
     width: 100vw;
     height: 100vh;
     z-index: 99;
-    background:var(--el-bg-color) ;
+    background:var(--el-bg-color);
 }
-
+.ly-is-full-design{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 99;
+    background:var(--l-main-bg);
+}
+.lyformbuilder-ghost{
+    position: relative;
+    display: block;
+    overflow: hidden;
+    padding-top: 10px;
+    width: 100%;
+    height: 30px;
+    background-color: var(--el-color-primary-light-9);
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 3px;
+        background: var(--el-color-primary);
+        box-sizing: border-box;
+        z-index: 2;
+        outline-width: 0;
+    }
+}
 /* ----- 暗黑主题 ----- */
 :root {
     /* ----- 应用 ----- */
@@ -235,6 +264,9 @@ input, textarea {
     /* ----- 订单 ----- */
     --l-order-statics:var(--el-color-primary-light-8);
 
+    /* ----- 表单构建器 ----- */
+    --l-lyformbuilder-font-color:#0a0a0a;
+    --l-lyformbuilder-border-color:#EBEEF5;
     /* ----- 暗黑模式 ----- */
     &.dark {
         /* ----- 应用 ----- */
@@ -268,6 +300,10 @@ input, textarea {
 
         /* ----- 订单 ----- */
         --l-order-statics:var(--el-color-primary-light-8);
+      /* ----- 表单构建器 ----- */
+      --l-lyformbuilder-font-color:#ffffff;
+      --l-lyformbuilder-border-color:#364362;
+
     }
 }
 

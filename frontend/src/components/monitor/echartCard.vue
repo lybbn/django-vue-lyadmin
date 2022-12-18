@@ -20,7 +20,7 @@
                                         />
                                     </el-select>
                                 </div>
-                                <ly-monitor-line-echart ref="lyecharts1" v-if="activeName == 'tab1'" v-model="network"></ly-monitor-line-echart>
+                                <LyLineEchart ref="lyecharts1" v-show="activeName == 'tab1'" v-model="network"></LyLineEchart>
                             </el-tab-pane>
                         </template>
                     </el-skeleton>
@@ -32,10 +32,10 @@
 
 <script>
 
-    import LyMonitorLineEchart from "./lineEchart";
+    import LyLineEchart from "./lyLineEchart";
     export default {
         name: "LyMonitorEchartcard",
-        components: {LyMonitorLineEchart},
+        components: {LyLineEchart},
         data(){
             return{
                 activeName:"tab1",

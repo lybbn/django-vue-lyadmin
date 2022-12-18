@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-    <p class="page_title">404 找不到页面</p>
+    <p class="page_title">404</p>
         <div class="page_btn">
             <el-button @click="backhome">
                 返回首页
@@ -13,8 +13,14 @@
 </template>
 
 <script>
+    import {useMutitabsStore} from "@/store/mutitabs";
+
     export default {
         name: "404",
+        setup(){
+            const mutitabsstore = useMutitabsStore()
+            return { mutitabsstore}
+        },
         methods:{
             backhome(){
                 // this.$router.replace('/')
@@ -23,7 +29,7 @@
                     allmenu = JSON.parse(allmenu)
                     if(allmenu.length>0){
                         let tabsPage = allmenu[0].attributes.url
-                        this.$store.commit("switchtab",tabsPage)
+                        this.mutitabsstore.switchtab(tabsPage)
                     }
                 }
             },
@@ -34,8 +40,7 @@
                   cancelButtonText: '取消',
                   type: 'warning'
             }).then(() => {
-                this.$store.commit('logout', 'false')
-                this.$store.commit("setSiteTheme",'light')
+                this.mutitabsstore.logout('false')
                 this.$router.push({path: '/login'})
                 sessionStorage.clear()
                 localStorage.clear()
@@ -58,7 +63,7 @@
     align-items: center;
     flex-direction: column;
     .page_title {
-        font-size: 20px;
+        font-size: 160px;
         color: #FFF;
         margin-bottom: 20px;
         .page_btn{

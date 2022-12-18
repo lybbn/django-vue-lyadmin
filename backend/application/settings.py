@@ -299,6 +299,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 CORS_ORIGIN_ALLOW_ALL = True
 # 允许cookie
 CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持对cookie的操作
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
 # ================================================= #
 # ********************* 日志配置 ******************* #
 # ================================================= #
@@ -475,9 +476,9 @@ CAPTCHA_IMAGE_SIZE = (160, 60)  # 设置 captcha 图片大小
 CAPTCHA_LENGTH = 4  # 字符个数
 CAPTCHA_TIMEOUT = 1  # 超时(minutes)
 CAPTCHA_OUTPUT_FORMAT = '%(image)s %(text_field)s %(hidden_field)s '
-CAPTCHA_FONT_SIZE = 40  # 字体大小
-CAPTCHA_FOREGROUND_COLOR = '#0033FF'  # 前景色
-CAPTCHA_BACKGROUND_COLOR = '#F5F7F4'  # 背景色
+CAPTCHA_FONT_SIZE = 42  # 字体大小
+CAPTCHA_FOREGROUND_COLOR = '#409eff'  # 前景色
+CAPTCHA_BACKGROUND_COLOR = '#FFFFFF'  # 背景色
 CAPTCHA_NOISE_FUNCTIONS = (
     'captcha.helpers.noise_arcs', # 线
     # 'captcha.helpers.noise_dots', # 点
@@ -488,7 +489,8 @@ CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge' # 加减乘除验证�
 # ******************** celery配置 ******************** #
 # ================================================= #
 CELERY_TIMEZONE  = 'Asia/Shanghai'  # celery 时区问题
-CELERY_BROKER_URL  = 'redis://127.0.0.1:6379/10' # Broker配置，使用Redis作为消息中间件
+CELERY_BROKER_URL  = 'redis://127.0.0.1:6379/10' # Broker配置，使用Redis作为消息中间件(无密码)
+#CELERY_BROKER_URL = 'redis://lybbn:{}@127.0.0.1:6379/10'.format('123456')  #lybbn 代表 账号（没有可省略）  {} 存放密码  127.0.0.1连接的 ip  6379端口  10 redis库
 # CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/11' # 把任务结果存在了Redis
 CELERY_RESULT_BACKEND = 'django-db'  # celery结果存储到数据库中django-db
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'  # Backend数据库

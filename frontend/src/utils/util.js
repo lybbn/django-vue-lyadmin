@@ -251,7 +251,35 @@ function getTableHeight(tableSelectHeight){
         return height - pagination_height
     }
 }
+function randomId(){
+    return Math.floor(Math.random() * 100000 + Math.random() * 20000 + Math.random() * 5000 + Math.random() * 100);
+}
 
+function parseString2Json(str) {
+    if (str === undefined) {
+        return undefined
+    }
+    return JSON.parse(JSON.stringify(str))
+}
+function getDefaultFormConfig() {
+    return {
+        modelName: 'formData',
+        refName: 'lyFormBuilder',
+        rulesName: 'rules',
+        labelWidth: 'auto',
+        labelPosition: 'left',
+        size: '',
+        labelAlign: 'label-left-align',
+        cssCode: '',
+        customClass: '',
+        functions: '',  //全局函数
+        layoutType: 'PC',
+        jsonVersion: 1,
+        onFormCreated: '',
+        onFormMounted: '',
+        onFormDataChange: '',
+    }
+}
 // 图片上传根据名称排序
 const  sortName = (v1, v2) => {
     let a = "" + v1;
@@ -323,5 +351,8 @@ export{
     sortName,
     formatUnitSize,
     downloadFileURLByA,
-    downloadFileURLByIframe
+    downloadFileURLByIframe,
+    randomId,
+    parseString2Json,
+    getDefaultFormConfig
 }

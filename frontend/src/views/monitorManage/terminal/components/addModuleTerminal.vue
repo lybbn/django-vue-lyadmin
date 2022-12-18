@@ -2,19 +2,6 @@
     <div>
         <ly-dialog v-model="dialogVisible" :title="loadingTitle" width="560px" :before-close="handleClose">
             <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto">
-<!--                <el-form-item label="用户头像：">-->
-<!--                    <el-upload-->
-<!--                            class="avatar-uploader"-->
-<!--                            action=""-->
-<!--                            :show-file-list="false"-->
-<!--                            ref="uploadDefaultImage"-->
-<!--                            :http-request="imgUploadRequest"-->
-<!--                            :on-success="imgUploadSuccess"-->
-<!--                            :before-upload="imgBeforeUpload">-->
-<!--                        <img v-if="formData.avatar" :src="formData.avatar" class="avatar" >-->
-<!--                        <el-icon v-else class="avatar-uploader-icon" size="medium"><Plus /></el-icon>-->
-<!--                    </el-upload>-->
-<!--                </el-form-item>-->
                 <el-form-item label="服务器IP：" prop="host">
                     <el-input v-model="formData.host"></el-input>
                 </el-form-item>
@@ -42,13 +29,6 @@
                 <el-form-item label="备注：" prop="remark">
                     <el-input v-model="formData.remark" type="textarea" :rows="2"></el-input>
                 </el-form-item>
-<!--                <el-form-item label="状态：" prop="is_active">-->
-<!--                    <el-switch-->
-<!--                        v-model="formData.is_active"-->
-<!--                        active-color="#13ce66"-->
-<!--                        inactive-color="#ff4949">-->
-<!--                    </el-switch>-->
-<!--                </el-form-item>-->
             </el-form>
             <template #footer>
                 <el-button @click="handleClose" :loading="loadingSave">取消</el-button>

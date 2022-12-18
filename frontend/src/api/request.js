@@ -2,14 +2,13 @@ import axios from 'axios';
 import { ElMessage,ElMessageBox } from 'element-plus'
 require("babel-polyfill");
 import { url } from './url';
-import store from '../store'
 import router from "../router";
 
 var request = axios.create({
     timeout: 10000,
 });
 function ajax(opt,method){
-  var token= store.getters.getLogintoken
+  var token= localStorage.getItem('logintoken')
   // var timestamp=new Date().getTime();
   var params;
 
@@ -184,14 +183,14 @@ export function ajaxGetDetailByID (opt) {
 
 //websocket获取jwt请求token
 export function getJWTAuthorization() {
-    var token= store.getters.getLogintoken
+    var token= localStorage.getItem('logintoken')
     var jwt = 'JWTlybbn' + token
     return jwt
 }
 
 export function reqExpost (method, url, params) {
   // const timestamp = new Date().getTime().toString();
-  let token = store.getters.getLogintoken
+  let token = localStorage.getItem('logintoken')
   for (let key in params){
     if(params[key]==null || params[key] == 'undefined' ||  params[key]==''){
       delete params[key]
@@ -220,7 +219,7 @@ export function reqExpost (method, url, params) {
 export function uploadImg (param) {
     let formData = new FormData()
     formData.append('file', param.params.file)
-    let token= store.getters.getLogintoken
+    let token= localStorage.getItem('logintoken')
     return axios({
         method: 'post',
         url: url+param.url ,

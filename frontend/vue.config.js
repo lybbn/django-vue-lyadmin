@@ -6,6 +6,10 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 // 定义压缩文件类型
 const productionGzipExtensions = ['js', 'css'];
 
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
+
 module.exports = {
 	assetsDir:'static',//表示打包后，静态资源生成到static文件夹中
 	publicPath:'./',
@@ -23,7 +27,7 @@ module.exports = {
 		disableHostCheck:true,
 	},
 	//gzip配置
-	configureWebpack:config => {
+	configureWebpack(config){
 		config.devtool = 'source-map'
     	config.output.libraryExport = 'default'  /* 解决import UMD打包文件时, 组件install方法执行报错的问题！！ */
 		if (process.env.NODE_ENV === 'production') {
@@ -36,23 +40,26 @@ module.exports = {
 		}
 	},
 	//解决富文本编辑器报错imports失败
-    chainWebpack: config => {
+    chainWebpack(config){
         config.plugin('provide').use(webpack.ProvidePlugin, [
         	{
             	'window.Quill': 'quill'
         	}
         ])
+		 config.module
+			 .rule('svg')
+			 .exclude.add(resolve('src/icons'))
+			 .end()
+		 config.module
+			.rule('icons')
+			.test(/\.svg$/)
+			.include.add(resolve('src/icons'))
+			.end()
+			.use('svg-sprite-loader')
+			.loader('svg-sprite-loader')
+			.options({
+				symbolId: 'icon-[name]'
+			})
+			.end()
     },
-
-	// resolve: {
-	// 	extensions: ['.ts', '.js', '.mjs', '.json'],
-	// },
-	// module: {
-	// 	rules: [
-	// 		{
-	// 			test: /\.mjs$/i,
-	// 			resolve: { byDependency: { esm: { fullySpecified: false } } },
-	// 		},
-	// 	],
-	// },
 }

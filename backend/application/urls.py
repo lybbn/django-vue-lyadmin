@@ -142,6 +142,7 @@ urlpatterns = [
     path('api/app/wechatpay_notify/', wechatpay_notify.as_view(), name='微信支付异步通知回调接口'),
 
     #获取平台信息
+    path('api/getsysconfig/', GetSystemConfigSettingsView.as_view(), name='前端用户获取平台其他设置'),
     path('api/getothersettings/', GetOtherManageDetailView.as_view(), name='前端用户获取平台其他设置'),
     path('api/getrotationimgs/', GetLunboManageListView.as_view(), name='前端用户获取平台轮播图设置'),
     re_path(r'^api/areas/$', ProvinceAreasView.as_view(),name='省市区三级联动获取省'),

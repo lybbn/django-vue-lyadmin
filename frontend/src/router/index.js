@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory ,createWebHashHistory } from 'vue-router'
-import store from '../store'
+import {useMutitabsStore} from "@/store/mutitabs";
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -321,13 +321,13 @@ function isRouterPathExist(path){
  * 路由拦截
  * 权限验证
  */
-let to={},from={}
 router.beforeEach((to, from, next) => {
+    const store = useMutitabsStore()
     // 白名单
     const whiteList = ['buttonConfig', 'menuManage', 'lyterminal', 'buttonManage']
     // 进度条
     NProgress.start()
-    let userId = store.getters.getUserId ? store.getters.getUserId : ''
+    let userId = store.userId ? store.userId : ''
     if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
         if (userId) { // 通过vuex state获取当前的token是否存在
             let menuList = JSON.parse(localStorage.getItem('menuList'))
@@ -343,10 +343,11 @@ router.beforeEach((to, from, next) => {
                 }
             } else {
                 next({
-                    path: '/login'
+                    path: '/404'
                 })
             }
         } else {
+            store.logout('false')
             next({
               path: '/login'
             })
@@ -362,16 +363,18 @@ router.beforeEach((to, from, next) => {
                                 path: '/404'
                             })
                         }else{
-                            store.commit("switchtab",tabsValue)
+                            store.switchtab(tabsValue)
                         }
                     }else{
-
+                        next({
+                            path: '/404'
+                        })
                     }
                 }else{
                     let tabsPage = JSON.parse(localStorage.getItem("tabsPage"))
                     if (tabsPage) {
                         if(isRouterNameExist(tabsPage[0].name)){
-                          store.commit("switchtab",tabsPage[0].name)
+                            store.switchtab(tabsPage[0].name)
                         }else{
                           next({
                               path: '/404'

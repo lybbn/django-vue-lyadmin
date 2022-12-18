@@ -43,8 +43,6 @@ pyparsing
 pytz
 redis
 requests
-ruamel.yaml
-ruamel.yaml.clib
 service-identity
 six
 sqlparse

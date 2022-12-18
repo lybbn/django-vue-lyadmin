@@ -1,6 +1,3 @@
-/**
-* 头部菜单
-*/
 <template>
   <el-menu class="el-menu-demo" mode="horizontal"  background-color="var(--l-header-bg)"  text-color="#ffffff" active-text-color="#ffffff" :ellipsis="false">
       <div  :style="collapsed ? 'width:210px' : 'width:90px;margin-left:0'" class="divleft">
@@ -13,7 +10,7 @@
 <!--      <el-row class="buttonimg" type="info">-->
 <!--      </el-row>-->
       <el-row  class="ly-header-right">
-            <span style="margin-right: 20px;" @click="fullScreen" v-if="!isFullscreen">
+            <span style="margin-right: 20px;" @click="handleFullScreen" v-if="!isFullscreen">
                 <el-tooltip
                     class="box-item"
                     effect="dark"
@@ -22,7 +19,7 @@
                     <el-icon style="font-size: 16px;color: white;"><full-screen /></el-icon>
                 </el-tooltip>
             </span>
-            <span style="margin-right: 20px;" @click="fullScreen" v-if="isFullscreen">
+            <span style="margin-right: 20px;" @click="handleFullScreen" v-if="isFullscreen">
                 <el-tooltip
                     class="box-item"
                     effect="dark"
@@ -37,8 +34,8 @@
                     effect="dark"
                     content="暗黑模式"
                     placement="bottom">
-                    <el-icon style="font-size: 16px;color: white;" v-if="this.$store.state.siteTheme == 'light'"><Sunny /></el-icon>
-                    <el-icon style="font-size: 16px;color: white;" v-if="this.$store.state.siteTheme == 'dark'"><Moon /></el-icon>
+                    <el-icon style="font-size: 16px;color: white;" v-if="siteThemeStore.siteTheme == 'light'"><Sunny /></el-icon>
+                    <el-icon style="font-size: 16px;color: white;" v-if="siteThemeStore.siteTheme == 'dark'"><Moon /></el-icon>
                 </el-tooltip>
             </span>
 <!--            <el-sub-menu index="1-1-1-1" class="submenu" style="width:auto;">-->
@@ -67,108 +64,97 @@
       </el-row>
   </el-menu>
 </template>
-<script>
-  import screenfull from 'screenfull'
-  import store from '../store'
-  export default {
-    name: 'navcon',
-    data() {
-      return {
-        collapsed: true,
-        imgshow: require('../assets/img/show.png'),
-        imgsq: require('../assets/img/sq.png'),
-        userName: '',
-        mobileWidth:992,
-        isFullscreen:false,
+<script setup>
+    import {ref, onMounted,onBeforeUnmount,getCurrentInstance,nextTick} from 'vue'
+    import { ElMessage , ElMessageBox } from 'element-plus'
+    import screenfull from 'screenfull'
+    import {useMutitabsStore} from "@/store/mutitabs";
+    import {useSiteThemeStore} from "@/store/siteTheme";
+    import {useRouter} from 'vue-router'
 
-      }
-    },
-    // 创建完毕状态(里面是操作)
-    created() {
-      this.userName=store.getters.getUserName
-    },
-    mounted() {
-        window.addEventListener('resize', this.handleResize);
-        this.handleResize()
-        this.init()
-    },
+    const router = useRouter()
+    let bus = getCurrentInstance().appContext.config.globalProperties.$Bus; // 声明$Bus
+    const mutitabsStore = useMutitabsStore()
+    const siteThemeStore = useSiteThemeStore()
 
-    unmounted() {
-         window.removeEventListener("resize", this.handleResize);
-         // 最后注销监听事件
-        if (screenfull.isEnabled) {
-            screenfull.off('change', this.change);
-        }
-    },
-    methods: {
-        //路由跳转
-        jumpto(){
-            this.$store.commit("switchtab",'personalCenter')
-        },
-        // 退出登录
-        exit(e) {
-            this.$confirm('退出登录, 是否继续?', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
+    let collapsed = ref(true)
+    let imgshow = require('../assets/img/show.png')
+    let imgsq = require('../assets/img/sq.png')
+    let userName = ref("")
+    let mobileWidth = ref(992)
+    let isFullscreen = ref(mutitabsStore.isFullscreen)
+
+    //路由跳转
+    function jumpto(){
+        mutitabsStore.switchtab('personalCenter')
+    }
+    // 退出登录
+    function exit(e) {
+        ElMessageBox.confirm('退出登录, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }).then(() => {
-            this.$store.commit('logout', 'false')
-            this.$store.commit("setSiteTheme",'light')
-            this.$router.push({path: '/login'})
+            mutitabsStore.logout('false')
+            siteThemeStore.setSiteTheme('light')
+            router.push({path: '/login'})
             sessionStorage.clear()
             localStorage.clear()
-            this.$message.success('已退出登录!')
-          })
-          .catch(() => {
-          })
-        },
-        // 切换显示
-        toggle(showtype) {
-            this.collapsed = !showtype
-            this.$Bus.emit('toggle', !showtype)
-        },
-        init() {
-            if(screenfull.isEnabled) { // 判断是否支持全屏
-                screenfull.on('change', this.change); // 开启监听change事件
-            }
-        },
-        // 更改当前屏幕的状态
-        change() {
-            this.isFullscreen = screenfull.isFullscreen; // 更新全屏状态
-        },
-        //全屏显示
-        fullScreen () {
-            if (!screenfull.isEnabled) {
-              this.$message({
-                message: '您的浏览器不支持全屏',
-                type: 'warning'
-              })
-              return false
-            }
-            screenfull.toggle()
-        },
-        //设置主题
-        setSiteTheme(){
-            if(this.$store.state.siteTheme=='light'){
-                this.$store.commit("setSiteTheme",'dark')
-            }else{
-                this.$store.commit("setSiteTheme",'light')
-            }
-        },
-        //解决table 表格缩放错位问题
-        handleResize() {
-            this.collapsed = this.isMobile()
-            this.toggle(this.collapsed)
-        },
-        isMobile() {
-            let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth;
-            if(htmlWidth>this.mobileWidth){
-                return false
-            }
-            return true
-        },
+            ElMessage.success('已退出登录!')
+      })
+      .catch(() => {
+      })
     }
-  }
+    // 切换显示
+    function toggle(showtype) {
+        collapsed.value = !showtype
+        bus.emit('toggle', collapsed.value)
+    }
+    //全屏显示
+    function handleFullScreen(){
+        if (!screenfull.isEnabled) {
+            ElMessage.warning('您的浏览器不支持全屏!')
+            return false
+        }else{
+            screenfull.toggle()
+            isFullscreen.value = !screenfull.isFullscreen
+        }
+
+    }
+    //设置主题
+    function setSiteTheme(){
+        if(siteThemeStore.siteTheme=='light'){
+            siteThemeStore.setSiteTheme('dark')
+        }else{
+            siteThemeStore.setSiteTheme('light')
+        }
+    }
+        //解决table 表格缩放错位问题
+    function handleResize() {
+        collapsed.value = isMobile()
+        toggle(collapsed.value)
+    }
+    function isMobile() {
+        let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth;
+        if(htmlWidth>mobileWidth.value){
+            return false
+        }
+        return true
+    }
+
+    onMounted(()=>{
+        userName.value = mutitabsStore.userName
+        window.addEventListener('resize', handleResize);
+        nextTick(()=>{
+              handleResize
+        })
+    })
+
+    onBeforeUnmount(()=>{
+        window.removeEventListener("resize", handleResize);
+    })
+
+
 </script>
 <style lang="scss" scoped>
     .divleft{

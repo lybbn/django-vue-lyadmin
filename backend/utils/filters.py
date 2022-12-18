@@ -19,7 +19,7 @@ from django.db.models import Q
 #ly自定义部分
 import django_filters
 from mysystem.models import Users,OperationLog
-from apps.platformsettings.models import UserLeavingMessage
+from apps.platformsettings.models import UserLeavingMessage,SystemConfig
 from apps.mall.models import OrderInfo
 
 
@@ -307,3 +307,14 @@ class FinanceOrderInfoTimeFilter(django_filters.rest_framework.FilterSet):
     class Meta:
         model = OrderInfo
         fields = ['beginAt', 'endAt','nickname','order_id','gname','status']
+
+
+class SystemConfigFilter(django_filters.rest_framework.FilterSet):
+    """
+    过滤器
+    """
+    parent__isnull = django_filters.BooleanFilter(field_name='parent', lookup_expr="isnull")
+
+    class Meta:
+        model = SystemConfig
+        fields = ['id', 'parent', 'status', 'parent__isnull']

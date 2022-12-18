@@ -12,6 +12,21 @@ export const apiSystemWebRouter = params => ajaxGet({url: `system/menu/web_route
 export const monitorGetSystemInfo = params => ajaxGet({url: `monitor/getsysteminfo/`,params})
 
 /**
+*系统配置
+ * */
+
+// 系统配置
+export const platformsettingsSysconfig = params => ajaxGet({url: `platformsettings/sysconfig/`,params})
+// 系统配置 -- 新增
+export const platformsettingsSysconfigAdd = params => ajaxPost({url: `platformsettings/sysconfig/`,params})
+// 系统配置 -- 编辑
+export const platformsettingsSysconfigEdit = params => ajaxPut({url: `platformsettings/sysconfig/`,params})
+// 系统配置 -- 删除
+export const platformsettingsSysconfigDelete = params => ajaxDelete({url: `platformsettings/sysconfig/`,params})
+// 系统配置 -- 保存子项
+export const platformsettingsSysconfigSavecontent = params => ajaxPut({url: `platformsettings/sysconfig/save_content/`,params})
+
+/**
 *计划任务
  * */
 

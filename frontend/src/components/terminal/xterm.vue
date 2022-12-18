@@ -87,7 +87,7 @@
                 //websocket链接成功之后操作
                 this.lyws.onopen = () => {
                     this.term.fitAddon.fit()
-                    this.term.write("Welcome To Django-Vue3-Lyadmin WebSSH ☺\r\n")
+                    this.term.write("Welcome To Django-Vue-Lyadmin WebSSH ☺\r\n")
                     this.termResize({cols:this.cols,rows:this.rows})
                 };
 

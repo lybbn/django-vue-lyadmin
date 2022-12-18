@@ -4,7 +4,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 // 统一导入el-icon图标
-import * as Icons from '@element-plus/icons-vue'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 //引入ElementPlus 结束
 
 
@@ -44,21 +44,32 @@ Object.keys(custom).forEach(key => {
   app.component(key, custom[key])
 })
 
-//引入font-awesome字体图标
-import 'font-awesome/scss/font-awesome.scss'
-// 注册全局elementplus icon组件
-Object.keys(Icons).forEach((key) => {
-  app.component(key, Icons[key]);
-});
-
 // //进入自定义指令
 import directivePlugin from '@/utils/directive.js'
+
+// 注册全局elementplus icon组件
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
+import registerSvgIcon from "./icons"
+registerSvgIcon(app)
+
+import draggable from '@/components/vuedraggable/dist/vuedraggable.umd.js'
+app.component('draggable', draggable)
+
+import lyContainerWidgets from '@/components/lyform-builder/lyform-design/lycontainers-widget/index'
+import lyFieldWidget from '@/components/lyform-builder/lyform-design/lyfield-widget/index'
+import lySettingPannel from '@/components/lyform-builder/lysetting-pannel/lywidget-setting/index'
 
 app.use(ElementPlus,{
   size: 'default',  // 默认控件尺寸default(其他large、small)
   zIndex: 3000,  // 弹出组件的zIndex
   locale: zhCn,
 })
+
+app.use(lyContainerWidgets)
+app.use(lyFieldWidget)
+app.use(lySettingPannel)
 app.use(store)
 app.use(router)
 app.use(VueAxios,axios)

@@ -12,8 +12,8 @@
                                 <span style="margin-left: 20px">自动刷新(秒)：</span>
                                 <el-input-number v-model="refreshInterval" size="small" :min="3" @change="restartIntervalMonitor"/>
 <!--                                <span style="margin-left: 20px"><el-button type="primary" size="small" icon="Refresh" circle @click="getData" /></span>-->
-                                <el-button style="margin-left: 20px" type="primary" v-if="timer" :text="true" link @click="getData"><span style="font-size: 13px"  @click="clearIntervalMonitor">停止</span></el-button>
-                                <el-button style="margin-left: 20px" type="primary" v-if="timer==null" :text="true" link @click="getData"><span style="font-size: 13px"  @click="restartIntervalMonitor">开始</span></el-button>
+                                <el-button style="margin-left: 20px" type="primary" v-show="timer" :text="true" link @click="getData"><span style="font-size: 13px"  @click="clearIntervalMonitor">停止</span></el-button>
+                                <el-button style="margin-left: 20px" type="primary" v-show="!timer" :text="true" link @click="getData"><span style="font-size: 13px"  @click="restartIntervalMonitor">开始</span></el-button>
                                 <el-button type="primary" :text="true" link @click="getData"><span style="font-size: 13px">手动刷新</span></el-button>
                             </div>
                             <div class="lycard-center">
@@ -50,15 +50,15 @@
         name: "server",
         components: {LyMonitorEchartcard, LyStatuscard},
         created() {
-            this.getData()
         },
         mounted() {
+            this.getData()
             if(!this.isRunning){
                 this.intervalMonitor()
                 this.isRunning = true
                 setTimeout(() => {
                     this.showloading = false
-                }, 1000)
+                }, 500)
 
             }
             // 监听页面宽度变化搜索框的高度
@@ -148,7 +148,9 @@
                 this.timer = null
             },
             handleResize() {
-                this.$refs.lyechartpic.handleResize();
+                if(this.$refs.lyechartpic){
+                    this.$refs.lyechartpic.handleResize();
+                }
             },
             // 计算搜索栏的高度
             listenResize() {

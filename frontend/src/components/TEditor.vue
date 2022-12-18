@@ -14,9 +14,7 @@ import tinymce from 'tinymce/tinymce' // tinymce默认hidden，不引入则不�
 // 导入配置文件
 import './teditorjs/importTinymce'
 import { init } from './teditorjs/config'
-import { useStore } from "vuex";
-// let token = localStorage.getItem('logintoken')
-let token = ""
+let token = localStorage.getItem('logintoken')
 
 export default {
   name: 'tEditor',
@@ -53,8 +51,7 @@ export default {
       contentValue: props.modelValue, // 绑定文本
       timeout: null,
     })
-    const store = useStore()//useStore必须再setup中使用
-    token = store.getters.getLogintoken
+    token = localStorage.getItem('logintoken')
 
     onMounted(() => {
         nextTick(()=>{

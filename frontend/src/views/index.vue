@@ -25,40 +25,31 @@
     </div>
   </el-container>
 </template>
-<script>
-  import navcon from '../components/navcon.vue'
-  import leftnav from '../components/leftnav.vue'
-  import Mutitabs from "../components/mutitabs";
+<script setup>
+    import {ref, onMounted,getCurrentInstance} from 'vue'
+    import navcon from '../components/navcon.vue'
+    import leftnav from '../components/leftnav.vue'
+    import Mutitabs from "../components/mutitabs";
+    import {useMutitabsStore} from "@/store/mutitabs";
 
-  export default {
-    name: 'index',
-    data() {
-      return {
-        showclass: 'asideshow',
-        showtype: false,
-        isMultiTabs:this.$store.state.isMultiTabs
-      }
-    },
-    components: {
-      Mutitabs,
-      navcon,
-      leftnav
-    },
-    methods:{
-    },
-    created() {
-      this.$Bus.on('toggle', value => {
-        //console.log('value')
-        if (value) {
-          this.showclass = 'asideshow'
-        } else {
-          setTimeout(() => {
-            this.showclass = 'aside'
-          }, 300)
-        }
-      })
-    }
-  }
+    let bus = getCurrentInstance().appContext.config.globalProperties.$Bus; // 声明$Bus
+    let showclass = ref("asideshow")
+    let showtype = ref(false)
+    const mutitabsStore =  useMutitabsStore()
+    let isMultiTabs = mutitabsStore.isMultiTabs
+
+    onMounted(()=>{
+        bus.on('toggle', value => {
+            //console.log('value')
+            if (value) {
+                showclass.value = 'asideshow'
+            } else {
+                setTimeout(() => {
+                    showclass.value = 'aside'
+              }, 300)
+            }
+        })
+    })
 </script>
 <style lang="scss" scoped>
   .main-con{
