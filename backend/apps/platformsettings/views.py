@@ -26,6 +26,13 @@ class SystemConfigSerializer(CustomModelSerializer):
     """
     form_item_type_label = serializers.CharField(source='get_form_item_type_display', read_only=True)
 
+    def to_representation(self, instance):  # 序列化
+        ret = super().to_representation(instance)
+        ret['rule'] = ast_convert(ret['rule'])  # 可以保存的修改字段值的方法
+        ret['setting'] = ast_convert(ret['setting'])  # 可以保存的修改字段值的方法
+        ret['data_options'] = ast_convert(ret['data_options'])  # 可以保存的修改字段值的方法
+        return ret
+    
     class Meta:
         model = SystemConfig
         fields = "__all__"
@@ -36,6 +43,9 @@ class SystemConfigCreateSerializer(CustomModelSerializer):
     系统配置-新增时使用-序列化器
     """
     form_item_type_label = serializers.CharField(source='get_form_item_type_display', read_only=True)
+    rule = serializers.JSONField(allow_null=True,required=False)
+    data_options = serializers.JSONField(allow_null=True,required=False)
+    setting = serializers.JSONField(allow_null=True,required=False)
 
     class Meta:
         model = SystemConfig
@@ -64,6 +74,13 @@ class SystemConfigChinldernSerializer(CustomModelSerializer):
         serializer = SystemConfigSerializer(queryset, many=True)
         return serializer.data
 
+    def to_representation(self, instance):  # 序列化
+        ret = super().to_representation(instance)
+        ret['rule'] = ast_convert(ret['rule'])  # 可以保存的修改字段值的方法
+        ret['setting'] = ast_convert(ret['setting'])  # 可以保存的修改字段值的方法
+        ret['data_options'] = ast_convert(ret['data_options'])  # 可以保存的修改字段值的方法
+        return ret
+
     class Meta:
         model = SystemConfig
         fields = "__all__"
@@ -77,6 +94,7 @@ class SystemConfigViewSet(CustomModelViewSet):
     queryset = SystemConfig.objects.order_by('sort', 'create_datetime')
     serializer_class = SystemConfigChinldernSerializer
     create_serializer_class = SystemConfigCreateSerializer
+    update_serializer_class = SystemConfigCreateSerializer
     filter_class = SystemConfigFilter
 
     def save_content(self, request):

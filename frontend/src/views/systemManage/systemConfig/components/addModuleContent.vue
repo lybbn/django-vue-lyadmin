@@ -65,6 +65,9 @@
                     key: [
                         {required: true, message: '请输入key值',trigger: 'blur'}
                     ],
+                    form_item_type: [
+                        {required: true, message: '请选择表单类型',trigger: 'blur'}
+                    ],
                 },
                 groupList:[],
                 ruleOptions: [

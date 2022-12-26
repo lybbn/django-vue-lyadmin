@@ -1,7 +1,7 @@
 <template>
     <div class="lyouters">
-      <canvas id="lyadmincanvas"></canvas>
-      <div class="login-wrap box">
+      <canvas id="lyadmincanvas" @click.stop="handleAnimationState()"></canvas>
+      <div class="login-wrap box" :style="{'--animationState':animationState}">
         <el-form label-position="left" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm login-container">
             <h3 class="title">
                 <div class="login-logo">
@@ -49,7 +49,7 @@
   import {login,apiSystemWebRouter,getCaptcha} from '../api/api'
   import {systemTree} from "@/utils/menuTree.js"
   import {delCookie, getCookie, setCookie} from '../utils/util'
-  import {useMutitabsStore} from "../store/mutitabs";
+  import {useMutitabsStore} from "@/store/mutitabs";
 
   export default {
     name: 'login',
@@ -77,6 +77,7 @@
         image_base: null,
         allmenu:[],
         //动画
+        animationState:'paused',
         WIDTH:"",
         HEIGHT:"",
         POINT :"",
@@ -131,6 +132,13 @@
           next()
       },
       methods: {
+        handleAnimationState(){
+          if(this.animationState === 'paused'){
+            this.animationState = 'running'
+          }else{
+            this.animationState = 'paused'
+          }
+        },
         // 计算搜索栏的高度
         listenResize() {
             this.$nextTick(() => {
@@ -629,7 +637,9 @@
         height: 520px;
         transform-origin: bottom right;
         background: linear-gradient(0deg, transparent, #409eff, #409eff);
-        animation: animate 10s linear infinite;
+        animation: animate 10s linear infinite var(--animationState);
+        animation-play-state: var(--animationState);
+        -webkit-animation-play-state:var(--animationState);
     }
 
     .box::after {
@@ -642,8 +652,10 @@
         height: 520px;
         transform-origin: bottom right;
         background: linear-gradient(0deg, transparent, #409eff, #409eff);
-        animation: animate 10s linear infinite;
+        animation: animate 10s linear infinite var(--animationState);
         animation-delay: -5s;
+        animation-play-state: var(--animationState);
+        -webkit-animation-play-state:var(--animationState);
     }
 
     @keyframes animate {
