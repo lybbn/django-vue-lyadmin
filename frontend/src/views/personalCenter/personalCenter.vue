@@ -56,9 +56,13 @@
 
 <script>
     import {systemUserUserInfoEdit,systemUserUserInfo,systemUserChangePassword} from '@/api/api'
-    import store from '@/store/index'
+    import {useMutitabsStore} from "@/store/mutitabs";
     export default {
         name: "personalCenter",
+        setup(){
+            const mutitabsstore = useMutitabsStore()
+            return { mutitabsstore}
+        },
         data() {
             var validatePass = (rule, value, callback) => {
               const pwdRegex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z]).{8,30}')
@@ -183,7 +187,7 @@
 
               _self.$refs.userPasswordForm.validate((valid) => {
                 if (valid) {
-                  const userId = store.getters.getUserId
+                  const userId = this.mutitabsstore.getUserId
                   if (userId) {
                     const params = JSON.parse(JSON.stringify(_self.userPasswordInfo))
                       params.id = userId
