@@ -451,7 +451,7 @@
     ::v-deep(.el-input-group__prepend){
         background-color: #ffffff !important;
         .el-icon{
-            color: #409eff;
+            color: var(--el-color-primary);
         }
     }
    .lyouters{
@@ -509,7 +509,7 @@
         justify-content: center;
         font-size: 19px;
         margin: 0px auto 40px auto;
-        color: #409eff;
+        color: var(--el-color-primary);
         font-weight: 700;
     }
     .remember {
@@ -533,7 +533,7 @@
         font-size: 48px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
-        color: #0072FF;
+        color: var(--el-color-primary);
         line-height: 67px;
         letter-spacing: 1px;
         margin: 60px auto 72px;
@@ -636,7 +636,7 @@
         width: 450px;
         height: 520px;
         transform-origin: bottom right;
-        background: linear-gradient(0deg, transparent, #409eff, #409eff);
+        background: linear-gradient(0deg, transparent, var(--el-color-primary), var(--el-color-primary));
         animation: animate 10s linear infinite var(--animationState);
         animation-play-state: var(--animationState);
         -webkit-animation-play-state:var(--animationState);
@@ -651,7 +651,7 @@
         width: 450px;
         height: 520px;
         transform-origin: bottom right;
-        background: linear-gradient(0deg, transparent, #409eff, #409eff);
+        background: linear-gradient(0deg, transparent, var(--el-color-primary), var(--el-color-primary));
         animation: animate 10s linear infinite var(--animationState);
         animation-delay: -5s;
         animation-play-state: var(--animationState);
