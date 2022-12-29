@@ -15,7 +15,7 @@
       background-color="var(--l-header-bg)"
       active-background-color="var(--l-header-bg)"
       text-color="#ffffff"
-      active-text-color="#247af3">
+      active-text-color="var(--el-color-primary)">
       <div v-if="menuTitle" class="menu-nav-title">
         {{menuTitle}}
       </div>
@@ -122,7 +122,7 @@
   font-size: 20px;
   font-weight: bold;
   background: #eff6ff;
-  color: #247af3;
+  color: var(--el-color-primary);
   border-bottom: 1px solid #c9e0ff;
 }
 .el-menu-vertical-demo:not(.el-menu--collapse) {

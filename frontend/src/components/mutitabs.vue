@@ -231,7 +231,7 @@
 </script>
 <style>
     .myeltas2 .el-tabs__nav .el-tabs__item.is-active {
-        color: #46a0fc;
+        color: var(--el-color-primary);
         background-color: var(--l-changetab-bg);
         border-bottom-color: var(--l-changetab-border);
         box-shadow: 0 0 5px #cccccc;

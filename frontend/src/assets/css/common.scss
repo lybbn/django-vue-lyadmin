@@ -132,7 +132,7 @@ input, textarea {
   }
 }
 .table-operate-btn{
-  color: #409eff;
+  color: var(--el-color-primary);
   cursor: pointer;
   margin-right: 10px;
   //font-size: 14px;
@@ -215,7 +215,7 @@ input, textarea {
 
     /* ----- 主导航 ----- */
     // 菜单鼠标悬浮背景色
-    --l-main-sidebar-menu-hover-bg: #247af3;
+    --l-main-sidebar-menu-hover-bg: var(--el-color-primary);
 
     /* ----- 标签页 ----- */
     --l-changetab-bg: #fff;

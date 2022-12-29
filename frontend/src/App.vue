@@ -7,21 +7,15 @@
 
     const siteThemeStore = useSiteThemeStore()
 
+    const colorPrimary = siteThemeStore.colorPrimary
+
     onMounted(()=>{
         if (siteThemeStore.siteTheme === 'dark') {
             document.documentElement.classList.add('dark')
         } else {
             document.documentElement.classList.remove('dark')
         }
-    })
-
-    //防止页面刷新丢失主题
-    watch(()=>siteThemeStore.siteTheme, (n,o) => {
-        if (n === 'dark') {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
+        siteThemeStore.setColorPrimary(colorPrimary)
     })
 </script>
 <style lang="scss">

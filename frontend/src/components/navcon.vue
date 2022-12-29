@@ -28,6 +28,9 @@
                     <el-icon style="font-size: 16px;color: white;"><Minus /></el-icon>
                 </el-tooltip>
             </span>
+            <span style="margin-right: 20px;">
+                <el-color-picker v-model="colorPrimary" :predefine="colorList" size="small" @change="setColorPrimary"></el-color-picker>
+            </span>
             <span style="margin-right: 20px;"  @click="setSiteTheme">
                 <el-tooltip
                     class="box-item"
@@ -83,6 +86,13 @@
     let userName = ref("")
     let mobileWidth = ref(992)
     let isFullscreen = ref(mutitabsStore.isFullscreen)
+
+    let colorList = ref(['#409EFF', '#009688', '#536dfe', '#ff5c93', '#c62f2f', '#fd726d'])
+    let colorPrimary = ref(siteThemeStore.colorPrimary || '#409EFF')
+    
+    function setColorPrimary() {
+        siteThemeStore.setColorPrimary(colorPrimary.value)
+    }
 
     //路由跳转
     function jumpto(){
