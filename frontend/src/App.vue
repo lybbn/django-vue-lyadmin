@@ -1,7 +1,5 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+  <router-view/>
 </template>
 <script setup>
     import {ref, onMounted,watch } from 'vue'
@@ -35,4 +33,12 @@
     /*color: #2c3e50;*/
     height: 100%;
   }
+  /*页面最大化*/
+  .lyadmin.lymain-maximize {
+      .lymain-maximize-exit {display: block;}
+      .myeltas2,.lyadmin-header,.lyadmin-side {display: none;}
+   }
+  .lymain-maximize-exit {display: none;position: fixed;z-index: 3000;top:-20px;left:50%;margin-left: -20px;border-radius: 50%;width: 40px;height: 40px;cursor: pointer;background: rgba(0,0,0,0.2);text-align: center;}
+  .lymain-maximize-exit i {font-size: 14px;margin-top: 22px;color: #fff;}
+  .lymain-maximize-exit:hover {background: rgba(0,0,0,0.4);}
 </style>

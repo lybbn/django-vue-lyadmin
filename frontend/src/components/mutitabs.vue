@@ -22,6 +22,8 @@
         <li @click="closeOtherTabs('left')"><el-icon><Back /></el-icon><span class="contextmenu-text">关闭左边</span></li>
         <li @click="closeOtherTabs('right')"><el-icon><Right /></el-icon><span class="contextmenu-text">关闭右边</span></li>
         <li @click="closeOtherTabs('other')"><el-icon><Delete /></el-icon><span class="contextmenu-text">关闭其他</span></li>
+        <li @click="maximize"><el-icon><FullScreen /></el-icon><span class="contextmenu-text">最大化</span></li>
+        <li @click="openWindow"><el-icon><CopyDocument /></el-icon><span class="contextmenu-text">新窗口打开</span></li>
         <li @click="closeContextMenu()"><el-icon><Close /></el-icon><span class="contextmenu-text">取消操作</span></li>
     </ul>
       <router-view v-slot="{Component,route}">
@@ -32,6 +34,7 @@
               </keep-alive>
           </transition>
       </router-view>
+      <div class="lymain-maximize-exit" @click="exitMaximize"><el-icon><close /></el-icon></div>
   </div>
 </template>
 
@@ -111,6 +114,10 @@
             }
         },
         methods: {
+            //退出最大化
+			exitMaximize(){
+				document.getElementById('app').classList.remove('lymain-maximize')
+			},
             relogin(){
                 this.mutitabsstore.logout('false')
                 this.siteThemeStore.setSiteTheme('light')
@@ -186,6 +193,25 @@
                     this.excludes = ""
                 })
             },
+            //标签页最大化
+            maximize(){
+				var TabsValue = this.mutitabsstore.TabsValue
+				this.contextMenuVisible = false
+				//判断是否当前路由，否的话跳转
+				if(this.$route.name != TabsValue){
+					this.$router.push({
+						name: TabsValue,
+					})
+				}
+				document.getElementById('app').classList.add('lymain-maximize')
+			},
+            //新窗口打开
+			openWindow(){
+				let currentPath = this.mutitabsstore.TabsValue
+                let routeData = this.$router.resolve({path:currentPath})
+                window.open(routeData.href,'_blank')
+				this.contextMenuVisible = false
+			},
             // 关闭所有标签页
             closeAllTabs() {
                 this.mutitabsstore.closeAllTabs()
@@ -242,7 +268,7 @@
     }
     /*自定义右键菜单*/
     .contextmenu {
-        width: 110px;
+        width: 130px;
         margin: 0;
         border: 1px solid #ccc;
         background: var(--l-changetab-right-menu);

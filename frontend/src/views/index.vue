@@ -1,11 +1,11 @@
 <template>
   <el-container class="index-con">
-    <el-header class="index-header">
+    <el-header class="index-header lyadmin-header">
       <navcon></navcon>
     </el-header>
     <div class="main-con">
       <div style="display: flex; flex-direction: row;">
-        <el-aside :class="showclass">
+        <el-aside :class="showclass" class="lyadmin-side">
           <el-scrollbar>
             <leftnav ></leftnav>
           </el-scrollbar>
