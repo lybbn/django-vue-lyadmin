@@ -30,7 +30,7 @@
 <!--              <component :is="Component" v-if="!route.meta.isActive" :key="route.path"></component>-->
           <transition name="lyfadein" mode="out-in">
               <keep-alive :include="keepAliveRoutes" :exclude="excludes">
-                    <component :is="Component" :key="route.name" v-if="!isRourterAlive"></component>
+                    <component :is="Component" :key="route.name" v-if="!isRourterAlive" ref="lyComponent"></component>
               </keep-alive>
           </transition>
       </router-view>
@@ -117,6 +117,9 @@
             //退出最大化
 			exitMaximize(){
 				document.getElementById('app').classList.remove('lymain-maximize')
+                if(this.$refs.lyComponent.setFull){
+                    this.$refs.lyComponent.setFull()
+                }
 			},
             relogin(){
                 this.mutitabsstore.logout('false')
@@ -204,7 +207,9 @@
 					})
 				}
 				document.getElementById('app').classList.add('lymain-maximize')
-                window.dispatchEvent(new Event('resize'))
+                if(this.$refs.lyComponent.setFull){
+                    this.$refs.lyComponent.setFull()
+                }
 			},
             //新窗口打开
 			openWindow(){
