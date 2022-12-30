@@ -2,7 +2,7 @@
     <div class="lyouters">
       <canvas id="lyadmincanvas" @click.stop="handleAnimationState()"></canvas>
       <div class="login-config">
-          <el-button :icon="siteThemeStore.siteTheme == 'light'?'sunny':'moon'" circle type="info" @click="setSiteTheme"></el-button>
+          <el-button :icon="siteThemeStore.siteTheme == 'dark'?'sunny':'moon'" circle type="info" @click="setSiteTheme"></el-button>
       </div>
       <div class="login-wrap box" :style="{'--animationState':animationState}">
         <el-form label-position="left" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm login-container">
