@@ -9,7 +9,7 @@
             <el-table-column type="index" width="60" align="center" label="序号"></el-table-column>
             <el-table-column min-width="120" prop="image" :label="(formInline.type==1) ? '图片' :'图片'">
                 <template #default="scope">
-                    <el-image  :src="scope.row.image" style="width: 50px;height: 50px" :preview-src-list="[scope.row.image]"  :preview-teleported="true"></el-image>
+                    <el-image  :src="scope.row.image" style="width: 40px;height: 40px" :preview-src-list="[scope.row.image]"  :preview-teleported="true"></el-image>
                 </template>
             </el-table-column>
             <el-table-column min-width="150" prop="title" label="标题" ></el-table-column>
@@ -51,6 +51,7 @@
         name:'carouselSettingsimg',
         data() {
             return {
+                isFull:false,
                 tableHeight:500,
                 loadingPage:false,
                 formInline:{
@@ -69,6 +70,10 @@
             }
         },
         methods:{
+            setFull(){
+                this.isFull=!this.isFull
+                window.dispatchEvent(new Event('resize'))
+            },
             handleClick(tab,e) {
                 this.formInline.type = tab.props.name
                 this.search()
@@ -136,7 +141,9 @@
 				})
 			},
             getTheTableHeight(){
-               this.tableHeight =  getTableHeight(40)
+                let tabSelectHeight = 43
+                tabSelectHeight = this.isFull?tabSelectHeight - 100:tabSelectHeight
+                this.tableHeight =  getTableHeight(tabSelectHeight)
             }
         },
         created() {
