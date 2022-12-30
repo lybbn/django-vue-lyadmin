@@ -26,43 +26,45 @@
                     </el-scrollbar>
                 </div>
                 <div class="auth-item" style="height: calc(100vh - 430px);">
-                    <div class="auth-title">
-                        数据授权：
-                        <el-tooltip
-                            class="item"
-                            effect="dark"
-                            content="授权用户可操作的数据范围"
-                            placement="right">
-                            <el-icon><question-filled /></el-icon>
-                        </el-tooltip>
-                    </div>
-                    <el-select
-                            size="large"
-                            v-show="roleObj.name"
-                            v-model="roleObj.data_range"
-                            @change="dataScopeSelectChange" style="width: 90%;margin: 10px auto;display: block;">
-                        <el-option
-                            v-for="item in dataScopeOptions"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                        </el-option>
-                    </el-select>
-                    <div style="margin-bottom: 50px" v-show="roleObj.data_range === 4">
-                        <el-form-item>
-                            <el-tree
-                            class="tree-border"
-                            :data="deptOptions"
-                            show-checkbox
-                            default-expand-all
-                            :default-checked-keys="deptCheckedKeys"
-                            ref="dept"
-                            node-key="id"
-                            size="small"
-                            :check-strictly="true"
-                            :props="{ label: 'name',children: 'children', disabled: 'disabled'}"/>
-                        </el-form-item>
-                    </div>
+                    <el-scrollbar>
+                        <div class="auth-title">
+                            数据授权：
+                            <el-tooltip
+                                class="item"
+                                effect="dark"
+                                content="授权用户可操作的数据范围"
+                                placement="right">
+                                <el-icon><question-filled /></el-icon>
+                            </el-tooltip>
+                        </div>
+                        <el-select
+                                size="large"
+                                v-show="roleObj.name"
+                                v-model="roleObj.data_range"
+                                @change="dataScopeSelectChange" style="width: 90%;margin: 10px auto;display: block;">
+                            <el-option
+                                v-for="item in dataScopeOptions"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <div style="margin-bottom: 50px" v-show="roleObj.data_range === 4">
+                            <el-form-item>
+                                <el-tree
+                                class="tree-border"
+                                :data="deptOptions"
+                                show-checkbox
+                                default-expand-all
+                                :default-checked-keys="deptCheckedKeys"
+                                ref="dept"
+                                node-key="id"
+                                size="small"
+                                :check-strictly="true"
+                                :props="{ label: 'name',children: 'children', disabled: 'disabled'}"/>
+                            </el-form-item>
+                        </div>
+                    </el-scrollbar>
                 </div>
             </div>
             <div class="auth-item" style="height: calc(100vh - 130px);">
@@ -379,8 +381,6 @@
             }
         }
     }
-</style>
-<style lang="scss" scoped>
     .filter-tree{
         ::v-deep(.el-tree-node__content){
             height: 40px;
@@ -391,5 +391,4 @@
             height: 30px;
         }
     }
-
 </style>
