@@ -204,6 +204,7 @@
 					})
 				}
 				document.getElementById('app').classList.add('lymain-maximize')
+                window.dispatchEvent(new Event('resize'))
 			},
             //新窗口打开
 			openWindow(){
@@ -250,7 +251,7 @@
     .myeltas2 .el-tabs__nav{
         /*background-color: lightgrey;*/
         background-color: var(--l-changetab-bg);
-        border: none;
+        /*border: none !important;*/
         border-radius:0 !important;
     }
     /*字体大小*/

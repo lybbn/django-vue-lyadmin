@@ -148,7 +148,9 @@
 				})
 			},
             getTheTableHeight(){
-               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+                let tabSelectHeight = this.$refs.tableSelect?this.$refs.tableSelect.offsetHeight:0
+                tabSelectHeight = this.isFull?tabSelectHeight - 110:tabSelectHeight
+                this.tableHeight =  getTableHeight(tabSelectHeight)
             }
         },
         created() {

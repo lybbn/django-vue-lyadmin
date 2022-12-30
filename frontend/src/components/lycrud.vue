@@ -404,6 +404,7 @@
             },
             setFull(){
                 this.isFull=!this.isFull
+                window.dispatchEvent(new Event('resize'))
             },
             //多选项框被选中数据
             handleSelectionChange(selection) {
@@ -633,8 +634,9 @@
 				})
 			},
             getTheTableHeight(){
-                const searchBarHeight = (this.$refs.tableSelect!=undefined && this.$refs.tableSelect.offsetHeight)?this.$refs.tableSelect.offsetHeight:0
+                let searchBarHeight = (this.$refs.tableSelect!=undefined && this.$refs.tableSelect.offsetHeight)?this.$refs.tableSelect.offsetHeight:0
                 const tableToolbarHeight = (this.$refs.tableToolBar!=undefined && this.$refs.tableToolBar.offsetHeight)?this.$refs.tableToolBar.offsetHeight:0
+                searchBarHeight = this.isFull?searchBarHeight - 110:searchBarHeight
                 this.tableHeight =  getTableHeight(searchBarHeight+tableToolbarHeight)
             }
 

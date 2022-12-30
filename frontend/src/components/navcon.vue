@@ -28,9 +28,6 @@
                     <el-icon style="font-size: 16px;color: white;"><Minus /></el-icon>
                 </el-tooltip>
             </span>
-            <span style="margin-right: 20px;">
-                <el-color-picker v-model="colorPrimary" :predefine="colorList" size="small" @change="setColorPrimary"></el-color-picker>
-            </span>
             <span style="margin-right: 20px;"  @click="setSiteTheme">
                 <el-tooltip
                     class="box-item"
@@ -41,10 +38,9 @@
                     <el-icon style="font-size: 16px;color: white;" v-if="siteThemeStore.siteTheme == 'dark'"><Moon /></el-icon>
                 </el-tooltip>
             </span>
-<!--            <el-sub-menu index="1-1-1-1" class="submenu" style="width:auto;">-->
-<!--                <template #title class="el-title">你好,{{userName}}</template>-->
-<!--                <el-menu-item @click="exit">退出</el-menu-item>-->
-<!--            </el-sub-menu>-->
+            <span style="margin-right: 20px;">
+                <el-color-picker v-model="colorPrimary" :predefine="colorList" size="small" @change="setColorPrimary"></el-color-picker>
+            </span>
           <span>
               <el-dropdown trigger="hover" class="right-dropdown-center">
                 <span class="el-dropdown-link">

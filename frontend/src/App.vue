@@ -35,4 +35,20 @@
   .lymain-maximize-exit {display: none;position: fixed;z-index: 3000;top:-20px;left:50%;margin-left: -20px;border-radius: 50%;width: 40px;height: 40px;cursor: pointer;background: rgba(0,0,0,0.2);text-align: center;}
   .lymain-maximize-exit i {font-size: 14px;margin-top: 22px;color: #fff;}
   .lymain-maximize-exit:hover {background: rgba(0,0,0,0.4);}
+
+  // 移动端样式覆盖
+  @media (max-width: 992px){
+    .el-form-item {display: block;}
+    .el-form-item__label {display: block;text-align: left;padding: 0 0 10px;}
+    .el-dialog {width: 90%!important;}
+    .el-dialog.is-fullscreen {width: 100%!important;}
+    .el-drawer.rtl {width: 90%!important;}
+    .el-form-item__content {margin-left: 0px!important;}
+
+    .lyPagination-page {
+        .el-pagination__total,
+        .el-pagination__jump,
+        .el-pagination__sizes {display: none!important;}
+    }
+  }
 </style>

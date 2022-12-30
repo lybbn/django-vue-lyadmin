@@ -128,6 +128,7 @@
         methods:{
             setFull(){
                 this.isFull=!this.isFull
+                window.dispatchEvent(new Event('resize'))
             },
             // 表格序列号
             getIndex($index) {

@@ -123,6 +123,7 @@
             },
             setFull(){
                 this.isFull=!this.isFull
+                window.dispatchEvent(new Event('resize'))
             },
             changeStatus(row) {
                 // console.log(row,'row----')
@@ -247,7 +248,9 @@
 				})
 			},
             getTheTableHeight(){
-               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+                let tabSelectHeight = this.$refs.tableSelect?this.$refs.tableSelect.offsetHeight:0
+                tabSelectHeight = this.isFull?tabSelectHeight - 110:tabSelectHeight
+                this.tableHeight =  getTableHeight(tabSelectHeight)
             }
 
         },

@@ -105,6 +105,7 @@
             },
             setFull(){
                 this.isFull=!this.isFull
+                window.dispatchEvent(new Event('resize'))
             },
             addModule() {
                 this.$refs.addModuleFlag.addModuleFn(null,'新增')
@@ -177,7 +178,9 @@
 				})
 			},
             getTheTableHeight(){
-               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+                let tabSelectHeight = this.$refs.tableSelect?this.$refs.tableSelect.offsetHeight:0
+                tabSelectHeight = this.isFull?tabSelectHeight - 110:tabSelectHeight
+                this.tableHeight =  getTableHeight(tabSelectHeight)
             }
         },
         created() {

@@ -24,7 +24,7 @@
             <el-table-column min-width="150" prop="create_datetime" label="创建时间"></el-table-column>
             <el-table-column label="操作" fixed="right" width="180">
                 <template #header>
-                    <el-button size="default" @click="addModule" type="primary" v-show="isShowBtn('carouselSettingsimg','轮播图设置','Create')">新增</el-button>
+                    <el-button  size="small" @click="addModule" type="primary" v-show="isShowBtn('carouselSettingsimg','轮播图设置','Create')">新增</el-button>
                 </template>
                 <template #default="scope">
                     <!--v-show="isShowBtn('dynamicsInfo','平台图片设置','Update')"-->

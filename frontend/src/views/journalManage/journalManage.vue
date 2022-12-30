@@ -106,6 +106,7 @@
         methods:{
             setFull(){
                 this.isFull=!this.isFull
+                window.dispatchEvent(new Event('resize'))
             },
             // 表格序列号
             getIndex($index) {
@@ -202,7 +203,9 @@
 				})
 			},
             getTheTableHeight(){
-               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+                let tabSelectHeight = this.$refs.tableSelect?this.$refs.tableSelect.offsetHeight:0
+                tabSelectHeight = this.isFull?tabSelectHeight - 110:tabSelectHeight
+                this.tableHeight =  getTableHeight(tabSelectHeight)
             }
         },
         mounted() {
@@ -215,16 +218,6 @@
         unmounted() {
               // 页面销毁，去掉监听事件
             window.removeEventListener("resize", this.listenResize);
-        },
-        timers(val){
-            if (val) {
-                this.formInline.beginAt=dateFormats(val[0],'yyyy-MM-dd hh:mm:ss');
-                this.formInline.endAt=dateFormats(val[1],'yyyy-MM-dd hh:mm:ss');
-            } else {
-                this.formInline.beginAt = ''
-                this.formInline.endAt = ''
-            }
-            this.getData()
         },
     }
 </script>

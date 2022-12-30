@@ -1,8 +1,7 @@
 <template>
-  <el-row>
-    <el-pagination class="page-box" @size-change="handleSizeChange" @current-change="handleCurrentChange" background :current-page="childMsg.page" :page-sizes="pageOptions.pageSizes?pageOptions.pageSizes:[10,20,30,40,50,100]" :page-size="childMsg.limit" :layout="pageOptions.layout?pageOptions.layout:'total, sizes, prev, pager, next, jumper'" :total="childMsg.total">
-    </el-pagination>
-  </el-row>
+  <div class="lyPagination-page">
+    <el-pagination class="page-box" @size-change="handleSizeChange" @current-change="handleCurrentChange" background :current-page="childMsg.page" :page-sizes="pageOptions.pageSizes?pageOptions.pageSizes:[10,20,30,40,50,100]" :page-size="childMsg.limit" :layout="pageOptions.layout?pageOptions.layout:'total, sizes, prev, pager, next, jumper'" :total="childMsg.total"></el-pagination>
+  </div>
 </template>
 <script>
   export default {
@@ -31,8 +30,13 @@
 </script>
 
 <style lang="scss" scoped>
+  .lyPagination-page{
+    display: flex;
+    align-items: center;
+    background: var(--el-fill-color-blank);
+  }
   .page-box {
-    margin: 20px auto;
+    margin: 12px auto;
     text-align: center;
     .el-pagination__editor.el-input{
       width: 70px !important;

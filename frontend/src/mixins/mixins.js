@@ -18,6 +18,7 @@ export const lyMixins = {
             if(this.$refs.orderStatic && this.$refs.orderStatic !==undefined){
                 orderstaticHeight = this.$refs.orderStatic.offsetHeight
             }
+            orderstaticHeight = this.isFull?orderstaticHeight - 110:orderstaticHeight
             this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight+orderstaticHeight)
         }
     },

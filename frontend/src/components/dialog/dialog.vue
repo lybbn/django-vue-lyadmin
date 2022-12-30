@@ -62,7 +62,7 @@
             },
             center: {
               type: Boolean,
-              default: true
+              default: false
             },
             top: {
               type: String,
