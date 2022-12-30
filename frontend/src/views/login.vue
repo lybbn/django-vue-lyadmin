@@ -1,6 +1,9 @@
 <template>
     <div class="lyouters">
       <canvas id="lyadmincanvas" @click.stop="handleAnimationState()"></canvas>
+      <div class="login-config">
+          <el-button :icon="siteThemeStore.siteTheme == 'light'?'sunny':'moon'" circle type="info" @click="setSiteTheme"></el-button>
+      </div>
       <div class="login-wrap box" :style="{'--animationState':animationState}">
         <el-form label-position="left" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm login-container">
             <h3 class="title">
@@ -12,9 +15,9 @@
             </h3>
           <el-form-item prop="username">
             <el-input type="text" size="large" style="font-size: 16px" v-model.trim="ruleForm.username" auto-complete="off" placeholder="账号" maxlength="60">
-                  <template #prepend>
-                      <el-icon :size="20"><User /></el-icon>
-                  </template>
+              <template #prepend>
+                  <el-icon :size="20"><User /></el-icon>
+              </template>
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
@@ -50,12 +53,14 @@
   import {systemTree} from "@/utils/menuTree.js"
   import {delCookie, getCookie, setCookie} from '../utils/util'
   import {useMutitabsStore} from "@/store/mutitabs";
+  import {useSiteThemeStore} from "@/store/siteTheme";
 
   export default {
     name: 'login',
     setup(){
         const mutitabsstore = useMutitabsStore()
-        return { mutitabsstore}
+        const siteThemeStore = useSiteThemeStore()
+        return { mutitabsstore,siteThemeStore }
     },
     data() {
       return {
@@ -132,6 +137,14 @@
           next()
       },
       methods: {
+        //设置主题
+        setSiteTheme(){
+            if(this.siteThemeStore.siteTheme=='light'){
+                this.siteThemeStore.setSiteTheme('dark')
+            }else{
+                this.siteThemeStore.setSiteTheme('light')
+            }
+        },
         handleAnimationState(){
           if(this.animationState === 'paused'){
             this.animationState = 'running'
@@ -445,11 +458,11 @@
         }
     }
     ::v-deep(.el-input-group__append){
-        background-color: #ffffff !important;
+        background-color: var(--el-bg-color)  !important;
         width: 70px;
     }
     ::v-deep(.el-input-group__prepend){
-        background-color: #ffffff !important;
+        background-color: var(--el-bg-color) !important;
         .el-icon{
             color: var(--el-color-primary);
         }
@@ -458,6 +471,11 @@
         width: 100%;
         height: 100%;
    }
+   .login-config{
+       position: absolute;
+       top:20px;
+       right: 20px;
+   }
    .login-logo{
         overflow: hidden;
         width: 100px;
@@ -465,7 +483,7 @@
         border-radius: 50%;
         -webkit-box-shadow: 0 4px 40px rgb(0 0 0 / 7%);
         box-shadow: 0 4px 40px rgb(0 0 0 / 7%);
-        background-color: #fff;
+        background-color: var(--el-bg-color);
         z-index: 10;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
@@ -521,7 +539,7 @@
     margin: 0 auto;
     display: flex;
     border-radius: 8px;
-    background: #FFFFFF;
+    background: var(--el-bg-color);
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.08);
     .login-container1{
       width: 510px;
@@ -592,7 +610,7 @@
         font-size: 24px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
-        color: #FFFFFF;
+        color: var(--el-bg-color);
       }
     }
   }
@@ -623,7 +641,7 @@
     .box {
         width: 450px;
         height: 520px;
-        background: #ffffff;
+        background: var(--el-bg-color);
         overflow: hidden;
         border-radius: 10px;
     }
