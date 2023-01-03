@@ -170,6 +170,9 @@
             }
         },
         methods:{
+            setFull(){
+                this.$refs.lycrud.setFull()
+            },
             //自定义操作列按钮方法
             handleClick(row,flag){
                 let vm = this
