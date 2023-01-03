@@ -254,8 +254,9 @@
         },
         // 配置的行删除
         onDelRow (obj) {
-            platformsettingsSysconfigDelete(obj.id).then(res => {
+            platformsettingsSysconfigDelete({id:obj.id}).then(res => {
                 if(res.code == 2000){
+                    this.$message.success(res.msg)
                     this.getInit()
                 }else{
                     this.$message.warning(res.msg)
