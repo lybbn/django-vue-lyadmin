@@ -35,7 +35,11 @@
 <!--                    <el-image  :src=scope.row.image :preview-src-list="[scope.row.image]" style="width: 60px;height: 60px"></el-image>-->
 <!--                </template>-->
 <!--            </el-table-column>-->
-            <el-table-column min-width="180" prop="msg_content" show-overflow-tooltip label="内容"></el-table-column>
+            <el-table-column min-width="180" prop="msg_content" show-overflow-tooltip label="内容">
+                <template #default="scope">
+                    <div v-html="customEllipsis(scope.row.msg_content)" class="ellipsis"></div>
+               </template>
+            </el-table-column>
 <!--            <el-table-column min-width="80" prop="sort" label="排序"></el-table-column>-->
             <el-table-column min-width="90" label="是否发布">
                 <template #default="scope">
@@ -106,6 +110,15 @@
             setFull(){
                 this.isFull=!this.isFull
                 window.dispatchEvent(new Event('resize'))
+            },
+            //当渲染的文字超出10字后显示省略号
+            customEllipsis(value) {
+                value = value.replace(/<.*?>/ig,"")       //把v-html的格式标签替换掉
+                if(!value) return ""
+                if (value.length > 10) {
+                    return value.slice(0, 10) + "..."
+                }
+                return value
             },
             addModule() {
                 this.$refs.addModuleFlag.addModuleFn(null,'新增')
