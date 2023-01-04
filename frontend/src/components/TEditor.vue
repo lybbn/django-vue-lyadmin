@@ -59,10 +59,11 @@ export default {
         })
          window.addEventListener("focusin", onFocusIn,true);
     })
-      onUnmounted(()=>{
-          tinymce.remove()
-          window.removeEventListener("focusin", onFocusIn);
-      })
+
+    onUnmounted(()=>{
+      // tinymce.remove()
+      window.removeEventListener("focusin", onFocusIn);
+    })
 
 
     // 侦听文本变化并传给外界
