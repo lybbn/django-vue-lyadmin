@@ -13,7 +13,7 @@
 
 django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台（内置简易商城模块），去繁从简、还你一个干净的后台管理系统
 
-* 前端采用Vue3（elementplus 2.2.21 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
+* 前端采用Vue3（elementplus 2.2.28 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
 * 前端支持面向配置的CRUD和自定义页面的CRUD双开发模式
 * DashBoard： 数据分析查看
 * 计划任务（定时任务，运维能力），django-celery-beat 定时任务
