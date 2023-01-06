@@ -62,14 +62,14 @@ class SystemConfigCreateSerializer(CustomModelSerializer):
             raise ValueError('已存在相同变量名')
         return value
 
-class SystemConfigChinldernSerializer(CustomModelSerializer):
+class SystemConfigChildrenSerializer(CustomModelSerializer):
     """
     系统配置子级-序列化器
     """
-    chinldern = serializers.SerializerMethodField()
+    children = serializers.SerializerMethodField()
     form_item_type_label = serializers.CharField(source='get_form_item_type_display', read_only=True)
 
-    def get_chinldern(self, instance):
+    def get_children(self, instance):
         queryset = SystemConfig.objects.filter(parent=instance)
         serializer = SystemConfigSerializer(queryset, many=True)
         return serializer.data
@@ -92,7 +92,7 @@ class SystemConfigViewSet(CustomModelViewSet):
     系统配置接口
     """
     queryset = SystemConfig.objects.order_by('sort', 'create_datetime')
-    serializer_class = SystemConfigChinldernSerializer
+    serializer_class = SystemConfigChildrenSerializer
     create_serializer_class = SystemConfigCreateSerializer
     update_serializer_class = SystemConfigCreateSerializer
     filter_class = SystemConfigFilter

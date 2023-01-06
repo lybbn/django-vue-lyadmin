@@ -193,7 +193,7 @@
                         that.$nextTick(() => {
                             const tableName = 'xTable_' + key
                             const $table = this.$refs[tableName][0]
-                            $table.loadData(item.chinldern)
+                            $table.loadData(item.children)
                         })
                     }
                 }
