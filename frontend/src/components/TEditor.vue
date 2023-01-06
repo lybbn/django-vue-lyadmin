@@ -1,6 +1,6 @@
 <template>
   <div class="my-tinymce">
-     <Editor v-model="contentValue" :init="myInit" />
+     <Editor v-model="contentValue" :init="myInit"/>
   </div>
 </template>
 
@@ -14,7 +14,8 @@ import tinymce from 'tinymce/tinymce' // tinymce默认hidden，不引入则不�
 // 导入配置文件
 import './teditorjs/importTinymce'
 import { init } from './teditorjs/config'
-let token = localStorage.getItem('logintoken')
+import {setStorage,getStorage} from '@/utils/util'
+let token = getStorage('logintoken')
 
 export default {
   name: 'tEditor',
@@ -43,7 +44,12 @@ export default {
     imgUploadUrl: {
       type: String,
       default: ''
-    }
+    },
+    // 是否隐藏
+    hidden: {
+      type: Boolean,
+      default: false
+    },
   },
   setup (props, { emit }) {
     const state = reactive({
@@ -51,20 +57,17 @@ export default {
       contentValue: props.modelValue, // 绑定文本
       timeout: null,
     })
-    token = localStorage.getItem('logintoken')
+    token = getStorage('logintoken')
 
     onMounted(() => {
-        nextTick(()=>{
-            tinymce.init({})
-        })
-         window.addEventListener("focusin", onFocusIn,true);
+      tinymce.init({})
+      window.addEventListener("focusin", onFocusIn,true);
     })
 
     onUnmounted(()=>{
-      // tinymce.remove()
-      window.removeEventListener("focusin", onFocusIn);
+        // tinymce.remove()
+        window.removeEventListener("focusin", onFocusIn);
     })
-
 
     // 侦听文本变化并传给外界
     watch(() => state.contentValue, (n) => {

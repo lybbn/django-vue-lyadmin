@@ -5,6 +5,7 @@ import { uniqueId } from 'lodash'
 import { request } from '@/api/service'
 import XEUtils from 'xe-utils'
 import { frameInRoutes } from '@/router/routes'
+import {setStorage,getStorage} from '@/utils/util'
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
 /**
  * @description 给菜单数据补充上 path 字段
@@ -70,7 +71,7 @@ export const getMenu = function (self) {
   }).then((res) => {
     // 设置动态路由
     const menuData = res.data.data
-    localStorage.setItem('menuData', JSON.stringify(menuData))
+    setStorage('menuData', JSON.stringify(menuData))
     return menuData
   })
 }

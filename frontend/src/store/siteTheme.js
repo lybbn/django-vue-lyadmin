@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia'
 import colorTool from '@/utils/color'
+import {setStorage,getStorage} from '@/utils/util'
+import config from "@/config"
 
 export const useSiteThemeStore = defineStore('siteTheme', {
     state:() => {
         return {
             //控制主题:light正常模式、dark暗黑模式
-            siteTheme:localStorage.getItem('siteTheme')?localStorage.getItem('siteTheme'):"light",
-            colorPrimary:localStorage.getItem('colorPrimary')?localStorage.getItem('colorPrimary'):"#409EFF",
+            siteTheme:getStorage('siteTheme')?getStorage('siteTheme'):config.THEME,
+            colorPrimary:getStorage('colorPrimary')?getStorage('colorPrimary'):config.COLOR,
         }
     },
     getters:{
@@ -14,7 +16,7 @@ export const useSiteThemeStore = defineStore('siteTheme', {
     actions: {
         setSiteTheme(val) {
             this.siteTheme = val;
-            localStorage.setItem('siteTheme',val);
+            setStorage('siteTheme',val);
             if (this.siteTheme === 'dark') {
                 document.documentElement.classList.add('dark')
             } else {
@@ -23,7 +25,7 @@ export const useSiteThemeStore = defineStore('siteTheme', {
         },
         setColorPrimary(val) {
             this.colorPrimary = val;
-            localStorage.setItem('colorPrimary',val);
+            setStorage('colorPrimary',val);
             if(this.colorPrimary){
                 document.documentElement.style.setProperty('--el-color-primary', this.colorPrimary);
                 for (let i = 1; i <= 9; i++) {

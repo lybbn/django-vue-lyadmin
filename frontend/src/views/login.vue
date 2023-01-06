@@ -54,6 +54,7 @@
   import {delCookie, getCookie, setCookie} from '../utils/util'
   import {useMutitabsStore} from "@/store/mutitabs";
   import {useSiteThemeStore} from "@/store/siteTheme";
+  import {setStorage,getStorage} from '@/utils/util'
 
   export default {
     name: 'login',
@@ -350,7 +351,7 @@
                   menuPermission:item.menuPermission
                 })
               })
-              localStorage.setItem('menuList', JSON.stringify(menuList))
+              setStorage('menuList', JSON.stringify(menuList))
             }
             // console.log(menuTree,'menuTree-----')
             this.allmenu =  menuTree
@@ -367,7 +368,7 @@
                this.$message.warning('暂无授权任何菜单权限~')
             }
 
-            localStorage.setItem('allmenu', JSON.stringify(this.allmenu))
+            setStorage('allmenu', JSON.stringify(this.allmenu))
             //优化首次登录第一个标签显示问题
             let tabsPage = ""
             let TabsValue = ""

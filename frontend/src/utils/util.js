@@ -1,3 +1,4 @@
+import appConfig from '@/config'
 /**
  * 时间戳
  * @param {*} timestamp  时间戳
@@ -209,9 +210,15 @@ const commonVal = {
   isAgentAccount:/^[a-zA-Z0-9]+$/, //agentAccount
   isEmail: /^([a-zA-Z0-9]+[|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[|_|.]?)*[a-zA-Z0-9]+.[a-zA-Z]{2,3}$/
 }
-
+function setStorage(key,data){
+  appConfig.STORAGE_METHOD === "localStorage" ? localStorage.setItem(key,data):sessionStorage.setItem(key,data)
+}
+function getStorage(key){
+  const result =  appConfig.STORAGE_METHOD === "localStorage" ? localStorage.getItem(key):sessionStorage.getItem(key)
+  return result
+}
 function isShowBtn(url,moduleName, btnName) {
-  let btnArr = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')):[];
+  let btnArr = getStorage('menuList')?JSON.parse(getStorage('menuList')):[];
   let isshow = false;
   for (var i = 0; i < btnArr.length; i++) {
     let item = btnArr[i];
@@ -224,7 +231,7 @@ function isShowBtn(url,moduleName, btnName) {
 }
 
 function hasPermission(url,btnName) {
-  let btnArr = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')):[];
+  let btnArr = getStorage('menuList')?JSON.parse(getStorage('menuList')):[];
   let isshow = false;
   for (var i = 0; i < btnArr.length; i++) {
     let item = btnArr[i];
@@ -250,6 +257,12 @@ function getTableHeight(tableSelectHeight){
     else {
         return height - pagination_height
     }
+}
+function deepClone(data){
+   if(data){
+      return JSON.parse(JSON.stringify(data))
+   }
+   return data
 }
 
 // 图片上传根据名称排序
@@ -323,5 +336,8 @@ export{
     sortName,
     formatUnitSize,
     downloadFileURLByA,
-    downloadFileURLByIframe
+    downloadFileURLByIframe,
+    deepClone,
+    setStorage,
+    getStorage
 }

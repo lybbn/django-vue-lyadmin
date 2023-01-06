@@ -6,6 +6,12 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin');
 // 定义压缩文件类型
 const productionGzipExtensions = ['js', 'css'];
 
+// 拼接路径
+const resolve = dir => path.join(__dirname, dir)
+
+const appConfig = require("./src/config/index.js")
+
+
 module.exports = {
 	assetsDir:'static',//表示打包后，静态资源生成到static文件夹中
 	publicPath:'./',
@@ -37,11 +43,19 @@ module.exports = {
 	},
 	//解决富文本编辑器报错imports失败
     chainWebpack: config => {
+		config.plugins.delete('prefetch').delete('preload')
+		// 解决 cli3 热更新失效 https://github.com/vuejs/vue-cli/issues/1559
+		config.resolve.symlinks(true)
         config.plugin('provide').use(webpack.ProvidePlugin, [
         	{
             	'window.Quill': 'quill'
         	}
         ])
+		config.plugin("html").tap((args) => {
+			args[0].title = appConfig.APP_TITLE;
+			return args;
+		})
+
     },
 
 	// resolve: {

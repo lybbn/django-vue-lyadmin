@@ -42,6 +42,7 @@
     import {useKeepAliveStore} from "@/store/keepAlive";
     import {useMutitabsStore} from "@/store/mutitabs";
     import {useSiteThemeStore} from "@/store/siteTheme";
+    import {setStorage,getStorage} from '@/utils/util'
 
     export default {
         name: "mutitabs",
@@ -71,9 +72,9 @@
               }
             });
             //刷新加载localStorage存着地址
-            let lytabsPage = localStorage.getItem("tabsPage")
+            let lytabsPage = getStorage("tabsPage")
             if (lytabsPage) {
-                var TabsValue = localStorage.getItem("TabsValue");
+                var TabsValue = getStorage("TabsValue");
                 if (lytabsPage === "[]"||lytabsPage==""||lytabsPage==null || TabsValue === 'login') {
                     this.relogin()//重新登录
                 }
@@ -85,8 +86,6 @@
                 }else{
                     this.mutitabsstore.switchtabNoRoute(currentRouteName)
                 }
-
-
             }else{
                 this.relogin()//重新登录
             }
@@ -150,10 +149,10 @@
                 this.editableTabsValue = activeName;
                 this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
                 this.mutitabsstore.tabsPage = this.editableTabs;
-                window.localStorage.setItem("tabsPage",JSON.stringify(this.editableTabs));
+                setStorage("tabsPage",JSON.stringify(this.editableTabs));
                 //解决刷新消失
-                window.localStorage.setItem("TabsValue", activeName);
-                var thetabsPage = localStorage.getItem("tabsPage")
+                setStorage("TabsValue", activeName);
+                var thetabsPage = getStorage("tabsPage")
                 // 删除时跳转不在停留被删除页
                 if (thetabsPage === "[]"||thetabsPage==""||thetabsPage==null) {
                     this.relogin()

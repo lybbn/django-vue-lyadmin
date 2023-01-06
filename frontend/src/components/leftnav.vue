@@ -75,6 +75,7 @@
     import XEUtils from 'xe-utils'
     import {useMutitabsStore} from "@/store/mutitabs";
     import { useRouter,useRoute,onBeforeRouteUpdate } from 'vue-router';
+    import {setStorage,getStorage} from '@/utils/util'
 
     let bus = getCurrentInstance().appContext.config.globalProperties.$Bus; // 声明$Bus
     const mutitabsStore = useMutitabsStore()
@@ -91,7 +92,7 @@
         allmenu.value=[]
 
         //动态加载菜单
-        allmenu.value = JSON.parse(localStorage.getItem('allmenu'))
+        allmenu.value = JSON.parse(getStorage('allmenu'))
     }
 
     onMounted(()=>{

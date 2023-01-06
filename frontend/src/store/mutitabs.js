@@ -1,20 +1,22 @@
 import { defineStore } from 'pinia'
 import router from "../router";
+import config from "@/config"
+import {setStorage,getStorage} from '@/utils/util'
 
 export const useMutitabsStore = defineStore('mutitabs', {
     state:() => {
         return {
-            userId: localStorage.getItem('userId') || '' ,
-            logintoken:localStorage.getItem('logintoken')|| '',
-            userName:localStorage.getItem('userName')|| '',
-            refresh:localStorage.getItem('refresh')|| '',
+            userId: getStorage('userId') || '' ,
+            logintoken:getStorage('logintoken')|| '',
+            userName:getStorage('userName')|| '',
+            refresh:getStorage('refresh')|| '',
             //mutitabs
             // tabsPage: sessionStorage.getItem('tabsPage')||[{"title":"管理员管理","name":"adminManage"}],//默认显示的页
             // TabsValue: sessionStorage.getItem('TabsValue')||'adminManage',//默认选中显示的标签页
-            tabsPage: localStorage.getItem('tabsPage')||[],//默认显示的页
-            TabsValue: localStorage.getItem('TabsValue')||'',//默认选中显示的标签页
+            tabsPage: getStorage('tabsPage')||[],//默认显示的页
+            TabsValue: getStorage('TabsValue')||'',//默认选中显示的标签页
             //控制是否支持多选项卡
-            isMultiTabs:true,
+            isMultiTabs:config.ISMULTITABS,
             isFullscreen:false,//是否全屏
         }
     },
@@ -22,25 +24,25 @@ export const useMutitabsStore = defineStore('mutitabs', {
         // 登录
         getUserId(state) {
               if(!state.userId){
-                  state.userId = localStorage.getItem('userId')
+                  state.userId = getStorage('userId')
               }
               return state.userId
         },
         getLogintoken(state) {
               if(!state.logintoken){
-                  state.logintoken = localStorage.getItem('logintoken')
+                  state.logintoken = getStorage('logintoken')
               }
               return state.logintoken
         },
         getUserName(state) {
               if(!state.userName){
-                    state.userName = localStorage.getItem('userName')
+                    state.userName = getStorage('userName')
               }
             return state.userName
         },
         getRefresh(state) {
               if(!state.refresh){
-                    state.refresh = localStorage.getItem('refresh')
+                    state.refresh = getStorage('refresh')
               }
               return state.refresh
         },
@@ -49,19 +51,19 @@ export const useMutitabsStore = defineStore('mutitabs', {
         // 登录
         setUserId(val) {
             this.userId = val;
-            localStorage.userId = val;
+            setStorage('userId',val)
         },
         setLogintoken(val) {
             this.logintoken = val;
-            localStorage.logintoken = val;
+            setStorage('logintoken',val)
         },
         setUserName(val) {
             this.userName = val;
-            localStorage.userName = val;
+            setStorage('userName',val)
         },
         setRefresh(val) {
             this.refresh = val;
-            localStorage.refresh = val;
+            setStorage('refresh',val)
         },
         // 退出
         logout(val) {
@@ -80,11 +82,11 @@ export const useMutitabsStore = defineStore('mutitabs', {
         firstTabs(datas){
             if(this.tabsPage.length==0){
                 this.tabsPage=datas[0]
-                localStorage.setItem("tabsPage", JSON.stringify(this.tabsPage))
+                setStorage("tabsPage", JSON.stringify(this.tabsPage))
             }
             if(this.TabsValue=="") {
                 this.TabsValue = datas[1]
-                localStorage.setItem("TabsValue", this.TabsValue)
+                setStorage("TabsValue", this.TabsValue)
             }
 
         },
@@ -108,8 +110,8 @@ export const useMutitabsStore = defineStore('mutitabs', {
               // 赋值给tabsPage参数
               this.tabsPage = arr
               // 存储localStorage -- 解决刷新消失
-              localStorage.setItem('tabsPage', JSON.stringify(arr))
-              localStorage.setItem('TabsValue', obj.attributes.url)
+              setStorage('tabsPage', JSON.stringify(arr))
+              setStorage('TabsValue', obj.attributes.url)
               // 赋值给TabsValue参数
               this.TabsValue = obj.attributes.url
               // 跳转
@@ -117,7 +119,7 @@ export const useMutitabsStore = defineStore('mutitabs', {
             } else { // 如果存在 只做跳转选中
               // 赋值给TabsValue参数
               this.TabsValue = obj.attributes.url
-              localStorage.setItem('TabsValue', obj.attributes.url)
+              setStorage('TabsValue', obj.attributes.url)
               // 跳转
               router.push({ name: obj.attributes.url })
             }
@@ -137,14 +139,14 @@ export const useMutitabsStore = defineStore('mutitabs', {
          //切换tab菜单(没有标签则重新创建)
         switchtab(curContextTabName){
             this.TabsValue = curContextTabName
-            localStorage.setItem('TabsValue', curContextTabName)
+            setStorage('TabsValue', curContextTabName)
             var arr = this.tabsPage
             if (Object.prototype.toString.call(arr) === '[object String]') {
                 // 字符串需要转换
                 arr = JSON.parse(arr);
             }
             if(!arr.some(item => item.name === curContextTabName)){
-                var menuList = JSON.parse(localStorage.getItem('menuList'))
+                var menuList = JSON.parse(getStorage('menuList'))
                 var curContextTabObj = menuList.filter(item=>item.url === curContextTabName)
                 if(curContextTabObj.length>0){
                     // 将tabs所需参数push进arr数组
@@ -152,7 +154,7 @@ export const useMutitabsStore = defineStore('mutitabs', {
                     // 赋值给tabsPage参数
                     this.tabsPage = arr
                     // 存储localStorage -- 解决刷新消失
-                    localStorage.setItem('tabsPage', JSON.stringify(arr))
+                    setStorage('tabsPage', JSON.stringify(arr))
                 }
             }
             router.push({ name: curContextTabName });
@@ -167,9 +169,9 @@ export const useMutitabsStore = defineStore('mutitabs', {
                     arr = JSON.parse(arr);
                 }
                 if(!arr.some(item => item.name === curContextTabName)){
-                    var menuList = localStorage.getItem('menuList')
+                    var menuList = getStorage('menuList')
                     if(menuList){
-                        menuList = JSON.parse(localStorage.getItem('menuList'))
+                        menuList = JSON.parse(getStorage('menuList'))
                         if(menuList.length>0){
                             var curContextTabObj = menuList.filter(item=>item.url === curContextTabName)
                             if(curContextTabObj.length>0){
@@ -177,9 +179,9 @@ export const useMutitabsStore = defineStore('mutitabs', {
                                 arr.push({ title: curContextTabObj[0].moduleName, name: curContextTabName })
                                 // 赋值给tabsPage参数
                                 this.tabsPage = arr
-                                localStorage.setItem('TabsValue', curContextTabName)
+                                setStorage('TabsValue', curContextTabName)
                                 // 存储localStorage -- 解决刷新消失
-                                localStorage.setItem('tabsPage', JSON.stringify(arr))
+                                setStorage('tabsPage', JSON.stringify(arr))
                             }
                         }
                     }
@@ -200,8 +202,8 @@ export const useMutitabsStore = defineStore('mutitabs', {
             // router.push({ name: "adminManage"});
             let tempstate = this.tabsPage
             this.tabsPage = [tempstate[0]]
-            localStorage.setItem('tabsPage', JSON.stringify(this.tabsPage))
-            localStorage.setItem('TabsValue', this.tabsPage[0].name)
+            setStorage('tabsPage', JSON.stringify(this.tabsPage))
+            setStorage('TabsValue', this.tabsPage[0].name)
             router.push({ name: this.tabsPage[0].name})
         },
         // 关闭其它标签页
@@ -219,20 +221,20 @@ export const useMutitabsStore = defineStore('mutitabs', {
           if (par == "left") {
             if (id >= 0) {
                 this.tabsPage = this.tabsPage.slice(id, length)
-                localStorage.setItem('tabsPage', JSON.stringify(this.tabsPage))
+                setStorage('tabsPage', JSON.stringify(this.tabsPage))
             }
           }
           if (par == "right") {
             if (id >= 0) {
                 this.tabsPage = this.tabsPage.slice(0, id + 1)
-                localStorage.setItem('tabsPage', JSON.stringify(this.tabsPage))
+                setStorage('tabsPage', JSON.stringify(this.tabsPage))
             }
           }
           if (par == "other") {
               this.tabsPage = [tabs[id]]
               this.TabsValue = tabs[id].name
-              localStorage.setItem('tabsPage', JSON.stringify(this.tabsPage))
-              localStorage.setItem('TabsValue', this.TabsValue)
+              setStorage('tabsPage', JSON.stringify(this.tabsPage))
+              setStorage('TabsValue', this.TabsValue)
           }
         },
     },
