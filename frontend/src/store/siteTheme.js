@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import colorTool from '@/utils/color'
 import {setStorage,getStorage} from '@/utils/util'
 import config from "@/config"
+import i18n from '@/locales'
 
 export const useSiteThemeStore = defineStore('siteTheme', {
     state:() => {
@@ -9,6 +10,14 @@ export const useSiteThemeStore = defineStore('siteTheme', {
             //控制主题:light正常模式、dark暗黑模式
             siteTheme:getStorage('siteTheme')?getStorage('siteTheme'):config.THEME,
             colorPrimary:getStorage('colorPrimary')?getStorage('colorPrimary'):config.COLOR,
+            //语言
+            language:getStorage('language')?getStorage('language'):config.LANG,
+            // elementplus 组件大小： small、default、large
+            elementSize: getStorage('elementSize')?getStorage('elementSize'):config.ELEMENT_SIZE,
+            // elementplus 组件 zIndex
+            elementzIndex: getStorage('elementzIndex')?getStorage('elementzIndex'):config.ELEMENT_ZINDEX,
+            // elementplus button组件 autoInsertSpace 是否自动在两个中文字符之间插入空格
+            elementButton: getStorage('elementButton')?getStorage('elementButton'):config.ELEMENT_BUTTON,
         }
     },
     getters:{
@@ -35,6 +44,23 @@ export const useSiteThemeStore = defineStore('siteTheme', {
                     document.documentElement.style.setProperty(`--el-color-primary-dark-${i}`, colorTool.darken(this.colorPrimary,i/10));
                 }
             }
+        },
+        setLanguage(val){
+            this.language = val
+            i18n.global.locale.value = val;
+            setStorage('language',val);
+        },
+        setElementSize(val){
+            this.elementSize = val
+            setStorage('elementSize',val);
+        },
+        setElementzIndex(val){
+            this.elementzIndex = val
+            setStorage('elementzIndex',val);
+        },
+        setElementButton(val){
+            this.elementButton = val
+            setStorage('elementButton',val);
         },
     },
 })

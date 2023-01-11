@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 //引入ElementPlus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import i18n from './locales'
 // 统一导入el-icon图标
 import * as Icons from '@element-plus/icons-vue'
 //引入ElementPlus 结束
@@ -54,11 +54,8 @@ Object.keys(Icons).forEach((key) => {
 // //进入自定义指令
 import directivePlugin from '@/utils/directive.js'
 
-app.use(ElementPlus,{
-  size: 'default',  // 默认控件尺寸default(其他large、small)
-  zIndex: 3000,  // 弹出组件的zIndex
-  locale: zhCn,
-})
+app.use(ElementPlus)
+app.use(i18n)
 app.use(store)
 app.use(router)
 app.use(VueAxios,axios)

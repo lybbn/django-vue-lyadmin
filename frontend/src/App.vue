@@ -1,9 +1,13 @@
 <template>
-  <router-view/>
+    <el-config-provider :locale="locale" :size="siteThemeStore.elementSize" :zIndex="siteThemeStore.elementzIndex">
+        <router-view></router-view>
+    </el-config-provider>
 </template>
 <script setup>
-    import {ref, onMounted,watch } from 'vue'
+    import {ref, onMounted,watch,computed } from 'vue'
     import {useSiteThemeStore} from "@/store/siteTheme";
+    import { useI18n } from "vue-i18n";
+    const i18n = useI18n();
 
     const siteThemeStore = useSiteThemeStore()
 
@@ -16,6 +20,10 @@
             document.documentElement.classList.remove('dark')
         }
         siteThemeStore.setColorPrimary(colorPrimary)
+    })
+
+    const locale = computed(()=>{
+        return i18n.messages.value[i18n.locale.value].el
     })
 </script>
 <style lang="scss">

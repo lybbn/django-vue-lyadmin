@@ -44,6 +44,7 @@ module.exports = {
 	//解决富文本编辑器报错imports失败
     chainWebpack: config => {
 		config.plugins.delete('prefetch').delete('preload')
+		config.resolve.alias.set('vue-i18n', 'vue-i18n/dist/vue-i18n.cjs.js');
 		// 解决 cli3 热更新失效 https://github.com/vuejs/vue-cli/issues/1559
 		config.resolve.symlinks(true)
         config.plugin('provide').use(webpack.ProvidePlugin, [

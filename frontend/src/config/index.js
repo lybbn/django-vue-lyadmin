@@ -15,8 +15,20 @@ module.exports = {
 	//是否开启多标签
 	ISMULTITABS: true,
 
-	//语言(暂未开发多语言切换)
+	//语言 简体中文 zh-cn、 英文 en（此功能只是示例）
 	LANG: 'zh-cn',
+
+	// elementplus 组件大小： small、default、large
+	ELEMENT_SIZE: 'default',
+
+	// elementplus 组件 zIndex
+	ELEMENT_ZINDEX: 3000,
+
+	// elementplus button组件 autoInsertSpace 是否自动在两个中文字符之间插入空格
+	ELEMENT_BUTTON: false,
+
+	//菜单默认是否折叠
+	MENU_IS_COLLAPSE: false,
 
 	//主题颜色
 	COLOR: '#409EFF',
