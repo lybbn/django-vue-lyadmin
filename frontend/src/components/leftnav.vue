@@ -13,7 +13,6 @@
       unique-opened
       class="el-menu-vertical-demo"
       background-color="var(--l-header-bg)"
-      active-background-color="var(--l-header-bg)"
       text-color="#ffffff"
       active-text-color="var(--el-color-primary)">
       <div v-if="menuTitle" class="menu-nav-title">
@@ -147,7 +146,8 @@
 }
 .el-menu-item.is-active {
   position: relative;
-  background-color: rgb(48, 54, 62) !important;
+  /*background-color: rgb(48, 54, 62) !important;*/
+  background-color: var(--l-main-sidebar-menu-active-bg) !important;
   &:before{
     width: 2px;
     height: 100%;

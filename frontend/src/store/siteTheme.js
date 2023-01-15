@@ -32,8 +32,10 @@ export const useSiteThemeStore = defineStore('siteTheme', {
             this.siteTheme = val;
             setStorage('siteTheme',val);
             if (this.siteTheme === 'dark') {
+                document.documentElement.style.setProperty('--l-header-bg', 'var(--el-bg-color)');
                 document.documentElement.classList.add('dark')
             } else {
+                document.documentElement.style.setProperty('--l-header-bg', this.menuHeaderColor);
                 document.documentElement.classList.remove('dark')
             }
         },
