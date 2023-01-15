@@ -12,14 +12,18 @@
     const siteThemeStore = useSiteThemeStore()
 
     const colorPrimary = siteThemeStore.colorPrimary
+    const menuHeaderColor = siteThemeStore.menuHeaderColor
 
     onMounted(()=>{
+
+        siteThemeStore.setColorPrimary(colorPrimary)
+
         if (siteThemeStore.siteTheme === 'dark') {
             document.documentElement.classList.add('dark')
         } else {
             document.documentElement.classList.remove('dark')
+            siteThemeStore.setMenuHeaderColor(menuHeaderColor)
         }
-        siteThemeStore.setColorPrimary(colorPrimary)
     })
 
     const locale = computed(()=>{

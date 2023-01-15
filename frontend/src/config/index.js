@@ -30,6 +30,9 @@ module.exports = {
 	//左侧菜单默认宽度 默认 185
 	MENU_WIDTH: 185,
 
+	// 左侧菜单和顶部导航颜色 默认 #3C444D
+	MENU_HEADER_COLOR:'#3C444D',
+
 	//主题颜色 默认 #409EFF
 	COLOR: '#409EFF',
 

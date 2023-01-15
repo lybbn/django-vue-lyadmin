@@ -20,7 +20,9 @@ export const useSiteThemeStore = defineStore('siteTheme', {
             // elementplus button组件 autoInsertSpace 是否自动在两个中文字符之间插入空格
             elementButton: getStorage('elementButton')?getStorage('elementButton'):config.ELEMENT_BUTTON,
             //菜单宽度
-            menuWidth:getStorage('menuWidth')?getStorage('menuWidth'):config.MENU_WIDTH
+            menuWidth:getStorage('menuWidth')?getStorage('menuWidth'):config.MENU_WIDTH,
+            //左侧菜单和顶部导航颜色
+            menuHeaderColor:getStorage('menuHeaderColor')?getStorage('menuHeaderColor'):config.MENU_HEADER_COLOR
         }
     },
     getters:{
@@ -68,6 +70,13 @@ export const useSiteThemeStore = defineStore('siteTheme', {
         setMenuWidth(val){
             this.menuWidth = val
             setStorage('menuWidth',val);
+        },
+        setMenuHeaderColor(val){
+            this.menuHeaderColor = val
+            setStorage('menuHeaderColor',val);
+            if(this.menuHeaderColor && this.siteTheme === 'light'){
+                document.documentElement.style.setProperty('--l-header-bg', this.menuHeaderColor);
+            }
         },
     },
 })
