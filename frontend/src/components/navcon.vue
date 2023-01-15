@@ -109,11 +109,14 @@
           type: 'warning'
         }).then(() => {
             mutitabsStore.logout('false')
-            siteThemeStore.setSiteTheme('light')
-            router.push({path: '/login'})
             sessionStorage.clear()
             localStorage.clear()
+            siteThemeStore.$reset()
             ElMessage.success('已退出登录!')
+            // window.location.pathname = '/login'
+            router.replace({path: '/login'}).then(()=>{
+                window.location.reload()
+            })
       })
       .catch(() => {
       })
