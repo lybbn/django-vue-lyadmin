@@ -9,6 +9,7 @@ export const useSiteThemeStore = defineStore('siteTheme', {
         return {
             //控制主题:light正常模式、dark暗黑模式
             siteTheme:getStorage('siteTheme')?getStorage('siteTheme'):config.THEME,
+            //主题颜色
             colorPrimary:getStorage('colorPrimary')?getStorage('colorPrimary'):config.COLOR,
             //语言
             language:getStorage('language')?getStorage('language'):config.LANG,
@@ -18,6 +19,8 @@ export const useSiteThemeStore = defineStore('siteTheme', {
             elementzIndex: getStorage('elementzIndex')?getStorage('elementzIndex'):config.ELEMENT_ZINDEX,
             // elementplus button组件 autoInsertSpace 是否自动在两个中文字符之间插入空格
             elementButton: getStorage('elementButton')?getStorage('elementButton'):config.ELEMENT_BUTTON,
+            //菜单宽度
+            menuWidth:getStorage('menuWidth')?getStorage('menuWidth'):config.MENU_WIDTH
         }
     },
     getters:{
@@ -61,6 +64,10 @@ export const useSiteThemeStore = defineStore('siteTheme', {
         setElementButton(val){
             this.elementButton = val
             setStorage('elementButton',val);
+        },
+        setMenuWidth(val){
+            this.menuWidth = val
+            setStorage('menuWidth',val);
         },
     },
 })

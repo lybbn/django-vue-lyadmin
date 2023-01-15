@@ -27,10 +27,10 @@ module.exports = {
 	// elementplus button组件 autoInsertSpace 是否自动在两个中文字符之间插入空格
 	ELEMENT_BUTTON: false,
 
-	//菜单默认是否折叠
-	MENU_IS_COLLAPSE: false,
+	//左侧菜单默认宽度 默认 185
+	MENU_WIDTH: 185,
 
-	//主题颜色
+	//主题颜色 默认 #409EFF
 	COLOR: '#409EFF',
 
     //默认主题 'dark' 暗黑、'light' 正常

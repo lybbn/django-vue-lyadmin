@@ -1,7 +1,7 @@
 <template>
   <el-menu class="el-menu-demo" mode="horizontal"  background-color="var(--l-header-bg)"  text-color="#ffffff" active-text-color="#ffffff" :ellipsis="false">
-      <div  :style="collapsed ? 'width:210px' : 'width:90px;margin-left:0'" class="divleft">
-          <p class="login-inner" @click.stop="" style="text-align: center;" :style="collapsed ? 'width:200px' : 'width:90px'">
+      <div  :style="collapsed ? collapsedWidth : 'width:90px;margin-left:0'" class="divleft">
+          <p class="login-inner" @click.stop="" style="text-align: center;" :style="collapsed ? loginInnerWidth : 'width:90px'">
              <img class="logoimg" src="../assets/logo.png" alt=""  :style="collapsed ? 'width:40px' : 'width:24px;height:24px;margin-left:0'">
           </p>
         <img class="showimg" :src="collapsed?imgsq:imgshow" @click.stop="toggle(collapsed)">
@@ -64,7 +64,7 @@
   </el-menu>
 </template>
 <script setup>
-    import {ref, onMounted,onBeforeUnmount,getCurrentInstance,nextTick} from 'vue'
+    import {ref, onMounted,onBeforeUnmount,getCurrentInstance,nextTick,computed} from 'vue'
     import { ElMessage , ElMessageBox } from 'element-plus'
     import screenfull from 'screenfull'
     import {useMutitabsStore} from "@/store/mutitabs";
@@ -89,6 +89,13 @@
     function setColorPrimary() {
         siteThemeStore.setColorPrimary(colorPrimary.value)
     }
+
+    let collapsedWidth=computed(()=>{
+        return 'width:'+ (siteThemeStore.menuWidth+25)+'px'
+    })
+    let loginInnerWidth=computed(()=>{
+        return 'width:'+ (siteThemeStore.menuWidth+15)+'px'
+    })
 
     //路由跳转
     function jumpto(){

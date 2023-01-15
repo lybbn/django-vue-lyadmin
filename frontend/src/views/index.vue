@@ -22,17 +22,24 @@
   </el-container>
 </template>
 <script setup>
-    import {ref, onMounted,getCurrentInstance} from 'vue'
+    import {ref, onMounted,getCurrentInstance,computed} from 'vue'
     import navcon from '../components/navcon.vue'
     import leftnav from '../components/leftnav.vue'
     import Mutitabs from "../components/mutitabs";
     import {useMutitabsStore} from "@/store/mutitabs";
+    import {useSiteThemeStore} from "@/store/siteTheme";
 
     let bus = getCurrentInstance().appContext.config.globalProperties.$Bus; // 声明$Bus
     let showclass = ref("asideshow")
     let showtype = ref(false)
     const mutitabsStore =  useMutitabsStore()
     let isMultiTabs = mutitabsStore.isMultiTabs
+
+    const siteThemeStore = useSiteThemeStore()
+
+    const asideshowWidth = computed(()=>{
+        return siteThemeStore.menuWidth +'px'
+    })
 
     onMounted(()=>{
         bus.on('toggle', value => {
@@ -47,7 +54,7 @@
         })
     })
 </script>
-<style lang="scss" scoped>
+<style scoped>
   .main-con{
     width:100%;
     height: 100%;
@@ -73,7 +80,7 @@
   }
 
   .asideshow {
-    width: 185px !important;
+    width: v-bind(asideshowWidth);
     /*height: calc(100vh - 60px);*/
     background-color: var(--l-header-bg);
     margin: 0px;
