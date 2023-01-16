@@ -8,6 +8,7 @@
     import {useSiteThemeStore} from "@/store/siteTheme";
     import { useI18n } from "vue-i18n";
     const i18n = useI18n();
+    import config from "@/config"
 
     const siteThemeStore = useSiteThemeStore()
 
@@ -27,7 +28,7 @@
     })
 
     const locale = computed(()=>{
-        return i18n.messages.value[i18n.locale.value].el
+        return i18n.messages.value[i18n.locale.value]? i18n.messages.value[i18n.locale.value].el :i18n.messages.value[config.LANG].el
     })
 </script>
 <style lang="scss">
