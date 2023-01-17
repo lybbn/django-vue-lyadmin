@@ -161,6 +161,7 @@
                         limit: 10,
                         total: 0
                     }
+                    this.timers = []
                     this.getData()
                 }
             },
