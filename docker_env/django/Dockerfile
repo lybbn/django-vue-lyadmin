@@ -6,4 +6,4 @@ RUN mkdir /backend
 WORKDIR /backend
 COPY ./backend/ .
 RUN /bin/bash -c 'source ~/.bashrc && python3 -m pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/'
-CMD ["/backend/docker_start.sh"]
+CMD /bin/bash -c "source ~/.bashrc && /backend/docker_start.sh"
