@@ -136,11 +136,12 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 3、切换到项目根目录运行 docker-compose build 创建环境
 4、docker-compose up -d 后台的方式启动docker环境
 5、初始化django后端数据（第一次执行即可）
-docker exec -ti django-vue-lyadmin_django bash
+docker exec -it django-vue-lyadmin_django /bin/bash
 python manage.py makemigrations 
 python manage.py migrate
 python manage.py init
 exit
+或者直接导入lyadmin_db.sql文件到数据库也可
 6、其他docker-compose命令
 # docker-compose 停止
 docker-compose down
