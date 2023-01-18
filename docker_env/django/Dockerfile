@@ -1,6 +1,7 @@
 # 从仓库拉取 带有 python  Linux 环境
 FROM registry.cn-beijing.aliyuncs.com/django-vue-lyadmin/dvlyadmin-python3.11:1.3
 # 设置环境变量
+ENV PATH /usr/local/python3/bin:$PATH
 RUN mkdir /backend
 # 工作目录切换到backend目录下
 WORKDIR /backend
