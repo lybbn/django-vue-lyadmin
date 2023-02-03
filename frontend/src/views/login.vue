@@ -561,7 +561,7 @@
         text-align: center;
         justify-content: center;
         font-size: 19px;
-        margin: 0px auto 40px auto;
+        margin: 0px auto 25px auto;
         color: var(--el-color-primary);
         font-weight: 700;
     }

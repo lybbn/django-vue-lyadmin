@@ -93,13 +93,13 @@
                 </template>
             </el-table-column>
         </el-table>
-        <add-menu ref="addMenuFlag"  @refreshData="getData"></add-menu>
+        <add-menu ref="addMenuFlag"  @refreshData="refreshData"></add-menu>
     </div>
 </template>
 <script>
     import addMenu from "./components/addMenu";
     import {dateFormats,getTableHeight} from "@/utils/util";
-    import {apiSystemMenu,apiSystemMenuDelete} from '@/api/api'
+    import {apiSystemMenu,apiSystemMenuDelete,apiSystemWebRouter} from '@/api/api'
     import XEUtils from "xe-utils";
     export default {
         components:{
@@ -167,7 +167,7 @@
                         apiSystemMenuDelete({id:row.id}).then(res=>{
                             if(res.code == 2000) {
                                 vm.$message.success(res.msg)
-                                vm.getData()
+                                vm.refreshData()
                             } else {
                                 vm.$message.warning(res.msg)
                             }
@@ -215,6 +215,92 @@
                          this.$message.warning(res.msg)
                      }
                  })
+            },
+            refreshData(){
+                this.getData()
+                this.getMenu()
+            },
+            // 重新获取左侧菜单信息
+            getMenu() {
+                apiSystemWebRouter().then(res=>{
+                    if(res.code == 2000) {
+                        let menuTree = []
+                        if(res.data.data.length > 0) {
+                            let childrenList = res.data.data.filter(item=> item.parent && item.visible == 1)
+                            let parentList = res.data.data.filter(item=> !item.parent && item.visible == 1)
+                            if(parentList.length >0) {
+                                parentList.forEach(item=>{
+                                    let menuTreeChildren=[]
+                                    let children = childrenList.filter(itema=>itema.parent == item.id)
+                                    let children2 = childrenList.filter((item)=>{
+                                        return children.every((item1)=>{
+                                            return item.path != item1.path;
+                                        })
+                                    })
+                                    children.forEach(itemb=>{
+                                        let cmenuTreeChildren=[]
+                                        let cchildren = children2.filter(itemc=>itemc.parent == itemb.id)
+                                        cchildren.forEach(itemd=>{
+                                            cmenuTreeChildren.push(({
+                                                text:itemd.name,
+                                                id:itemd.id,
+                                                attributes:{
+                                                    url:itemd.web_path,
+                                                    icon:itemd.icon
+                                                },
+                                                hasChildren: false,
+                                                hasParent:true
+                                            }))
+                                        })
+                                        let chasChildren = false
+                                        if(cmenuTreeChildren.length>0){
+                                            chasChildren = true
+                                        }
+                                        menuTreeChildren.push(({
+                                            text:itemb.name,
+                                            id:itemb.id,
+                                            attributes:{
+                                                url:itemb.web_path,
+                                                icon:itemb.icon
+                                            },
+                                            children:cmenuTreeChildren,
+                                            hasChildren: chasChildren,
+                                            hasParent:true,
+                                        }))
+                                    })
+                                    menuTree.push({
+                                        text:item.name,
+                                        id:item.id,
+                                        attributes:{
+                                            url:children.length >0 ? children[0].web_path :item.web_path,
+                                            icon:item.icon
+                                        },
+                                        hasChildren: children.length >0,
+                                        hasParent:false,
+                                        children:menuTreeChildren,
+                                    })
+                                    item.children=[...children]
+                                })
+                            }
+
+                            // 操作权限管控
+                            let menuList=[]
+                            res.data.data.forEach(item=>{
+                                //console.log(item,'item---- 菜单权限---')
+                                menuList.push({
+                                    url:item.web_path,
+                                    moduleName:item.name,
+                                    menuPermission:item.menuPermission
+                                })
+                            })
+                            setStorage('menuList', JSON.stringify(menuList))
+                        }
+                        setStorage('allmenu', JSON.stringify(menuTree))
+                        this.$Bus.emit('routeReload', true)
+                    } else {
+                        this.$message.warning(res.msg)
+                    }
+                })
             },
             // 计算搜索栏的高度
             listenResize() {

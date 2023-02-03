@@ -103,6 +103,9 @@
         bus.on("toggle", value => {
             collapsed.value = !value;
         });
+        bus.on("routeReload", value => {
+            getMenu()
+        });
     })
     onBeforeRouteUpdate(to=>{
         // if(mutitabsStore.logintoken) {
