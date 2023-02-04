@@ -141,6 +141,12 @@ input, textarea {
     cursor: default;
   }
 }
+.lysearchmore{
+  cursor: pointer;
+  color: var(--el-color-primary);
+  display: flex;
+  align-items: center;
+}
 .lynowrap{
   white-space: nowrap;
   display:-webkit-box;

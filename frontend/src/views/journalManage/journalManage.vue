@@ -11,13 +11,13 @@
                 <el-form-item label="请求地址：">
                     <el-input size="default" v-model.trim="formInline.request_path" maxlength="60" style="width:150px;" clearable placeholder="请求地址" @change="search"></el-input>
                 </el-form-item>
-                <el-form-item label="请求方法：">
+                <el-form-item label="请求方法：" v-if="showOtherSearch">
                     <el-input size="default" v-model.trim="formInline.request_method" maxlength="30" style="width:100px;" clearable placeholder="请求方法" @change="search"></el-input>
                 </el-form-item>
-                <el-form-item label="IP地址：">
+                <el-form-item label="IP地址：" v-if="showOtherSearch">
                     <el-input size="default" v-model.trim="formInline.request_ip" maxlength="60" style="width:150px;" clearable placeholder="IP地址" @change="search"></el-input>
                 </el-form-item>
-                <el-form-item label="创建时间：">
+                <el-form-item label="创建时间：" v-if="showOtherSearch">
                     <el-date-picker
                             style="width:350px"
                             v-model="timers"
@@ -30,7 +30,21 @@
                 </el-form-item>
                 <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('journalManage','操作日志','Search')">查询</el-button></el-form-item>
                 <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
-                 <el-form-item label=""><el-button  @click="deleteAlllogs" type="danger" v-show="isShowBtn('journalManage','操作日志','Delete')">全部清空</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="deleteAlllogs" type="danger" v-show="isShowBtn('journalManage','操作日志','Delete')">全部清空</el-button></el-form-item>
+                <el-form-item label="" @click="clickMore" v-if="!showOtherSearch">
+                    <el-dropdown>
+                        <span class="lysearchmore">展开
+                            <el-icon><ArrowDown /></el-icon>
+                        </span>
+                    </el-dropdown>
+                </el-form-item>
+                <el-form-item label="" @click="clickMore" v-if="showOtherSearch">
+                    <el-dropdown>
+                        <span class="lysearchmore">收起
+                            <el-icon><ArrowUp /></el-icon>
+                        </span>
+                    </el-dropdown>
+                </el-form-item>
             </el-form>
         </div>
         <el-table  :height="'calc('+(tableHeight)+'px)'"  border :data="tableData" ref="tableref" v-loading="loadingPage" style="width: 100%">
@@ -87,6 +101,7 @@
                 isFull:false,
                 tableHeight:500,
                 loadingPage:false,
+                showOtherSearch:false,//隐藏过长的搜索条件
                 formInline:{
                     page: 1,
                     limit: 10
@@ -112,6 +127,10 @@
             getIndex($index) {
                 // (当前页 - 1) * 当前显示数据条数 + 当前行数据的索引 + 1
                 return (this.pageparm.page-1)*this.pageparm.limit + $index +1
+            },
+            clickMore(){
+                this.showOtherSearch = !this.showOtherSearch
+                window.dispatchEvent(new Event('resize'))
             },
             deleteAlllogs(){
                 let vm = this
