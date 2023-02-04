@@ -83,7 +83,7 @@
     let mobileWidth = ref(992)
     let isFullscreen = ref(mutitabsStore.isFullscreen)
 
-    let colorList = ref(['#409EFF', '#009688', '#536dfe', '#ff5c93', '#c62f2f', '#fd726d'])
+    let colorList = ref(['#409EFF', '#536dfe','#722ed1','#009688','#52c41a','#faad14','#ff5c93', '#c62f2f', '#fd726d'])
     let colorPrimary = ref(siteThemeStore.colorPrimary || '#409EFF')
     
     function setColorPrimary() {
