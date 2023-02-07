@@ -107,11 +107,11 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 4. 安装依赖环境
 	pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 
-5. 执行迁移命令：（次步骤可省略，直接导入sql脚本即可）
+5. 执行迁移命令（数据初始化）：（此步骤可省略，直接导入sql脚本即可）
 	python manage.py makemigrations
 	python manage.py migrate
 
-6. 初始化数据：（次步骤可省略，直接导入sql脚本即可）
+6. 初始化数据（数据初始化）：（此步骤可省略，直接导入sql脚本即可）
 	python manage.py init
 
 7. 启动项目（初始账号：superadmin 密码：123456）
