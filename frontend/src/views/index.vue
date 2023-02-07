@@ -81,7 +81,7 @@
 
   .asideshow {
     width: v-bind(asideshowWidth);
-    /*height: calc(100vh - 60px);*/
+    height: calc(100vh - 60px);
     background-color: var(--l-header-bg);
     margin: 0px;
     box-shadow: 0 0 5px #cccccc;
