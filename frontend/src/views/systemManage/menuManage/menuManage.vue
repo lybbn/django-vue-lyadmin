@@ -98,7 +98,7 @@
 </template>
 <script>
     import addMenu from "./components/addMenu";
-    import {dateFormats,getTableHeight} from "@/utils/util";
+    import {dateFormats,getTableHeight,setStorage} from "@/utils/util";
     import {apiSystemMenu,apiSystemMenuDelete,apiSystemWebRouter} from '@/api/api'
     import XEUtils from "xe-utils";
     export default {
