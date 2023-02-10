@@ -4,6 +4,7 @@ from django.db import transaction
 from mysystem.models import MenuButton,Menu,Button
 
 CRUD_BUTTON = ['Create','Delete','Update','Retrieve','Search']
+METHOD_CHOICES = [1,3,2,0,0]#(0, "GET"),(1, "POST"),(2, "PUT"),(3, "DELETE")
 
 #利用django信号机制实现，创建菜单时自动为其添加菜单按钮权限（查询、删除、修改、新增、单例）
 @transaction.atomic#事务
@@ -15,6 +16,6 @@ def auto_create_menu_button_permission(sender, instance=None, created=False, **k
             intance_list = []
             for i in buttons:
                 if i.value in CRUD_BUTTON:
-                    obj = MenuButton(menu=instance,name=i.name,value=i.value)
+                    obj = MenuButton(menu=instance,name=i.name,value=i.value,method=METHOD_CHOICES[CRUD_BUTTON.index(i.value)])
                     intance_list.append(obj)
             MenuButton.objects.bulk_create(intance_list)
