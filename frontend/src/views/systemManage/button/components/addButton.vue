@@ -26,6 +26,7 @@
 
 <script>
     import {systemButtonAdd,systemButtonEdit} from '@/api/api'
+    import {deepClone} from "@/utils/util"
     export default {
         emits: ['refreshData'],
         name: "addButton",
@@ -56,14 +57,17 @@
                 this.formData.name=this.buttonList.filter(item=>item.value==e)[0].name
             },
             handleClose() {
+                this.formData={
+                    name: '',
+                    value:'',
+                },
                 this.dialogVisible=false
             },
             addButtonFn(item,flag,menu) {
                 this.dialogVisible=true
                 this.dialogTitle=flag
-                this.formData=item ? item : {
-                    name: '',
-                    value:'',
+                if(item){
+                    this.formData= deepClone(item)
                 }
             },
             submitData() {

@@ -40,7 +40,7 @@
 <script>
     import {systemMenuButtonAdd,systemMenuButtonEdit,systemButton} from '@/api/api'
     import LyDialog from "../../../../components/dialog/dialog";
-
+    import {deepClone} from "@/utils/util"
     export default {
         components: {LyDialog},
         emits: ['refreshData'],
@@ -105,7 +105,7 @@
                 this.dialogTitle=flag
                 this.getSystemButton(item)
                 if(item){
-                    this.formData=item
+                    this.formData= deepClone(item)
                 }else{
                     this.formData.menu = menu
                 }
