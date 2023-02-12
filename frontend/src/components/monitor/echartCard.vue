@@ -80,7 +80,7 @@
         props:{
             loading: {
                 type: Boolean,
-                default: true
+                default: false
             },
             count:{
                 type:Number,
