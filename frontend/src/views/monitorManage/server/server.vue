@@ -56,9 +56,9 @@
             if(!this.isRunning){
                 this.intervalMonitor()
                 this.isRunning = true
-                setTimeout(() => {
-                    this.showloading = false
-                }, 1000)
+                // setTimeout(() => {
+                //     this.showloading = false
+                // }, 1000)
 
             }
             // 监听页面宽度变化搜索框的高度
@@ -89,7 +89,7 @@
             return{
                 isFull:false,
                 isRunning:false,
-                showloading:true,
+                showloading:false,//页面初始是否加载loading
                 tableHeight:'500px',
                 monitorData:{
                     cpu: [0, 0, [0, 0, 0, 0], "", 0, 1],
