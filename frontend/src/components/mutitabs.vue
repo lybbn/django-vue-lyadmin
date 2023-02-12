@@ -13,26 +13,25 @@
         :label="item.title"
         :name="item.name"></el-tab-pane>
     </el-tabs>
-    <ul
-    v-show="contextMenuVisible"
-    :style="{left:left+'px',top:top+'px'}"
-    class="contextmenu">
-        <li @click="reloadPage"><el-icon><Refresh /></el-icon><span class="contextmenu-text">刷新</span></li>
-        <li @click="closeAllTabs"><el-icon><CircleCloseFilled /></el-icon><span class="contextmenu-text">关闭所有</span></li>
-        <li @click="closeOtherTabs('left')"><el-icon><Back /></el-icon><span class="contextmenu-text">关闭左边</span></li>
-        <li @click="closeOtherTabs('right')"><el-icon><Right /></el-icon><span class="contextmenu-text">关闭右边</span></li>
-        <li @click="closeOtherTabs('other')"><el-icon><Delete /></el-icon><span class="contextmenu-text">关闭其他</span></li>
-        <li @click="maximize"><el-icon><FullScreen /></el-icon><span class="contextmenu-text">最大化</span></li>
-        <li @click="openWindow"><el-icon><CopyDocument /></el-icon><span class="contextmenu-text">新窗口打开</span></li>
-        <li @click="closeContextMenu()"><el-icon><Close /></el-icon><span class="contextmenu-text">取消操作</span></li>
-    </ul>
+    <transition name="el-zoom-in-top">
+        <ul v-show="contextMenuVisible" :style="{left:left+'px',top:top+'px'}" class="contextmenu" id="lycontextmenu">
+            <li @click="reloadPage"><el-icon><Refresh /></el-icon><span class="contextmenu-text">刷新</span></li>
+            <li @click="closeAllTabs"><el-icon><CircleCloseFilled /></el-icon><span class="contextmenu-text">关闭所有</span></li>
+            <li @click="closeOtherTabs('left')"><el-icon><Back /></el-icon><span class="contextmenu-text">关闭左边</span></li>
+            <li @click="closeOtherTabs('right')"><el-icon><Right /></el-icon><span class="contextmenu-text">关闭右边</span></li>
+            <li @click="closeOtherTabs('other')"><el-icon><Delete /></el-icon><span class="contextmenu-text">关闭其他</span></li>
+            <li @click="maximize"><el-icon><FullScreen /></el-icon><span class="contextmenu-text">最大化</span></li>
+            <li @click="openWindow"><el-icon><CopyDocument /></el-icon><span class="contextmenu-text">新窗口打开</span></li>
+            <li @click="closeContextMenu()"><el-icon><Close /></el-icon><span class="contextmenu-text">取消操作</span></li>
+        </ul>
+    </transition>
       <router-view v-slot="{Component,route}">
 <!--              <component :is="Component" v-if="!route.meta.isActive" :key="route.path"></component>-->
-          <transition name="lyfadein" mode="out-in">
-              <keep-alive :include="keepAliveRoutes" :exclude="excludes">
-                    <component :is="Component" :key="route.name" v-if="!isRourterAlive" ref="lyComponent"></component>
-              </keep-alive>
-          </transition>
+<!--          <transition name="lyfadein" mode="out-in">-->
+          <keep-alive :include="keepAliveRoutes" :exclude="excludes">
+              <component :is="Component" :key="route.name" v-if="!isRourterAlive" ref="lyComponent"></component>
+          </keep-alive>
+<!--          </transition>-->
       </router-view>
       <div class="lymain-maximize-exit" @click="exitMaximize"><el-icon><close /></el-icon></div>
   </div>
@@ -67,7 +66,7 @@
         mounted() {
             document.addEventListener("click", (e) => {
               let that = this
-              if (e.target.className !="myeltas1") {
+              if (e.target.className !="myeltas2") {
                 that.contextMenuVisible = false; //点击其他区域关闭右键菜单
               }
             });
@@ -173,8 +172,16 @@
                     let currentContextTabId = obj.id.split("-")[1];
                     this.contextMenuVisible = true;
                     this.mutitabsstore.saveCurContextTabId(currentContextTabId);
-                    this.left = e.clientX;
-                    this.top = e.clientY + 13;
+                    this.left = e.clientX + 1;
+                    this.top = e.clientY + 1;
+                    //右键菜单边缘化位置处理（防止在最边缘右键右健菜单消失部分）
+                    this.$nextTick(() => {
+                        let ct = document.getElementById("lycontextmenu");
+                        if(document.body.offsetWidth - e.clientX < ct.offsetWidth){
+                            this.left = document.body.offsetWidth - ct.offsetWidth - 1;
+                            this.top = e.clientY + 1;
+                        }
+                    })
                 }
             },
             reloadPage(){

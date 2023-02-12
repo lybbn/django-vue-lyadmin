@@ -222,12 +222,14 @@ export const useMutitabsStore = defineStore('mutitabs', {
             if (id >= 0) {
                 this.tabsPage = this.tabsPage.slice(id, length)
                 setStorage('tabsPage', JSON.stringify(this.tabsPage))
+                this.checkTbasRouter()
             }
           }
           if (par == "right") {
             if (id >= 0) {
                 this.tabsPage = this.tabsPage.slice(0, id + 1)
                 setStorage('tabsPage', JSON.stringify(this.tabsPage))
+                this.checkTbasRouter()
             }
           }
           if (par == "other") {
@@ -235,7 +237,14 @@ export const useMutitabsStore = defineStore('mutitabs', {
               this.TabsValue = tabs[id].name
               setStorage('tabsPage', JSON.stringify(this.tabsPage))
               setStorage('TabsValue', this.TabsValue)
+              this.checkTbasRouter()
           }
         },
+        //解决标签与路由不一致问题（检查标签栏当前选择与当前路由不同则路由跳转至改标签栏）
+        checkTbasRouter(){
+            if(router.currentRoute.value.name != this.TabsValue){
+                router.push({ name: this.TabsValue})
+            }
+        }
     },
 })
