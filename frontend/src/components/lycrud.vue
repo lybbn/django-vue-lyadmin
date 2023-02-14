@@ -25,11 +25,10 @@
                             end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
-                <slot name="searchBar"></slot>
+                <slot name="searchBar-l"></slot>
                 <el-form-item label=""><el-button  @click="handleSearchClick('search')" type="primary" icon="Search" v-show="rowHandle.permission.search">查询</el-button></el-form-item>
                 <el-form-item label=""><el-button  @click="handleSearchClick('reset')" icon="Refresh">重置</el-button></el-form-item>
-<!--                <el-form-item label=""><el-button  @click="addAdmin" type="primary" v-show="isShowBtn('userManage','用户管理','Create')">新增</el-button></el-form-item>-->
-<!--                <el-form-item label=""><el-button  @click="exportDataBackend" type="primary">导出</el-button></el-form-item>-->
+                <slot name="searchBar-r"></slot>
             </el-form>
         </div>
 
@@ -411,6 +410,7 @@
                 this.ids = selection.map(item => item.id);
                 this.single = selection.length !== 1;
                 this.multiple = !selection.length;
+                this.$emit("handleSelectionChange",this.ids)
             },
             /** 批量删除按钮操作 */
             handleMutiDelete() {
