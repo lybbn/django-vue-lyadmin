@@ -56,6 +56,7 @@
                 </el-form-item>
                 <el-form-item label="路由地址：" prop="web_path">
                     <el-input v-model.trim="formData.web_path" ></el-input>
+                    <el-alert title="请填写xxx.vue中的name或文件名作为路由地址" type="info" show-icon/>
                 </el-form-item>
                 <el-form-item label="状态：" prop="status">
                     <el-radio-group v-model="formData.status" style="width: 300px">

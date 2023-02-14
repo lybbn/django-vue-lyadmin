@@ -5,9 +5,9 @@
                 <el-form-item label="主机：">
                     <el-input size="default" v-model.trim="formInline.search" maxlength="60"  clearable placeholder="服务器IP/域名" @change="search" style="width:200px"></el-input>
                 </el-form-item>
-                <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('departmentManage','部门管理','Search')">查询</el-button></el-form-item>
+                <el-form-item label="" v-show="hasPermission('terminal','Search')"><el-button  @click="search" type="primary" icon="Search">查询</el-button></el-form-item>
                 <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
-                <el-form-item label=""><el-button type="primary" icon="Plus" @click="addAdmin" v-show="isShowBtn('terminal','终端服务','Create')">新增</el-button></el-form-item>
+                <el-form-item label="" v-show="hasPermission('terminal','Create')"><el-button type="primary" icon="Plus" @click="addAdmin">新增</el-button></el-form-item>
             </el-form>
         </div>
         <div class="table">
@@ -35,9 +35,9 @@
                         </div>
                     </template>
                     <template #default="scope">
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'openterminal')" v-show="isShowBtn('terminal','终端服务','Update')">打开终端</span>
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('terminal','终端服务','Update')">编辑</span>
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('terminal','终端服务','Delete')">删除</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'openterminal')" v-show="hasPermission('terminal','Update')">打开终端</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="hasPermission('terminal','Update')">编辑</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="hasPermission('terminal','Delete')">删除</span>
                     </template>
                 </el-table-column>
             </el-table>
