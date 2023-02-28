@@ -335,8 +335,8 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': SERVER_LOGS_FILE,
-            'maxBytes': 1024 * 1024 * 100,  # 100 MB
-            'backupCount': 5,  # 最多备份5个
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 10,  # 最多备份10个
             'formatter': 'standard',
             'encoding': 'utf-8',
         },
@@ -344,8 +344,8 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': ERROR_LOGS_FILE,
-            'maxBytes': 1024 * 1024 * 100,  # 100 MB
-            'backupCount': 3,  # 最多备份3个
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 10,  # 最多备份10个
             'formatter': 'standard',
             'encoding': 'utf-8',
         },
