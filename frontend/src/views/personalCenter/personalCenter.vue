@@ -167,7 +167,11 @@
               if (name === 'info') {
                 _self.getCurrentUserInfo()
               } else {
-                _self.userPasswordForm = {}
+                _self.userPasswordInfo = {
+                  oldPassword: '',
+                  newPassword: '',
+                  newPassword2: ''
+                }
               }
             },
             // tab切换,默认切换清除原字符
