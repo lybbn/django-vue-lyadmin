@@ -6,7 +6,7 @@
 <!--    active-background-color="#304156"-->
   <div>
     <el-menu
-      default-active="2"
+      :default-active="$route.meta.index"
       :collapse="collapsed"
       collapse-transition
       router
@@ -19,10 +19,10 @@
         {{menuTitle}}
       </div>
       <div v-for="menu in allmenu" :key="menu.id">
-        <el-sub-menu v-if="menu.hasChildren" :index="menu.id" :key="menu.id">
+        <el-sub-menu v-if="menu.hasChildren" :index="'/'+menu.attributes.url" :key="menu.id">
           <template #title >
-            <el-icon v-if="menu.attributes.icon!=''">
-                <component :is="menu.attributes.icon" />
+            <el-icon>
+                <component :is="menu.attributes.icon?menu.attributes.icon:'Menu'" />
             </el-icon>
             <span>{{menu.text}}</span>
           </template>
@@ -30,7 +30,7 @@
             <div v-for="chmenu in menu.children">
               <el-menu-item
                 v-if="!chmenu.hasChildren"
-                :index="chmenu.id"
+                :index="'/'+chmenu.attributes.url"
                 :key="chmenu.id"
                 @click="handleOpen2(chmenu)">
                 <el-icon>
@@ -38,32 +38,36 @@
                 </el-icon>
                 {{chmenu.text}}
               </el-menu-item>
-              <el-sub-menu v-else :index="chmenu.id">
+              <el-sub-menu v-else :index="chmenu.attributes.url?'/'+chmenu.attributes.url:chmenu.id">
                 <template #title>
-                  <el-icon v-if="chmenu.attributes.icon!=''">
-                    <component :is="chmenu.attributes.icon" />
+                  <el-icon>
+                    <component :is="chmenu.attributes.icon?chmenu.attributes.icon:'Menu'" />
                   </el-icon>
                   <span>{{chmenu.text}}</span>
                 </template>
                 <el-menu-item
                   v-for="cchmenu in chmenu.children"
-                  :index="cchmenu.id"
+                  :index="'/'+cchmenu.attributes.url"
                   :key="cchmenu.id"
                   @click="handleOpen2(cchmenu)">
-                  <el-icon v-if="cchmenu.attributes.icon!=''">
-                    <component :is="cchmenu.attributes.icon" />
-                  </el-icon>
-                  {{cchmenu.text}}
+                  <template #title>
+                    <el-icon>
+                      <component :is="cchmenu.attributes.icon?cchmenu.attributes.icon:'Menu'" />
+                    </el-icon>
+                    <span>{{cchmenu.text}}</span>
+                  </template>
                 </el-menu-item>
               </el-sub-menu>
             </div>
           </el-menu-item-group>
         </el-sub-menu>
-        <el-menu-item  v-else :index="menu.id" :key="menu.id" @click="handleOpen2(menu)">
-          <el-icon v-if="menu.attributes.icon!=''">
-            <component :is="menu.attributes.icon" />
-          </el-icon>
-          <template #title>{{menu.text}}</template>
+        <el-menu-item  v-else :index="'/'+menu.attributes.url" :key="menu.id" @click="handleOpen2(menu)">
+          <template #title>
+            <el-icon>
+              <component :is="menu.attributes.icon?menu.attributes.icon:'Menu'" />
+            </el-icon>
+            <span>{{menu.text}}</span>
+          </template>
         </el-menu-item>
       </div>
     </el-menu>
