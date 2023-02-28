@@ -56,6 +56,11 @@ def streamingmedia_serve(request, path, document_root=None, show_indexes=False):
     if content_type in ['video/mp4','video/ogg', 'video/flv', 'video/avi', 'video/wmv', 'video/rmvb','audio/mp3','audio/x-m4a','audio/mpeg','audio/ogg']:
         response = stream_video(request, fullpath)
         return response
+    elif fullpath.suffix in ['.apk']:#兼容小米的浏览器等迅雷下载内核无法下载问题
+        content_type = 'application/vnd.android.package-archive'
+        response = FileResponse(fullpath.open('rb'), content_type=content_type)
+        response['Content-Length'] = fullpath.stat().st_size
+        return response
     else:
         response = FileResponse(fullpath.open('rb'), content_type=content_type)
         response.headers["Last-Modified"] = http_date(statobj.st_mtime)
