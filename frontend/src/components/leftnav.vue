@@ -6,7 +6,7 @@
 <!--    active-background-color="#304156"-->
   <div>
     <el-menu
-      :default-active="$route.meta.index"
+      default-active="2"
       :collapse="collapsed"
       collapse-transition
       router
@@ -19,7 +19,7 @@
         {{menuTitle}}
       </div>
       <div v-for="menu in allmenu" :key="menu.id">
-        <el-sub-menu v-if="menu.hasChildren" :index="'/'+menu.attributes.url" :key="menu.id">
+        <el-sub-menu v-if="menu.hasChildren" :index="menu.id" :key="menu.id">
           <template #title >
             <el-icon v-if="menu.attributes.icon!=''">
                 <component :is="menu.attributes.icon" />
@@ -30,7 +30,7 @@
             <div v-for="chmenu in menu.children">
               <el-menu-item
                 v-if="!chmenu.hasChildren"
-                :index="'/'+chmenu.attributes.url"
+                :index="chmenu.id"
                 :key="chmenu.id"
                 @click="handleOpen2(chmenu)">
                 <el-icon>
@@ -38,7 +38,7 @@
                 </el-icon>
                 {{chmenu.text}}
               </el-menu-item>
-              <el-sub-menu v-else :index="'/'+chmenu.attributes.url">
+              <el-sub-menu v-else :index="chmenu.id">
                 <template #title>
                   <el-icon v-if="chmenu.attributes.icon!=''">
                     <component :is="chmenu.attributes.icon" />
@@ -47,7 +47,7 @@
                 </template>
                 <el-menu-item
                   v-for="cchmenu in chmenu.children"
-                  :index="'/'+cchmenu.attributes.url"
+                  :index="cchmenu.id"
                   :key="cchmenu.id"
                   @click="handleOpen2(cchmenu)">
                   <el-icon v-if="cchmenu.attributes.icon!=''">
@@ -59,7 +59,7 @@
             </div>
           </el-menu-item-group>
         </el-sub-menu>
-        <el-menu-item  v-else :index="'/'+menu.attributes.url" :key="menu.id" @click="handleOpen2(menu)">
+        <el-menu-item  v-else :index="menu.id" :key="menu.id" @click="handleOpen2(menu)">
           <el-icon v-if="menu.attributes.icon!=''">
             <component :is="menu.attributes.icon" />
           </el-icon>
