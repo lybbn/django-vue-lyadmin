@@ -22,7 +22,7 @@
         <el-sub-menu v-if="menu.hasChildren" :index="'/'+menu.attributes.url" :key="menu.id">
           <template #title >
             <el-icon>
-                <component :is="menu.attributes.icon?menu.attributes.icon:'Menu'" />
+              <component :is="menu.attributes.icon?menu.attributes.icon:'Menu'" />
             </el-icon>
             <span>{{menu.text}}</span>
           </template>
@@ -36,7 +36,9 @@
                 <el-icon>
                   <component :is="chmenu.attributes.icon?chmenu.attributes.icon:'Menu'" />
                 </el-icon>
-                {{chmenu.text}}
+                <template #title >
+                  <span>{{chmenu.text}}</span>
+                </template>
               </el-menu-item>
               <el-sub-menu v-else :index="chmenu.attributes.url?'/'+chmenu.attributes.url:chmenu.id">
                 <template #title>
@@ -50,10 +52,10 @@
                   :index="'/'+cchmenu.attributes.url"
                   :key="cchmenu.id"
                   @click="handleOpen2(cchmenu)">
+                  <el-icon>
+                    <component :is="cchmenu.attributes.icon?cchmenu.attributes.icon:'Menu'" />
+                  </el-icon>
                   <template #title>
-                    <el-icon>
-                      <component :is="cchmenu.attributes.icon?cchmenu.attributes.icon:'Menu'" />
-                    </el-icon>
                     <span>{{cchmenu.text}}</span>
                   </template>
                 </el-menu-item>
@@ -62,10 +64,10 @@
           </el-menu-item-group>
         </el-sub-menu>
         <el-menu-item  v-else :index="'/'+menu.attributes.url" :key="menu.id" @click="handleOpen2(menu)">
+          <el-icon>
+            <component :is="menu.attributes.icon?menu.attributes.icon:'Menu'" />
+          </el-icon>
           <template #title>
-            <el-icon>
-              <component :is="menu.attributes.icon?menu.attributes.icon:'Menu'" />
-            </el-icon>
             <span>{{menu.text}}</span>
           </template>
         </el-menu-item>
