@@ -1,10 +1,12 @@
 # Django-Vue-Lyadmin
 
-[![img](https://img.shields.io/badge/python-%3E=3.9.x-green.svg)](https://python.org/)  [![PyPI - Django Version badge](https://img.shields.io/badge/django%20versions-4.x-blue)](https://docs.djangoproject.com/zh-hans/4.0/) [![img](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![img](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin)
+[![img](https://img.shields.io/badge/python-%3E=3.9.x-green.svg)](https://python.org/)  [![PyPI - Django Version badge](https://img.shields.io/badge/django%20versions-4.x-blue)](https://docs.djangoproject.com/zh-hans/4.0/) [![img](https://img.shields.io/badge/node-%3E%3D%2014.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![img](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin)
 
-[QQ群聊](https://jq.qq.com/?_wv=1027&k=StAkGqk5) | [在线体验（admin/123456）](http://django-vue3-lyadmin.lybbn.cn) | [开发文档](https://doc.lybbn.cn/) | [在线课程](https://doc.lybbn.cn/videos/PythonWeb/%E8%AF%BE%E7%A8%8B%E4%BB%8B%E7%BB%8D.html) | [捐赠](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264497&doc_id=2214316) 
+[ 官方文档 ](https://doc.lybbn.cn/) | 演示（[基础版](http://django-vue3-lyadmin.lybbn.cn) [专业版](http://django-vue-lyadmin-pro.lybbn.cn)）| [ 在线课程 ](https://doc.lybbn.cn/videos/PythonWeb/%E8%AF%BE%E7%A8%8B%E4%BB%8B%E7%BB%8D.html) | [捐赠](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264497&doc_id=2214316) 
 
 ## slogon
+
+一个开箱即用的低代码中后台管理系统
 
 前端frontend：做一个专业前端能用的框架，后台人员也能面向配置的、能改得动的CRUD
 后端backend ：强大的功能集合，让你开箱即用，成为初学者的领航员
@@ -13,7 +15,9 @@
 
 django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台（内置简易商城模块），去繁从简、还你一个干净的后台管理系统
 
-* 前端采用Vue3（elementplus 2.2.28 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
+* 代码生成： 前端配置即可生成前后台所需的crud文件，并同步到项目目录中（专业版功能优化中）
+* 表单构建： 可视化低代码表单设计器，后期规划自动生成前后台，并提供模板方便导入所需表单（专业版功能优化中）
+* 前端采用Vue3（elementplus 2.2.29 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
 * 前端支持面向配置的CRUD和自定义页面的CRUD双开发模式
 * DashBoard： 数据分析查看
 * 计划任务（定时任务，运维能力），django-celery-beat 定时任务
@@ -31,9 +35,13 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 
 ## 在线体验
 
-演示地址：[http://django-vue3-lyadmin.lybbn.cn](http://django-vue3-lyadmin.lybbn.cn) 账号：admin 密码：123456
+* 基础版 演示地址：[http://django-vue3-lyadmin.lybbn.cn](http://django-vue3-lyadmin.lybbn.cn) 账号：admin 密码：123456
 
-Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)  账号/密码： 自行注册使用
+* 专业版 演示地址：[http://django-vue-lyadmin-pro.lybbn.cn](http://django-vue-lyadmin-pro.lybbn.cn) 账号：admin 密码：123456
+
+说明：专业版【代码生成】【表单构建】正在优化测试中...
+
+* Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)  账号/密码： 自行注册使用
 
 eleunipy系统是结合
 [django-vue-lyadmin](https://gitee.com/lybbn/django-vue-lyadmin)
