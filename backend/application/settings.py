@@ -523,9 +523,6 @@ API_MODEL_MAP = {
     "/api/super/operate/":"前端API关闭开启",
     "/api/platformsettings/uploadplatformimg/":"图片上传",
 }
-# 表前缀
-TABLE_PREFIX = "lyadmin_"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
