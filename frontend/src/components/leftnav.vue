@@ -19,7 +19,7 @@
         {{menuTitle}}
       </div>
       <div v-for="menu in allmenu" :key="menu.id">
-        <el-sub-menu v-if="menu.hasChildren" :index="'/'+menu.attributes.url" :key="menu.id">
+        <el-sub-menu v-if="menu.hasChildren" :index="menu.attributes.url?'/'+menu.attributes.url:menu.id" :key="menu.id">
           <template #title >
             <el-icon>
               <component :is="menu.attributes.icon?menu.attributes.icon:'Menu'" />
@@ -49,7 +49,7 @@
                 </template>
                 <el-menu-item
                   v-for="cchmenu in chmenu.children"
-                  :index="'/'+cchmenu.attributes.url"
+                  :index="cchmenu.attributes.url?'/'+cchmenu.attributes.url:cchmenu.id"
                   :key="cchmenu.id"
                   @click="handleOpen2(cchmenu)">
                   <el-icon>
