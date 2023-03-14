@@ -25,8 +25,7 @@ module.exports = {
 		port:8080,
 		host:'0.0.0.0',
 		open: true, //配置自动启动浏览器
-		// disableHostCheck: process.env.NODE_ENV === 'development', // 关闭 hostcheck
-		disableHostCheck:true,
+		allowedHosts: 'all'
 	},
 	//gzip配置
 	configureWebpack:config => {
