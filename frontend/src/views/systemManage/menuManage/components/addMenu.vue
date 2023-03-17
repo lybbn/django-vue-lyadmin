@@ -10,7 +10,7 @@
                             :options="options"
                             v-model="formData.parent"
                             @change="handleChange"
-                            :props="{ checkStrictly: true ,label:'name',value:'id'}"
+                            :props="{expandTrigger:'hover', checkStrictly: true ,label:'name',value:'id'}"
                             clearable></el-cascader>
                 </el-form-item>
                 <el-form-item label="菜单名称：" prop="name">
