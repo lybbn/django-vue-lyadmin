@@ -42,7 +42,7 @@
                 <el-color-picker v-model="colorPrimary" :predefine="colorList" size="small" @change="setColorPrimary"></el-color-picker>
             </span>
           <span>
-              <el-dropdown trigger="hover" class="right-dropdown-center">
+              <el-dropdown trigger="click" class="right-dropdown-center">
                 <span class="el-dropdown-link">
                   你好,{{userName}}
                   <el-icon class="el-icon--right">
