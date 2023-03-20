@@ -249,7 +249,7 @@
              //定义画布宽高和生成点的个数
             this.WIDTH = window.innerWidth
             this.HEIGHT = window.innerHeight
-            this.POINT = 35;
+            this.POINT = 20;
             this.canvas = document.getElementById('lyadmincanvas');
             this.canvas.width = this.WIDTH-2,
             this.canvas.height = this.HEIGHT-2;
