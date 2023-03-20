@@ -11,28 +11,6 @@
 前端frontend：做一个专业前端能用的框架，后台人员也能面向配置的、能改得动的CRUD
 后端backend ：强大的功能集合，让你开箱即用，成为初学者的领航员
 
-## 平台简介
-
-django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台（内置简易商城模块），去繁从简、还你一个干净的后台管理系统
-
-* 代码生成： 前端配置即可生成前后台所需的crud文件，并同步到项目目录中（专业版功能优化中）
-* 表单构建： 可视化低代码表单设计器，后期规划自动生成前后台，并提供模板方便导入所需表单（专业版功能优化中）
-* 前端采用Vue3（elementplus 2.2.29 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
-* 前端支持面向配置的CRUD和自定义页面的CRUD双开发模式
-* DashBoard： 数据分析查看
-* 计划任务（定时任务，运维能力），django-celery-beat 定时任务
-* 服务器监控面板（运维能力），支持windows和linux服务器的实时服务器资源状态监控
-* 终端服务webssh（运维能力），支持基于channels的websocket与xterm的webssh（实现websocket的simple-jwt认证，并实现请求方法和接口地址的权限控制）
-* 后端采用Python语言Django框架
-* 权限认证使用JWT（djangorestframework-simplejwt），支持多终端认证系统
-* 接口采用（drf）djangorestframework，支持后台一键关闭前端API访问功能
-* 支持加载动态权限菜单，内置常用模块，多方式轻松权限控制，支持单用户登录（踢掉上一个）
-* 支持支付宝、微信支付、微信登录、阿里云短信、腾讯云短信等
-* 新增商城模块：商品管理、订单管理、财务统计、支付接口（微信支付（app端、小程序端）、支付宝（app端）供参考）....
-* 适合刚入门或苦于寻找django web快速开发框架的小伙伴们
-
-特别鸣谢：本平台后端权限设计模式，部分逻辑参考[django-vue-admin-pro](https://gitee.com/dvadmin/django-vue-admin-pro)
-
 ## 在线体验
 
 * 基础版 演示地址：[http://django-vue3-lyadmin.lybbn.cn](http://django-vue3-lyadmin.lybbn.cn) 账号：admin 密码：123456
@@ -47,6 +25,28 @@ eleunipy系统是结合
 [django-vue-lyadmin](https://gitee.com/lybbn/django-vue-lyadmin)
 [unielepy](https://gitee.com/lybbn/unielepy)
 在全栈开发中，能让开发者挑选模板/组件/源码实现低代码、避免重复造轮子快速完成项目，模板持续更新中...
+
+## 平台简介
+
+django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台（内置简易商城模块），去繁从简、还你一个干净的后台管理系统
+
+* 代码生成： 前端配置即可生成前后台所需的crud文件，并同步到项目目录中（专业版功能优化中）
+* 表单构建： 可视化低代码表单设计器，后期规划自动生成前后台，并提供模板方便导入所需表单（专业版功能优化中）
+* 前端采用Vue3（elementplus 2.3.1 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
+* 前端支持面向配置的CRUD和自定义页面的CRUD双开发模式
+* DashBoard： 数据分析查看
+* 计划任务（定时任务，运维能力），django-celery-beat 定时任务
+* 服务器监控面板（运维能力），支持windows和linux服务器的实时服务器资源状态监控
+* 终端服务webssh（运维能力），支持基于channels的websocket与xterm的webssh（实现websocket的simple-jwt认证，并实现请求方法和接口地址的权限控制）
+* 后端采用Python语言Django框架
+* 权限认证使用JWT（djangorestframework-simplejwt），支持多终端认证系统
+* 接口采用（drf）djangorestframework，支持后台一键关闭前端API访问功能
+* 支持加载动态权限菜单，内置常用模块，多方式轻松权限控制，支持单用户登录（踢掉上一个）
+* 支持支付宝、微信支付、微信登录、阿里云短信、腾讯云短信等
+* 新增商城模块：商品管理、订单管理、财务统计、支付接口（微信支付（app端、小程序端）、支付宝（app端）供参考）....
+* 适合刚入门或苦于寻找django web快速开发框架的小伙伴们
+
+特别鸣谢：本平台后端权限设计模式，部分逻辑参考[django-vue-admin-pro](https://gitee.com/dvadmin/django-vue-admin-pro)
 
 ## 文档地址
 
