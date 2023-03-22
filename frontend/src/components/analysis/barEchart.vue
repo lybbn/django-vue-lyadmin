@@ -1,5 +1,5 @@
 <template>
-    <div id="lyechartmain"  style="width: 100%;height: 280px"></div>
+    <div ref="lyechartmain" style="width: 100%;height: 280px"></div>
 </template>
 
 <script>
@@ -26,10 +26,13 @@
                 }
                 ]
             };
+            let lyechartmain = ref(null)
             onMounted(() => {//需要获取到element,所以是onMounted的Hook
                 setTimeout(() => {
-                    myChart = echarts.init(document.getElementById("lyechartmain"));
-                    myChart.setOption(option);
+                    nextTick(()=>{
+                        myChart = echarts.init(lyechartmain.value);
+                        myChart.setOption(option);
+                    })
                 },300)
                 // myChart = echarts.init(document.getElementById("lyechartmain"));
                 // // 绘制图表

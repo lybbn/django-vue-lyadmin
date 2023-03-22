@@ -11,20 +11,20 @@ const resolve = dir => path.join(__dirname, dir)
 
 const appConfig = require("./src/config/index.js")
 
-
 module.exports = {
 	assetsDir:'static',//表示打包后，静态资源生成到static文件夹中
 	publicPath:'./',
 	runtimeCompiler: true, /* 开启vue运行时模板编译功能！！ */
 	productionSourceMap: false, //打包后是否生成map文件
-	// /* 指定node_modules目录中需要做babel转译的依赖库 */
-	// transpileDependencies: [
-	// 'element-ui', 'vuedraggable',
-	// ],
+	lintOnSave:false, // eslint-loader 是否在保存时候检查代码
 	devServer: {//开发环境
 		port:8080,
 		host:'0.0.0.0',
 		open: true, //配置自动启动浏览器
+		client: {
+        	// 当有错误的时候在客户端进行覆盖显示
+            overlay: false,
+        },
 		allowedHosts: 'all'
 	},
 	//gzip配置

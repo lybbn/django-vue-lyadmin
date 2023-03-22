@@ -1,9 +1,9 @@
 <template>
-    <div id="lyechartmain"  style="width: 100%;height: 280px"></div>
+    <div ref="lyechartmain"  style="width: 100%;height: 280px"></div>
 </template>
 
 <script>
-    import {onBeforeUnmount, onMounted} from "vue";
+    import {nextTick, onBeforeUnmount, onMounted, ref} from "vue";
     // 按需引入echarts
     import echarts from "@/components/analysis/echartsInstall";
     export default {
@@ -106,10 +106,13 @@
                 }
                 ]
                 };
+            let lyechartmain = ref(null)
             onMounted(() => {//需要获取到element,所以是onMounted的Hook
                 setTimeout(() => {
-                    myChart = echarts.init(document.getElementById("lyechartmain"));
-                    myChart.setOption(option);
+                    nextTick(()=>{
+                        myChart = echarts.init(lyechartmain.value);
+                        myChart.setOption(option);
+                    })
                 },300)
                 // myChart = echarts.init(document.getElementById("lyechartmain"));
                 // // 绘制图表
