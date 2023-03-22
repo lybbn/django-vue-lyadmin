@@ -16,11 +16,12 @@ module.exports = {
 	publicPath:'./',
 	runtimeCompiler: true, /* 开启vue运行时模板编译功能！！ */
 	productionSourceMap: false, //打包后是否生成map文件
-	lintOnSave:false, // eslint-loader 是否在保存时候检查代码
+	lintOnSave:false, // 是否开启eslint保存检测
 	devServer: {//开发环境
 		port:8080,
 		host:'0.0.0.0',
 		open: true, //配置自动启动浏览器
+		hot:true, //启用热更新
 		client: {
         	// 当有错误的时候在客户端进行覆盖显示
             overlay: false,
@@ -29,6 +30,10 @@ module.exports = {
 	},
 	//gzip配置
 	configureWebpack:config => {
+		//性能提示
+		config["performance"] = {
+			hints: false,
+		}
 		config.devtool = 'source-map'
     	config.output.libraryExport = 'default'  /* 解决import UMD打包文件时, 组件install方法执行报错的问题！！ */
 		if (process.env.NODE_ENV === 'production') {
@@ -57,16 +62,4 @@ module.exports = {
 		})
 
     },
-
-	// resolve: {
-	// 	extensions: ['.ts', '.js', '.mjs', '.json'],
-	// },
-	// module: {
-	// 	rules: [
-	// 		{
-	// 			test: /\.mjs$/i,
-	// 			resolve: { byDependency: { esm: { fullySpecified: false } } },
-	// 		},
-	// 	],
-	// },
 }
