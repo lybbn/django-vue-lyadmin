@@ -15,11 +15,9 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="">
-                    <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('roleManage','角色管理','Search')">查询</el-button></el-form-item>
-                    <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
-                    <el-button size="default" type="primary" @click="addRole(null,'新增')" icon="Plus" v-show="isShowBtn('roleManage','角色管理','Create')">新增</el-button>
-                </el-form-item>
+                <el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('roleManage','角色管理','Search')">查询</el-button>
+                <el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button>
+                <el-button size="default" type="primary" @click="addRole(null,'新增')" icon="Plus" v-show="isShowBtn('roleManage','角色管理','Create')">新增</el-button>
             </el-form>
         </div>
 

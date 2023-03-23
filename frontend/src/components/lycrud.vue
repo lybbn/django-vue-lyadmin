@@ -673,7 +673,8 @@
         justify-content: space-between;
         font-size: 14px;
         background: var(--el-bg-color);
-        padding: 10px;
-        box-shadow: 0 0 4px #cccccc;
+        padding: 8px;
+        /*box-shadow: 0 0 4px #cccccc;*/
+        box-shadow: 0 0 2px rgba(0, 0, 0, .12);
     }
 </style>

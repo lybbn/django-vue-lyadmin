@@ -25,7 +25,7 @@
                         </div>
                     </el-scrollbar>
                 </div>
-                <div class="auth-item" style="height: calc(100vh - 430px);">
+                <div class="auth-item" style="height: calc(100vh - 420px);">
                     <el-scrollbar>
                         <div class="auth-title">
                             数据授权：
@@ -67,7 +67,7 @@
                     </el-scrollbar>
                 </div>
             </div>
-            <div class="auth-item" style="height: calc(100vh - 130px);">
+            <div class="auth-item" style="height: calc(100vh - 120px);">
                 <div class="auth-title">
                     菜单授权：
                     <el-tooltip

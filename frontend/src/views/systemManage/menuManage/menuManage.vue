@@ -309,7 +309,7 @@
 				})
 			},
             getTheTableHeight(){
-                this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight-70)
+                this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight-50)
 
             }
         },

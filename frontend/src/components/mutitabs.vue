@@ -246,17 +246,19 @@
         color: var(--el-color-primary);
         background-color: var(--l-changetab-bg);
         border-bottom-color: var(--l-changetab-border);
-        box-shadow: 0 0 5px #cccccc;
+        /*box-shadow: 0 0 5px #cccccc;*/
+        box-shadow: 0 0 3px rgba(0, 0, 0, .12);
     }
     .myeltas2 .el-tabs__nav-wrap{
         background: var(--l-changetab-bg);
         border-color: transparent;
-        box-shadow: 0 0 3px #cccccc;
+        /*box-shadow: 0 0 3px #cccccc;*/
+        box-shadow: 0 0 3px rgba(0, 0, 0, .12);
     }
     /*去除顶部线*/
     .myeltas2 .el-tabs__header {
         /*border: none;*/
-        margin: 0 0 2px;
+        margin: 0;
         border-bottom :none;
     }
     .myeltas2 .el-tabs__nav{

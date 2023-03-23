@@ -60,7 +60,7 @@ body {
 }
 
 .el-pagination .el-select .el-input .el-input__inner {
-  padding-right: 25px;
+  //padding-right: 25px;
   border-radius: 3px;
   width: 100%;
 }
@@ -119,9 +119,11 @@ input, textarea {
 }
 .tableSelect{
   background: var(--l-searchtoolbar-bg);
-  padding: 12px;
-  box-shadow: 0 0 5px #cccccc;
-  margin-bottom: 10px;
+  padding: 8px;
+  //box-shadow: 0 0 5px #cccccc;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .12);
+  border: 1px solid var(--el-border-color-lighter);
+  margin-bottom: 8px;
   .el-form{
     display: flex;
     align-items: center;

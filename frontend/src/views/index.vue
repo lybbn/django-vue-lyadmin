@@ -84,7 +84,7 @@
     height: calc(100vh - 60px);
     background-color: var(--l-header-bg);
     margin: 0px;
-    box-shadow: 0 0 5px #cccccc;
+    box-shadow: 0 0 3px #cccccc;
   }
   .index-main {
     display: block;
@@ -94,7 +94,7 @@
     -ms-flex-preferred-size: auto;
     flex-basis: auto;
     overflow: auto;
-    padding: 8px 10px 0 10px;
+    padding: 8px 8px 0 8px;
     width: 100%;
   }
   .index-header{
