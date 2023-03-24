@@ -123,7 +123,9 @@
                     this.$refs.addRoleFlag.addRoleFn(row,'详情')
                 }
                 else if(flag == 'authority') {
-                    this.$router.push({name:'authorityManage',params:{id:row.id}})
+                    // this.$router.push({name:'authorityManage',params:{id:row.id}})//已失效
+                    this.$router.push({name:'authorityManage',state:{id:row.id}})
+                   // this.$router.push({name:'authorityManage',query:{id:row.id}})
                 }
                 else if(flag=='delete') {
                     let vm = this

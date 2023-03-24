@@ -182,9 +182,9 @@
                 })
             },
             initNode () {
-                if (this.$route.params.id && this.$refs.tree) {
+                if (history.state.id && this.$refs.tree) {
                     this.data.map((value) => {
-                        if (this.$route.params.id === value.id) {
+                        if (history.state.id === value.id) {
                             this.node_id = value.node_id
                         }
                     })
