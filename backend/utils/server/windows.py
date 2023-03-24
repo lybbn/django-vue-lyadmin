@@ -1,7 +1,7 @@
 #!/bin/python
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | django-vue3-lyadmin
+# | django-vue-lyadmin
 # +-------------------------------------------------------------------
 # | Author: lybbn
 # +-------------------------------------------------------------------
@@ -20,54 +20,52 @@ from random import Random
 from config import EXEC_LOG_PATH,TEMP_EXEC_PATH
 from django.core.cache import cache
 from pathlib import Path
+import os, chardet
 
 BASE_DIR = Path(__file__).resolve().parent
 
-PUBLIC_DICT = os.path.join(BASE_DIR, 'public.json')
-
-def ReadFile(filename, mode='r'):
+def readFile(filename, mode='r'):
     """
-    读取文件内容
+    读取指定文件内容
     @filename 文件名
-    return string(bin) 若文件不存在，则返回None
+    @param mode<string> 文件打开模式，默认r
+    return string or bytes or False 如果返回False则说明读取失败
     """
-
-    import os, chardet
     if not os.path.exists(filename): return False
     if not os.path.isfile(filename): return False
 
     f_body = '';
     try:
-        fp = open(filename, mode)
-        f_body = fp.read()
+        f = open(filename, mode)
+        f_body = f.read()
     except:
         try:
-            fp.close()
+            f.close()
         except:
             pass
 
         try:
             encoding = 'utf8'
-            fp = open(filename, mode, encoding=encoding)
-            f_body = fp.read()
+            f = open(filename, mode, encoding=encoding)
+            f_body = f.read()
         except:
             try:
-                fp.close()
+                f.close()
             except:
                 pass
             try:
                 encoding = 'gbk'
-                fp = open(filename, mode, encoding=encoding)
-                f_body = fp.read()
+                f = open(filename, mode, encoding=encoding)
+                f_body = f.read()
             except:
                 try:
-                    fp.close()
+                    f.close()
                 except:
                     pass
 
                 encoding = 'ansi'
-                fp = open(filename, mode, encoding=encoding)
-                f_body = fp.read()
+                f = open(filename, mode, encoding=encoding)
+                f_body = f.read()
 
     try:
         if f_body[0] == '\ufeff':
@@ -77,11 +75,8 @@ def ReadFile(filename, mode='r'):
     except:
         pass
 
-    fp.close()
+    f.close()
     return f_body
-
-def readFile(filename, mode='r'):
-    return ReadFile(filename, mode)
 
 def ReadReg(path, key):
     """
@@ -95,44 +90,6 @@ def ReadReg(path, key):
         value, type = winreg.QueryValueEx(newKey, key)
         return value
     except:
-        return False
-
-def DelReg(path, key):
-    """
-    删除注册表
-    @path 注册表路径
-    @key 注册表键值
-    """
-    import winreg
-    try:
-        newKey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
-        winreg.DeleteKey(newKey, key)
-        return True
-    except:
-        return False
-
-def WriteReg(path, key, value, type=winreg.REG_SZ):
-    """
-    写入/创建注册表
-    @path 注册表路径
-    @key 注册表键值
-    @value 注册表值
-    @type 注册表值类型
-    """
-    import winreg
-    try:
-        newKey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path, 0, winreg.KEY_ALL_ACCESS)
-    except:
-        newKey = winreg.CreateKey(winreg.HKEY_LOCAL_MACHINE, path)
-    try:
-        # SetValue 只支持字符串，其他类型使用SetValueEx
-        if isinstance(value, int):
-            winreg.SetValueEx(newKey, key, 0, winreg.REG_DWORD, value)
-        else:
-            winreg.SetValueEx(newKey, key, 0, type, value)
-        return True
-    except Exception as ex:
-
         return False
 
 def get_mac_address():
@@ -167,10 +124,10 @@ def process_exists(pname, exe=None):
 
 def GetRandomString(length):
     """
-       @name 取随机字符串
-       @author hwliang<hwl@bt.cn>
-       @param length 要获取的长度
-       @return string(length)
+    @name 取随机字符串
+    @author hwliang<hwl@bt.cn>
+    @param length 要获取的长度
+    @return string(length)
     """
     strings = ''
     chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
@@ -180,12 +137,11 @@ def GetRandomString(length):
         strings += chars[random.randint(0, chrlen)]
     return strings
 
-def Md5(strings):
+def md5(strings):
     """
-        @name 生成MD5
-        @author hwliang<hwl@bt.cn>
-        @param strings 要被处理的字符串
-        @return string(32)
+    @name 生成md5
+    @param strings 要被处理的字符串
+    @return string(32)
     """
     if type(strings) != bytes:
         strings = strings.encode()
@@ -193,10 +149,6 @@ def Md5(strings):
     m = hashlib.md5()
     m.update(strings)
     return m.hexdigest()
-
-
-def md5(strings):
-    return Md5(strings)
 
 def ExecShell(cmdstring, cwd=None, timeout=None, shell=True):
     """
@@ -267,11 +219,11 @@ class ExcepError(Exception):
 
 def exists_args(args, get):
     '''
-        @name 检查参数是否存在
-        @author hwliang<2021-06-08>
-        @param args<list or str> 参数列表 允许是列表或字符串
-        @param get<dict_obj> 参数对像
-        @return bool 都存在返回True，否则抛出KeyError异常
+    @name 检查参数是否存在
+    @author hwliang<2021-06-08>
+    @param args<list or str> 参数列表 允许是列表或字符串
+    @param get<dict_obj> 参数对像
+    @return bool 都存在返回True，否则抛出KeyError异常
     '''
     if type(args) == str:
         args = args.split(',')
@@ -385,12 +337,12 @@ class dict_obj:
 
     def get(self,key,default='',format='',limit = []):
         '''
-            @name 获取指定参数
-            @param key<string> 参数名称，允许在/后面限制参数格式，请参考参数值格式(format)
-            @param default<string> 默认值，默认空字符串
-            @param format<string>  参数值格式(int|str|port|float|json|xss|path|url|ip|ipv4|ipv6|letter|mail|phone|正则表达式|>1|<1|=1)，默认为空
-            @param limit<list> 限制参数值内容
-            @param return mixed
+        @name 获取指定参数
+        @param key<string> 参数名称，允许在/后面限制参数格式，请参考参数值格式(format)
+        @param default<string> 默认值，默认空字符串
+        @param format<string>  参数值格式(int|str|port|float|json|xss|path|url|ip|ipv4|ipv6|letter|mail|phone|正则表达式|>1|<1|=1)，默认为空
+        @param limit<list> 限制参数值内容
+        @param return mixed
         '''
         if key.find('/') != -1:
             key,format = key.split('/')
@@ -729,54 +681,9 @@ def GetDiskInfo():
     cache.set(key, diskInfo, 10)
     return diskInfo
 
-def GetMsg(key, args=()):
-    """
-    根据key获取内置消息返回
-    @key 指定消息的key
-    @args 消息内容中的参数
-    """
-    try:
-        log_message = json.loads(ReadFile(PUBLIC_DICT));
-        keys = log_message.keys();
-        msg = None;
-        if key in keys:
-            msg = log_message[key];
-            for i in range(len(args)):
-                rep = '{' + str(i + 1) + '}'
-                msg = msg.replace(rep, args[i]);
-        return msg;
-    except:
-        return key
-
-
-def getMsg(key, args=()):
-    return GetMsg(key, args)
-
-def ReturnMsg(status, msg, args=()):
-    """
-        @name 取通用dict返回
-        @param status  返回状态
-        @param msg  返回消息
-        @return dict  {"status":bool,"msg":string}
-    """
-    log_message = json.loads(ReadFile(PUBLIC_DICT));
-
-    keys = log_message.keys();
-    if type(msg) == str:
-        if msg in keys:
-            msg = log_message[msg];
-            for i in range(len(args)):
-                rep = '{' + str(i + 1) + '}'
-                msg = msg.replace(rep, args[i]);
-    return {'status': status, 'msg': msg}
-
-def returnMsg(status, msg, args=()):
-    return ReturnMsg(status, msg, args)
-
 # 重启系统
 def RestartServer():
     try:
         os.system("shutdown /r /f /t 0");
     except:
         pass
-    return returnMsg(True, 'SYS_REBOOT');

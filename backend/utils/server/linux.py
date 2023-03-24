@@ -1,7 +1,7 @@
 #!/bin/python
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | django-vue3-lyadmin
+# | django-vue-lyadmin
 # +-------------------------------------------------------------------
 # | Author: lybbn
 # +-------------------------------------------------------------------
@@ -16,17 +16,15 @@ import psutil
 from django.core.cache import cache
 from config import EXEC_LOG_PATH
 from pathlib import Path
+import pwd
 
 BASE_DIR = Path(__file__).resolve().parent
 
-PUBLIC_DICT = os.path.join(BASE_DIR, 'public.json')
-
-def Md5(strings):
+def md5(strings):
     """
-        @name 生成MD5
-        @author hwliang<hwl@bt.cn>
-        @param strings 要被处理的字符串
-        @return string(32)
+    @name 生成md5
+    @param strings 要被处理的字符串
+    @return string(32)
     """
     if type(strings) != bytes:
         strings = strings.encode()
@@ -35,17 +33,12 @@ def Md5(strings):
     m.update(strings)
     return m.hexdigest()
 
-def md5(strings):
-    return Md5(strings)
-
 def get_preexec_fn(run_user):
     '''
-        @name 获取指定执行用户预处理函数
-        @author hwliang<2021-08-19>
-        @param run_user<string> 运行用户
-        @return 预处理函数
+    @name 获取指定执行用户预处理函数
+    @param run_user<string> 运行用户
+    @return 预处理函数
     '''
-    import pwd
     pid = pwd.getpwnam(run_user)
     uid = pid.pw_uid
     gid = pid.pw_gid
@@ -71,15 +64,14 @@ def WriteLog(logMsg):
 
 def ExecShell(cmdstring, timeout=None, shell=True,cwd=None,env=None,user = None):
     '''
-        @name 执行命令
-        @author hwliang<2021-08-19>
-        @param cmdstring 命令 [必传]
-        @param timeout 超时时间
-        @param shell 是否通过shell运行
-        @param cwd 进入的目录
-        @param env 环境变量
-        @param user 执行用户名
-        @return 命令执行结果
+    @name 执行命令
+    @param cmdstring 命令 [必传]
+    @param timeout 超时时间
+    @param shell 是否通过shell运行
+    @param cwd 进入的目录
+    @param env 环境变量
+    @param user 执行用户名
+    @return 命令执行结果
     '''
     a = ''
     e = ''
@@ -125,42 +117,32 @@ def ExecShell(cmdstring, timeout=None, shell=True,cwd=None,env=None,user = None)
 
     return a,e
 
-def ReadFile(filename,mode = 'r'):
+def readFile(filename,mode='r'):
     """
-    读取文件内容
+    读取指定文件内容
     @filename 文件名
-    return string(bin) 若文件不存在，则返回None
+    @param mode<string> 文件打开模式，默认r
+    return string or bytes or False 如果返回False则说明读取失败
     """
-    import os
     if not os.path.exists(filename): return False
-    fp = None
+    f = None
     try:
-        fp = open(filename, mode)
-        f_body = fp.read()
+        f = open(filename, mode)
+        f_body = f.read()
     except Exception as ex:
         if sys.version_info[0] != 2:
             try:
-                fp = open(filename, mode,encoding="utf-8")
-                f_body = fp.read()
+                f = open(filename, mode,encoding="utf-8")
+                f_body = f.read()
             except:
-                fp = open(filename, mode,encoding="GBK")
-                f_body = fp.read()
+                f = open(filename, mode,encoding="GBK")
+                f_body = f.read()
         else:
             return False
     finally:
-        if fp and not fp.closed:
-            fp.close()
+        if f and not f.closed:
+            f.close()
     return f_body
-
-def readFile(filename,mode='r'):
-    '''
-        @name 读取指定文件数据
-        @author hwliang<2021-06-09>
-        @param filename<string> 文件名
-        @param mode<string> 文件打开模式，默认r
-        @return string or bytes or False 如果返回False则说明读取失败
-    '''
-    return ReadFile(filename,mode)
 
 #xss 防御
 def xsssec(text):
@@ -168,9 +150,8 @@ def xsssec(text):
 
 def get_os_version():
     '''
-        @name 取操作系统版本
-        @author hwliang<2021-08-07>
-        @return string
+    @name 取操作系统版本
+    @return string
     '''
     p_file = '/etc/.productinfo'
     if os.path.exists(p_file):
@@ -200,6 +181,7 @@ def GetSystemVersion():
     return version
 
 def GetLoadAverage():
+    #取系统负载
     try:
         c = os.getloadavg()
     except:
@@ -451,57 +433,5 @@ def GetDiskInfo(human=True):
     cache.set(key, diskInfo, 10)
     return diskInfo
 
-def GetMsg(key, args=()):
-    """
-    根据key获取内置消息返回
-    @key 指定消息的key
-    @args 消息内容中的参数
-    """
-    try:
-        log_message = json.loads(ReadFile(PUBLIC_DICT));
-        keys = log_message.keys();
-        msg = None;
-        if key in keys:
-            msg = log_message[key];
-            for i in range(len(args)):
-                rep = '{' + str(i + 1) + '}'
-                msg = msg.replace(rep, args[i]);
-        return msg;
-    except:
-        return key
-
-
-def getMsg(key, args=()):
-    return GetMsg(key, args)
-
-def ReturnMsg(status,msg,args = ()):
-    """
-        @name 取通用dict返回
-        @author hwliang<hwl@bt.cn>
-        @param status  返回状态
-        @param msg  返回消息
-        @return dict  {"status":bool,"msg":string}
-    """
-    log_message = json.loads(ReadFile(PUBLIC_DICT))
-    keys = log_message.keys()
-    if type(msg) == str:
-        if msg in keys:
-            msg = log_message[msg]
-            for i in range(len(args)):
-                rep = '{'+str(i+1)+'}'
-                msg = msg.replace(rep,args[i])
-    return {'status':status,'msg':msg}
-
-def returnMsg(status,msg,args = ()):
-    """
-        @name 取通用dict返回
-        @author hwliang<hwl@bt.cn>
-        @param status  返回状态
-        @param msg  返回消息
-        @return dict  {"status":bool,"msg":string}
-    """
-    return ReturnMsg(status,msg,args)
-
 def RestartServer():
     ExecShell("sync && init 6 &")
-    return returnMsg(True, 'SYS_REBOOT')
