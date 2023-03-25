@@ -62,6 +62,7 @@
                     value:'',
                 },
                 this.dialogVisible=false
+                this.$emit('refreshData')
             },
             addButtonFn(item,flag,menu) {
                 this.dialogVisible=true
@@ -83,8 +84,7 @@
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)
-                                    this.dialogVisible=false
-                                    this.$emit('refreshData')
+                                    this.handleClose()
                                 } else {
                                     this.$message.warning(res.msg)
                                 }
@@ -94,8 +94,7 @@
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)
-                                    this.dialogVisible=false
-                                    this.$emit('refreshData')
+                                    this.handleClose()
                                 } else {
                                     this.$message.warning(res.msg)
                                 }
