@@ -141,7 +141,7 @@
 				else if (cir.y < 0) cir.y = that.HEIGHT;
 			}
 			that.draw();
-		}, 15);
+		}, 25);
         window.addEventListener('resize', this.listenResize);
       },
       unmounted() {
@@ -249,17 +249,17 @@
              //定义画布宽高和生成点的个数
             this.WIDTH = window.innerWidth
             this.HEIGHT = window.innerHeight
-            this.POINT = 20;
+            this.POINT = 18;
             this.canvas = document.getElementById('lyadmincanvas');
             this.canvas.width = this.WIDTH-2,
             this.canvas.height = this.HEIGHT-2;
             this.context = this.canvas.getContext('2d');
-            this.context.strokeStyle = 'rgba(0,0,0,0.02)',
+            this.context.strokeStyle = 'rgba(0,0,0,0.06)',
             this.context.strokeWidth = 1,
             this.context.fillStyle = 'rgba(0,0,0,0.05)';
             this.circleArr = [];
             for (var i = 0; i < this.POINT; i++) {
-                this.circleArr.push(this.drawCricle(this.context, this.num(this.WIDTH), this.num(this.HEIGHT), this.num(15, 2), this.num(10, -10)/40, this.num(10, -10)/40));
+                this.circleArr.push(this.drawCricle(this.context, this.num(this.WIDTH), this.num(this.HEIGHT), this.num(18, 5), this.num(20, -20)/40, this.num(20, -20)/40));
             }
             this.draw();
         },
