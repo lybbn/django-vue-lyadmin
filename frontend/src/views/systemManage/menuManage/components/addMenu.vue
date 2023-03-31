@@ -78,8 +78,10 @@
     import {apiSystemMenu,apiSystemMenuAdd,apiSystemMenuEdit,systemMenuTree} from '@/api/api'
     import XEUtils from "xe-utils";
     import {menuicons} from "@/utils/menuTree.js"
-    import LyDialog from "../../../../components/dialog/dialog";
-    import LYChooseIcons from "../../../../components/icons/chooseIcons";
+    import LyDialog from "@/components/dialog/dialog";
+    import LYChooseIcons from "@/components/icons/chooseIcons";
+    import {deepClone} from "@/utils/util";
+
     export default {
         components: {LYChooseIcons, LyDialog},
         emits: ['refreshData'],
@@ -199,7 +201,7 @@
                 this.options=[]
                 this.isResourceShow=0
                 if(item){
-                    this.formData = item
+                    this.formData = deepClone(item)
                 }
 
                 this.formData.menuPermission=item ? item.menuPermission : []

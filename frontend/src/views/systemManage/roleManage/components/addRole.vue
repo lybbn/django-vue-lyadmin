@@ -34,7 +34,8 @@
 
 <script>
     import {apiSystemRoleEdit,apiSystemRoleAdd} from '@/api/api'
-    import LyDialog from "../../../../components/dialog/dialog";
+    import LyDialog from "@/components/dialog/dialog";
+    import {deepClone} from "@/utils/util";
     export default {
         components: {LyDialog},
         emits: ['refreshData'],
@@ -88,7 +89,7 @@
                 this.dialogVisible=true
                 this.dialogTitle=flag
                 if(item){
-                    this.formData=item
+                    this.formData=deepClone(item)
                 }
             },
             submitData() {
