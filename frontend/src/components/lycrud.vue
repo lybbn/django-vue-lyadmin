@@ -119,7 +119,7 @@
                     </el-table-column>
                 </template>
                 <!-- 操作列 -->
-                <el-table-column label="操作" :fixed="rowHandle.fixed" :width="rowHandle.width">
+                <el-table-column label="操作" :fixed="rowHandle.fixed" :width="rowHandle.width" v-if="rowHandle.width>0">
                     <template #header>
                         <div style="display: flex;justify-content: space-between;align-items: center;">
                             <div>操作</div>
