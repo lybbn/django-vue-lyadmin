@@ -190,7 +190,7 @@
                 currentRoute.matched.forEach((r)=> {
                     if (r.path === currentRoute.fullPath) {
                         //获取到当前页面的name
-                        const comName = r.components.default.name;
+                        const comName = r.components.default.name!= undefined?r.components.default.name:r.components.default.__name;
                         if (comName != undefined) {
                             this.excludes = comName
                             this.isRourterAlive = true
