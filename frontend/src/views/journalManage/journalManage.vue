@@ -32,18 +32,14 @@
                 <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
                 <el-form-item label=""><el-button  @click="deleteAlllogs" type="danger" v-show="isShowBtn('journalManage','操作日志','Delete')">全部清空</el-button></el-form-item>
                 <el-form-item label="" @click="clickMore" v-if="!showOtherSearch">
-                    <el-dropdown>
-                        <span class="lysearchmore">展开
-                            <el-icon><ArrowDown /></el-icon>
-                        </span>
-                    </el-dropdown>
+                    <span class="lysearchmore">展开
+                        <el-icon><ArrowDown /></el-icon>
+                    </span>
                 </el-form-item>
                 <el-form-item label="" @click="clickMore" v-if="showOtherSearch">
-                    <el-dropdown>
-                        <span class="lysearchmore">收起
-                            <el-icon><ArrowUp /></el-icon>
-                        </span>
-                    </el-dropdown>
+                    <span class="lysearchmore">收起
+                        <el-icon><ArrowUp /></el-icon>
+                    </span>
                 </el-form-item>
             </el-form>
         </div>
