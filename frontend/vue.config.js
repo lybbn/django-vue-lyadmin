@@ -19,7 +19,7 @@ module.exports = {
 	lintOnSave:false, // 是否开启eslint保存检测
 	devServer: {//开发环境
 		port:8080,
-		host:'0.0.0.0',
+		host:'127.0.0.1',
 		open: true, //配置自动启动浏览器
 		hot:true, //启用热更新
 		client: {
