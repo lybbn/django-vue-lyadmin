@@ -1,7 +1,12 @@
 //API DOMAIN
 const API_DOMAIN = process.env.NODE_ENV === 'development' ? "127.0.0.1:8000" : "django-vue3-lyadmin.lybbn.cn"
+//版本号
+const APP_VER = require('../../package.json').version
 //lyadmin系统配置
 module.exports = {
+
+	//APP版本
+    APP_VER : APP_VER,
 
     //API DOMAIN
     API_DOMAIN : API_DOMAIN,

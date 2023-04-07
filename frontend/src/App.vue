@@ -30,6 +30,13 @@
     const locale = computed(()=>{
         return i18n.messages.value[i18n.locale.value]? i18n.messages.value[i18n.locale.value].el :i18n.messages.value[config.LANG].el
     })
+
+    //此内容未经授权不能删除
+    console.info(`%cDjango-Vue-Lyadmin %cVer${config.APP_VER} %chttps://doc.lybbn.cn/`,
+          "color:#409EFF;font-size: 22px;font-weight:bolder",
+          "color:#999;font-size: 12px",
+          "color:#333"
+        )
 </script>
 <style lang="scss">
   #app {

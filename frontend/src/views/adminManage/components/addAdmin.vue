@@ -89,6 +89,14 @@
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
+                this.formData = {
+                    name:'',
+                    username:'',
+                    password:'123456',
+                    dept:'',
+                    role:[],
+                    is_active:true
+                }
                 this.$emit('refreshData')
             },
             addAdminFn(item,flag) {
@@ -100,13 +108,8 @@
                 // if(item && item.dept) {
                 //     item.dept = item.dept.split(" ")
                 // }
-                this.formData=item ? item : {
-                    name:'',
-                    username:'',
-                    password:'123456',
-                    dept:'',
-                    role:[],
-                    is_active:true
+                if(item){
+                    Object.assign(this.formData,item)
                 }
 
                 this.formData.role = item?item.role:[]
@@ -139,6 +142,9 @@
                             param.nickname = this.formData.name
                         }
                         if(this.formData.id){
+                            if(param.post.length<1){
+                                delete param.post
+                            }
                             apiSystemUserEdit(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
