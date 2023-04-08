@@ -52,8 +52,6 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 
 文档地址：文档在本项目的wiki中会持续更新，也可以通过官网访问：[www.lybbn.cn](http://www.lybbn.cn)
 
-说明：django-vue3-lyadmin 项目功能已合并至django-vue-lyadmin项目下，如果仅需要简约功能框架可访问： [django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin)
-
 补充：如果想找到1.x版本（vue2）标准模块（不带商城功能）的，可前往 [正式版v1.0.20](https://gitee.com/lybbn/django-vue-lyadmin/releases/v1.0.20) 版本进行下载
 
 ## 交流
