@@ -1,7 +1,7 @@
 <template>
   <el-menu class="el-menu-demo" mode="horizontal"  background-color="var(--l-header-bg)"  text-color="#ffffff" active-text-color="#ffffff" :ellipsis="false">
-      <div  :style="collapsed ? 'width:210px' : 'width:90px;margin-left:0'" class="divleft">
-          <p class="login-inner" @click.stop="" style="text-align: center;" :style="collapsed ? 'width:200px' : 'width:90px'">
+      <div  :style="collapsed ? collapsedWidth : 'width:90px;margin-left:0'" class="divleft">
+          <p class="login-inner" @click.stop="" style="text-align: center;" :style="collapsed ? loginInnerWidth : 'width:90px'">
              <img class="logoimg" src="../assets/logo.png" alt=""  :style="collapsed ? 'width:40px' : 'width:24px;height:24px;margin-left:0'">
           </p>
         <img class="showimg" :src="collapsed?imgsq:imgshow" @click.stop="toggle(collapsed)">
@@ -38,12 +38,11 @@
                     <el-icon style="font-size: 16px;color: white;" v-if="siteThemeStore.siteTheme == 'dark'"><Moon /></el-icon>
                 </el-tooltip>
             </span>
-<!--            <el-sub-menu index="1-1-1-1" class="submenu" style="width:auto;">-->
-<!--                <template #title class="el-title">你好,{{userName}}</template>-->
-<!--                <el-menu-item @click="exit">退出</el-menu-item>-->
-<!--            </el-sub-menu>-->
+            <span style="margin-right: 20px;">
+                <el-color-picker v-model="colorPrimary" :predefine="colorList" size="small" @change="setColorPrimary"></el-color-picker>
+            </span>
           <span>
-              <el-dropdown trigger="hover" class="right-dropdown-center">
+              <el-dropdown trigger="click" class="right-dropdown-center">
                 <span class="el-dropdown-link">
                   你好,{{userName}}
                   <el-icon class="el-icon--right">
@@ -65,7 +64,7 @@
   </el-menu>
 </template>
 <script setup>
-    import {ref, onMounted,onBeforeUnmount,getCurrentInstance,nextTick} from 'vue'
+    import {ref, onMounted,onBeforeUnmount,getCurrentInstance,nextTick,computed} from 'vue'
     import { ElMessage , ElMessageBox } from 'element-plus'
     import screenfull from 'screenfull'
     import {useMutitabsStore} from "@/store/mutitabs";
@@ -84,6 +83,20 @@
     let mobileWidth = ref(992)
     let isFullscreen = ref(mutitabsStore.isFullscreen)
 
+    let colorList = ref(['#409EFF', '#536dfe','#722ed1','#009688','#52c41a','#faad14','#ff5c93', '#c62f2f', '#fd726d'])
+    let colorPrimary = ref(siteThemeStore.colorPrimary || '#409EFF')
+    
+    function setColorPrimary() {
+        siteThemeStore.setColorPrimary(colorPrimary.value)
+    }
+
+    let collapsedWidth=computed(()=>{
+        return 'width:'+ (siteThemeStore.menuWidth+25)+'px'
+    })
+    let loginInnerWidth=computed(()=>{
+        return 'width:'+ (siteThemeStore.menuWidth+15)+'px'
+    })
+
     //路由跳转
     function jumpto(){
         mutitabsStore.switchtab('personalCenter')
@@ -96,11 +109,14 @@
           type: 'warning'
         }).then(() => {
             mutitabsStore.logout('false')
-            siteThemeStore.setSiteTheme('light')
-            router.push({path: '/login'})
             sessionStorage.clear()
             localStorage.clear()
+            siteThemeStore.$reset()
             ElMessage.success('已退出登录!')
+            // window.location.pathname = '/login'
+            router.replace({path: '/login'}).then(()=>{
+                window.location.reload()
+            })
       })
       .catch(() => {
       })

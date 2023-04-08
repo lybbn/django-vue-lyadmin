@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from mysystem.models import Users
-from utils.jsonResponse import SuccessResponse,ErrorResponse
+from utils.jsonResponse import SuccessResponse,ErrorResponse,DetailResponse
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.utils.translation import gettext_lazy as _
@@ -84,11 +84,35 @@ class AppMoliePasswordLoginSerializer(TokenObtainPairSerializer):
 
 class APPMobilePasswordLoginView(TokenObtainPairView):
     """
-    手机号密码登录接口
+    手机号密码登录接口（此种方式传参需要formdata方式）
     """
     serializer_class = AppMoliePasswordLoginSerializer
     permission_classes = []
 
+class UsernamePassWordLoginView(APIView):
+    """
+    post:
+    账号密码登录(手机号)此种方式传参通用
+    【功能描述】账号密码登录</br>
+    【参数说明】username 账号</br>
+    【参数说明】password 密码</br>
+    """
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self,request):
+        username = get_parameter_dic(request)['mobile']
+        password = get_parameter_dic(request)['password']
+        # 验证手机号是否合法
+        if not re.match(REGEX_MOBILE, username):
+            return ErrorResponse(msg="请输入正确的手机号")
+        user = Users.objects.filter(username=username, identity=2).first()
+        if user and not user.is_active:
+            return ErrorResponse(msg="该账号已被禁用,请联系管理员")
+        if user and user.check_password(password):  # check_password() 对明文进行加密,并验证
+            resdata = APPMobileSMSLoginSerializer.get_token(user)
+            return DetailResponse(data=resdata, msg="登录成功")
+        return ErrorResponse(msg="账号/密码错误")
 
 #发送短信序列化器
 class SmsSerializer(serializers.Serializer):

@@ -40,7 +40,7 @@
 <script>
     import {systemMenuButtonAdd,systemMenuButtonEdit,systemButton} from '@/api/api'
     import LyDialog from "../../../../components/dialog/dialog";
-
+    import {deepClone} from "@/utils/util"
     export default {
         components: {LyDialog},
         emits: ['refreshData'],
@@ -99,13 +99,14 @@
                     method: '',
                     value: '',
                 }
+                this.$emit('refreshData')
             },
             addButtonFn(item,flag,menu) {
                 this.dialogVisible=true
                 this.dialogTitle=flag
                 this.getSystemButton(item)
                 if(item){
-                    this.formData=item
+                    this.formData= deepClone(item)
                 }else{
                     this.formData.menu = menu
                 }
@@ -122,8 +123,7 @@
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)
-                                    this.dialogVisible=false
-                                    this.$emit('refreshData')
+                                    this.handleClose()
                                 } else {
                                     this.$message.warning(res.msg)
                                 }
@@ -133,8 +133,7 @@
                                 this.loadingSave=false
                                 if(res.code ==2000) {
                                     this.$message.success(res.msg)
-                                    this.dialogVisible=false
-                                    this.$emit('refreshData')
+                                    this.handleClose()
                                 } else {
                                     this.$message.warning(res.msg)
                                 }

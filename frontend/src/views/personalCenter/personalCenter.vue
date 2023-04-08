@@ -2,7 +2,7 @@
     <el-tabs v-model="activeName" @tab-click="handleClick" tab-position="left">
       <el-tab-pane label="用户设置" name="userInfo" >
           <el-form ref="userInfoForm" :model="userInfo" :disabled="!isShowBtn('personalCenter','个人中心','Update')"  required-asterisk :rules="userInforules" :label-position="position" center label-width="120px" style="margin: 50px auto">
-            <el-form-item prop="name" required label="昵称:">
+            <el-form-item prop="name" required label="姓名:">
               <el-input size="large" v-model="userInfo.name" clearable style="width: 360px" ></el-input>
             </el-form-item>
             <el-form-item label="电话号码:" prop="mobile">
@@ -56,9 +56,13 @@
 
 <script>
     import {systemUserUserInfoEdit,systemUserUserInfo,systemUserChangePassword} from '@/api/api'
-    import store from '@/store/index'
+    import {useMutitabsStore} from "@/store/mutitabs";
     export default {
         name: "personalCenter",
+        setup(){
+            const mutitabsstore = useMutitabsStore()
+            return { mutitabsstore}
+        },
         data() {
             var validatePass = (rule, value, callback) => {
               const pwdRegex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z]).{8,30}')
@@ -163,7 +167,11 @@
               if (name === 'info') {
                 _self.getCurrentUserInfo()
               } else {
-                _self.userPasswordForm = {}
+                _self.userPasswordInfo = {
+                  oldPassword: '',
+                  newPassword: '',
+                  newPassword2: ''
+                }
               }
             },
             // tab切换,默认切换清除原字符
@@ -183,7 +191,7 @@
 
               _self.$refs.userPasswordForm.validate((valid) => {
                 if (valid) {
-                  const userId = store.getters.getUserId
+                  const userId = this.mutitabsstore.getUserId
                   if (userId) {
                     const params = JSON.parse(JSON.stringify(_self.userPasswordInfo))
                       params.id = userId

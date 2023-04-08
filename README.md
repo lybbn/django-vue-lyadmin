@@ -1,19 +1,38 @@
 # Django-Vue-Lyadmin
 
-[![img](https://img.shields.io/badge/python-%3E=3.9.x-green.svg)](https://python.org/)  [![PyPI - Django Version badge](https://img.shields.io/badge/django%20versions-4.x-blue)](https://docs.djangoproject.com/zh-hans/4.0/) [![img](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![img](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin)
+[![img](https://img.shields.io/badge/python-%3E=3.9.x-green.svg)](https://python.org/)  [![PyPI - Django Version badge](https://img.shields.io/badge/django%20versions-4.x-blue)](https://docs.djangoproject.com/zh-hans/4.0/) [![img](https://img.shields.io/badge/node-%3E%3D%2014.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![img](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin)
 
-[QQ群聊](https://jq.qq.com/?_wv=1027&k=StAkGqk5) | [在线体验（admin/123456）](http://django-vue3-lyadmin.lybbn.cn) | [开发文档](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264002&doc_id=2214316) | [在线课程](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5476409&doc_id=2214316) | [捐赠](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264497&doc_id=2214316) 
+[ 官方文档 ](https://doc.lybbn.cn/) | 演示（[基础版](http://django-vue3-lyadmin.lybbn.cn) [专业版](http://django-vue-lyadmin-pro.lybbn.cn)）| [ 在线课程 ](https://doc.lybbn.cn/videos/PythonWeb/%E8%AF%BE%E7%A8%8B%E4%BB%8B%E7%BB%8D.html) | [捐赠](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264497&doc_id=2214316) 
 
 ## slogon
 
+一个开箱即用的低代码中后台管理系统
+
 前端frontend：做一个专业前端能用的框架，后台人员也能面向配置的、能改得动的CRUD
 后端backend ：强大的功能集合，让你开箱即用，成为初学者的领航员
+
+## 在线体验
+
+* 基础版 演示地址：[http://django-vue3-lyadmin.lybbn.cn](http://django-vue3-lyadmin.lybbn.cn) 账号：admin 密码：123456
+
+* 专业版 演示地址：[http://django-vue-lyadmin-pro.lybbn.cn](http://django-vue-lyadmin-pro.lybbn.cn) 账号：admin 密码：123456
+
+说明：专业版【代码生成】【表单构建】正在优化测试中...
+
+* Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)  账号/密码： 自行注册使用
+
+eleunipy系统是结合
+[django-vue-lyadmin](https://gitee.com/lybbn/django-vue-lyadmin)
+[unielepy](https://gitee.com/lybbn/unielepy)
+在全栈开发中，能让开发者挑选模板/组件/源码实现低代码、避免重复造轮子快速完成项目，模板持续更新中...
 
 ## 平台简介
 
 django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台（内置简易商城模块），去繁从简、还你一个干净的后台管理系统
 
-* 前端采用Vue3（elementplus 2.2.21 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
+* 代码生成： 前端配置即可生成前后台所需的crud文件，并同步到项目目录中（专业版功能优化中）
+* 表单构建： 可视化低代码表单设计器，后期规划自动生成前后台，并提供模板方便导入所需表单（专业版功能优化中）
+* 前端采用Vue3（elementplus 2.3.1 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
 * 前端支持面向配置的CRUD和自定义页面的CRUD双开发模式
 * DashBoard： 数据分析查看
 * 计划任务（定时任务，运维能力），django-celery-beat 定时任务
@@ -29,22 +48,9 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 
 特别鸣谢：本平台后端权限设计模式，部分逻辑参考[django-vue-admin-pro](https://gitee.com/dvadmin/django-vue-admin-pro)
 
-## 在线体验
-
-演示地址：[http://django-vue3-lyadmin.lybbn.cn](http://django-vue3-lyadmin.lybbn.cn) 账号：admin 密码：123456
-
-Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)  账号/密码： 自行注册使用
-
-eleunipy系统是结合
-[django-vue-lyadmin](https://gitee.com/lybbn/django-vue-lyadmin)
-[unielepy](https://gitee.com/lybbn/unielepy)
-在全栈开发中，能让开发者挑选模板/组件/源码实现低代码、避免重复造轮子快速完成项目，模板持续更新中...
-
 ## 文档地址
 
 文档地址：文档在本项目的wiki中会持续更新，也可以通过官网访问：[www.lybbn.cn](http://www.lybbn.cn)
-
-说明：django-vue3-lyadmin 项目功能已合并至django-vue-lyadmin项目下，如果仅需要简约功能框架可访问： [django-vue3-lyadmin](https://gitee.com/lybbn/django-vue3-lyadmin)
 
 补充：如果想找到1.x版本（vue2）标准模块（不带商城功能）的，可前往 [正式版v1.0.20](https://gitee.com/lybbn/django-vue-lyadmin/releases/v1.0.20) 版本进行下载
 
@@ -107,11 +113,11 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 4. 安装依赖环境
 	pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 
-5. 执行迁移命令：（次步骤可省略，直接导入sql脚本即可）
+5. 执行迁移命令（数据初始化）：（此步骤可省略，直接导入sql脚本即可）
 	python manage.py makemigrations
 	python manage.py migrate
 
-6. 初始化数据：（次步骤可省略，直接导入sql脚本即可）
+6. 初始化数据（数据初始化）：（此步骤可省略，直接导入sql脚本即可）
 	python manage.py init
 
 7. 启动项目（初始账号：superadmin 密码：123456）
@@ -136,11 +142,12 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 3、切换到项目根目录运行 docker-compose build 创建环境
 4、docker-compose up -d 后台的方式启动docker环境
 5、初始化django后端数据（第一次执行即可）
-docker exec -ti django-vue-lyadmin_django bash
+docker exec -it django-vue-lyadmin_django /bin/bash
 python manage.py makemigrations 
 python manage.py migrate
 python manage.py init
 exit
+或者直接导入lyadmin_db.sql文件到数据库也可
 6、其他docker-compose命令
 # docker-compose 停止
 docker-compose down

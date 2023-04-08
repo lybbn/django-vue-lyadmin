@@ -1,31 +1,44 @@
 <template>
     <div class="lyouters">
-      <canvas id="lyadmincanvas"></canvas>
-      <div class="login-wrap box">
+      <canvas id="lyadmincanvas" @click.stop="handleAnimationState()"></canvas>
+      <div class="login-config">
+          <el-button :icon="siteThemeStore.siteTheme == 'dark'?'sunny':'moon'" circle type="info" @click="setSiteTheme"></el-button>
+          <el-dropdown trigger="click" placement="bottom-end" @command="changeLang" style="margin-left: 10px">
+              <el-button circle>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512"><path d="M478.33 433.6l-90-218a22 22 0 0 0-40.67 0l-90 218a22 22 0 1 0 40.67 16.79L316.66 406h102.67l18.33 44.39A22 22 0 0 0 458 464a22 22 0 0 0 20.32-30.4zM334.83 362L368 281.65L401.17 362z" fill="currentColor"></path><path d="M267.84 342.92a22 22 0 0 0-4.89-30.7c-.2-.15-15-11.13-36.49-34.73c39.65-53.68 62.11-114.75 71.27-143.49H330a22 22 0 0 0 0-44H214V70a22 22 0 0 0-44 0v20H54a22 22 0 0 0 0 44h197.25c-9.52 26.95-27.05 69.5-53.79 108.36c-31.41-41.68-43.08-68.65-43.17-68.87a22 22 0 0 0-40.58 17c.58 1.38 14.55 34.23 52.86 83.93c.92 1.19 1.83 2.35 2.74 3.51c-39.24 44.35-77.74 71.86-93.85 80.74a22 22 0 1 0 21.07 38.63c2.16-1.18 48.6-26.89 101.63-85.59c22.52 24.08 38 35.44 38.93 36.1a22 22 0 0 0 30.75-4.9z" fill="currentColor"></path></svg>
+              </el-button>
+              <template #dropdown>
+                  <el-dropdown-menu>
+                      <el-dropdown-item v-for="item in lang" :key="item.value" :command="item" :class="{'lydpselected':language==item.value}">{{item.name}}</el-dropdown-item>
+                  </el-dropdown-menu>
+              </template>
+          </el-dropdown>
+      </div>
+      <div class="login-wrap box" :style="{'--animationState':animationState}">
         <el-form label-position="left" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px" class="demo-ruleForm login-container">
             <h3 class="title">
                 <div class="login-logo">
                    <img style="width: 100%;" src="../assets/logo.png" alt="logo">
                </div>
 <!--                <img style="height: 55px;margin-bottom: 10px" src="../assets/logo.png" alt="logo">-->
-                <span>用户登录</span>
+                <span>{{ $t('login.loginInTitle') }}</span>
             </h3>
           <el-form-item prop="username">
-            <el-input type="text" size="large" style="font-size: 16px" v-model.trim="ruleForm.username" auto-complete="off" placeholder="账号" maxlength="60">
-                  <template #prepend>
-                      <el-icon :size="20"><User /></el-icon>
-                  </template>
+            <el-input type="text" size="large" style="font-size: 16px" v-model.trim="ruleForm.username" auto-complete="off" :placeholder="$t('login.loginAccount')" maxlength="60">
+              <template #prepend>
+                  <el-icon :size="20"><User /></el-icon>
+              </template>
             </el-input>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input type="password" size="large" style="font-size: 16px" v-model.trim="ruleForm.password" auto-complete="off" placeholder="密码" maxlength="60">
+            <el-input type="password" size="large" style="font-size: 16px" v-model.trim="ruleForm.password" auto-complete="off" :placeholder="$t('login.loginPWD')" maxlength="60">
                 <template #prepend>
                   <el-icon :size="20"><lock /></el-icon>
                 </template>
             </el-input>
           </el-form-item>
           <el-form-item prop="captcha">
-            <el-input type="text"  size="large" style="font-size: 16px" v-model.trim="ruleForm.captcha" auto-complete="off" @keyup.enter="submitForm('ruleForm')"  placeholder="验证码">
+            <el-input type="text"  size="large" style="font-size: 16px" v-model.trim="ruleForm.captcha" auto-complete="off" @keyup.enter="submitForm('ruleForm')" :placeholder="$t('login.code')">
                  <template #prepend>
                     <el-icon :size="20"><circle-check /></el-icon>
                   </template>
@@ -34,9 +47,9 @@
                   </template>
             </el-input>
           </el-form-item>
-          <el-checkbox class="remember" v-model="rememberpassword">记住密码</el-checkbox>
+          <el-checkbox class="remember" v-model="rememberpassword">{{$t('login.rememberMe')}}</el-checkbox>
           <el-form-item style="width:100%">
-            <el-button type="primary" size="large" :loading="loadingLg" style="width:100%;font-size: 18px" @click="submitForm('ruleForm')">登录</el-button>
+            <el-button type="primary" size="large" :loading="loadingLg" style="width:100%;font-size: 18px" @click="submitForm('ruleForm')">{{$t('login.login')}}</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -46,16 +59,23 @@
     </div>
 </template>
 <script >
-  import {login,apiSystemWebRouter,getCaptcha} from '../api/api'
+  import {login,apiSystemWebRouter,getCaptcha} from '@/api/api'
   import {systemTree} from "@/utils/menuTree.js"
-  import {delCookie, getCookie, setCookie} from '../utils/util'
-  import {useMutitabsStore} from "../store/mutitabs";
+  import {delCookie, getCookie, setCookie} from '@/utils/util'
+  import {useMutitabsStore} from "@/store/mutitabs";
+  import {useSiteThemeStore} from "@/store/siteTheme";
+  import {setStorage,getStorage} from '@/utils/util'
+  import i18n from '@/locales'
+
 
   export default {
     name: 'login',
     setup(){
         const mutitabsstore = useMutitabsStore()
-        return { mutitabsstore}
+        const siteThemeStore = useSiteThemeStore()
+        const { t } = i18n.global
+        return { mutitabsstore,siteThemeStore,t }
+
     },
     data() {
       return {
@@ -70,13 +90,25 @@
         },
         loginFlag:false,
         rules: {
-            username: [{required: true, message: '请输入账号', trigger: 'blur'}],
-            password: [{required: true, message: '请输入密码', trigger: 'blur'}],
-            captcha: [{required: true, message: '请输入验证码', trigger: 'blur'}],
+            username: [{required: true, message: this.t('login.AccountError'), trigger: 'blur'}],
+            password: [{required: true, message: this.t('login.PWError'), trigger: 'blur'}],
+            captcha: [{required: true, message: this.t('login.codeError'), trigger: 'blur'}],
         },
         image_base: null,
         allmenu:[],
+        language:this.siteThemeStore.language,
+        lang: [
+            {
+                name: '简体中文',
+                value: 'zh-cn',
+            },
+            {
+                name: 'English',
+                value: 'en',
+            }
+        ],
         //动画
+        animationState:'paused',
         WIDTH:"",
         HEIGHT:"",
         POINT :"",
@@ -109,7 +141,7 @@
 				else if (cir.y < 0) cir.y = that.HEIGHT;
 			}
 			that.draw();
-		}, 15);
+		}, 25);
         window.addEventListener('resize', this.listenResize);
       },
       unmounted() {
@@ -131,6 +163,26 @@
           next()
       },
       methods: {
+        //设置主题
+        setSiteTheme(){
+            if(this.siteThemeStore.siteTheme=='light'){
+                this.siteThemeStore.setSiteTheme('dark')
+            }else{
+                this.siteThemeStore.setSiteTheme('light')
+            }
+        },
+        //设置语言
+        changeLang(command){
+            this.language = command.value
+            this.siteThemeStore.setLanguage(command.value)
+        },
+        handleAnimationState(){
+          if(this.animationState === 'paused'){
+            this.animationState = 'running'
+          }else{
+            this.animationState = 'paused'
+          }
+        },
         // 计算搜索栏的高度
         listenResize() {
             this.$nextTick(() => {
@@ -197,17 +249,17 @@
              //定义画布宽高和生成点的个数
             this.WIDTH = window.innerWidth
             this.HEIGHT = window.innerHeight
-            this.POINT = 35;
+            this.POINT = 18;
             this.canvas = document.getElementById('lyadmincanvas');
             this.canvas.width = this.WIDTH-2,
             this.canvas.height = this.HEIGHT-2;
             this.context = this.canvas.getContext('2d');
-            this.context.strokeStyle = 'rgba(0,0,0,0.02)',
+            this.context.strokeStyle = 'rgba(0,0,0,0.06)',
             this.context.strokeWidth = 1,
             this.context.fillStyle = 'rgba(0,0,0,0.05)';
             this.circleArr = [];
             for (var i = 0; i < this.POINT; i++) {
-                this.circleArr.push(this.drawCricle(this.context, this.num(this.WIDTH), this.num(this.HEIGHT), this.num(15, 2), this.num(10, -10)/40, this.num(10, -10)/40));
+                this.circleArr.push(this.drawCricle(this.context, this.num(this.WIDTH), this.num(this.HEIGHT), this.num(18, 5), this.num(20, -20)/40, this.num(20, -20)/40));
             }
             this.draw();
         },
@@ -329,7 +381,7 @@
                   menuPermission:item.menuPermission
                 })
               })
-              localStorage.setItem('menuList', JSON.stringify(menuList))
+              setStorage('menuList', JSON.stringify(menuList))
             }
             // console.log(menuTree,'menuTree-----')
             this.allmenu =  menuTree
@@ -346,7 +398,7 @@
                this.$message.warning('暂无授权任何菜单权限~')
             }
 
-            localStorage.setItem('allmenu', JSON.stringify(this.allmenu))
+            setStorage('allmenu', JSON.stringify(this.allmenu))
             //优化首次登录第一个标签显示问题
             let tabsPage = ""
             let TabsValue = ""
@@ -437,18 +489,27 @@
         }
     }
     ::v-deep(.el-input-group__append){
-        background-color: #ffffff !important;
+        background-color: var(--el-bg-color)  !important;
         width: 70px;
     }
     ::v-deep(.el-input-group__prepend){
-        background-color: #ffffff !important;
+        background-color: var(--el-bg-color) !important;
         .el-icon{
-            color: #409eff;
+            color: var(--el-color-primary);
         }
     }
    .lyouters{
         width: 100%;
         height: 100%;
+   }
+   .login-config{
+       position: absolute;
+       top:20px;
+       right: 20px;
+   }
+   ::v-deep(.lydpselected){
+        background-color: var(--el-dropdown-menuItem-hover-fill);
+        color: var(--el-dropdown-menuItem-hover-color);
    }
    .login-logo{
         overflow: hidden;
@@ -457,7 +518,7 @@
         border-radius: 50%;
         -webkit-box-shadow: 0 4px 40px rgb(0 0 0 / 7%);
         box-shadow: 0 4px 40px rgb(0 0 0 / 7%);
-        background-color: #fff;
+        background-color: var(--el-bg-color);
         z-index: 10;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
@@ -500,8 +561,8 @@
         text-align: center;
         justify-content: center;
         font-size: 19px;
-        margin: 0px auto 40px auto;
-        color: #409eff;
+        margin: 0px auto 25px auto;
+        color: var(--el-color-primary);
         font-weight: 700;
     }
     .remember {
@@ -513,7 +574,7 @@
     margin: 0 auto;
     display: flex;
     border-radius: 8px;
-    background: #FFFFFF;
+    background: var(--el-bg-color);
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.08);
     .login-container1{
       width: 510px;
@@ -525,7 +586,7 @@
         font-size: 48px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
-        color: #0072FF;
+        color: var(--el-color-primary);
         line-height: 67px;
         letter-spacing: 1px;
         margin: 60px auto 72px;
@@ -584,7 +645,7 @@
         font-size: 24px;
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
-        color: #FFFFFF;
+        color: var(--el-bg-color);
       }
     }
   }
@@ -615,7 +676,7 @@
     .box {
         width: 450px;
         height: 520px;
-        background: #ffffff;
+        background: var(--el-bg-color);
         overflow: hidden;
         border-radius: 10px;
     }
@@ -628,8 +689,10 @@
         width: 450px;
         height: 520px;
         transform-origin: bottom right;
-        background: linear-gradient(0deg, transparent, #409eff, #409eff);
-        animation: animate 10s linear infinite;
+        background: linear-gradient(0deg, transparent, var(--el-color-primary), var(--el-color-primary));
+        animation: animate 10s linear infinite var(--animationState);
+        animation-play-state: var(--animationState);
+        -webkit-animation-play-state:var(--animationState);
     }
 
     .box::after {
@@ -641,9 +704,11 @@
         width: 450px;
         height: 520px;
         transform-origin: bottom right;
-        background: linear-gradient(0deg, transparent, #409eff, #409eff);
-        animation: animate 10s linear infinite;
+        background: linear-gradient(0deg, transparent, var(--el-color-primary), var(--el-color-primary));
+        animation: animate 10s linear infinite var(--animationState);
         animation-delay: -5s;
+        animation-play-state: var(--animationState);
+        -webkit-animation-play-state:var(--animationState);
     }
 
     @keyframes animate {

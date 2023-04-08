@@ -1,5 +1,5 @@
 <template>
-    <div class="lycontainer">
+    <div class="lycontainer" :class="{'ly-is-full':isFull}">
         <div class="tableSelect" ref="tableSelect" v-if="hasPermission(route.name,'Create')">
             <el-form :inline="true"  label-position="left">
                 <el-form-item label="" v-show="hasPermission(route.name,'Create')"><el-button  @click="handleClick('addgroup')" type="warning" icon="FolderAdd" >新增分组</el-button></el-form-item>
@@ -42,12 +42,18 @@
     import {platformsettingsSysconfig} from '@/api/api'
     import AddModuleContent from "./components/addModuleContent";
     import FormItem from "./components/formItem";
-    import {hasPermission} from "@/utils/util";
+    import {hasPermission,getTableHeight} from "@/utils/util";
     import { useRoute } from "vue-router";
 
     const { proxy } = getCurrentInstance()
 
     const route = useRoute();
+
+    let isFull = ref(false)
+    function setFull(){
+        isFull.value=!isFull.value
+        window.dispatchEvent(new Event('resize'))
+    }
 
     let scrowHight = ref(0)
 
@@ -82,7 +88,9 @@
     }
     function handleResize(){
         nextTick(() => {
-            scrowHight.value = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - proxy.$refs.tableSelect.offsetHeight - 200
+            let tabSelectHeight = proxy.$refs.tableSelect?proxy.$refs.tableSelect.offsetHeight:0
+            tabSelectHeight = isFull.value?tabSelectHeight + 90 :tabSelectHeight + 200
+            scrowHight.value = getTableHeight(tabSelectHeight,false)
         })
     }
 
@@ -93,6 +101,10 @@
     })
     onBeforeUnmount(()=>{
         window.removeEventListener('resize',handleResize)
+    })
+
+    defineExpose({
+        setFull
     })
 
 </script>

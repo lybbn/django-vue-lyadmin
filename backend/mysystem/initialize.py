@@ -246,7 +246,7 @@ if object.{key}:
             {'id': 'bec59f93068a4d7aaaf5b4ccfbc12265', 'menu_id': '2e07b715d5e24e2ca45997527430e9d3','name': '统计', 'value': 'Statistics', 'api': '/api/mall/goodsorder/orderstatistics/', 'method': 0},
             {'id': '53e6d5a4192c4f0f8bdd7f5647124147', 'menu_id': 'dc8c173b425048e7a8c9b59513596c7f','name': '统计', 'value': 'Statistics', 'api': '/api/mall/goodsforderinfo/orderstatistics/', 'method': 0},
             {'id': 'c28461a142d7464f8865752c969d82de', 'menu_id': '2e07b715d5e24e2ca45997527430e9d3','name': '发货', 'value': 'Deliver', 'api': '/api/mall/goodsorder/sendoutgoods/', 'method': 1},
-            {'id': '0b5bf0f1caac45beabf54fb5d930187b', 'menu_id': '09a42810d4dd4b2eb939f8eb0b01d9d1','name': '日志', 'value': 'Search', 'api': '/api/crontab/taskresult/', 'method': 0},
+            {'id': '0b5bf0f1caac45beabf54fb5d930187b', 'menu_id': '09a42810d4dd4b2eb939f8eb0b01d9d1','name': '日志', 'value': 'Logs', 'api': '/api/crontab/taskresult/', 'method': 0},
             {'id': 'fa8d945124b74379aba32bcf34ea5383', 'menu_id': '09a42810d4dd4b2eb939f8eb0b01d9d1','name': '任务列表', 'value': 'Search', 'api': '/api/crontab/periodictask/tasklist/', 'method': 0},
 
         ]

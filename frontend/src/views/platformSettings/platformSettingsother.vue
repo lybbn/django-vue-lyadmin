@@ -110,6 +110,7 @@
             },
             setFull(){
                 this.isFull=!this.isFull
+                window.dispatchEvent(new Event('resize'))
             },
             showvideohandle(url) {
               this.$alert(
@@ -267,22 +268,14 @@
 				})
 			},
             getTheTableHeight(){
-               this.tableHeight =  getTableHeight(this.$refs.tableSelect.offsetHeight)
+                let tabSelectHeight = this.$refs.tableSelect?this.$refs.tableSelect.offsetHeight:0
+                tabSelectHeight = this.isFull?tabSelectHeight - 110:tabSelectHeight
+                this.tableHeight =  getTableHeight(tabSelectHeight)
             }
         },
         created() {
             this.getData()
             this.getSuperOperate()
-        },
-        timers(val){
-            if (val) {
-                this.formInline.beginAt=dateFormats(val[0],'yyyy-MM-dd hh:mm:ss');
-                this.formInline.endAt=dateFormats(val[1],'yyyy-MM-dd hh:mm:ss');
-            } else {
-                this.formInline.beginAt = ''
-                this.formInline.endAt = ''
-            }
-            this.getData()
         },
         mounted() {
             // 监听页面宽度变化搜索框的高度

@@ -22,7 +22,9 @@
                             end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="" v-show="hasPermission(this.$route.name,'Search')"><el-button  @click="search" type="primary" icon="Search">查询</el-button></el-form-item>
+<!--                <el-form-item label=""><el-button size="small" @click="addModule" type="primary">新增</el-button></el-form-item>&lt;!&ndash;超管有此权限&ndash;&gt;-->
+<!--                <el-form-item label=""><el-button size="small" @click="exportData" type="primary">导出</el-button></el-form-item>&lt;!&ndash;超管有此权限&ndash;&gt;-->
+                <el-form-item label=""><el-button  @click="search" type="primary" icon="Search" v-show="isShowBtn('financeStatisticsGoods','商品财务流水','Search')">查询</el-button></el-form-item>
                 <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
             </el-form>
         </div>
@@ -124,6 +126,7 @@
                         limit: 10,
                         total: 0
                     }
+                    this.timers = []
                     this.search()
                 }
             },
@@ -202,16 +205,6 @@
         created() {
             this.getData()
             this.getOrderstatistics()
-        },
-        timers(val){
-            if (val) {
-                this.formInline.beginAt=dateFormats(val[0],'yyyy-MM-dd hh:mm:ss');
-                this.formInline.endAt=dateFormats(val[1],'yyyy-MM-dd hh:mm:ss');
-            } else {
-                this.formInline.beginAt = ''
-                this.formInline.endAt = ''
-            }
-            this.getData()
         },
     }
 </script>

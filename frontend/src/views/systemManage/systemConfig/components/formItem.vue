@@ -193,7 +193,7 @@
                         that.$nextTick(() => {
                             const tableName = 'xTable_' + key
                             const $table = this.$refs[tableName][0]
-                            $table.loadData(item.chinldern)
+                            $table.loadData(item.children)
                         })
                     }
                 }
@@ -254,8 +254,9 @@
         },
         // 配置的行删除
         onDelRow (obj) {
-            platformsettingsSysconfigDelete(obj.id).then(res => {
+            platformsettingsSysconfigDelete({id:obj.id}).then(res => {
                 if(res.code == 2000){
+                    this.$message.success(res.msg)
                     this.getInit()
                 }else{
                     this.$message.warning(res.msg)

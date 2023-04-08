@@ -297,8 +297,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # 如果为True，则将不使用白名单，并且将接受所有来源。默认为False
 #允许跨域
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True #新版 ACCESS_CONTROL_ALLOW_ORIGIN = '*' ,不能与CORS_ALLOW_CREDENTIALS一起使用
 # 允许cookie
-CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持对cookie的操作
+# CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持对cookie的操作
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
 # ================================================= #
 # ********************* 日志配置 ******************* #
@@ -335,8 +336,8 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': SERVER_LOGS_FILE,
-            'maxBytes': 1024 * 1024 * 100,  # 100 MB
-            'backupCount': 5,  # 最多备份5个
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 10,  # 最多备份10个
             'formatter': 'standard',
             'encoding': 'utf-8',
         },
@@ -344,8 +345,8 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': ERROR_LOGS_FILE,
-            'maxBytes': 1024 * 1024 * 100,  # 100 MB
-            'backupCount': 3,  # 最多备份3个
+            'maxBytes': 1024 * 1024 * 10,  # 10 MB
+            'backupCount': 10,  # 最多备份10个
             'formatter': 'standard',
             'encoding': 'utf-8',
         },
@@ -522,9 +523,6 @@ API_MODEL_MAP = {
     "/api/super/operate/":"前端API关闭开启",
     "/api/platformsettings/uploadplatformimg/":"图片上传",
 }
-# 表前缀
-TABLE_PREFIX = "lyadmin_"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

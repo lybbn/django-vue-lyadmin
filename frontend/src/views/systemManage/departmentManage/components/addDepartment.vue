@@ -48,7 +48,8 @@
 <script>
     import utils from '@/utils/util'
     import {apiSystemDeptAdd,apiSystemDept,apiSystemDeptEdit} from '@/api/api'
-    import LyDialog from "../../../../components/dialog/dialog";
+    import LyDialog from "@/components/dialog/dialog";
+    import {deepClone} from "@/utils/util";
     export default {
         components: {LyDialog},
         emits: ['refreshData'],
@@ -113,7 +114,7 @@
                 this.options=[]
                 this.isResourceShow=0
                 if(item){
-                    this.formData = item
+                    this.formData = deepClone(item)
                 }
                 this.getapiSystemDept()
             },

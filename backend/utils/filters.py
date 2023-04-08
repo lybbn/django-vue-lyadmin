@@ -248,10 +248,11 @@ class OperationLogTimeFilter(django_filters.rest_framework.FilterSet):
     request_ip = django_filters.CharFilter(field_name='request_ip', lookup_expr='icontains')  # icontains表示该字段模糊搜索
     request_os = django_filters.CharFilter(field_name='request_os', lookup_expr='icontains')  # icontains表示该字段模糊搜索
     request_body = django_filters.CharFilter(field_name='request_body', lookup_expr='icontains')  # icontains表示该字段模糊搜索
+    request_method = django_filters.CharFilter(field_name='request_method', lookup_expr='icontains')
 
     class Meta:
         model = OperationLog
-        fields = ['beginAt', 'endAt','request_modular','request_path','request_ip','request_os','request_body']
+        fields = ['beginAt', 'endAt','request_modular','request_path','request_ip','request_os','request_body','request_method']
 
 
 

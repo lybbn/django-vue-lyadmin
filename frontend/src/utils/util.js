@@ -1,3 +1,4 @@
+import appConfig from '@/config'
 /**
  * 时间戳
  * @param {*} timestamp  时间戳
@@ -209,9 +210,15 @@ const commonVal = {
   isAgentAccount:/^[a-zA-Z0-9]+$/, //agentAccount
   isEmail: /^([a-zA-Z0-9]+[|_|.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[|_|.]?)*[a-zA-Z0-9]+.[a-zA-Z]{2,3}$/
 }
-
+function setStorage(key,data){
+  appConfig.STORAGE_METHOD === "localStorage" ? localStorage.setItem(key,data):sessionStorage.setItem(key,data)
+}
+function getStorage(key){
+  const result =  appConfig.STORAGE_METHOD === "localStorage" ? localStorage.getItem(key):sessionStorage.getItem(key)
+  return result
+}
 function isShowBtn(url,moduleName, btnName) {
-  let btnArr = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')):[];
+  let btnArr = getStorage('menuList')?JSON.parse(getStorage('menuList')):[];
   let isshow = false;
   for (var i = 0; i < btnArr.length; i++) {
     let item = btnArr[i];
@@ -224,7 +231,7 @@ function isShowBtn(url,moduleName, btnName) {
 }
 
 function hasPermission(url,btnName) {
-  let btnArr = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')):[];
+  let btnArr = getStorage('menuList')?JSON.parse(getStorage('menuList')):[];
   let isshow = false;
   for (var i = 0; i < btnArr.length; i++) {
     let item = btnArr[i];
@@ -236,9 +243,9 @@ function hasPermission(url,btnName) {
   return isshow
 }
 
-function getTableHeight(tableSelectHeight){
-    var pagination_height = 210
-    let height = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - tableSelectHeight;
+function getTableHeight(tableSelectHeight,allowPage=true){
+     var pagination_height = allowPage?178:0
+    let height = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - tableSelectHeight
     var ua = navigator.userAgent;
     //获取当前设备类型（安卓或苹果）
     if (ua && /Android/.test(ua)) {
@@ -251,35 +258,13 @@ function getTableHeight(tableSelectHeight){
         return height - pagination_height
     }
 }
-function randomId(){
-    return Math.floor(Math.random() * 100000 + Math.random() * 20000 + Math.random() * 5000 + Math.random() * 100);
+function deepClone(data){
+   if(data){
+      return JSON.parse(JSON.stringify(data))
+   }
+   return data
 }
 
-function parseString2Json(str) {
-    if (str === undefined) {
-        return undefined
-    }
-    return JSON.parse(JSON.stringify(str))
-}
-function getDefaultFormConfig() {
-    return {
-        modelName: 'formData',
-        refName: 'lyFormBuilder',
-        rulesName: 'rules',
-        labelWidth: 'auto',
-        labelPosition: 'left',
-        size: '',
-        labelAlign: 'label-left-align',
-        cssCode: '',
-        customClass: '',
-        functions: '',  //全局函数
-        layoutType: 'PC',
-        jsonVersion: 1,
-        onFormCreated: '',
-        onFormMounted: '',
-        onFormDataChange: '',
-    }
-}
 // 图片上传根据名称排序
 const  sortName = (v1, v2) => {
     let a = "" + v1;
@@ -352,7 +337,7 @@ export{
     formatUnitSize,
     downloadFileURLByA,
     downloadFileURLByIframe,
-    randomId,
-    parseString2Json,
-    getDefaultFormConfig
+    deepClone,
+    setStorage,
+    getStorage
 }

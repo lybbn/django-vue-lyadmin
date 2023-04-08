@@ -1,1 +1,0 @@
-export const LYFORMBUILDER_VERSION = '1.0.1'

@@ -25,11 +25,10 @@
                             end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
-                <slot name="searchBar"></slot>
+                <slot name="searchBar-l"></slot>
                 <el-form-item label=""><el-button  @click="handleSearchClick('search')" type="primary" icon="Search" v-show="rowHandle.permission.search">查询</el-button></el-form-item>
                 <el-form-item label=""><el-button  @click="handleSearchClick('reset')" icon="Refresh">重置</el-button></el-form-item>
-<!--                <el-form-item label=""><el-button  @click="addAdmin" type="primary" v-show="isShowBtn('userManage','用户管理','Create')">新增</el-button></el-form-item>-->
-<!--                <el-form-item label=""><el-button  @click="exportDataBackend" type="primary">导出</el-button></el-form-item>-->
+                <slot name="searchBar-r"></slot>
             </el-form>
         </div>
 
@@ -120,7 +119,7 @@
                     </el-table-column>
                 </template>
                 <!-- 操作列 -->
-                <el-table-column label="操作" :fixed="rowHandle.fixed" :width="rowHandle.width">
+                <el-table-column label="操作" :fixed="rowHandle.fixed" :width="rowHandle.width" v-if="rowHandle.width>0">
                     <template #header>
                         <div style="display: flex;justify-content: space-between;align-items: center;">
                             <div>操作</div>
@@ -404,12 +403,14 @@
             },
             setFull(){
                 this.isFull=!this.isFull
+                window.dispatchEvent(new Event('resize'))
             },
             //多选项框被选中数据
             handleSelectionChange(selection) {
                 this.ids = selection.map(item => item.id);
                 this.single = selection.length !== 1;
                 this.multiple = !selection.length;
+                this.$emit("handleSelectionChange",this.ids)
             },
             /** 批量删除按钮操作 */
             handleMutiDelete() {
@@ -633,8 +634,9 @@
 				})
 			},
             getTheTableHeight(){
-                const searchBarHeight = (this.$refs.tableSelect!=undefined && this.$refs.tableSelect.offsetHeight)?this.$refs.tableSelect.offsetHeight:0
+                let searchBarHeight = (this.$refs.tableSelect!=undefined && this.$refs.tableSelect.offsetHeight)?this.$refs.tableSelect.offsetHeight:0
                 const tableToolbarHeight = (this.$refs.tableToolBar!=undefined && this.$refs.tableToolBar.offsetHeight)?this.$refs.tableToolBar.offsetHeight:0
+                searchBarHeight = this.isFull?searchBarHeight - 110:searchBarHeight
                 this.tableHeight =  getTableHeight(searchBarHeight+tableToolbarHeight)
             }
 
@@ -671,7 +673,8 @@
         justify-content: space-between;
         font-size: 14px;
         background: var(--el-bg-color);
-        padding: 10px;
-        box-shadow: 0 0 4px #cccccc;
+        padding: 8px;
+        /*box-shadow: 0 0 4px #cccccc;*/
+        box-shadow: 0 0 2px rgba(0, 0, 0, .12);
     }
 </style>

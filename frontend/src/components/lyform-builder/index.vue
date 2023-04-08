@@ -9,13 +9,13 @@
  */
 -->
 <template>
-    <div>
-        <LyFormBuilder></LyFormBuilder>
-    </div>
+  <div>
+
+  </div>
 </template>
 
 <script setup>
-    import LyFormBuilder from '@/components/lyform-builder/lyFormBuilder'
+  import {ref, onMounted} from 'vue'
 
 </script>
 

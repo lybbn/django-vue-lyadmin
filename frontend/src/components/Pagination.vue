@@ -2,20 +2,23 @@
 * 分页组件
 */
 <template>
-  <el-row>
-  <el-pagination class="page-box" @size-change="handleSizeChange" @current-change="handleCurrentChange" background :current-page="childMsg.page" :page-sizes="[10,20,30,40,50,100]" :page-size="childMsg.limit" layout="total, sizes, prev, pager, next, jumper" :total="childMsg.total">
-  </el-pagination>
-  </el-row>
+  <div class="lyPagination-page">
+    <el-pagination class="page-box" @size-change="handleSizeChange" @current-change="handleCurrentChange" background :current-page="childMsg.page" :page-sizes="pageSizes" :page-size="childMsg.limit" :layout="layout" :total="childMsg.total"></el-pagination>
+  </div>
 </template>
 <script>
   export default {
     name: 'Pagination',
-    props: ['childMsg'],
+    props: {
+      childMsg: { type: Object, default: () => {} },
+      pageSizes: { type: Array, default: [10,20,30,40,50,100] },
+      layout: { type: String, default: "total, sizes, prev, pager, next, jumper" },
+    },
     data() {
       return {
         pageparm: {
-          page: this.childMsg.page,
-          limit: this.childMsg.limit
+          page: this.childMsg.page || 1,
+          limit: this.childMsg.limit || 20,
         }
       }
     },
@@ -33,9 +36,17 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+  .lyPagination-page{
+    display: flex;
+    align-items: center;
+    background: var(--el-fill-color-blank);
+    border-bottom: 1px solid var(--el-border-color-light);
+    border-left: 1px solid var(--el-border-color-light);
+    border-right: 1px solid var(--el-border-color-light);
+  }
   .page-box {
-    margin: 20px auto;
+    margin: 10px auto;
     text-align: center;
     .el-pagination__editor.el-input{
       width: 70px !important;

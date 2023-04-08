@@ -2,7 +2,7 @@
     <div>
         <ly-crud ref="lycrud"  v-bind="crudConfig" >
             <template v-slot:customHandle="slotProps">
-                <span class="table-operate-btn" @click="handleClick(slotProps.row,'disable')" v-show="hasPermission('userManageCrud','Disable')">
+                <span class="table-operate-btn" @click="handleClick(slotProps.row,'disable')" v-show="hasPermission(this.$route.name,'Disable')">
                     <span v-if="slotProps.row.is_active">禁用</span>
                     <span v-else>启用</span>
                 </span>
@@ -56,7 +56,7 @@
                     },
                     //crud按钮配置
                     rowHandle:{
-                        width: 180,//操作列宽度
+                        width: 180,//操作列宽度,0表示不显示表格操作列
                         fixed:"right",//固定操作列在右侧
                         permission:{//增删改查按钮权限控制（是否显示）
                             add:this.hasPermission(this.$options.name,'Create'),//bool型 this.$options.name获取当前组件的name本例为userManageCrud
@@ -170,6 +170,9 @@
             }
         },
         methods:{
+            setFull(){
+                this.$refs.lycrud.setFull()
+            },
             //自定义操作列按钮方法
             handleClick(row,flag){
                 let vm = this

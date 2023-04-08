@@ -14,6 +14,7 @@
 
 <script>
     import {useMutitabsStore} from "@/store/mutitabs";
+    import {setStorage,getStorage} from '@/utils/util'
 
     export default {
         name: "404",
@@ -24,7 +25,7 @@
         methods:{
             backhome(){
                 // this.$router.replace('/')
-                let allmenu = localStorage.getItem('allmenu')
+                let allmenu = getStorage('allmenu')
                 if(allmenu){
                     allmenu = JSON.parse(allmenu)
                     if(allmenu.length>0){

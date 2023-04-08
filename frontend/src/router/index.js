@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory ,createWebHashHistory } from 'vue-router'
 import {useMutitabsStore} from "@/store/mutitabs";
+import {setStorage,getStorage} from '@/utils/util'
 // 进度条
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -330,7 +331,7 @@ router.beforeEach((to, from, next) => {
     let userId = store.userId ? store.userId : ''
     if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
         if (userId) { // 通过vuex state获取当前的token是否存在
-            let menuList = JSON.parse(localStorage.getItem('menuList'))
+            let menuList = JSON.parse(getStorage('menuList'))
             if(menuList && (menuList.filter(item=>item.url == to.name).length > 0 || (whiteList.indexOf(to.name) !== -1))) {
                 if(to.path){
                     next()
@@ -355,7 +356,7 @@ router.beforeEach((to, from, next) => {
     } else {
         if(to.path=="/login" ||to.path=="/"){
             if(userId){
-                let tabsValue = localStorage.getItem("TabsValue")
+                let tabsValue = getStorage("TabsValue")
                 if(tabsValue){
                     if(isRouterNameExist(tabsValue)){
                         if(tabsValue === 'login'){
@@ -371,7 +372,7 @@ router.beforeEach((to, from, next) => {
                         })
                     }
                 }else{
-                    let tabsPage = JSON.parse(localStorage.getItem("tabsPage"))
+                    let tabsPage = JSON.parse(getStorage("tabsPage"))
                     if (tabsPage) {
                         if(isRouterNameExist(tabsPage[0].name)){
                             store.switchtab(tabsPage[0].name)

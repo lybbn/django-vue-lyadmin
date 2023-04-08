@@ -1,9 +1,9 @@
 <template>
-    <div id="lyechartmain"  style="width: 100%;height: 280px"></div>
+    <div ref="lyechartmain"  style="width: 100%;height: 280px"></div>
 </template>
 
 <script setup>
-    import {onBeforeUnmount, onMounted, reactive, watch,ref} from "vue";
+    import {onBeforeUnmount, onMounted, reactive, watch,ref,nextTick} from "vue";
     // 按需引入echarts
     import echarts from "@/components/analysis/echartsInstall";
 
@@ -23,12 +23,15 @@
 
     let myChart = ref(null)
     let option = reactive({})
+    let lyechartmain = ref(null)
     onMounted(() => {//需要获取到element,所以是onMounted的Hook
         setTimeout(() => {
-            myChart.value = echarts.init(document.getElementById("lyechartmain"));
-            state.contentValue = props.modelValue
-            addData(state.contentValue.up,state.contentValue.down)
-            initEcharts()
+            nextTick(()=>{
+                myChart.value = echarts.init(lyechartmain.value);
+                state.contentValue = props.modelValue
+                addData(state.contentValue.up,state.contentValue.down)
+                initEcharts()
+            })
         },200)
     });
     onBeforeUnmount(() => {

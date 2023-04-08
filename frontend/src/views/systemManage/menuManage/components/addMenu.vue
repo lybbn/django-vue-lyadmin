@@ -10,7 +10,7 @@
                             :options="options"
                             v-model="formData.parent"
                             @change="handleChange"
-                            :props="{ checkStrictly: true ,label:'name',value:'id'}"
+                            :props="{expandTrigger:'hover', checkStrictly: true ,label:'name',value:'id'}"
                             clearable></el-cascader>
                 </el-form-item>
                 <el-form-item label="菜单名称：" prop="name">
@@ -56,6 +56,7 @@
                 </el-form-item>
                 <el-form-item label="路由地址：" prop="web_path">
                     <el-input v-model.trim="formData.web_path" ></el-input>
+                    <el-alert title="请填写xxx.vue中的name或文件名作为路由地址" type="info" show-icon/>
                 </el-form-item>
                 <el-form-item label="状态：" prop="status">
                     <el-radio-group v-model="formData.status" style="width: 300px">
@@ -77,8 +78,10 @@
     import {apiSystemMenu,apiSystemMenuAdd,apiSystemMenuEdit,systemMenuTree} from '@/api/api'
     import XEUtils from "xe-utils";
     import {menuicons} from "@/utils/menuTree.js"
-    import LyDialog from "../../../../components/dialog/dialog";
-    import LYChooseIcons from "../../../../components/icons/chooseIcons";
+    import LyDialog from "@/components/dialog/dialog";
+    import LYChooseIcons from "@/components/icons/chooseIcons";
+    import {deepClone} from "@/utils/util";
+
     export default {
         components: {LYChooseIcons, LyDialog},
         emits: ['refreshData'],
@@ -198,7 +201,7 @@
                 this.options=[]
                 this.isResourceShow=0
                 if(item){
-                    this.formData = item
+                    this.formData = deepClone(item)
                 }
 
                 this.formData.menuPermission=item ? item.menuPermission : []

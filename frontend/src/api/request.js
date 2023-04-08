@@ -3,12 +3,13 @@ import { ElMessage,ElMessageBox } from 'element-plus'
 require("babel-polyfill");
 import { url } from './url';
 import router from "../router";
+import {setStorage,getStorage} from '@/utils/util'
 
 var request = axios.create({
     timeout: 10000,
 });
 function ajax(opt,method){
-  var token= localStorage.getItem('logintoken')
+  var token= getStorage('logintoken')
   // var timestamp=new Date().getTime();
   var params;
 
@@ -183,14 +184,14 @@ export function ajaxGetDetailByID (opt) {
 
 //websocket获取jwt请求token
 export function getJWTAuthorization() {
-    var token= localStorage.getItem('logintoken')
+    var token= getStorage('logintoken')
     var jwt = 'JWTlybbn' + token
     return jwt
 }
 
 export function reqExpost (method, url, params) {
   // const timestamp = new Date().getTime().toString();
-  let token = localStorage.getItem('logintoken')
+  let token = getStorage('logintoken')
   for (let key in params){
     if(params[key]==null || params[key] == 'undefined' ||  params[key]==''){
       delete params[key]
@@ -219,7 +220,7 @@ export function reqExpost (method, url, params) {
 export function uploadImg (param) {
     let formData = new FormData()
     formData.append('file', param.params.file)
-    let token= localStorage.getItem('logintoken')
+    let token= getStorage('logintoken')
     return axios({
         method: 'post',
         url: url+param.url ,

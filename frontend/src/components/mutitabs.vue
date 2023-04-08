@@ -13,25 +13,27 @@
         :label="item.title"
         :name="item.name"></el-tab-pane>
     </el-tabs>
-    <ul
-    v-show="contextMenuVisible"
-    :style="{left:left+'px',top:top+'px'}"
-    class="contextmenu">
-        <li @click="reloadPage"><el-icon><Refresh /></el-icon><span class="contextmenu-text">刷新</span></li>
-        <li @click="closeAllTabs"><el-icon><CircleCloseFilled /></el-icon><span class="contextmenu-text">关闭所有</span></li>
-        <li @click="closeOtherTabs('left')"><el-icon><Back /></el-icon><span class="contextmenu-text">关闭左边</span></li>
-        <li @click="closeOtherTabs('right')"><el-icon><Right /></el-icon><span class="contextmenu-text">关闭右边</span></li>
-        <li @click="closeOtherTabs('other')"><el-icon><Delete /></el-icon><span class="contextmenu-text">关闭其他</span></li>
-        <li @click="closeContextMenu()"><el-icon><Close /></el-icon><span class="contextmenu-text">取消操作</span></li>
-    </ul>
+    <transition name="el-zoom-in-top">
+        <ul v-show="contextMenuVisible" :style="{left:left+'px',top:top+'px'}" class="contextmenu" id="lycontextmenu">
+            <li @click="reloadPage"><el-icon><Refresh /></el-icon><span class="contextmenu-text">刷新</span></li>
+            <li @click="closeAllTabs"><el-icon><CircleCloseFilled /></el-icon><span class="contextmenu-text">关闭所有</span></li>
+            <li @click="closeOtherTabs('left')"><el-icon><Back /></el-icon><span class="contextmenu-text">关闭左边</span></li>
+            <li @click="closeOtherTabs('right')"><el-icon><Right /></el-icon><span class="contextmenu-text">关闭右边</span></li>
+            <li @click="closeOtherTabs('other')"><el-icon><Delete /></el-icon><span class="contextmenu-text">关闭其他</span></li>
+            <li @click="maximize"><el-icon><FullScreen /></el-icon><span class="contextmenu-text">最大化</span></li>
+            <li @click="openWindow"><el-icon><CopyDocument /></el-icon><span class="contextmenu-text">新窗口打开</span></li>
+            <li @click="closeContextMenu()"><el-icon><Close /></el-icon><span class="contextmenu-text">取消操作</span></li>
+        </ul>
+    </transition>
       <router-view v-slot="{Component,route}">
 <!--              <component :is="Component" v-if="!route.meta.isActive" :key="route.path"></component>-->
-          <transition name="lyfadein" mode="out-in">
-              <keep-alive :include="keepAliveRoutes" :exclude="excludes">
-                    <component :is="Component" :key="route.name" v-if="!isRourterAlive"></component>
-              </keep-alive>
-          </transition>
+<!--          <transition name="lyfadein" mode="out-in">-->
+          <keep-alive :include="keepAliveRoutes" :exclude="excludes">
+              <component :is="Component" :key="route.name" v-if="!isRourterAlive" ref="lyComponent"></component>
+          </keep-alive>
+<!--          </transition>-->
       </router-view>
+      <div class="lymain-maximize-exit" @click="exitMaximize"><el-icon><close /></el-icon></div>
   </div>
 </template>
 
@@ -39,6 +41,7 @@
     import {useKeepAliveStore} from "@/store/keepAlive";
     import {useMutitabsStore} from "@/store/mutitabs";
     import {useSiteThemeStore} from "@/store/siteTheme";
+    import {setStorage,getStorage} from '@/utils/util'
 
     export default {
         name: "mutitabs",
@@ -63,14 +66,14 @@
         mounted() {
             document.addEventListener("click", (e) => {
               let that = this
-              if (e.target.className !="myeltas1") {
+              if (e.target.className !="myeltas2") {
                 that.contextMenuVisible = false; //点击其他区域关闭右键菜单
               }
             });
             //刷新加载localStorage存着地址
-            let lytabsPage = localStorage.getItem("tabsPage")
+            let lytabsPage = getStorage("tabsPage")
             if (lytabsPage) {
-                var TabsValue = localStorage.getItem("TabsValue");
+                var TabsValue = getStorage("TabsValue");
                 if (lytabsPage === "[]"||lytabsPage==""||lytabsPage==null || TabsValue === 'login') {
                     this.relogin()//重新登录
                 }
@@ -82,8 +85,6 @@
                 }else{
                     this.mutitabsstore.switchtabNoRoute(currentRouteName)
                 }
-
-
             }else{
                 this.relogin()//重新登录
             }
@@ -111,6 +112,13 @@
             }
         },
         methods: {
+            //退出最大化
+			exitMaximize(){
+				document.getElementById('app').classList.remove('lymain-maximize')
+                if(this.$refs.lyComponent.setFull){
+                    this.$refs.lyComponent.setFull()
+                }
+			},
             relogin(){
                 this.mutitabsstore.logout('false')
                 this.siteThemeStore.setSiteTheme('light')
@@ -140,10 +148,10 @@
                 this.editableTabsValue = activeName;
                 this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
                 this.mutitabsstore.tabsPage = this.editableTabs;
-                window.localStorage.setItem("tabsPage",JSON.stringify(this.editableTabs));
+                setStorage("tabsPage",JSON.stringify(this.editableTabs));
                 //解决刷新消失
-                window.localStorage.setItem("TabsValue", activeName);
-                var thetabsPage = localStorage.getItem("tabsPage")
+                setStorage("TabsValue", activeName);
+                var thetabsPage = getStorage("tabsPage")
                 // 删除时跳转不在停留被删除页
                 if (thetabsPage === "[]"||thetabsPage==""||thetabsPage==null) {
                     this.relogin()
@@ -164,8 +172,16 @@
                     let currentContextTabId = obj.id.split("-")[1];
                     this.contextMenuVisible = true;
                     this.mutitabsstore.saveCurContextTabId(currentContextTabId);
-                    this.left = e.clientX;
-                    this.top = e.clientY + 13;
+                    this.left = e.clientX + 1;
+                    this.top = e.clientY + 1;
+                    //右键菜单边缘化位置处理（防止在最边缘右键右健菜单消失部分）
+                    this.$nextTick(() => {
+                        let ct = document.getElementById("lycontextmenu");
+                        if(document.body.offsetWidth - e.clientX < ct.offsetWidth){
+                            this.left = document.body.offsetWidth - ct.offsetWidth - 1;
+                            this.top = e.clientY + 1;
+                        }
+                    })
                 }
             },
             reloadPage(){
@@ -174,7 +190,7 @@
                 currentRoute.matched.forEach((r)=> {
                     if (r.path === currentRoute.fullPath) {
                         //获取到当前页面的name
-                        const comName = r.components.default.name;
+                        const comName = r.components.default.name!= undefined?r.components.default.name:r.components.default.__name;
                         if (comName != undefined) {
                             this.excludes = comName
                             this.isRourterAlive = true
@@ -186,6 +202,28 @@
                     this.excludes = ""
                 })
             },
+            //标签页最大化
+            maximize(){
+				var TabsValue = this.mutitabsstore.TabsValue
+				this.contextMenuVisible = false
+				//判断是否当前路由，否的话跳转
+				if(this.$route.name != TabsValue){
+					this.$router.push({
+						name: TabsValue,
+					})
+				}
+				document.getElementById('app').classList.add('lymain-maximize')
+                if(this.$refs.lyComponent.setFull){
+                    this.$refs.lyComponent.setFull()
+                }
+			},
+            //新窗口打开
+			openWindow(){
+				let currentPath = this.mutitabsstore.TabsValue
+                let routeData = this.$router.resolve({path:currentPath})
+                window.open(routeData.href,'_blank')
+				this.contextMenuVisible = false
+			},
             // 关闭所有标签页
             closeAllTabs() {
                 this.mutitabsstore.closeAllTabs()
@@ -205,26 +243,28 @@
 </script>
 <style>
     .myeltas2 .el-tabs__nav .el-tabs__item.is-active {
-        color: #46a0fc;
+        color: var(--el-color-primary);
         background-color: var(--l-changetab-bg);
         border-bottom-color: var(--l-changetab-border);
-        box-shadow: 0 0 5px #cccccc;
+        /*box-shadow: 0 0 5px #cccccc;*/
+        box-shadow: 0 0 3px rgba(0, 0, 0, .12);
     }
     .myeltas2 .el-tabs__nav-wrap{
         background: var(--l-changetab-bg);
         border-color: transparent;
-        box-shadow: 0 0 3px #cccccc;
+        /*box-shadow: 0 0 3px #cccccc;*/
+        box-shadow: 0 0 3px rgba(0, 0, 0, .12);
     }
     /*去除顶部线*/
     .myeltas2 .el-tabs__header {
         /*border: none;*/
-        margin: 0 0 2px;
+        margin: 0;
         border-bottom :none;
     }
     .myeltas2 .el-tabs__nav{
         /*background-color: lightgrey;*/
         background-color: var(--l-changetab-bg);
-        border: none;
+        /*border: none !important;*/
         border-radius:0 !important;
     }
     /*字体大小*/
@@ -242,7 +282,7 @@
     }
     /*自定义右键菜单*/
     .contextmenu {
-        width: 110px;
+        width: 130px;
         margin: 0;
         border: 1px solid #ccc;
         background: var(--l-changetab-right-menu);
