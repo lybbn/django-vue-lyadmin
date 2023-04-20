@@ -152,12 +152,12 @@
                 <el-row :gutter="formOptions.gutter?formOptions.gutter:20">
                     <el-col :span="fitem.form.span?fitem.form.span:24" v-for="(fitem,findex) in formColumns">
                         <el-form-item :label="fitem.label+'：'" :prop="fitem.prop" v-if="(fitem.form.hidden!==undefined && dialogTitle!=='详情')?!fitem.form.hidden:true">
-                            <el-input v-if="fitem.type=='input'" :show-password="fitem.form.showPassword?fitem.form.showPassword:false"  v-model="formData[fitem.prop]" clearable :placeholder="fitem.form.placeholder?fitem.form.placeholder:''" @change="fitem.form.valueChange"></el-input>
-                            <el-input v-else-if="fitem.type=='textarea'"  type="textarea" v-model="formData[fitem.prop]" :placeholder="fitem.form.placeholder?fitem.form.placeholder:''" @change="fitem.form.valueChange"></el-input>
-                            <el-input-number v-else-if="fitem.type=='number'"  v-model="formData[fitem.prop]"  :min="0" :max="999999" @change="fitem.form.valueChange"></el-input-number>
-                            <el-input-number v-else-if="fitem.type=='price'"  v-model="formData[fitem.prop]" :precision="2" :step="0.1"    @change="fitem.form.valueChange"></el-input-number>
-                            <el-switch v-else-if="fitem.type=='switch'" v-model="formData[fitem.prop]" active-color="#13ce66" inactive-color="#ff4949" @change="fitem.form.valueChange"></el-switch>
-                            <el-select v-else-if="fitem.type === 'select'" v-model="formData[fitem.prop]" :placeholder="fitem.placeholder" clearable filterable  @change="fitem.form.valueChange" style="width: 100%;">
+                            <el-input v-if="fitem.type=='input'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" :show-password="fitem.form.showPassword?fitem.form.showPassword:false"  v-model="formData[fitem.prop]" clearable :placeholder="fitem.form.placeholder?fitem.form.placeholder:''" @change="fitem.form.valueChange"></el-input>
+                            <el-input v-else-if="fitem.type=='textarea'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" type="textarea" v-model="formData[fitem.prop]" :placeholder="fitem.form.placeholder?fitem.form.placeholder:''" @change="fitem.form.valueChange"></el-input>
+                            <el-input-number v-else-if="fitem.type=='number'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)"  v-model="formData[fitem.prop]"  :min="0" :max="999999" @change="fitem.form.valueChange"></el-input-number>
+                            <el-input-number v-else-if="fitem.type=='price'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" :precision="2" :step="0.1"    @change="fitem.form.valueChange"></el-input-number>
+                            <el-switch v-else-if="fitem.type=='switch'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" active-color="#13ce66" inactive-color="#ff4949" @change="fitem.form.valueChange"></el-switch>
+                            <el-select v-else-if="fitem.type === 'select'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" :placeholder="fitem.placeholder" clearable filterable  @change="fitem.form.valueChange" style="width: 100%;">
                                 <el-option
                                         v-if="fitem.form.options"
                                         v-for="option in fitem.form.options"
@@ -167,15 +167,15 @@
                                         >
                                 </el-option>
                             </el-select>
-                            <el-radio-group v-else-if="fitem.type=='radio'" v-model="formData[fitem.prop]" @change="fitem.form.valueChange">
+                            <el-radio-group v-else-if="fitem.type=='radio'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" @change="fitem.form.valueChange">
                                 <el-radio :label="rditem.value" v-for="(rditem,rdindex) in fitem.form.options">{{rditem.label}}</el-radio>
                             </el-radio-group>
-                            <el-checkbox-group v-else-if="fitem.type=='checkbox'" v-model="formData[fitem.prop]" @change="fitem.form.valueChange">
+                            <el-checkbox-group v-else-if="fitem.type=='checkbox'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" @change="fitem.form.valueChange">
                                 <el-checkbox v-if="fitem.options"  v-for="option in fitem.options" :label="option.label" />
                             </el-checkbox-group>
-                            <ly-upload-avatar v-else-if="fitem.type=='image-avatar'" v-model="formData[fitem.prop]" :width="fitem.form.width?fitem.form.width+'px':'80px'" :height="fitem.form.width?fitem.form.width+'px':'80px'"></ly-upload-avatar>
-                            <ly-upload-goods v-else-if="fitem.type=='image-goods'" v-model="formData[fitem.prop]"></ly-upload-goods>
-                            <t-editor v-else-if="fitem.type=='tinymce'" v-model="formData[fitem.prop]"></t-editor>
+                            <ly-upload-avatar v-else-if="fitem.type=='image-avatar'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" :width="fitem.form.width?fitem.form.width+'px':'80px'" :height="fitem.form.width?fitem.form.width+'px':'80px'"></ly-upload-avatar>
+                            <ly-upload-goods v-else-if="fitem.type=='image-goods'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]"></ly-upload-goods>
+                            <t-editor v-else-if="fitem.type=='tinymce'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]"></t-editor>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -404,6 +404,10 @@
             setFull(){
                 this.isFull=!this.isFull
                 window.dispatchEvent(new Event('resize'))
+            },
+            //判断单个组件编辑时是否禁用disabled参数为bool值
+            isFormItemEditDisabled(disabled){
+                return (disabled!==undefined && this.dialogTitle==='编辑')?disabled:false
             },
             //多选项框被选中数据
             handleSelectionChange(selection) {

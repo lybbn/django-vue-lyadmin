@@ -2,6 +2,7 @@
     <el-upload
         class="avatar-uploader"
         action=""
+        :disabled="disabled"
         :show-file-list="false"
         ref="uploadDefaultImage"
         :http-request="imgUploadRequest"
@@ -34,6 +35,10 @@
               type: String,
               default: '140px'
             },
+            disabled:{
+              type: Boolean,
+              default: false
+            }
         },
         created() {
             this.imageurl = this.modelValue

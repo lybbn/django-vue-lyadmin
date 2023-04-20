@@ -1,6 +1,6 @@
 <template>
   <div class="my-tinymce">
-     <Editor v-model="contentValue" :init="myInit"/>
+     <Editor v-model="contentValue" :init="myInit" :disabled="disabled"/>
   </div>
 </template>
 
@@ -32,6 +32,10 @@ export default {
     placeholder: {
       type: String,
       default: '请输入内容'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     // 默认样式
     style: {

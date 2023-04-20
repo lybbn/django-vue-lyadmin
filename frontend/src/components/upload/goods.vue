@@ -4,7 +4,7 @@
             <div style="width: 100%;display: flex">
                 <div class="input-file input-fileup">
                     <span style="display: inline-block; width: 100%;cursor:pointer; ">{{submitLoading || (newData.length > 0 && detailDataA.length !== newData.length) ? '' : '上传图片'}}</span>
-                    <el-button style="width: 100%;height:36px" type="primary" v-if="submitLoading || (newData.length > 0 && detailDataA.length !== newData.length)"  :loading="submitLoading || (newData.length > 0 && detailDataA.length !== newData.length)">上传图片</el-button>
+                    <el-button style="width: 100%;height:36px" type="primary" v-if="submitLoading || (newData.length > 0 && detailDataA.length !== newData.length)"  :loading="submitLoading || (newData.length > 0 && detailDataA.length !== newData.length)" :disabled="disabled">上传图片</el-button>
                     <input ref="file" title="请上传图片"  class="fileUploaderClass" type='file' name="file" multiple :accept=accept v-else @change.stop="changesData"/>
                 </div>
 
@@ -70,7 +70,11 @@
             nums:{
                 type:Number,
                 default:9,
-            }
+            },
+            disabled: {
+                type: Boolean,
+                default: false
+            },
 
         },
         mounted() {

@@ -138,6 +138,7 @@
                                 span:12,
                                 rules: [{ required: true, message: '手机号必填项' }],
                                 placeholder: '请输入手机号',
+                                editDisabled:false,//编辑时是否禁用
                             }
                          },
                          {label:'状态',prop:'is_active',type:'radio',minWidth:'100',sortable: false,hidden:false,
