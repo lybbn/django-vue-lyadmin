@@ -26,7 +26,10 @@
                     </el-checkbox-group>
                 </el-form-item>
                 <el-form-item label="部门：" prop="dept">
-                    <el-cascader :show-all-levels="false" style="width: 100%" v-model="formData.dept" :props="{checkStrictly: true ,label:'name',value:'id'}" :options="options" clearable></el-cascader>
+                    <el-tree-select v-model="formData.dept" node-key="id" :data="options"
+                            check-strictly filterable clearable :render-after-expand="false"
+                            :props="{label:'name',value: 'id'}"
+                            style="width: 100%" placeholder="请选择" />
                 </el-form-item>
                 <el-form-item label="状态：" prop="is_active">
                     <el-switch
@@ -47,6 +50,7 @@
 <script>
     import {apiSystemUserAdd,apiSystemUserEdit,apiSystemRole,apiSystemDept} from "@/api/api";
     import LyDialog from "../../../components/dialog/dialog";
+    import XEUtils from "xe-utils";
     export default {
         components: {LyDialog},
         emits: ['refreshData'],
@@ -183,15 +187,7 @@
             getapiSystemDept(){
                 apiSystemDept({page:1,limit:999}).then(res=>{
                     if(res.code ==2000) {
-                        let childrenList = res.data.data.filter(item=> item.parent)
-                        let parentList = res.data.data.filter(item=> !item.parent)
-                        if(parentList.length >0) {
-                            parentList.forEach(item=>{
-                                let children = childrenList.filter(itema=>itema.parent == item.id)
-                                item.children=[...children]
-                            })
-                        }
-                        this.options = parentList
+                        this.options = XEUtils.toArrayTree(res.data.data, { parentKey: 'parent' })
                     } else {
                         this.$message.warning(res.msg)
                     }

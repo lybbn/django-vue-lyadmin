@@ -3,16 +3,10 @@
         <ly-dialog v-model="dialogVisible" :title="dialogTitle" width="640px" :before-close="handleClose">
             <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto" class="form-store">
                 <el-form-item label="父级部门：" prop="parent">
-                    <el-cascader
-                            style="width: 100%"
-                            :key="isResourceShow"
-                            :show-all-levels="false"
-                            :options="options"
-                            ref="myCascader"
-                            v-model="formData.parent"
-                            @change="handleChange"
-                            :props="{ checkStrictly: true ,label:'name',value:'id'}"
-                            clearable></el-cascader>
+                    <el-tree-select v-model="formData.parent" node-key="id" :data="options"
+                            check-strictly filterable clearable :render-after-expand="false"
+                            :props="{label:'name',value: 'id'}"
+                            style="width: 100%" placeholder="请选择/为空则为顶级" />
                 </el-form-item>
                 <el-form-item label="部门名称：" prop="name">
                     <el-input v-model.trim="formData.name"></el-input>
@@ -50,6 +44,7 @@
     import {apiSystemDeptAdd,apiSystemDept,apiSystemDeptEdit} from '@/api/api'
     import LyDialog from "@/components/dialog/dialog";
     import {deepClone} from "@/utils/util";
+    import XEUtils from "xe-utils";
     export default {
         components: {LyDialog},
         emits: ['refreshData'],
@@ -92,44 +87,34 @@
             }
         },
         methods:{
-            handleChange(e){
-                 //console.log(e,'e---- 查看根节点')
-                 //console.log(this.$refs.myCascader.getCheckedNodes()[0].pathLabels )
-                 //console.log(this.$refs.myCascader.getCheckedNodes()[0].value )
-                  // var label = this.$refs.myCascader.getCheckedNodes()[0].label
-                 // this.formData.parent = this.$refs.myCascader.getCheckedNodes()[0].value
-                 // if (this.formData.parent == "undefined"){
-                 //     this.formData.parent =""
-                 // }
-            },
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
+                this.formData = {
+                    parent:'',
+                    name:'',
+                    phone:'',
+                    owner:'',
+                    status:1,
+                    sort:0,
+                }
             },
             addDepartmentFn(item,flag) {
                 this.dialogVisible=true
                 this.dialogTitle=flag
-
-                //解决Cannot read property ‘level‘ of null问题
                 this.options=[]
-                this.isResourceShow=0
                 if(item){
                     this.formData = deepClone(item)
                 }
                 this.getapiSystemDept()
             },
             submitData() {
-                //console.log(typeof this.formData.parent , 'formData.parentbbbbb 888')
                 let param = {
                     ...this.formData
                 }
-                // if(typeof this.formData.parent== 'object') {
-                //     param.parent = param.parent[param.parent-1]
-                // }
                 this.$refs['rulesForm'].validate(obj=>{
                     if(obj) {
                         this.loadingSave=true
-                        //console.log(this.formData,'this.formData----')
                         let param = {
                             ...this.formData
                         }
@@ -169,24 +154,8 @@
                     limit:9999
                 }
                 apiSystemDept(params).then(res=>{
-                    ++this.isResourceShow
                     if(res.code == 2000) {
-                        let childrenList = res.data.data.filter(item=> item.parent)
-                        let parentList = res.data.data.filter(item=> !item.parent)
-                        if(parentList.length >0) {
-                            parentList.forEach(item=>{
-                                let children = childrenList.filter(itema=>itema.parent == item.id)
-                                item.children=[...children]
-                            })
-
-                            let menu = [{
-                                label:'-1',
-                                name:'根节点',
-                                children:[...parentList]
-                            }]
-                            this.options = menu
-                        }
-
+                        this.options = XEUtils.toArrayTree(res.data.data, { parentKey: 'parent' })
                     } else {
                         this.$message.warning(res.msg)
                     }
