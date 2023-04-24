@@ -549,21 +549,21 @@
             },
             //批量设置-清空
             batchDel() {
-              this.manySpecBatchData=[{
+                this.manySpecBatchData=[{
                     price:0,
                     stock:0,
                 }]
             },
             //批量设置-添加
             batchAdd(){
-             for (let val of this.tableColumnList.tableBodyList) {
+                for (let val of this.tableColumnList.tableBodyList) {
                     if (this.manySpecBatchData[0].stock) {
-                      val.stock = this.manySpecBatchData[0].stock
+                        val.stock = this.manySpecBatchData[0].stock
                     }
                     if (this.manySpecBatchData[0].price > 0) {
-                      val.price = this.manySpecBatchData[0].price
+                        val.price = this.manySpecBatchData[0].price
                     }
-                  }
+                }
              },
             //规格表格展示-删除
             singleSpecDel(index){
@@ -614,6 +614,7 @@
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
+                this.pics = []
                 this.clearAttr()
                 this.formData={
                     name: '',
