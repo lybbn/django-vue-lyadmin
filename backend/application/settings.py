@@ -32,7 +32,7 @@ from config import *
 SECRET_KEY = 'django-insecure-n=x1q3sl^3va9tb&ty$p1b+kob@eb%wh0bn&8yj&!bp05201314'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = locals().get("DEBUG", True)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -142,7 +142,7 @@ CACHES = {
         # 连接Redis数据库(服务器地址)
         # 一主带多从(可以配置多个Redis，写走第一台，读走其他的机器)
         'LOCATION': [
-            'redis://localhost:6379/0',
+            f'{REDIS_URL}/0',
         ],
         'KEY_PREFIX': 'lybbn',  # 项目名当做文件前缀
         'OPTIONS': {
@@ -157,7 +157,7 @@ CACHES = {
             # 连接Redis数据库(服务器地址)
             # 一主带多从(可以配置多个Redis，写走第一台，读走其他的机器)
             'LOCATION': [
-                'redis://localhost:6379/1',
+                f'{REDIS_URL}/1',
             ],
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # 连接选项(默认，不改)
@@ -168,7 +168,7 @@ CACHES = {
             # 连接Redis数据库(服务器地址)
             # 一主带多从(可以配置多个Redis，写走第一台，读走其他的机器)
             'LOCATION': [
-                'redis://localhost:6379/2',
+                f'{REDIS_URL}/2',
             ],
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # 连接选项(默认，不改)
@@ -177,7 +177,7 @@ CACHES = {
     "carts": { #登陆过的用户购物车的存储
             "BACKEND": "django_redis.cache.RedisCache",
             'LOCATION': [
-                'redis://localhost:6379/3',
+                f'{REDIS_URL}/3',
             ],
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
@@ -189,7 +189,7 @@ CACHES = {
             # 连接Redis数据库(服务器地址)
             # 一主带多从(可以配置多个Redis，写走第一台，读走其他的机器)
             'LOCATION': [
-                'redis://localhost:6379/4',
+                f'{REDIS_URL}/4',
             ],
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # 连接选项(默认，不改)
@@ -200,7 +200,7 @@ CACHES = {
             # 连接Redis数据库(服务器地址)
             # 一主带多从(可以配置多个Redis，写走第一台，读走其他的机器)
             'LOCATION': [
-                'redis://localhost:6379/5',
+                f'{REDIS_URL}/5',
             ],
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # 连接选项(默认，不改)
@@ -490,7 +490,7 @@ CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge' # 加减乘除验证�
 # ******************** celery配置 ******************** #
 # ================================================= #
 CELERY_TIMEZONE  = 'Asia/Shanghai'  # celery 时区问题
-CELERY_BROKER_URL  = 'redis://127.0.0.1:6379/10' # Broker配置，使用Redis作为消息中间件(无密码)
+CELERY_BROKER_URL  = f'{REDIS_URL}/10' # Broker配置，使用Redis作为消息中间件(无密码)
 #CELERY_BROKER_URL = 'redis://lybbn:{}@127.0.0.1:6379/10'.format('123456')  #lybbn 代表 账号（没有可省略）  {} 存放密码  127.0.0.1连接的 ip  6379端口  10 redis库
 # CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/11' # 把任务结果存在了Redis
 CELERY_RESULT_BACKEND = 'django-db'  # celery结果存储到数据库中django-db
