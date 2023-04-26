@@ -441,11 +441,11 @@ SWAGGER_SETTINGS = {
                 'name': 'Authorization',
                 'in': 'header'
             },
-        'Query': {#通过query中auth变量验证
-                'type': 'apiKey',
-                'name': 'auth',
-                'in': 'query'
-            }
+        # 'Query': {#通过query中auth变量验证
+        #         'type': 'apiKey',
+        #         'name': 'auth',
+        #         'in': 'query'
+        #     }
     },
     # 如果需要登录才能够查看接口文档, 登录的链接使用restframework自带的.
     'LOGIN_URL': 'rest_framework:login',

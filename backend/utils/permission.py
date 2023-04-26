@@ -54,7 +54,7 @@ class CustomPermission(BasePermission):
         else:
             api = request.path  # 当前请求接口
             method = request.method  # 当前请求方法
-            methodList = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+            methodList = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH']
             method = methodList.index(method)
             if not hasattr(request.user, "role"):
                 return False

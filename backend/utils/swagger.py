@@ -27,9 +27,6 @@ class CustomSwaggerAutoSchema(SwaggerAutoSchema):
 
     def get_summary_and_description(self):#自定义获取描述和概述
         summary_and_description = super().get_summary_and_description()
-        # if '购物车' in str(summary_and_description):
-        #     print(summary_and_description)
-        #     print(self.__dict__.get('view').__doc__,'xxxxxxxxxxxxxxx')
         summary = get_summary(self.__dict__.get('view').__doc__)#读取view中的注释
         if summary is None:
             summary = summary_and_description[0]
@@ -38,6 +35,10 @@ class CustomSwaggerAutoSchema(SwaggerAutoSchema):
 
 
 class CustomOpenAPISchemaGenerator(OpenAPISchemaGenerator):
+    def determine_path_prefix(self, paths):
+        """重写获取path地址前缀，默认前缀会截取公用前缀如：/api"""
+        return "/"
+
     def get_schema(self, request=None, public=False):
         """重写 OpenAPISchemaGenerator 实现每个tag的说明文本"""
 
@@ -51,9 +52,5 @@ class CustomOpenAPISchemaGenerator(OpenAPISchemaGenerator):
                 "name": "captcha",
                 "description": "图形验证码"
             },
-            # {
-            #     "name": "system",
-            #     "description": "系统配置相关"
-            # },
         ]
         return swagger

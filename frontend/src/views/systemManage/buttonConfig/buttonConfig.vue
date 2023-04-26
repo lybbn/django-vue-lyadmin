@@ -60,7 +60,7 @@
                     {id:3,name:'DELETE'},
                     {id:4,name:'OPTIONS'},
                     {id:5,name:'WS'},
-                ]
+                ],
             }
         },
         created() {
@@ -118,7 +118,7 @@
                         this.$message.warning(res.msg)
                     }
                 })
-            }
+            },
         }
     }
 </script>

@@ -10,6 +10,8 @@ export const getCaptcha = params => ajaxGet({url: `captcha/`,params})
 export const apiSystemWebRouter = params => ajaxGet({url: `system/menu/web_router/`,params})
 //系统监控
 export const monitorGetSystemInfo = params => ajaxGet({url: `monitor/getsysteminfo/`,params})
+// 获取系统所有api列表
+export const getSystemLyapiList = params => ajaxGet({url: `lyapi.json`,params})
 
 /**
 *系统配置

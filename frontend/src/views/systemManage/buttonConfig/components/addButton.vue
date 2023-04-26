@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ly-dialog v-model="dialogVisible" :title="dialogTitle" width="700px"  :before-close="handleClose">
+        <ly-dialog v-model="dialogVisible" :title="dialogTitle" width="760px"  :before-close="handleClose">
             <el-form :inline="false" :model="formData" :rules="rules" ref="rulesForm" label-position="right" label-width="auto">
                 <el-form-item label="名称：" prop="value">
                     <el-select v-model="formData.value" allow-create filterable placeholder="请选择" :size="size" style="width: 360px" @change="getName">
@@ -14,7 +14,7 @@
                     <el-button type="primary" circle style="margin-left: 20px" :size="size"  @click="onLinkBtn"><el-icon><circle-plus /></el-icon></el-button>
                 </el-form-item>
                 <el-form-item label="请求方式：" prop="method">
-                    <el-select v-model="formData.method"  placeholder="请选择" :size="size" style="width: 360px">
+                    <el-select v-model="formData.method"  placeholder="请选择" :size="size" style="width: 100%;">
                         <el-option
                             v-for="item in methodsList"
                             :key="item.id"
@@ -24,9 +24,20 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="接口地址：" prop="api">
-                    <el-input  v-model.trim="formData.api" :size="size" style="margin-bottom: 5px;"></el-input>
-                    <el-alert title="请正确填写，以免请求时被拦截。匹配编辑/单例/删除使用正则,如:/api/xxx/{id}/" type="info" show-icon/>
+                    <el-select  v-model.trim="formData.api" :size="size" filterable clearable  allow-create style="margin-bottom: 5px;width: 100%;" placeholder="请选择或手动输入">
+                        <el-option
+                            v-for="item in apiList"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                    <el-alert title="请正确填写(或选择)，以免请求时被拦截。匹配编辑/单例/删除使用正则,如:/api/xxx/{id}/" type="info" show-icon/>
                 </el-form-item>
+<!--                <el-form-item label="接口地址：" prop="api">-->
+<!--                    <el-input  v-model.trim="formData.api" :size="size" style="margin-bottom: 5px;"></el-input>-->
+<!--                    <el-alert title="请正确填写，以免请求时被拦截。匹配编辑/单例/删除使用正则,如:/api/xxx/{id}/" type="info" show-icon/>-->
+<!--                </el-form-item>-->
 
             </el-form>
             <template #footer>
@@ -38,8 +49,8 @@
 </template>
 
 <script>
-    import {systemMenuButtonAdd,systemMenuButtonEdit,systemButton} from '@/api/api'
-    import LyDialog from "../../../../components/dialog/dialog";
+    import {systemMenuButtonAdd,systemMenuButtonEdit,systemButton,getSystemLyapiList} from '@/api/api'
+    import LyDialog from "@/components/dialog/dialog";
     import {deepClone} from "@/utils/util"
     export default {
         components: {LyDialog},
@@ -78,7 +89,8 @@
                     {id:3,name:'DELETE'},
                     {id:4,name:'OPTIONS'},
                     {id:5,name:'WS'},
-                ]
+                ],
+                apiList:[]
             }
         },
         methods:{
@@ -110,6 +122,20 @@
                 }else{
                     this.formData.menu = menu
                 }
+                this.getSystemLyapi()
+            },
+            getSystemLyapi(){
+                getSystemLyapiList().then(res=>{
+                    var result = Object.keys(res.paths)
+                    var data = []
+                    for (const item of result) {
+                        const obj = {}
+                        obj.label = item
+                        obj.value = item
+                        data.push(obj)
+                    }
+                    this.apiList = data
+                })
             },
             submitData() {
                 let param = {

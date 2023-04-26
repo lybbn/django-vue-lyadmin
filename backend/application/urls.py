@@ -55,9 +55,10 @@ schema_view = get_schema_view(
         # contact=openapi.Contact(email="contact@snippets.local"),
         # license=openapi.License(name="BSD License"),
     ),
-    # public 表示文档完全公开, 无需针对用户鉴权
+    # public 如果为False，则只包含当前用户可以访问的端点。True返回全部
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    permission_classes=(permissions.AllowAny,),# 可以允许任何人查看该接口
+    # permission_classes=(permissions.IsAuthenticated) # 只允许通过认证的查看该接口
     generator_class=CustomOpenAPISchemaGenerator,
 )
 
@@ -68,7 +69,7 @@ urlpatterns = [
     # path('admin/', admin.site.urls),
     #api文档地址(正式上线需要注释掉)
     re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    re_path(r'^api/lyapi(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='api-schema-json'),
     path('lyapi/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path(r'lyredoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     #管理后台的标准接口
