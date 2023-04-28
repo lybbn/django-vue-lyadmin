@@ -362,6 +362,6 @@ def RestartServer():
     重启系统
     """
     try:
-        os.system("shutdown /r /f /t 0");
+        os.system("shutdown /r /f /t 0")
     except:
         pass

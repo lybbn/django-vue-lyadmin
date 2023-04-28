@@ -357,6 +357,6 @@ def RestartServer():
     重启系统
     """
     try:
-        os.system("sync && init 6 &");
+        os.system("sync && init 6 &")
     except:
         pass
