@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-# version 3.0.4
+# version 3.2.0
 # https://pypi.org/project/python-alipay-sdk/
 """
     __init__.py
@@ -20,7 +20,6 @@ from .compat import decodebytes, encodebytes, quote_plus, urlopen
 from .exceptions import AliPayException, AliPayValidationError
 from .utils import AliPayConfig
 from .loggers import logger
-
 
 # 常见加密算法
 CryptoAlgSet = (
@@ -54,15 +53,15 @@ class BaseAliPay:
         return self._alipay_public_key
 
     def __init__(
-        self,
-        appid,
-        app_notify_url=None,
-        app_private_key_string=None,
-        alipay_public_key_string=None,
-        sign_type="RSA2",
-        debug=False,
-        verbose=False,
-        config=None
+            self,
+            appid,
+            app_notify_url=None,
+            app_private_key_string=None,
+            alipay_public_key_string=None,
+            sign_type="RSA2",
+            debug=False,
+            verbose=False,
+            config=None
     ):
         """
         初始化:
@@ -138,7 +137,10 @@ class BaseAliPay:
                 data[k] = json.dumps(v, separators=(',', ':'))
         return sorted(data.items())
 
-    def build_body(self, method, biz_content, **kwargs):
+    def build_body(self, method, biz_content=None, **kwargs):
+        if not biz_content:
+            biz_content = {}
+
         data = {
             "app_id": self._appid,
             "method": method,
@@ -151,9 +153,9 @@ class BaseAliPay:
         data.update(kwargs)
 
         if method in (
-            "alipay.trade.app.pay", "alipay.trade.wap.pay",
-            "alipay.trade.page.pay", "alipay.trade.pay",
-            "alipay.trade.precreate", "alipay.trade.create"
+                "alipay.trade.app.pay", "alipay.trade.wap.pay",
+                "alipay.trade.page.pay", "alipay.trade.pay",
+                "alipay.trade.precreate", "alipay.trade.create"
         ) and not data.get("notify_url") and self._app_notify_url:
             data["notify_url"] = self._app_notify_url
 
@@ -203,17 +205,23 @@ class BaseAliPay:
         message = "&".join(u"{}={}".format(k, v) for k, v in unsigned_items)
         return self._verify(message, signature)
 
-    def client_api(self, api_name, biz_content, **kwargs):
+    def client_api(self, api_name, biz_content=None, **kwargs):
         """
         alipay api without http request
         """
+        if not biz_content:
+            biz_content = {}
+
         data = self.build_body(api_name, biz_content, **kwargs)
         return self.sign_data(data)
 
-    def server_api(self, api_name, biz_content, **kwargs):
+    def server_api(self, api_name, biz_content=None, **kwargs):
         """
         alipay api with http request
         """
+        if not biz_content:
+            biz_content = {}
+
         data = self.build_body(api_name, biz_content, **kwargs)
         # alipay.trade.query => alipay_trade_query_response
         response_type = api_name.replace(".", "_") + "_response"
@@ -221,8 +229,8 @@ class BaseAliPay:
         return self.verified_sync_response(data, response_type)
 
     def api_alipay_trade_wap_pay(
-        self, subject, out_trade_no, total_amount,
-        return_url=None, notify_url=None, **kwargs
+            self, subject, out_trade_no, total_amount,
+            return_url=None, notify_url=None, **kwargs
     ):
         biz_content = {
             "subject": subject,
@@ -240,7 +248,7 @@ class BaseAliPay:
         return self.sign_data(data)
 
     def api_alipay_trade_app_pay(
-        self, subject, out_trade_no, total_amount, notify_url=None, **kwargs
+            self, subject, out_trade_no, total_amount, notify_url=None, **kwargs
     ):
         biz_content = {
             "subject": subject,
@@ -298,7 +306,7 @@ class BaseAliPay:
             "sign": ""
         }
         """
-        assert (out_trade_no is not None) or (trade_no is not None),\
+        assert (out_trade_no is not None) or (trade_no is not None), \
             "Both trade_no and out_trade_no are None"
 
         biz_content = {}
@@ -311,7 +319,7 @@ class BaseAliPay:
         return self.verified_sync_response(data, response_type)
 
     def api_alipay_trade_pay(
-        self, out_trade_no, scene, auth_code, subject, notify_url=None, **kwargs
+            self, out_trade_no, scene, auth_code, subject, notify_url=None, **kwargs
     ):
         """
         eg:
@@ -401,7 +409,7 @@ class BaseAliPay:
         }
         """
 
-        assert (out_trade_no is not None) or (trade_no is not None),\
+        assert (out_trade_no is not None) or (trade_no is not None), \
             "Both trade_no and out_trade_no are None"
 
         biz_content = {}
@@ -426,7 +434,7 @@ class BaseAliPay:
         }
         """
 
-        assert (out_trade_no is not None) or (trade_no is not None),\
+        assert (out_trade_no is not None) or (trade_no is not None), \
             "Both trade_no and out_trade_no are None"
 
         biz_content = {}
@@ -490,9 +498,9 @@ class BaseAliPay:
         return self.verified_sync_response(data, response_type)
 
     def api_alipay_trade_fastpay_refund_query(
-        self, out_request_no, trade_no=None, out_trade_no=None
+            self, out_request_no, trade_no=None, out_trade_no=None
     ):
-        assert (out_trade_no is not None) or (trade_no is not None),\
+        assert (out_trade_no is not None) or (trade_no is not None), \
             "Both trade_no and out_trade_no are None"
 
         biz_content = {"out_request_no": out_request_no}
@@ -535,11 +543,11 @@ class BaseAliPay:
         return self.verified_sync_response(data, response_type)
 
     def api_alipay_trade_order_settle(
-        self,
-        out_request_no,
-        trade_no,
-        royalty_parameters,
-        **kwargs
+            self,
+            out_request_no,
+            trade_no,
+            royalty_parameters,
+            **kwargs
     ):
         biz_content = {
             "out_request_no": out_request_no,
@@ -634,16 +642,16 @@ class DCAliPay(BaseAliPay):
     """
 
     def __init__(
-        self,
-        appid,
-        app_private_key_string,
-        app_public_key_cert_string,
-        alipay_public_key_cert_string,
-        alipay_root_cert_string,
-        app_notify_url=None,
-        sign_type="RSA2",
-        debug=False,
-        verbose=False
+            self,
+            appid,
+            app_private_key_string,
+            app_public_key_cert_string,
+            alipay_public_key_cert_string,
+            alipay_root_cert_string,
+            app_notify_url=None,
+            sign_type="RSA2",
+            debug=False,
+            verbose=False
     ):
         """
         初始化
@@ -753,7 +761,7 @@ class DCAliPay(BaseAliPay):
         return getattr(self, "_alipay_root_cert_sn")
 
     def api_alipay_fund_trans_uni_transfer(
-        self, out_biz_no, identity_type, identity, trans_amount, name=None, **kwargs
+            self, out_biz_no, identity_type, identity, trans_amount, name=None, **kwargs
     ):
         """
         单笔转账接口, 只支持公钥证书模式
@@ -782,16 +790,16 @@ class DCAliPay(BaseAliPay):
 class ISVAliPay(BaseAliPay):
 
     def __init__(
-        self,
-        appid,
-        app_notify_url=None,
-        app_private_key_string=None,
-        alipay_public_key_string=None,
-        sign_type="RSA2",
-        debug=False,
-        verbose=False,
-        app_auth_token=None,
-        app_auth_code=None
+            self,
+            appid,
+            app_notify_url=None,
+            app_private_key_string=None,
+            alipay_public_key_string=None,
+            sign_type="RSA2",
+            debug=False,
+            verbose=False,
+            app_auth_token=None,
+            app_auth_code=None
     ):
         if not app_auth_token and not app_auth_code:
             raise Exception("Both app_auth_code and app_auth_token are None !!!")
@@ -826,7 +834,7 @@ class ISVAliPay(BaseAliPay):
         if self._verbose:
             logger.debug("data to be signed")
             logger.debug(data)
-                
+
         return data
 
     def api_alipay_open_auth_token_app(self, refresh_token=None):

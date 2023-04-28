@@ -15,10 +15,10 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label=""><el-button  @click="getData" type="primary" icon="Search" v-show="isShowBtn('departmentManage','部门管理','Search')">查询</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="getData" type="primary" icon="Search" v-show="hasPermission(this.$route.name,'Search')">查询</el-button></el-form-item>
                 <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
                 <el-form-item label="">
-                    <el-button icon="Plus" type="primary" @click="addDepart" v-show="isShowBtn('departmentManage','部门管理','Create')">新增</el-button>
+                    <el-button icon="Plus" type="primary" @click="addDepart" v-show="hasPermission(this.$route.name,'Create')">新增</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -39,8 +39,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column min-width="180" prop="name" label="部门名称"></el-table-column>
-                <el-table-column min-width="100" prop="namer" label="负责人"></el-table-column>
-                <el-table-column min-width="120" prop="mobile" label="联系电话"></el-table-column>
+                <el-table-column min-width="100" prop="owner" label="负责人"></el-table-column>
+                <el-table-column min-width="120" prop="phone" label="联系电话"></el-table-column>
                 <el-table-column min-width="120" prop="email" label="邮箱"></el-table-column>
                 <el-table-column min-width="90"  label="状态">
                     <template #default="scope">
@@ -62,9 +62,9 @@
                         </div>
                     </template>
                     <template #default="scope">
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('departmentManage','部门管理','Update')">编辑</span>
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('departmentManage','部门管理','Retrieve')">详情</span>
-                        <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('departmentManage','部门管理','Delete')">删除</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="hasPermission(this.$route.name,'Update')">编辑</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="hasPermission(this.$route.name,'Retrieve')">详情</span>
+                        <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="hasPermission(this.$route.name,'Delete')">删除</span>
                     </template>
                 </el-table-column>
             </el-table>
