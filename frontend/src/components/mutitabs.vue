@@ -244,8 +244,10 @@
 <style>
     .myeltas2 .el-tabs__nav .el-tabs__item.is-active {
         color: var(--el-color-primary);
-        background-color: var(--l-changetab-bg);
-        border-bottom-color: var(--l-changetab-border);
+        /*background-color: var(--l-changetab-bg);*/
+        background-color: var(--l-main-sidebar-menu-active-bg)!important;
+        border-bottom: none;
+        /*border-bottom-color: var(--l-changetab-border);*/
         /*box-shadow: 0 0 5px #cccccc;*/
         box-shadow: 0 0 3px rgba(0, 0, 0, .12);
     }
