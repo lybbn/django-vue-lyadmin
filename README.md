@@ -17,7 +17,7 @@
 
 * 专业版 演示地址：[http://django-vue-lyadmin-pro.lybbn.cn](http://django-vue-lyadmin-pro.lybbn.cn) 账号：admin 密码：123456
 
-说明：专业版【代码生成】【表单构建】正在优化测试中...
+说明：专业版【代码生成】【表单构建】将于2023.06.01出稳定版
 
 * Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)  账号/密码： 自行注册使用
 
@@ -32,7 +32,7 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 
 * 代码生成： 前端配置即可生成前后台所需的crud文件，并同步到项目目录中（专业版功能优化中）
 * 表单构建： 可视化低代码表单设计器，后期规划自动生成前后台，并提供模板方便导入所需表单（专业版功能优化中）
-* 前端采用Vue3（elementplus 2.3.1 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
+* 前端采用Vue3（elementplus 2.3.4 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
 * 前端支持面向配置的CRUD和自定义页面的CRUD双开发模式
 * DashBoard： 数据分析查看
 * 计划任务（定时任务，运维能力），django-celery-beat 定时任务
