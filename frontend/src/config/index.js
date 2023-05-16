@@ -47,4 +47,7 @@ module.exports = {
     //登录信息数据存储方式 localStorage、sessionStorage
 	STORAGE_METHOD: 'localStorage',
 
+	//请求超时
+	TIMEOUT: 10000,
+
 }

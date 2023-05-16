@@ -4,9 +4,10 @@ require("babel-polyfill");
 import { url } from './url';
 import router from "../router";
 import {setStorage,getStorage} from '@/utils/util'
+import sysConfig from "@/config"
 
 var request = axios.create({
-    timeout: 10000,
+    timeout: sysConfig.TIMEOUT,
 });
 function ajax(opt,method){
   var token= getStorage('logintoken')
