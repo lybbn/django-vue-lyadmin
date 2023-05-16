@@ -157,6 +157,8 @@
                             <el-input-number v-else-if="fitem.type=='number'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)"  v-model="formData[fitem.prop]"  :min="0" :max="999999" @change="fitem.form.valueChange"></el-input-number>
                             <el-input-number v-else-if="fitem.type=='price'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" :precision="2" :step="0.1"    @change="fitem.form.valueChange"></el-input-number>
                             <el-switch v-else-if="fitem.type=='switch'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" active-color="#13ce66" inactive-color="#ff4949" @change="fitem.form.valueChange"></el-switch>
+                            <el-date-picker v-else-if="fitem.type=='date'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" type="date" :placeholder="!!fitem.placeholder?fitem.placeholder:'选择日期'" format="YYYY-MM-DD" value-format="YYYY-MM-DD"/>
+                            <el-date-picker v-else-if="fitem.type=='datetime'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" type="datetime" :placeholder="!!fitem.placeholder?fitem.placeholder:'选择日期时间'" format="YYYY-MM-DD h:m:s" value-format="YYYY-MM-DD h:m:s"/>
                             <el-select v-else-if="fitem.type === 'select'" :disabled="isFormItemEditDisabled(fitem.form.editDisabled)" v-model="formData[fitem.prop]" :placeholder="fitem.placeholder" clearable filterable  @change="fitem.form.valueChange" style="width: 100%;">
                                 <el-option
                                         v-if="fitem.form.options"
