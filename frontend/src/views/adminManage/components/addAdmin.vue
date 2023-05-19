@@ -49,8 +49,9 @@
 
 <script>
     import {apiSystemUserAdd,apiSystemUserEdit,apiSystemRole,apiSystemDept} from "@/api/api";
-    import LyDialog from "../../../components/dialog/dialog";
+    import LyDialog from "@/components/dialog/dialog";
     import XEUtils from "xe-utils";
+    import {deepClone} from "@/utils/util";
     export default {
         components: {LyDialog},
         emits: ['refreshData'],
@@ -113,7 +114,7 @@
                 //     item.dept = item.dept.split(" ")
                 // }
                 if(item){
-                    Object.assign(this.formData,item)
+                    this.formData = deepClone(item)
                 }
 
                 this.formData.role = item?item.role:[]
