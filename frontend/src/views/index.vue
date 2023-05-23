@@ -47,9 +47,7 @@
             if (value) {
                 showclass.value = 'asideshow'
             } else {
-                setTimeout(() => {
-                    showclass.value = 'aside'
-              }, 300)
+                showclass.value = 'aside'
             }
         })
     })
