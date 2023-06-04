@@ -49,7 +49,7 @@
 <script>
     import {addressAreaRoot,addressArea,addressAreaDelete} from '@/api/api'
     import XEUtils from 'xe-utils'
-    import AddArea from "./components/addArea";
+    import AddArea from "./components/addArea.vue";
     export default {
         components:{
             AddArea,
