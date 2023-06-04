@@ -17,7 +17,7 @@
 
 * 专业版 演示地址：[http://django-vue-lyadmin-pro.lybbn.cn](http://django-vue-lyadmin-pro.lybbn.cn) 账号：admin 密码：123456
 
-说明：专业版【代码生成】【表单构建】将于2023.06.01出稳定版
+说明：专业版【代码生成】【表单构建】稳定版已出，可适用大部分简单crud场景
 
 * Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)  账号/密码： 自行注册使用
 
@@ -30,9 +30,11 @@ eleunipy系统是结合
 
 django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台（内置简易商城模块），去繁从简、还你一个干净的后台管理系统
 
-* 代码生成： 前端配置即可生成前后台所需的crud文件，并同步到项目目录中（专业版功能优化中）
-* 表单构建： 可视化低代码表单设计器，后期规划自动生成前后台，并提供模板方便导入所需表单（专业版功能优化中）
-* 前端采用Vue3（elementplus 2.3.4 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
+说明：前端vue环境开发支持vite和webpack两种形式，可自由选择
+
+* 代码生成： 前端配置即可生成前后台所需的crud文件，并同步到项目目录中
+* 表单构建： 可视化低代码表单设计器，后期规划自动生成前后台，并提供模板方便导入所需表单
+* 前端采用Vue3（elementplus 2.3.6 支持暗黑主题）(vue2版本请访问分支django-vue2-lyadmin)
 * 前端支持面向配置的CRUD和自定义页面的CRUD双开发模式
 * DashBoard： 数据分析查看
 * 计划任务（定时任务，运维能力），django-celery-beat 定时任务
@@ -91,7 +93,14 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 
 ## django-vue-lyadmin项目启动视频讲解
 
-[![Watch the video](https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/099.png)](https://v.kuaishouapp.com/s/VIJPdIx6)
+1. 如何启动项目
+- 1.1 [django-vue-lyadmin项目介绍（一）(视频)](https://www.bilibili.com/video/BV1Tk4y1j7pq/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c)
+
+2. 项目功能点介绍
+- 2.1 [django-vue-lyadmin项目介绍（二）(视频)](https://www.bilibili.com/video/BV1RV4y1671v/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c)
+
+3. 项目低代码开发介绍
+- 3.1 [django-vue-lyadmin低代码开发介绍(视频)](https://www.bilibili.com/video/BV1Yh411F7iM/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c)
 
 ## lyadmin后端
 
