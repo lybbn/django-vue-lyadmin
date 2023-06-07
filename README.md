@@ -109,7 +109,7 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 
 2. 在 config.py 中配置数据库信息
 	mysql数据库版本建议：8.0（django4.2版本要求mysql8.x以上）
-	mysql数据库字符集：utf8mb4
+	mysql数据库字符集：utf8mb4（mysql8.x排序规则选择：utf8mb4_0900_ai_ci、mysql5.7.x选择utf8mb4_general_ci）
     mysql数据库对应的表关于事务处理的确保是：innodb引擎（能回滚）
 
 3. 设置数据库隔离级别（悲观锁、乐观锁）
