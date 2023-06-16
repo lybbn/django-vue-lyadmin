@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-# version 3.2.0
+# version 3.3.0
 # https://pypi.org/project/python-alipay-sdk/
 """
     __init__.py
@@ -20,6 +20,10 @@ from .compat import decodebytes, encodebytes, quote_plus, urlopen
 from .exceptions import AliPayException, AliPayValidationError
 from .utils import AliPayConfig
 from .loggers import logger
+
+#全局取消证书验证
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 # 常见加密算法
 CryptoAlgSet = (
@@ -53,15 +57,15 @@ class BaseAliPay:
         return self._alipay_public_key
 
     def __init__(
-            self,
-            appid,
-            app_notify_url=None,
-            app_private_key_string=None,
-            alipay_public_key_string=None,
-            sign_type="RSA2",
-            debug=False,
-            verbose=False,
-            config=None
+        self,
+        appid,
+        app_notify_url=None,
+        app_private_key_string=None,
+        alipay_public_key_string=None,
+        sign_type="RSA2",
+        debug=False,
+        verbose=False,
+        config=None
     ):
         """
         初始化:
@@ -86,7 +90,8 @@ class BaseAliPay:
         self._sign_type = sign_type
 
         if debug:
-            self._gateway = "https://openapi.alipaydev.com/gateway.do"
+            #self._gateway = "https://openapi.alipaydev.com/gateway.do"
+            self._gateway = "https://openapi-sandbox.dl.alipaydev.com/gateway.do"
         else:
             self._gateway = "https://openapi.alipay.com/gateway.do"
 
@@ -153,9 +158,9 @@ class BaseAliPay:
         data.update(kwargs)
 
         if method in (
-                "alipay.trade.app.pay", "alipay.trade.wap.pay",
-                "alipay.trade.page.pay", "alipay.trade.pay",
-                "alipay.trade.precreate", "alipay.trade.create"
+            "alipay.trade.app.pay", "alipay.trade.wap.pay",
+            "alipay.trade.page.pay", "alipay.trade.pay",
+            "alipay.trade.precreate", "alipay.trade.create"
         ) and not data.get("notify_url") and self._app_notify_url:
             data["notify_url"] = self._app_notify_url
 
@@ -229,8 +234,8 @@ class BaseAliPay:
         return self.verified_sync_response(data, response_type)
 
     def api_alipay_trade_wap_pay(
-            self, subject, out_trade_no, total_amount,
-            return_url=None, notify_url=None, **kwargs
+        self, subject, out_trade_no, total_amount,
+        return_url=None, notify_url=None, **kwargs
     ):
         biz_content = {
             "subject": subject,
@@ -319,7 +324,7 @@ class BaseAliPay:
         return self.verified_sync_response(data, response_type)
 
     def api_alipay_trade_pay(
-            self, out_trade_no, scene, auth_code, subject, notify_url=None, **kwargs
+        self, out_trade_no, scene, auth_code, subject, notify_url=None, **kwargs
     ):
         """
         eg:
@@ -498,7 +503,7 @@ class BaseAliPay:
         return self.verified_sync_response(data, response_type)
 
     def api_alipay_trade_fastpay_refund_query(
-            self, out_request_no, trade_no=None, out_trade_no=None
+        self, out_request_no, trade_no=None, out_trade_no=None
     ):
         assert (out_trade_no is not None) or (trade_no is not None), \
             "Both trade_no and out_trade_no are None"
@@ -543,11 +548,11 @@ class BaseAliPay:
         return self.verified_sync_response(data, response_type)
 
     def api_alipay_trade_order_settle(
-            self,
-            out_request_no,
-            trade_no,
-            royalty_parameters,
-            **kwargs
+        self,
+        out_request_no,
+        trade_no,
+        royalty_parameters,
+        **kwargs
     ):
         biz_content = {
             "out_request_no": out_request_no,
@@ -642,16 +647,16 @@ class DCAliPay(BaseAliPay):
     """
 
     def __init__(
-            self,
-            appid,
-            app_private_key_string,
-            app_public_key_cert_string,
-            alipay_public_key_cert_string,
-            alipay_root_cert_string,
-            app_notify_url=None,
-            sign_type="RSA2",
-            debug=False,
-            verbose=False
+        self,
+        appid,
+        app_private_key_string,
+        app_public_key_cert_string,
+        alipay_public_key_cert_string,
+        alipay_root_cert_string,
+        app_notify_url=None,
+        sign_type="RSA2",
+        debug=False,
+        verbose=False
     ):
         """
         初始化
@@ -761,7 +766,7 @@ class DCAliPay(BaseAliPay):
         return getattr(self, "_alipay_root_cert_sn")
 
     def api_alipay_fund_trans_uni_transfer(
-            self, out_biz_no, identity_type, identity, trans_amount, name=None, **kwargs
+        self, out_biz_no, identity_type, identity, trans_amount, name=None, **kwargs
     ):
         """
         单笔转账接口, 只支持公钥证书模式
