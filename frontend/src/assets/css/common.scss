@@ -65,6 +65,11 @@ body {
   width: 100%;
 }
 
+/*修复el-select的style的width无效问题*/
+.el-select .el-input{
+  width: 100%;
+}
+
 input, textarea {
   outline: none;
   resize: none;
