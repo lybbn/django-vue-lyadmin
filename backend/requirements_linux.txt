@@ -3,8 +3,6 @@ asgiref
 attrs
 autobahn
 Automat
-certifi
-cffi
 charset-normalizer
 constantly
 coreapi
