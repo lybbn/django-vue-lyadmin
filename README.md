@@ -59,7 +59,10 @@ django-vue-lyadmin 是一套python django web前后端分离的管理后台快�
 ## 交流
 - 开发者WX号：laoyanyj
 
-- QQ群号：755277564 <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=oPz6bqmL"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="django-vue-lyadmin交流01群" title="django-vue-lyadmin交流01群"></a>
+- QQ群号：
+
+1. django-vue-lyadmin交流01群(已满)：755277564
+1. django-vue-lyadmin交流02群：877020250 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=bQteR0foj1tZuZE0kdVF3XV9xozOmr9p&jump_from=webapi&authKey=8GRzb/ATMG1hXE7G1n2oCHyoHrP0+mg7xBzskR6mnw8eqb9LTv6FuAhHtoqs2F3y"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="点击链接加入群聊" title="django-vue-lyadmin交流02群"></a>
 - 二维码：
 
 <img src='https://gitee.com/lybbn/django-vue-lyadmin/raw/master/frontend/src/assets/img/qq.jpg' width='200'>
