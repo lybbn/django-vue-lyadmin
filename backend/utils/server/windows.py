@@ -124,7 +124,7 @@ def GetSystemVersion():
         key = 'lybbn_sys_version'
         version = cache.get(key)
         if version: return version
-        bit = 'x86';
+        bit = 'x86'
         if is_64bitos(): bit = 'x64'
 
         def get(key):
@@ -137,7 +137,7 @@ def GetSystemVersion():
         cache.set(key, version, 10000)
         return version
     except Exception as ex:
-        WriteLog('获取系统版', '获取系统版本失败,注册表无法打开,报错信息：%s'(str(ex)));
+        WriteLog('获取系统版', '获取系统版本失败,注册表无法打开,报错信息：%s'%(str(ex)))
         version = "未知系统版本"
         cache.set(key, version, 10000)
         return version
