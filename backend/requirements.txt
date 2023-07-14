@@ -34,8 +34,8 @@ pyasn1-modules
 pycparser
 pycryptodome
 PyJWT
-#PyMySQL
-mysqlclient
+PyMySQL
+#mysqlclient
 pyOpenSSL
 pyparsing
 pytz

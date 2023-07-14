@@ -49,7 +49,8 @@ jpush==3.3.9
 kombu==5.2.4
 MarkupSafe==2.1.1
 msgpack==1.0.4
-mysqlclient==2.1.1
+PyMySQL
+#mysqlclient==2.1.1
 packaging==21.3
 paramiko==2.11.0
 Pillow==9.2.0
