@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 //引入ElementPlus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import i18n from './locales'
+import i18n from './locales/index.js'
 // 统一导入el-icon图标
 import * as Icons from '@element-plus/icons-vue'
 //引入ElementPlus 结束
