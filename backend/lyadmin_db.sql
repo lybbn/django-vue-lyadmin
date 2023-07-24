@@ -1302,7 +1302,7 @@ CREATE TABLE `tb_lunbo_manage` (
 # Data for table "tb_lunbo_manage"
 #
 
-REPLACE INTO `tb_lunbo_manage` VALUES ('e86adc251eb348c1bc0d1534cb130d3e',NULL,NULL,NULL,'2022-06-27 13:56:06.343544','2022-06-27 13:56:06.343544','首页轮播图1',1,1,1,'http://127.0.0.1:8000/media/platform/2021-10-27/20211027110807_498.jpg','http://www.xxx.com',NULL,0);
+REPLACE INTO `tb_lunbo_manage` VALUES ('e86adc251eb348c1bc0d1534cb130d3e',NULL,NULL,NULL,'2022-06-27 13:56:06.343544','2022-06-27 13:56:06.343544','首页轮播图1',1,1,1,'http://127.0.0.1:8000/media/platform/2021-10-27/20211027110807_498.jpg','https://doc.lybbn.cn',NULL,0);
 
 #
 # Structure for table "tb_mall_order_info"
