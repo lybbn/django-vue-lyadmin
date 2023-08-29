@@ -2,7 +2,7 @@
 
 [![img](https://img.shields.io/badge/python-%3E=3.9.x-green.svg)](https://python.org/)  [![PyPI - Django Version badge](https://img.shields.io/badge/django%20versions-4.x-blue)](https://docs.djangoproject.com/zh-hans/4.0/) [![img](https://img.shields.io/badge/node-%3E%3D%2014.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![img](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin)
 
-[ 官方文档 ](https://doc.lybbn.cn/) | 演示（[基础版](http://django-vue3-lyadmin.lybbn.cn) [专业版](http://django-vue-lyadmin-pro.lybbn.cn)）| [ 在线课程 ](https://doc.lybbn.cn/videos/PythonWeb/%E8%AF%BE%E7%A8%8B%E4%BB%8B%E7%BB%8D.html) | [捐赠](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264497&doc_id=2214316) 
+[ 官方文档 ](https://doc.lybbn.cn/) | 演示（[基础版](http://django-vue3-lyadmin.lybbn.cn) [专业版](http://django-vue-lyadmin-pro.lybbn.cn)）| [Go语言版](https://gitee.com/lybbn/golyadmin) | [ 在线课程 ](https://doc.lybbn.cn/videos/PythonWeb/%E8%AF%BE%E7%A8%8B%E4%BB%8B%E7%BB%8D.html) | [捐赠](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264497&doc_id=2214316) 
 
 ## slogon
 
