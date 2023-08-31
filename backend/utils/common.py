@@ -242,9 +242,10 @@ def getrealip(request):
 #生成订单号(短订单号)
 def getminrandomodernum():
     basecode = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    basecode = basecode[2:]
     chagecode1 = random.randint(10,99)
-    chagecode3 = str(time.time()).replace('.','')[-7:]
-    return str(basecode)+str(chagecode1)+chagecode3
+    chagecode3 = random.randint(10,99)
+    return str(basecode)+str(chagecode1)+str(chagecode3)
 
 #生成订单号（长订单号）
 def getrandomodernum():
