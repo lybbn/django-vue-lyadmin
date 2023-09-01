@@ -67,7 +67,7 @@ def hide4mobile(mobile):
     """
     if re.match("^\d{11}$", mobile):
         list = mobile[3:7]
-        new_phone = mobile.replace(list, '****')
+        new_phone = mobile.replace(list, '****',1)
         return new_phone
     else:
         return ""
