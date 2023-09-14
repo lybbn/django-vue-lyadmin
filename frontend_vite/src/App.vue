@@ -70,5 +70,8 @@
         .el-pagination__jump,
         .el-pagination__sizes {display: none!important;}
     }
+    .myeltas2{
+        display: none;
+    }
   }
 </style>
