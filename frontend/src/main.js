@@ -33,6 +33,10 @@ app.config.globalProperties.axios = axios
 // vue3.x的全局实例，要挂载在config.globalProperties上
 app.config.globalProperties.$Bus = new mitt()
 
+// 引入全局api
+import * as myAPI from './api/api'
+app.config.globalProperties.$Api = myAPI
+
 //引入状态管理
 import {isShowBtn,hasPermission,formatUnitSize} from './utils/util'
 app.config.globalProperties.isShowBtn = isShowBtn
