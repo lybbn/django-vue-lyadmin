@@ -143,6 +143,7 @@ input, textarea {
   cursor: pointer;
   margin-right: 10px;
   text-wrap: nowrap;
+  white-space: nowrap;
   //font-size: 14px;
   &.color99{
     color: #999999;
