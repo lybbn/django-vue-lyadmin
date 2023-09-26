@@ -302,6 +302,7 @@
             },
             // 角色树被点击
             nodeClick (data, node, self) {
+                this.menuOptions = []
                 this.roleObj = data
                 this.getDeptData()
                 this.getMenuData(data)
