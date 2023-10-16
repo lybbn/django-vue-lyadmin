@@ -47,7 +47,7 @@ class AppMoliePasswordLoginSerializer(TokenObtainPairSerializer):
             }
             return result
         password = attrs['password']
-        user = Users.objects.filter(username=mobile + "app", mobile=mobile, identity__contains="1").first()
+        user = Users.objects.filter(username=mobile, identity=2).first()
         if user and not user.is_active:
             result = {
                 "code": 4000,
@@ -135,12 +135,12 @@ class SmsSerializer(serializers.Serializer):
 
         if self.context['smstype']== "restpass" or self.context['smstype']== "login":#重置密码/用户登录
             #该手机号是否已注册
-            if not Users.objects.filter(username=mobile+"app",mobile=mobile,identity__contains="1",is_active=True).count():
-                raise serializers.ValidationError("没有找到该用户",400)
+            if not Users.objects.filter(username=mobile,identity=2,is_active=True).count():
+                raise serializers.ValidationError("没有找到该用户或已禁用",400)
 
         if self.context['smstype']== "wxbind":#微信绑定
             #该手机号是否已注册
-            if not Users.objects.filter(username=mobile+"app",mobile=mobile,identity__contains="1",is_active=True,oauthwxuser__isnull=True).count():
+            if not Users.objects.filter(username=mobile,mobile=mobile,identity=2,is_active=True,oauthwxuser__isnull=True).count():
                 raise serializers.ValidationError("没有找到该用户或该用户已绑定微信",400)
 
         if self.context['smstype'] == "rebind":#换绑手机号，前提用户已经登录
@@ -184,7 +184,7 @@ class SendSmsCodeView(APIView):
 
         mobile = get_parameter_dic(request)['mobile']
         smstype = get_parameter_dic(request)['smstype']
-        if smstype == "login" or smstype == "restpass" or smstype == "wxbind":
+        if smstype == "login" or smstype == "restpass" or smstype == "wxbind" or smstype == "register":
             # 创建序列化器
             serializer = SmsSerializer(data=request.data, context={"request": request, "smstype": smstype})
             # 验证是否有效
@@ -330,11 +330,13 @@ class APPMobileSMSLoginView(APIView):
             if str(send_flag.decode()) != str(code):
                 return ErrorResponse(msg="验证码错误")
             #开始登录
-            user = Users.objects.filter(username=mobile+"app",mobile=mobile,identity__contains="1",is_active=True).first()
+            user = Users.objects.filter(username=mobile,identity=2).first()
             if not user:
                 return ErrorResponse(msg="用户不存在")
-
+            if not user.is_active:
+                return ErrorResponse(msg="该账号已被禁用，请联系管理员")
             resdata = APPMobileSMSLoginSerializer.get_token(user)
+            redis_conn.delete('sms_%s' % mobile)
             return SuccessResponse(data=resdata, msg="登录成功")
 
 
@@ -368,13 +370,16 @@ class ForgetPasswdResetView(APIView):
         else:
             if str(send_flag.decode()) != str(code):
                 return ErrorResponse(msg="验证码错误")
-            #开始更换手机号
-            user = Users.objects.filter(username=mobile+"app",mobile=mobile,identity__contains="1",is_active=True).first()
+            #开始更换密码
+            user = Users.objects.filter(username=mobile,identity=2).first()
             if not user:
                 return ErrorResponse(msg="用户不存在")
+            if not user.is_active:
+                return ErrorResponse(msg="该账号已被禁用，请联系管理员")
             # 重置密码
             user.password = make_password(password)
             user.save()
+            redis_conn.delete('sms_%s' % mobile)
             return SuccessResponse(msg="success")
 
 class RegisterView(APIView):
@@ -423,5 +428,6 @@ class RegisterView(APIView):
             if str(send_flag.decode()) != str(code):
                 return ErrorResponse(msg="验证码错误")
             # 开始注册
-            Users.objects.create(username=mobile,password=make_password(password),mobile=mobile,is_staff=False,viptype=1)
+            Users.objects.create(username=mobile,password=make_password(password),mobile=mobile,is_staff=False,identity=2)
+            redis_conn.delete('sms_%s' % mobile)
             return SuccessResponse(msg="注册成功")
