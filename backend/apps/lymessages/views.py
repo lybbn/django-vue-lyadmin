@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from apps.lymessages.models import MyMessageTemplate,MyMessage,MyMessageUser
-from utils.jsonResponse import SuccessResponse,ErrorResponse
+from utils.jsonResponse import SuccessResponse,ErrorResponse,DetailResponse
 from utils.common import get_parameter_dic,formatdatetime
 from django.db.models import Q,F
 from rest_framework import serializers
