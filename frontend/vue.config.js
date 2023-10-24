@@ -43,6 +43,34 @@ module.exports = {
 				threshold: 10240,
 				minRatio: 0.8
 			}))
+
+			config['optimization'] = {
+				splitChunks:{
+					chunks: "all",
+					automaticNameDelimiter: '~',
+					name: "lyadminChunks",
+					cacheGroups: {
+						//第三方库抽离
+						vendor: {
+							name: "modules",
+							test: /[\\/]node_modules[\\/]/,
+							priority: -10
+						},
+						elicons: {
+							name: "elicons",
+							test: /[\\/]node_modules[\\/]@element-plus[\\/]icons-vue[\\/]/
+						},
+						tinymce: {
+							name: "tinymce",
+							test: /[\\/]node_modules[\\/]tinymce[\\/]/
+						},
+						echarts: {
+							name: "echarts",
+							test: /[\\/]node_modules[\\/]echarts[\\/]/
+						},
+					}
+				}
+			}
 		}
 	},
 	//解决富文本编辑器报错imports失败
