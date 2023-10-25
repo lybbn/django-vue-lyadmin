@@ -365,6 +365,7 @@ LOGGING = {
         'django': {
             'handlers': ['console', 'error', 'file'],
             'level': 'INFO',
+            "propagate": False,# 不向上级 logger 传播
         },
         'scripts': {
             'handlers': ['console', 'error', 'file'],
@@ -372,8 +373,8 @@ LOGGING = {
         },
         # 数据库相关日志
         'django.db.backends': {
-            'handlers': [],
-            'propagate': True,
+            'handlers': ["console", "error", "file"],
+            'propagate': False,
             'level': 'INFO',
         },
     }
