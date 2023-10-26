@@ -124,7 +124,7 @@ class Migration(migrations.Migration):
                 ('status', models.SmallIntegerField(choices=[(0, '禁用'), (1, '启用')], default=1, help_text='菜单状态', verbose_name='菜单状态')),
                 ('isautopm', models.SmallIntegerField(choices=[(0, '不自动创建'), (1, '自动创建')], default=1, help_text='自动创建按钮权限', verbose_name='自动创建按钮权限')),
                 ('cache', models.SmallIntegerField(choices=[(0, '禁用'), (1, '启用')], default=0, help_text='是否页面缓存', verbose_name='是否页面缓存')),
-                ('visible', models.SmallIntegerField(choices=[(0, '禁用'), (1, '启用')], default=1, help_text='侧边栏中是否显示', verbose_name='侧边栏中是否显示')),
+                ('visible', models.SmallIntegerField(choices=[(0, '不可见'), (1, '可见')], default=1, help_text='侧边栏中是否显示', verbose_name='侧边栏中是否显示')),
                 ('creator', models.ForeignKey(db_constraint=False, help_text='创建人', null=True, on_delete=django.db.models.deletion.SET_NULL, related_query_name='creator_query', to=settings.AUTH_USER_MODEL, verbose_name='创建人')),
                 ('parent', models.ForeignKey(blank=True, db_constraint=False, help_text='上级菜单', null=True, on_delete=django.db.models.deletion.CASCADE, to='mysystem.menu', verbose_name='上级菜单')),
             ],

@@ -159,7 +159,7 @@ class Menu(CoreModel):
         (0,'不可见'),
         (1,"可见")
     )
-    visible = models.SmallIntegerField(choices=CACHE_CHOICES, default=1, verbose_name="侧边栏中是否显示", help_text="侧边栏中是否显示")
+    visible = models.SmallIntegerField(choices=VISIBLE_CHOICES, default=1, verbose_name="侧边栏中是否显示", help_text="侧边栏中是否显示")
 
     class Meta:
         db_table = table_prefix + "menu"
