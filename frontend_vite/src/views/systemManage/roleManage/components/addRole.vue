@@ -8,12 +8,12 @@
                 <el-form-item label="权限字符：" prop="key">
                     <el-input v-model.trim="formData.key" style="width: 100%"></el-input>
                 </el-form-item>
-                <el-form-item label="是否管理员：" prop="admin">
+                <!-- <el-form-item label="是否管理员：" prop="admin">
                     <el-radio-group v-model="formData.admin" style="width: 300px">
                         <el-radio :label="1">是</el-radio>
                         <el-radio :label="0">否</el-radio>
                     </el-radio-group>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="状态：" prop="status">
                     <el-radio-group v-model="formData.status" style="width: 300px">
                         <el-radio :label="1">启用</el-radio>

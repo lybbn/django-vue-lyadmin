@@ -30,16 +30,16 @@
                 </el-table-column>
                 <el-table-column min-width="120" prop="name" label="角色名称"></el-table-column>
                 <el-table-column min-width="120" prop="key" label="权限字符"></el-table-column>
-                <el-table-column min-width="120" label="是否管理员">
+                <!-- <el-table-column min-width="120" label="是否管理员">
                     <template #default="scope">
                         <el-tag v-if="scope.row.admin==1" type="">是</el-tag>
                         <el-tag v-else type="danger">否</el-tag>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column min-width="120" label="状态">
                     <template #default="scope">
-                        <el-tag v-if="scope.row.status==1" type="">启用</el-tag>
-                        <el-tag v-else>禁用</el-tag>
+                        <el-tag v-if="scope.row.status==1">启用</el-tag>
+                        <el-tag v-else type="danger">禁用</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column min-width="120" prop="sort" label="排序"></el-table-column>
