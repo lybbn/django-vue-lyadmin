@@ -43,6 +43,7 @@
     import {platformsettingsLunboimgAdd,platformsettingsLunboimgEdit,platformsettingsUploadPlatformImg} from "@/api/api";
     import {url} from '@/api/url'
     import LyDialog from "@/components/dialog/dialog.vue";
+    import {deepClone} from "@/utils/util";
     export default {
         components: {LyDialog},
         emits: ['refreshData'],
@@ -78,19 +79,21 @@
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
-                this.$emit('refreshData')
-            },
-            addModuleFn(item,flag,activeName) {
-                this.loadingTitle=flag
-                this.dialogVisible=true
-
-                this.formData=item ? item : {
+                this.formData={
                     title:'',
                     link:'',
                     image:'',
                     type:activeName,
                     sort:0,
                     status:true
+                }
+            },
+            addModuleFn(item,flag,activeName) {
+                this.loadingTitle=flag
+                this.dialogVisible=true
+
+                if(item){
+                    this.formData = deepClone(item)
                 }
             },
             submitData() {

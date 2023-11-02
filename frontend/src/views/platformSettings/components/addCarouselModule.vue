@@ -42,7 +42,8 @@
 <script>
     import {platformsettingsLunboimgAdd,platformsettingsLunboimgEdit,platformsettingsUploadPlatformImg} from "@/api/api";
     import {url} from '@/api/url'
-    import LyDialog from "../../../components/dialog/dialog";
+    import LyDialog from "@/components/dialog/dialog";
+    import {deepClone} from "@/utils/util";
     export default {
         components: {LyDialog},
         emits: ['refreshData'],
@@ -78,19 +79,21 @@
             handleClose() {
                 this.dialogVisible=false
                 this.loadingSave=false
-                this.$emit('refreshData')
+                this.formData = {
+                    title:'',
+                    link:'',
+                    image:'',
+                    type:'',
+                    sort:1,
+                    status:true
+                }
             },
             addModuleFn(item,flag,activeName) {
                 this.loadingTitle=flag
                 this.dialogVisible=true
-
-                this.formData=item ? item : {
-                    title:'',
-                    link:'',
-                    image:'',
-                    type:activeName,
-                    sort:0,
-                    status:true
+                
+                if(item){
+                    this.formData = deepClone(item)
                 }
             },
             submitData() {

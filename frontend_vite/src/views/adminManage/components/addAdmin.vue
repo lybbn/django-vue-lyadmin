@@ -8,10 +8,7 @@
                 <el-form-item label="管理员名称：" prop="name">
                     <el-input v-model="formData.name"></el-input>
                 </el-form-item>
-                <!--<el-form-item label="权限字符：" prop="name">
-                    <el-input v-model.trim="formData.name" style="width: 300px"></el-input>
-                </el-form-item>-->
-                <el-form-item label="登陆账号：" prop="username">
+                <el-form-item label="登录账号：" prop="username">
                     <el-input v-model.trim="formData.username"></el-input>
                 </el-form-item>
                 <el-form-item label="登录密码：" prop="password">
@@ -102,7 +99,6 @@
                     role:[],
                     is_active:true
                 }
-                this.$emit('refreshData')
             },
             addAdminFn(item,flag) {
                 this.getapiSystemRole()
@@ -177,7 +173,7 @@
                 })
             },
             getapiSystemRole(){
-                apiSystemRole({page:1,limit:999}).then(res=>{
+                apiSystemRole({page:1,limit:999,status:1}).then(res=>{
                     if(res.code ==2000) {
                         this.rolelist = res.data.data
                     } else {
