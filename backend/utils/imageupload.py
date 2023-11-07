@@ -14,7 +14,7 @@ def ImageUpload(request,dirs):
     request:请求
     dirs:要上传到那个目录
     """
-    image = request.data.getlist('file')
+    image = request.FILES.getlist('file')
     msg = {}
     if not image:
         msg['code'] = 400
@@ -81,7 +81,7 @@ def ImageUpload2(request,paramsname,dirs):
     paramsname:为formData中提交数据的名称
     dirs:要上传到那个目录
     """
-    image = request.data.getlist(paramsname)
+    image = request.FILES.getlist(paramsname)
     msg = {}
     if not image:
         msg['code'] = 400
