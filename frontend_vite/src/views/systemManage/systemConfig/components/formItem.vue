@@ -48,8 +48,7 @@
                         <el-checkbox
                             v-for="item in dictionary(scope.row.setting)  || []"
                             :key="item.value"
-                            :label="item.value"
-                            :value="item.value">
+                            :label="item.value">
                             {{ item.label }}
                         </el-checkbox>
                     </el-checkbox-group>
@@ -64,8 +63,7 @@
                     <el-radio
                       v-for="item in scope.row.setting  || []"
                       :key="item.value"
-                      :label="item.value"
-                      :value="item.value">
+                      :label="item.value">
                       {{ item.label }}
                     </el-radio>
                   </el-radio-group>

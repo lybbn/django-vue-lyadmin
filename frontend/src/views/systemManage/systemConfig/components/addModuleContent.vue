@@ -18,6 +18,9 @@
                         <el-option :label="item.name" :value="item.id" :key="index" v-for="(item,index) in formTypeList"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="选项字典" prop="data_options" v-if="formData.form_item_type==5 ||formData.form_item_type==6">
+                    <el-input v-model="formData.data_options" type="textarea" :rows="2" placeholder="请输入如[{'label':'启用','value':'1'},{'label':'禁用','value':'0'}]" />
+                </el-form-item>
                 <el-form-item label="校验规则" v-show="false">
                     <el-select v-model="formData.rule" multiple placeholder="请选择(可多选)" clearable style="width: 100%">
                         <el-option :label="item.label" :value="item.value" :key="index" v-for="(item,index) in ruleOptions"></el-option>
