@@ -46,7 +46,7 @@
                         :placeholder="scope.row.placeholder"
                     >
                         <el-checkbox
-                            v-for="item in dictionary(scope.row.setting)  || []"
+                            v-for="item in scope.row.data_options  || []"
                             :key="item.value"
                             :label="item.value">
                             {{ item.label }}
@@ -61,7 +61,7 @@
                     clearable
                   >
                     <el-radio
-                      v-for="item in scope.row.setting  || []"
+                      v-for="item in scope.row.data_options || []"
                       :key="item.value"
                       :label="item.value">
                       {{ item.label }}
