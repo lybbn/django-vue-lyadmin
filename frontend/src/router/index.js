@@ -157,7 +157,7 @@ const routes = [
         }
       },
       {
-        path: 'buttonConfig/:id/:name',
+        path: '/buttonConfig',
         name: 'buttonConfig',
         component: () => import('../views/systemManage/buttonConfig/buttonConfig.vue'),
         meta: {
@@ -364,7 +364,7 @@ router.beforeEach((to, from, next) => {
                                 path: '/404'
                             })
                         }else{
-                            store.switchtab(tabsValue)
+                            // store.switchtab(tabsValue)
                         }
                     }else{
                         next({
@@ -375,7 +375,7 @@ router.beforeEach((to, from, next) => {
                     let tabsPage = JSON.parse(getStorage("tabsPage"))
                     if (tabsPage) {
                         if(isRouterNameExist(tabsPage[0].name)){
-                            store.switchtab(tabsPage[0].name)
+                            // store.switchtab(tabsPage[0].name)
                         }else{
                           next({
                               path: '/404'

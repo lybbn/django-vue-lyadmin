@@ -117,7 +117,7 @@
         // if(mutitabsStore.logintoken) {
         //     getMenu()
         // }
-        mutitabsStore.switchtabNoRoute(to.name)
+        mutitabsStore.switchtabNoRoute(to.name,to.query)
     })
 </script>
 <style lang="scss" scoped>

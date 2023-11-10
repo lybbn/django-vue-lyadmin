@@ -403,10 +403,10 @@
             let tabsPage = ""
             let TabsValue = ""
             if(menuTree[0].hasChildren){
-                tabsPage = [{"title":menuTree[0].children[0].text,"name":menuTree[0].children[0].attributes.url}]
+                tabsPage = [{"title":menuTree[0].children[0].text,"name":menuTree[0].children[0].attributes.url,"query":{}}]
                 TabsValue = menuTree[0].children[0].attributes.url
             }else{
-                tabsPage = [{"title":menuTree[0].text,"name":menuTree[0].attributes.url}]
+                tabsPage = [{"title":menuTree[0].text,"name":menuTree[0].attributes.url,"query":{}}]
                 TabsValue = menuTree[0].attributes.url
             }
             this.mutitabsstore.firstTabs([tabsPage,TabsValue])

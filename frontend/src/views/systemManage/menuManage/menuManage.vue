@@ -25,10 +25,10 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label=""><el-button  @click="getData" type="primary" icon="Search" v-show="isShowBtn('menuManage','菜单管理','Search')">查询</el-button></el-form-item>
+                <el-form-item label=""><el-button  @click="getData" type="primary" icon="Search" v-show="hasPermission(this.$route.name,'Search')">查询</el-button></el-form-item>
                 <el-form-item label=""><el-button  @click="handleEdit('','reset')" icon="Refresh">重置</el-button></el-form-item>
                 <el-form-item label="">
-                    <el-button type="primary" @click="addMenu" icon="Plus" v-show="isShowBtn('menuManage','菜单管理','Create')">新增</el-button>
+                    <el-button type="primary" @click="addMenu" icon="Plus" v-show="hasPermission(this.$route.name,'Create')">新增</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -86,10 +86,10 @@
                     </div>
                 </template>
                 <template #default="scope">
-                    <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('menuManage','菜单管理','Update')">编辑</span>
+                    <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="hasPermission(this.$route.name,'Update')">编辑</span>
 <!--                    <span class="table-operate-btn" @click="handleEdit(scope.row,'detail')" v-show="isShowBtn('menuManage','菜单管理','Retrieve')">详情</span>-->
-                    <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="isShowBtn('menuManage','菜单管理','Delete')">删除</span>
-                    <span class="table-operate-btn" @click="handleEdit(scope.row,'buttonConfig')" v-show="isShowBtn('menuManage','菜单管理','Retrieve') && (scope.row.menuPermission || scope.row.isautopm==1)">按钮配置</span>
+                    <span class="table-operate-btn" @click="handleEdit(scope.row,'delete')" v-show="hasPermission(this.$route.name,'Delete')">删除</span>
+                    <span class="table-operate-btn" @click="handleEdit(scope.row,'buttonConfig')" v-show="hasPermission(this.$route.name,'Retrieve') && (scope.row.menuPermission || scope.row.isautopm==1)">按钮配置</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -157,7 +157,7 @@
                     this.$refs.addMenuFlag.addMenuFn(row,'详情')
                 }
                 else if(flag == 'buttonConfig') {
-                    this.$router.push({name:'buttonConfig',params:{id:row.id,name:row.name}})
+                    this.$router.push({name:'buttonConfig',query:{id:row.id,name:row.name}})
                 }
                 else if(flag=='delete') {
                     let vm = this

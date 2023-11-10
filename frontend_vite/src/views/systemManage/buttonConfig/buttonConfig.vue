@@ -2,7 +2,7 @@
     <div>
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 16px;margin-top: 10px;">
             <el-breadcrumb-item :to="{ path: '/menuManage' }">菜单管理</el-breadcrumb-item>
-            <el-breadcrumb-item v-if="$route.params.name">{{$route.params.name}}</el-breadcrumb-item>
+            <el-breadcrumb-item v-if="$route.query.name">{{$route.query.name}}</el-breadcrumb-item>
         </el-breadcrumb>
 
         <el-table
@@ -23,7 +23,7 @@
             <el-table-column min-width="200" prop="api" label="接口地址"></el-table-column>
             <el-table-column label="操作" fixed="right" width="140">
                 <template #header>
-                    <el-button type="primary" size="default" @click="handleEdit(null,'新增',$route.params.id)">新增</el-button>
+                    <el-button type="primary" size="default" @click="handleEdit(null,'新增',$route.query.id)">新增</el-button>
                 </template>
                 <template #default="scope">
 <!--                    <span class="table-operate-btn" @click="handleEdit(scope.row,'edit')" v-show="isShowBtn('buttonConfig','按钮配置','Update')">编辑</span>-->
@@ -64,7 +64,7 @@
             }
         },
         created() {
-            this.formInline.menu=this.$route.params.id
+            this.formInline.menu=this.$route.query.id
             this.getData()
         },
         //解决table 表格缩放错位问题
@@ -85,9 +85,6 @@
             handleEdit(row, flag, menu) {
                 if (flag == '编辑' || flag=='新增') {
                     this.$refs.addButtonFlag.addButtonFn(row, flag, menu)
-                }
-                if (flag == 'buttonConfig') {
-                    this.$router.push({name: 'buttonConfig', params: {id: row.id, name: row.name}})
                 }
                 if (flag == 'delete') {
                     let vm = this

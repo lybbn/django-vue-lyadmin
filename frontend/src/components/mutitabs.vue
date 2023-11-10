@@ -79,11 +79,12 @@
                 }
                 this.mutitabsstore.tabsPage = JSON.parse(lytabsPage);
                 const currentRouteName = this.$route.name
+                const currentRouteQuery = this.$route.query
                 if(currentRouteName == 'login' || currentRouteName == 'root'){
                     this.mutitabsstore.TabsValue = TabsValue;
                     this.$router.push({ name: TabsValue })
                 }else{
-                    this.mutitabsstore.switchtabNoRoute(currentRouteName)
+                    this.mutitabsstore.switchtabNoRoute(currentRouteName,currentRouteQuery)
                 }
             }else{
                 this.relogin()//重新登录

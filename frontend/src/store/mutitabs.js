@@ -137,7 +137,7 @@ export const useMutitabsStore = defineStore('mutitabs', {
           }
         },
          //切换tab菜单(没有标签则重新创建)
-        switchtab(curContextTabName){
+        switchtab(curContextTabName,routeQuery = null){
             this.TabsValue = curContextTabName
             setStorage('TabsValue', curContextTabName)
             var arr = this.tabsPage
@@ -145,22 +145,29 @@ export const useMutitabsStore = defineStore('mutitabs', {
                 // 字符串需要转换
                 arr = JSON.parse(arr);
             }
-            if(!arr.some(item => item.name === curContextTabName)){
+            if(arr.some(item => item.name === curContextTabName)){
+                arr.forEach(item=>{
+                    if(item.name === curContextTabName){
+                        routeQuery =  !!item.query?item.query:{}
+                    }
+                })
+            }else{
                 var menuList = JSON.parse(getStorage('menuList'))
                 var curContextTabObj = menuList.filter(item=>item.url === curContextTabName)
                 if(curContextTabObj.length>0){
+                    routeQuery = !!routeQuery?routeQuery:{}
                     // 将tabs所需参数push进arr数组
-                    arr.push({ title: curContextTabObj[0].moduleName, name: curContextTabName })
+                    arr.push({ title: curContextTabObj[0].moduleName, name: curContextTabName,query:routeQuery })
                     // 赋值给tabsPage参数
                     this.tabsPage = arr
                     // 存储localStorage -- 解决刷新消失
                     setStorage('tabsPage', JSON.stringify(arr))
                 }
             }
-            router.push({ name: curContextTabName });
+            router.push({ name: curContextTabName,query:routeQuery});
         },
         //切换tab菜单(没有标签则重新创建)-只切换标签，不发送路由
-        switchtabNoRoute(curContextTabName){
+        switchtabNoRoute(curContextTabName,routeQuery = null){
             if(this.TabsValue != curContextTabName){
                 this.TabsValue = curContextTabName
                 var arr = this.tabsPage
@@ -175,8 +182,9 @@ export const useMutitabsStore = defineStore('mutitabs', {
                         if(menuList.length>0){
                             var curContextTabObj = menuList.filter(item=>item.url === curContextTabName)
                             if(curContextTabObj.length>0){
+                                let currentRouteQuery = !!routeQuery?routeQuery:{}
                                 // 将tabs所需参数push进arr数组
-                                arr.push({ title: curContextTabObj[0].moduleName, name: curContextTabName })
+                                arr.push({ title: curContextTabObj[0].moduleName, name: curContextTabName,query: currentRouteQuery})
                                 // 赋值给tabsPage参数
                                 this.tabsPage = arr
                                 setStorage('TabsValue', curContextTabName)
