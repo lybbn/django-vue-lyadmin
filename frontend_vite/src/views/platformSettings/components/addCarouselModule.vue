@@ -91,10 +91,10 @@
             addModuleFn(item,flag,activeName) {
                 this.loadingTitle=flag
                 this.dialogVisible=true
-
                 if(item){
                     this.formData = deepClone(item)
                 }
+                this.formData.type = activeName
             },
             submitData() {
                 this.$refs['rulesForm'].validate(obj=>{
