@@ -101,7 +101,7 @@
               userInforules: {
                 name: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
                 mobile: [
-                  { pattern: /^1[3|4|5|7|8]\d{9}$/, message: '请输入正确手机号' }
+                  { pattern: /^1[3|4|5|7|8|9|6]\d{9}$/, message: '请输入正确手机号' }
                 ]
               },
               userPasswordInfo: {
