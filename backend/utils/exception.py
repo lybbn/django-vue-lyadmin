@@ -10,7 +10,7 @@ from django.db.models import ProtectedError
 from django.db.utils import DatabaseError
 from rest_framework import exceptions
 from rest_framework.exceptions import APIException as DRFAPIException, AuthenticationFailed,NotAuthenticated,ValidationError,NotFound
-from rest_framework.views import set_rollback
+from rest_framework.views import set_rollback,exception_handler
 from django.http.response import Http404
 
 from utils.jsonResponse import ErrorResponse
@@ -29,10 +29,13 @@ def CustomExceptionHandler(ex, context):
     """
     msg = ''
     code = 4000
+    response = exception_handler(ex, context)
     if isinstance(ex, AuthenticationFailed):
         code = 4001
         if 'User is inactive' in str(ex.detail):
             msg = "该账号已被禁用,请联系管理员"
+        elif response and response.data.get("detail") == "Given token not valid for any token type":
+            msg = "身份认证已过期"
         else:
             msg = ex.detail
     elif isinstance(ex, NotAuthenticated):
