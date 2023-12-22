@@ -27,7 +27,7 @@
                         <el-radio :label="1">是</el-radio>
                         <el-radio :label="0">否</el-radio>
                     </el-radio-group>
-                    <span style="font-size: 7px;color: red;">*【否】表示创建一个目录</span>
+                    <span style="font-size: 12px;color: red;">*【否】表示创建一个目录</span>
                 </el-form-item>
                 <el-form-item label="图标：" prop="icon">
 <!--                    <el-input v-model.trim="formData.icon" ></el-input>-->
