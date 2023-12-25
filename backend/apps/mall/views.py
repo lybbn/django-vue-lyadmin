@@ -247,8 +247,8 @@ class GoodsSPUSerializer(CustomModelSerializer):
         # specs = [{spec_id:1, option_id:2}, {...}...]
         # 获取规格信息,并从validated_data数据中,删除规格信息数据
         spec_type = validated_data['spec_type']
-        spu_sepcs = validated_data.pop('spu_specs')  # 商品的spu规格字典数组形式[ { "name": "颜色", "options": [ { "value": "白色" }, { "value": "黑色" } ] }, { "name": "大小", "options": [ { "value": "X" }, { "value": "S" } ] } ]
-        skus = validated_data.pop('skus')
+        spu_sepcs = validated_data.pop('spu_specs',[])  # 商品的spu规格字典数组形式[ { "name": "颜色", "options": [ { "value": "白色" }, { "value": "黑色" } ] }, { "name": "大小", "options": [ { "value": "X" }, { "value": "S" } ] } ]
+        skus = validated_data.pop('skus',[])
         with transaction.atomic():  # 开启事务
             try:
                 savepoint = transaction.savepoint()
@@ -364,7 +364,7 @@ class GoodsSPUUpdateSerializer(CustomModelSerializer):
         if instance.spec_type != spec_type:
             raise serializers.ValidationError("商品规格类型不能更改", 400)
             return
-        skus = validated_data.pop('skus')
+        skus = validated_data.pop('skus',[])
         # spu_sepcs = validated_data.pop('spu_specs')
         if len(skus) <= 0:
             raise serializers.ValidationError("skus不能为空", 400)

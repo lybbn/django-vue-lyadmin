@@ -230,8 +230,9 @@
         mallGoodsspueEditskups,
         platformsettingsUploadPlatformImg
     } from "@/api/api";
-    import LyDialog from "../../../components/dialog/dialog";
-    import LyUploadGoods from "../../../components/upload/goods";
+    import LyDialog from "@/components/dialog/dialog";
+    import LyUploadGoods from "@/components/upload/goods";
+    import {deepClone} from "@/utils/util"
     export default {
         emits: ['refreshData'],
         name: "addModuleGoodsManage",
@@ -313,11 +314,11 @@
                 // this.getMallGoodscategoryList()
                 this.category_list = categoryList
                 if(item){
-                    this.formData = item
+                    this.formData = deepClone(item)
                     //轮播图开始
                     this.pics=[]
-                    if(item && item.image_list&&item.image_list.length >0) {
-                        item.image_list.forEach(items=>{
+                    if(this.formData && this.formData.image_list&&this.formData.image_list.length >0) {
+                        this.formData.image_list.forEach(items=>{
                             this.pics.push({
                                 pic:items
                             })
@@ -325,13 +326,13 @@
                     }
                     //轮播图结束
                     //多规格编辑打开时需要前端数据转换
-                    if(item.spec_type){
+                    if(this.formData.spec_type){
                         //禁用立即生成和添加规格的按钮
                         this.createBnt = false
                         this.generatenowBnt = false
 
-                        let temp_spu_spec = item.spu_specs
-                        let temp_skus = item.skus
+                        let temp_spu_spec = this.formData.spu_specs
+                        let temp_skus = this.formData.skus
                         temp_spu_spec.map((item) => {
                             let temp_spu_spec_options = []
                             item.options.map((item2)=>{
@@ -669,6 +670,21 @@
                         // param.image_list= JSON.stringify(param.image_list)
                         this.loadingSave=true
                         if(this.formData.id){
+                            //单规格价格和库存的同步
+                            if (this.formData.spec_type === 0) {
+                                if(this.formData.price<=0){
+                                    this.$message.warning("商品规格价格要大于0")
+                                    this.loadingSave=false
+                                    return
+                                }
+                                if(this.formData.stock<0){
+                                    this.$message.warning("商品规格库存要大于等于0")
+                                    this.loadingSave=false
+                                    return
+                                }
+                                param.skus[0].price = param.price
+                                param.skus[0].stock = param.stock
+                            }
                             mallGoodsspuEdit(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code ==2000) {
