@@ -167,7 +167,8 @@
         methods:{
             // 获取角色
             pageRequest (query) {
-                return apiSystemRole(query).then((res) => {
+                let params = {page:1,limit:999,...query}
+                return apiSystemRole(params).then((res) => {
 
                     // res.map((value, index) => {
                     //     value.node_id = index
