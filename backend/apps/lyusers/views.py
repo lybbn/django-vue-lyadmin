@@ -222,7 +222,7 @@ class DestroyUserView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        if user.identity not in [0,1]:
+        if user.identity in [0,1]:
             return ErrorResponse(msg="该用户不支持注销")
         if '(已注销)' in user.username:
             return ErrorResponse(msg="该用户已注销或不支持注销")
