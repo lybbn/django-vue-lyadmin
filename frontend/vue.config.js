@@ -34,8 +34,6 @@ module.exports = {
 		config["performance"] = {
 			hints: false,
 		}
-		config.devtool = 'source-map'
-    	config.output.libraryExport = 'default'  /* 解决import UMD打包文件时, 组件install方法执行报错的问题！！ */
 		if (process.env.NODE_ENV === 'production') {
 			config.plugins.push(new CompressionWebpackPlugin({
 				algorithm: 'gzip',
