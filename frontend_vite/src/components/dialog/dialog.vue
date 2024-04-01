@@ -111,10 +111,10 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 4px;
+    top: 0px;
     right: 40px;
-    width: 54px;
-    height: 54px;
+    width: 46px;
+    height: 46px;
     color: var(--el-color-info);
     cursor: pointer;
   }

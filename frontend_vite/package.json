@@ -5,7 +5,7 @@
     "email": "1042594286@qq.com",
     "url": "https://gitee.com/lybbn"
   },
-  "version": "3.2.10",
+  "version": "3.2.11",
   "private": true,
   "scripts": {
     "start": "vite",
@@ -23,7 +23,7 @@
     "core-js": "^3.29.0",
     "crypto-js": "^4.1.1",
     "echarts": "^5.3.3",
-    "element-plus": "^2.4.4",
+    "element-plus": "^2.6.3",
     "js-md5": "^0.7.3",
     "mitt": "^3.0.0",
     "nprogress": "^0.2.0",

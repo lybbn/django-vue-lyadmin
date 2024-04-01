@@ -86,6 +86,9 @@ module.exports = {
 			args[0].title = appConfig.APP_TITLE;
 			return args;
 		})
-
+		config.plugin('define').tap((args) => {
+			args[0]['__VUE_PROD_HYDRATION_MISMATCH_DETAILS__'] = true;
+			return args;
+		});
     },
 }
