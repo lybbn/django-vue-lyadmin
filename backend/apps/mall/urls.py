@@ -15,7 +15,7 @@ system_url.register(r'goodscoupon', GoodsCouponManageViewSet)
 system_url.register(r'couponrecord', CouponRecordManageViewSet)
 system_url.register(r'goodsspu', GoodsSPUViewSet)
 system_url.register(r'goodsforderinfo', FinanceOrderInfoViewSet)
-system_url.register(r'goodsorder', GoodsOrderManageViewSet)
+system_url.register(r'goodsorder', GoodsOrderManageViewSet,basename='goodsorder')
 
 
 urlpatterns = [

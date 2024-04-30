@@ -510,6 +510,7 @@ CELERY_TASK_TIME_LIMIT = 60*30*5 # 限制celery任务执行时间，# 单个任�
 CELERYD_MAX_TASKS_PER_CHILD = 100  #worker执行100个任务自动销毁，防止内存泄露
 CELERYD_TASK_SOFT_TIME_LIMIT = 6000   #单个任务的运行时间不超过此值(秒)，否则会抛出(SoftTimeLimitExceeded)异常停止任务
 CELERY_DISABLE_RATE_LIMITS = True     #即使任务设置了明确的速率限制，也禁用所有速率限制。
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True #去除celery6.0启动时warning警告，确保在启动时进行代理连接重试
 # ================================================= #
 # ******************** 其他配置 ******************** #
 # ================================================= #
