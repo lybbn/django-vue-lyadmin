@@ -23,13 +23,12 @@ class UserSerializer(CustomModelSerializer):
     rolekey = serializers.SerializerMethodField(read_only=True)  # 新增自定义字段
 
     def get_rolekey(self,obj):
-        queryset = Role.objects.filter(users__id=obj.id).values_list('key',flat=True)
-        return queryset
+        return list(obj.role.values_list('key', flat=True))
 
     class Meta:
         model = Users
         read_only_fields = ["id"]
-        exclude = ['password']
+        exclude = ['password','user_permissions','groups']
         extra_kwargs = {
             'post': {'required': False},
         }

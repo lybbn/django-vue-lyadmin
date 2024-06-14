@@ -17,14 +17,11 @@
 
 * 专业版 演示地址：[http://django-vue-lyadmin-pro.lybbn.cn](http://django-vue-lyadmin-pro.lybbn.cn) 账号：admin 密码：123456
 
-说明：专业版【代码生成】【表单构建】稳定版已出，可适用大部分简单crud场景
+说明：
 
-* Eleunipy在线模板系统：[https://eleunipy.lybbn.cn/](https://eleunipy.lybbn.cn/)  账号/密码： 自行注册使用
+专业版【代码生成】【表单构建】稳定版已出，可适用大部分简单crud场景
 
-eleunipy系统是结合
-[django-vue-lyadmin](https://gitee.com/lybbn/django-vue-lyadmin)
-[unielepy](https://gitee.com/lybbn/unielepy)
-在全栈开发中，能让开发者挑选模板/组件/源码实现低代码、避免重复造轮子快速完成项目，模板持续更新中...
+unielepy为移动端开发模板：[unielepy](https://gitee.com/lybbn/unielepy)
 
 ## 平台简介
 
@@ -203,7 +200,7 @@ django-vue-lyadmin 是一套前后端分离的前端后台管理框架，是适�
 cd frontend
 npm install --registry=https://registry.npm.taobao.org
 ```
-
+说明：node版本尽量选择低版本，目前开发使用的为node：v16.17.0
 
 #### 使用说明
 
