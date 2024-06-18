@@ -23,6 +23,12 @@
 
 unielepy为移动端开发模板：[unielepy](https://gitee.com/lybbn/unielepy)
 
+## 在线体验(商城论坛系统)
+
+* 移动端 演示地址：[H5端](https://pingbang.lybbn.cn/#/) 账号：test2 密码：123456
+
+* 后台 演示地址：[后台](https://pbadmin.lybbn.cn/) 账号：admin 密码：123456
+
 ## 平台简介
 
 django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台（内置简易商城模块），去繁从简、还你一个干净的后台管理系统
