@@ -5,12 +5,12 @@
 </template>
 
 <script>
-    import "xterm/css/xterm.css"
-    import "xterm/lib/xterm.js";
+    import "@xterm/xterm/css/xterm.css"
+    import "@xterm/xterm/lib/xterm.js";
     import { getJWTAuthorization } from '@/api/request'
-    import { Terminal } from 'xterm'
-    import { FitAddon } from "xterm-addon-fit"
-    import { AttachAddon } from 'xterm-addon-attach'
+    import { Terminal } from '@xterm/xterm'
+    import { FitAddon } from "@xterm/addon-fit"
+    import { AttachAddon } from '@xterm/addon-attach'
     export default {
         name: "LyXterm",
         props:{
