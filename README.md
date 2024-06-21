@@ -204,7 +204,7 @@ django-vue-lyadmin 是一套前后端分离的前端后台管理框架，是适�
 
 ```
 cd frontend
-npm install --registry=https://registry.npm.taobao.org
+npm install --registry=https://registry.npmmirror.com
 ```
 说明：node版本尽量选择低版本，目前开发使用的为node：v16.17.0
 

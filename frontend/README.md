@@ -22,7 +22,7 @@ django-vue-lyadmin 是一套前后端分离的前端后台管理框架，是适�
 
 ```
 cd frontend
-npm install --registry=https://registry.npm.taobao.org
+npm install --registry=https://registry.npmmirror.com
 
 注释：如果安装过程有如下报错则运行：npm cache clear --force
 npm ERR! Cannot read properties of null (reading 'pickAlgorithm')
