@@ -6,7 +6,7 @@
                     <el-input v-model.trim="formInline.search" maxlength="60" placeholder="一级地区名称" clearable @change="getRootData" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="状态：">
-                    <el-select v-model="formInline.status" placeholder="请选择" clearable @change="getRootData">
+                    <el-select v-model="formInline.status" placeholder="请选择" clearable @change="getRootData" style="width:190px">
                         <el-option
                             v-for="item in statusList"
                             :key="item.id"

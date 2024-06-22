@@ -6,7 +6,7 @@
                     <el-input size="default" clearable  v-model.trim="formInline.search"  maxlength="60" placeholder="关键词" @change="getData" style="width:200px"></el-input>
                 </el-form-item>
                 <el-form-item label="侧边可见：">
-                    <el-select size="default" v-model="formInline.visible" clearable placeholder="请选择" @change="getData">
+                    <el-select size="default" v-model="formInline.visible" clearable placeholder="请选择" @change="getData" style="width:120px">
                         <el-option
                             v-for="item in statusList1"
                             :key="item.id"
@@ -16,7 +16,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="状态：">
-                    <el-select size="default" v-model="formInline.status" clearable placeholder="请选择" @change="getData">
+                    <el-select size="default" v-model="formInline.status" clearable placeholder="请选择" @change="getData" style="width:120px">
                         <el-option
                             v-for="item in statusList"
                             :key="item.id"
