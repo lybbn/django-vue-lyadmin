@@ -22,8 +22,8 @@
                 </el-form-item>
                 <el-form-item label="状态：" prop="status">
                     <el-radio-group v-model="formData.status">
-                        <el-radio :label="1">启用</el-radio>
-                        <el-radio :label="0">禁用</el-radio>
+                        <el-radio :value="1">启用</el-radio>
+                        <el-radio :value="0">禁用</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="排序：" prop="sort">
@@ -109,20 +109,19 @@
                 this.getapiSystemDept()
             },
             submitData() {
-                let param = {
-                    ...this.formData
-                }
                 this.$refs['rulesForm'].validate(obj=>{
                     if(obj) {
                         this.loadingSave=true
                         let param = {
                             ...this.formData
                         }
-                        if( typeof this.formData.parent== 'object') {
+                        if( typeof param.parent== 'object') {
                             param.parent = this.formData.parent ?  this.formData.parent[this.formData.parent.length-1] : ''
+                        }else if(param.parent == null ||param.parent == undefined){
+                            param.parent = ""
                         }
-                        if(this.dialogTitle=="新增"){
-                            apiSystemDeptAdd(param).then(res=>{
+                        if(this.formData.id){
+                            apiSystemDeptEdit(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code == 2000) {
                                     this.$message.success(res.msg)
@@ -133,7 +132,7 @@
                                 }
                             })
                         }else{
-                            apiSystemDeptEdit(this.formData).then(res=>{
+                            apiSystemDeptAdd(param).then(res=>{
                                 this.loadingSave=false
                                 if(res.code == 2000) {
                                     this.$message.success(res.msg)
@@ -144,7 +143,6 @@
                                 }
                             })
                         }
-
                     }
                 })
             },
