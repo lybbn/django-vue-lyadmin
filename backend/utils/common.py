@@ -26,10 +26,10 @@ import json
 
 
 #手机号验证正则
-REGEX_MOBILE = "^1[356789]\d{9}$|^147\d{8}$|^176\d{8}$"
+REGEX_MOBILE = r"^1[356789]\d{9}$|^147\d{8}$|^176\d{8}$"
 
 #身份证正则
-IDCARD_MOBILE ="^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$"
+IDCARD_MOBILE = r"^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$"
 
 #微信GMT+8 转换成标准时间字符串
 def format_wechat_gmt_8_to_normal(wgmt8):
@@ -65,7 +65,7 @@ def hide4mobile(mobile):
     """
     隐藏手机号中间四位
     """
-    if re.match("^\d{11}$", mobile):
+    if re.match(r"^\d{11}$", mobile):
         list = mobile[3:7]
         new_phone = mobile.replace(list, '****',1)
         return new_phone
@@ -189,7 +189,7 @@ def get_full_image_url(request,url):
 
 #验证是否为有效手机号
 def checkphonenum(phonenum):
-    mobile_pat = re.compile('^1([38]\d|5[0-35-9]|7[3678])\d{8}$')
+    mobile_pat = re.compile(r'^1([38]\d|5[0-35-9]|7[3678])\d{8}$')
     res = re.search(mobile_pat, phonenum)
     if res:
         return True
