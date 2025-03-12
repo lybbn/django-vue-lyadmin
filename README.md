@@ -5,7 +5,7 @@
 [ 官方文档 ](https://doc.lybbn.cn/) | 演示（[基础版](http://django-vue3-lyadmin.lybbn.cn) [专业版](http://django-vue-lyadmin-pro.lybbn.cn)）| [Go语言版](https://gitee.com/lybbn/golyadmin) | [ 在线课程 ](https://doc.lybbn.cn/videos/PythonWeb/%E8%AF%BE%E7%A8%8B%E4%BB%8B%E7%BB%8D.html) | [捐赠](https://gitee.com/lybbn/django-vue-lyadmin/wikis/pages?sort_id=5264497&doc_id=2214316) 
 
 
-<span style="color:yellow;font-size:19px;">新项目 [ 如意面板 ](https://ruyi.lybbn.cn/) 发布,请查收！！！</span>
+# 新项目 [ 如意面板 ](https://ruyi.lybbn.cn/) 发布,请查收！！！
 
 ## slogon
 
