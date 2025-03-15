@@ -7,11 +7,9 @@
       @tab-remove="removeTab"
       @tab-click="tabClick($event)"
       @contextmenu.prevent.native="openContextMenu($event)">
-      <el-tab-pane
-        :key="item.name"
-        v-for="item in editableTabs"
-        :label="item.title"
-        :name="item.name"></el-tab-pane>
+      <template v-for="(item,index) in editableTabs" :key="index">
+        <el-tab-pane :label="item.title" :name="item.name" v-if="index<100"></el-tab-pane>
+      </template>
     </el-tabs>
     <transition name="el-zoom-in-top">
         <ul v-show="contextMenuVisible" :style="{left:left+'px',top:top+'px'}" class="contextmenu" id="lycontextmenu">
