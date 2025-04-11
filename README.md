@@ -28,7 +28,9 @@ unielepy为移动端开发模板：[unielepy](https://gitee.com/lybbn/unielepy)
 
 ## 在线体验(商城论坛系统)
 
-* 移动端 演示地址：[H5端](https://pingbang.lybbn.cn/#/) 账号：test2 密码：123456
+* PC Web端 演示地址：[PC端](https://lymallbbspc.lybbn.cn/#/) 账号：test01 密码：Admin123456
+
+* 移动端 演示地址：[H5端](https://pingbang.lybbn.cn/#/) 账号：test2 密码：Admin123456
 
 * 后台 演示地址：[后台](https://pbadmin.lybbn.cn/) 账号：admin 密码：123456
 
