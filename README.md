@@ -34,6 +34,16 @@ unielepy为移动端开发模板：[unielepy](https://gitee.com/lybbn/unielepy)
 
 * 后台 演示地址：[后台](https://pbadmin.lybbn.cn/) 账号：admin 密码：123456
 
+## django-vue-lyadmin项目启动视频讲解
+
+| 章节 | 简介 | 视频 |
+|------|------|------|
+| 0. python web开发新手导读 | python web开发新手导读 |[▶️ 观看](https://www.bilibili.com/video/BV1waLwzPE8G/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+| 1. 如何启动项目（老） | django-vue-lyadmin项目介绍（一） |[▶️ 观看](https://www.bilibili.com/video/BV1Tk4y1j7pq/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+| 2. 如何启动项目（新） | 新手必看-lyadmin开发环境安装配置 |[▶️ 观看](https://www.bilibili.com/video/BV1qU5CzzEne/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+| 3. 项目功能点介绍 | django-vue-lyadmin项目介绍（二） |[▶️ 观看](https://www.bilibili.com/video/BV1RV4y1671v/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+| 4. 项目低代码开发介绍 | django-vue-lyadmin低代码开发介绍 |[▶️ 观看](https://www.bilibili.com/video/BV1Yh411F7iM/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+
 ## 平台简介
 
 django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台（内置简易商城模块），去繁从简、还你一个干净的后台管理系统
@@ -101,16 +111,6 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 18.  订单管理：主要为商品订单的管理有发货、统计......
 19.  财务统计：平台订单等财务统计
 20.  其他功能：内置微信登录、小程序登录、短信登录、密码登录、微信企业到零钱、微信支付、支付宝支付、极光推送等API。
-
-## django-vue-lyadmin项目启动视频讲解
-
-| 章节 | 简介 | 视频 |
-|------|------|------|
-| 0. python web开发新手导读 | python web开发新手导读 |[▶️ 观看](https://www.bilibili.com/video/BV1waLwzPE8G/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
-| 1. 如何启动项目（老） | django-vue-lyadmin项目介绍（一） |[▶️ 观看](https://www.bilibili.com/video/BV1Tk4y1j7pq/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
-| 2. 如何启动项目（新） | 新手必看-lyadmin开发环境安装配置 |[▶️ 观看](https://www.bilibili.com/video/BV1qU5CzzEne/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
-| 3. 项目功能点介绍 | django-vue-lyadmin项目介绍（二） |[▶️ 观看](https://www.bilibili.com/video/BV1RV4y1671v/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
-| 4. 项目低代码开发介绍 | django-vue-lyadmin低代码开发介绍 |[▶️ 观看](https://www.bilibili.com/video/BV1Yh411F7iM/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
 
 ## lyadmin后端
 
