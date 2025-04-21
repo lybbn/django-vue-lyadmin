@@ -104,14 +104,13 @@ gitee地址(主推)：https://gitee.com/lybbn/django-vue-lyadmin
 
 ## django-vue-lyadmin项目启动视频讲解
 
-1. 如何启动项目
-- 1.1 [django-vue-lyadmin项目介绍（一）(视频)](https://www.bilibili.com/video/BV1Tk4y1j7pq/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c)
-
-2. 项目功能点介绍
-- 2.1 [django-vue-lyadmin项目介绍（二）(视频)](https://www.bilibili.com/video/BV1RV4y1671v/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c)
-
-3. 项目低代码开发介绍
-- 3.1 [django-vue-lyadmin低代码开发介绍(视频)](https://www.bilibili.com/video/BV1Yh411F7iM/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c)
+| 章节 | 简介 | 视频 |
+|------|------|------|
+| 0. python web开发新手导读 | python web开发新手导读 |[▶️ 观看](https://www.bilibili.com/video/BV1waLwzPE8G/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+| 1. 如何启动项目（老） | django-vue-lyadmin项目介绍（一） |[▶️ 观看](https://www.bilibili.com/video/BV1Tk4y1j7pq/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+| 2. 如何启动项目（新） | 新手必看-lyadmin开发环境安装配置 |[▶️ 观看](https://www.bilibili.com/video/BV1qU5CzzEne/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+| 3. 项目功能点介绍 | django-vue-lyadmin项目介绍（二） |[▶️ 观看](https://www.bilibili.com/video/BV1RV4y1671v/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+| 4. 项目低代码开发介绍 | django-vue-lyadmin低代码开发介绍 |[▶️ 观看](https://www.bilibili.com/video/BV1Yh411F7iM/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
 
 ## lyadmin后端
 
