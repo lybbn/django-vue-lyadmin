@@ -34,7 +34,7 @@ unielepy为移动端开发模板：[unielepy](https://gitee.com/lybbn/unielepy)
 
 * 后台 演示地址：[后台](https://pbadmin.lybbn.cn/) 账号：admin 密码：123456
 
-## django-vue-lyadmin项目启动视频讲解
+## django-vue-lyadmin快速入门
 
 | 章节 | 简介 | 视频 |
 |------|------|------|
@@ -43,6 +43,8 @@ unielepy为移动端开发模板：[unielepy](https://gitee.com/lybbn/unielepy)
 | 2. 如何启动项目（新） | 新手必看-lyadmin开发环境安装配置 |[▶️ 观看](https://www.bilibili.com/video/BV1qU5CzzEne/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
 | 3. 项目功能点介绍 | django-vue-lyadmin项目介绍（二） |[▶️ 观看](https://www.bilibili.com/video/BV1RV4y1671v/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
 | 4. 项目低代码开发介绍 | django-vue-lyadmin低代码开发介绍 |[▶️ 观看](https://www.bilibili.com/video/BV1Yh411F7iM/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+| 5. 代码生成介绍 | 一分钟零代码生成crud |[▶️ 观看](https://www.bilibili.com/video/BV1k5LqzaEFP/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
+| 6. 表单构建介绍 | 表单拖拽零代码实现接口页面crud |[▶️ 观看](https://www.bilibili.com/video/BV15iLEzvE4E/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
 
 ## 平台简介
 
