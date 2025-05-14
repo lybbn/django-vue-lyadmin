@@ -48,7 +48,7 @@ unielepy为移动端开发模板：[unielepy](https://gitee.com/lybbn/unielepy)
 
 ## 生态系统
 
-| 章节 | 简介 | 视频 |
+| 名称 | 简介 | 查看 |
 |------|------|------|
 | 1. 壁纸下载小程序 | 可作者入驻，下载量结算，观看广告后再下载，后端图片阿里云OSS上传 |[🔔 查看](https://lymallbbspc.lybbn.cn/goodsDetail?id=8) |
 | 2. dvlyadmin专业版 | django-vue-lyadmin专业版 |[🔔 查看](https://doc.lybbn.cn/support/subscribe.html) |
