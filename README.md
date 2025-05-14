@@ -46,6 +46,14 @@ unielepy为移动端开发模板：[unielepy](https://gitee.com/lybbn/unielepy)
 | 5. 代码生成介绍 | 一分钟零代码生成crud |[▶️ 观看](https://www.bilibili.com/video/BV1k5LqzaEFP/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
 | 6. 表单构建介绍 | 表单拖拽零代码实现接口页面crud |[▶️ 观看](https://www.bilibili.com/video/BV15iLEzvE4E/?share_source=copy_web&vd_source=be722122bb4156c932e29dbdfe89c90c) |
 
+## 生态系统
+
+| 章节 | 简介 | 视频 |
+|------|------|------|
+| 1. 壁纸下载小程序 | 可作者入驻，下载量结算，观看广告后再下载，后端图片阿里云OSS上传 |[🔔 查看](https://lymallbbspc.lybbn.cn/goodsDetail?id=8) |
+| 2. dvlyadmin专业版 | django-vue-lyadmin专业版 |[🔔 查看](https://doc.lybbn.cn/support/subscribe.html) |
+| 3. dvlyadmin商城论坛系统 | 有手机端、pc端的商城论坛系统 |[🔔 查看](https://doc.lybbn.cn/support/subscribe_mall_forum.html) |
+
 ## 平台简介
 
 django-vue-lyadmin 是一套python django web前后端分离的管理后台快速开发平台（内置简易商城模块），去繁从简、还你一个干净的后台管理系统
