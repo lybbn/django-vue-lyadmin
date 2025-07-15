@@ -1,3 +1,5 @@
+# 新项目 [ dvlyadmin-mini ](https://gitee.com/lybbn/dvlyadmin-mini) 发布（django-vue-lyadmin优化精简版）,请查收！！！
+
 # Django-Vue-Lyadmin
 
 [![img](https://img.shields.io/badge/python-%3E=3.9.x-green.svg)](https://python.org/)  [![PyPI - Django Version badge](https://img.shields.io/badge/django%20versions-4.x-blue)](https://docs.djangoproject.com/zh-hans/4.0/) [![img](https://img.shields.io/badge/node-%3E%3D%2014.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![img](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin)
