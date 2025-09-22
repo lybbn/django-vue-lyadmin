@@ -5,7 +5,6 @@ autobahn
 Automat
 charset-normalizer
 constantly
-coreapi
 coreschema
 cryptography
 daphne

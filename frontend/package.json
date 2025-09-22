@@ -25,7 +25,7 @@
     "core-js": "^3.29.0",
     "crypto-js": "^4.1.1",
     "echarts": "^5.3.3",
-    "element-plus": "^2.9.9",
+    "element-plus": "^2.11.3",
     "js-md5": "^0.7.3",
     "mitt": "^3.0.0",
     "nprogress": "^0.2.0",
