@@ -26,7 +26,18 @@ module.exports = {
         	// 当有错误的时候在客户端进行覆盖显示
             overlay: false,
         },
-		allowedHosts: 'all'
+		allowedHosts: 'all',
+		// 添加代理配置解决CORS问题
+		proxy: {
+			'/api': {
+				target: 'http://127.0.0.1:8000',
+				changeOrigin: true,
+				secure: false,
+				pathRewrite: {
+					'^/api': '/api'
+				}
+			}
+		}
 	},
 	//gzip配置
 	configureWebpack:config => {
@@ -86,9 +97,11 @@ module.exports = {
 			args[0].title = appConfig.APP_TITLE;
 			return args;
 		})
-		// config.plugin('define').tap((args) => {
-		// 	args[0]['__VUE_PROD_HYDRATION_MISMATCH_DETAILS__'] = true;
-		// 	return args;
-		// });
+		config.plugin('define').tap((args) => {
+			args[0]['__VUE_OPTIONS_API__'] = JSON.stringify(true);
+			args[0]['__VUE_PROD_DEVTOOLS__'] = JSON.stringify(false);
+			args[0]['__VUE_PROD_HYDRATION_MISMATCH_DETAILS__'] = JSON.stringify(false);
+			return args;
+		});
     },
 }
