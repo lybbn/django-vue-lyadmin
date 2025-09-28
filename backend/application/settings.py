@@ -302,6 +302,8 @@ CORS_ALLOW_ALL_ORIGINS = True #新版 ACCESS_CONTROL_ALLOW_ORIGIN = '*' ,不能�
 # CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持对cookie的操作
 SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
 CORS_EXPOSE_HEADERS = ['Content-Disposition'] # Content-Disposition 头部添加到 Access-Control-Expose-Headers 中，允许客户端 JavaScript 访问该头部
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + ['authorization']
 # ================================================= #
 # ********************* 日志配置 ******************* #
 # ================================================= #
