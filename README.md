@@ -28,6 +28,39 @@
 
 unielepy为移动端开发模板：[unielepy](https://gitee.com/lybbn/unielepy)
 
+## 🚀 在线体验 dvlyadmin_pro_v2版本(预览版)
+
+<div style="border-left: 4px solid #3498db; padding-left: 1em; margin: 1em 0;">
+  <table>
+    <tr>
+      <td><strong>🌍 访问地址</strong></td>
+      <td><a href="https://dvlyadmin-pro.lybbn.cn" target="_blank" rel="noreferrer">https://dvlyadmin-pro.lybbn.cn</a></td>
+    </tr>
+    <tr>
+      <td><strong>👤 测试账号</strong></td>
+      <td><code>admin</code></td>
+    </tr>
+    <tr>
+      <td><strong>🔑 登录密码</strong></td>
+      <td><code>123456</code></td>
+    </tr>
+  </table>
+</div>
+
+### dvlyadmin_pro_v2项目说明
+
+**dvlyadmin_pro_v2** 是基于 **dvlyadmin-mini** 的升级版本，在保留原有全部功能的基础上，新增了专业版特性：
+
+#### 🚀 核心升级特性
+- **服务器管理套件**：文件管理、终端服务、Redis监控、进程管理等
+- **开发效率工具**：代码生成器、表单构建器、工作流引擎
+- **系统监控**：完整的服务监控和系统日志管理
+- **更多组件**：新增优化了更多常用组件，更符合现代化操作
+
+#### 🔄 版本关系
+- **dvlyadmin_pro_v2** 是 [django-vue-lyadmin-pro](https://doc.lybbn.cn/support/subscribe.html) 专业版的重构版本
+- 完全兼容 dvlyadmin-mini 的所有功能接口
+
 ## 在线体验(商城论坛系统)
 
 * PC Web端 演示地址：[PC端](https://lymallbbspc.lybbn.cn/#/) 账号：test01 密码：Admin123456
