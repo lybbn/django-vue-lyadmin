@@ -20,7 +20,7 @@ Django-Vue-LyAdmin 是一个基于 **Python Django + Vue3** 的现代化低代�
 
 - **[dvlyadmin-mini](https://gitee.com/lybbn/dvlyadmin-mini)** - 优化精简版
 - **[dvlyadmin-pro](https://doc.lybbn.cn/support/subscribe.html)** - 专业版（含代码生成器、表单构建器等）
-- **[dvlyadmin_pro_v2](https://doc.lybbn.cn/support/subscribe.html)** - 专业版（基于django-mini重构dvlyadmin-pro版本）
+- **[dvlyadmin_pro_v2](https://doc.lybbn.cn/support/subscribe.html)** - 专业版（基于dvlyadmin-mini重构dvlyadmin-pro版本）
 - **[如意面板](https://ruyi.lybbn.cn/)** - 服务器管理面板
 - **[unielepy](https://gitee.com/lybbn/unielepy)** - 移动端开发模板
 - **[Go语言版](https://gitee.com/lybbn/golyadmin)** - Go语言实现的django-vue-lyadmin版本
