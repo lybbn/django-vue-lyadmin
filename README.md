@@ -1,6 +1,6 @@
 # Django-Vue-LyAdmin - 现代化低代码中后台管理系统
 
-[![Python Version](https://img.shields.io/badge/python-%3E=3.9.x-green.svg)](https://python.org/)  [![Django Version](https://img.shields.io/badge/django-4.x-blue)](https://docs.djangoproject.com/zh-hans/4.0/) [![Node.js Version](https://img.shields.io/badge/node-%3E%3D%2014.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![Gitee Stars](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin) [![License](https://img.shields.io/badge/license-MIT-orange)](LICENSE)
+[![Python Version](https://img.shields.io/badge/python-%3E=3.9.x-green.svg)](https://python.org/)  [![Django Version](https://img.shields.io/badge/django-4.x-blue)](https://docs.djangoproject.com/zh-hans/4.0/) [![Node.js Version](https://img.shields.io/badge/node-%3E%3D%2014.0.0-brightgreen)](https://nodejs.org/zh-cn/) [![Gitee Stars](https://gitee.com/lybbn/django-vue-lyadmin/badge/star.svg?theme=dark)](https://gitee.com/lybbn/django-vue-lyadmin) [![License](https://img.shields.io/badge/license-Apache2.0-orange)](LICENSE)
 
 [📖 官方文档](https://doc.lybbn.cn/) | [🚀 dvlyadmin-mini在线演示](http://dvlyadmin-mini.lybbn.cn) | [💻 源码地址](https://gitee.com/lybbn/django-vue-lyadmin) | [🎥 视频教程](https://doc.lybbn.cn/videos/PythonWeb/%E8%AF%BE%E7%A8%8B%E4%BB%8B%E7%BB%8D.html)
 
